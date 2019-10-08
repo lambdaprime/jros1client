@@ -1,0 +1,43 @@
+// Requires gradle 5.4
+// gradle clean build
+
+plugins {
+    id 'java'
+}
+
+apply plugin : 'eclipse'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+}
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+version = "1.0"
+
+compileJava {
+    doFirst {
+        options.compilerArgs = [
+            '--module-path', classpath.asPath,
+        ]
+        classpath = files()
+    }
+}
+
+task createRelease(type: Copy) {
+    def out = 'release'
+    from jar.archiveFile
+    into out
+}
+
+task cleanRelease(type: Delete) {
+    delete "$projectDir/release"
+}
+
+assemble.dependsOn createRelease
+clean.dependsOn cleanRelease
