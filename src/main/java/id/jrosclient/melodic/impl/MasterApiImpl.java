@@ -1,14 +1,18 @@
 package id.jrosclient.melodic.impl;
 
-import id.jrosclient.XmlRpcClient;
+import id.jrosclient.RosRpcClient;
 import id.jrosclient.melodic.MasterApi;
 import id.jrosclient.melodic.SystemState;
 import id.jrosclient.melodic.impl.parsers.SystemStateParser;
 
 public class MasterApiImpl implements MasterApi {
 
-    private XmlRpcClient client;
+    private RosRpcClient client;
     private SystemStateParser systemStateParser = new SystemStateParser();
+
+    public MasterApiImpl(RosRpcClient client) {
+        this.client = client;
+    }
 
     @Override
     public SystemState getSystemState(String callerId) {

@@ -1,23 +1,20 @@
 package id.jrosclient;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 
-import org.apache.xmlrpc.client.XmlRpcClient;
-import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
+import id.jrosclient.melodic.JRosClient;
 
 public class Main {
+    
+    private static final String CALLER_ID = "123";
 
     public static void main(String[] args) throws MalformedURLException, Exception {
-
-        XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
-        config.setServerURL(new URL("http://ubuntu:11311/"));
-        XmlRpcClient client = new XmlRpcClient();
-        client.setConfig(config);
-
-        Object[] params = new Object[]{"gggg"};
-        Object[] result = (Object[]) client.execute("getSystemState", params);
-        int code = (Integer)result[0];
-        String statusMessage = (String)result[1];
+        Object o = new Object[][] {
+            {"sdf"}
+        };
+        Object[][] b = (Object[][]) o;
+        var client = JRosClient.create("http://ubuntu:11311/");
+        System.out.println(client.getMasterApi().getSystemState(CALLER_ID));
+        
     }
 }
