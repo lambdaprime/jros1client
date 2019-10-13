@@ -2,5 +2,7 @@ package id.jrosclient.melodic;
 
 public interface MasterApi {
 
-    SystemState getSystemState(String callerId);
+    SystemStateResponse getSystemState(String callerId);
+    StringResponse getUri(String callerId);
+    StringResponse lookupService(String callerId, String service);
 }

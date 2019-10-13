@@ -9,6 +9,7 @@ public class SubScriber {
 
     @Override
     public String toString() {
-        return String.format("SubScriber: %s [%s]", topic, topicSubscriber);
+        return String.format("{ \"topic\": \"%s\", \"topicSubscriber\": %s }", topic,
+                Utils.asArrayOfStrings(topicSubscriber));
     }
 }

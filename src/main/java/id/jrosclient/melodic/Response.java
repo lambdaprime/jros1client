@@ -11,9 +11,7 @@ public class Response {
 
     @Override
     public String toString() {
-        StringBuilder b = new StringBuilder();
-        b.append("StatusCode: " + statusCode).append('\n');
-        b.append("StatusMessage: " + statusMessage).append('\n');
-        return b.toString();
+        return String.format("\"statusCode\": \"%s\", \"statusMessage\": \"%s\"",
+                statusCode, statusMessage);
     }
 }

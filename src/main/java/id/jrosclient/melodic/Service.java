@@ -9,6 +9,7 @@ public class Service {
 
     @Override
     public String toString() {
-        return String.format("Service: %s [%s]", service, serviceProvider);
+        return String.format("{ \"topic\": \"%s\", \"topicSubscriber\": %s }", service,
+                Utils.asArrayOfStrings(serviceProvider));
     }
 }
