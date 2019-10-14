@@ -1,4 +1,4 @@
-package id.jrosclient.melodic;
+package id.jrosclient.melodic.responses;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

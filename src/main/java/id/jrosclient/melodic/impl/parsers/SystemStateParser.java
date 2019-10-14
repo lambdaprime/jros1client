@@ -1,7 +1,7 @@
 package id.jrosclient.melodic.impl.parsers;
 
 import id.jrosclient.RawResponse;
-import id.jrosclient.melodic.SystemStateResponse;
+import id.jrosclient.melodic.responses.SystemStateResponse;
 
 public class SystemStateParser extends ResponseParser {
 

@@ -1,4 +1,4 @@
-package id.jrosclient.melodic;
+package id.jrosclient.melodic.responses;
 
 public class Response {
 

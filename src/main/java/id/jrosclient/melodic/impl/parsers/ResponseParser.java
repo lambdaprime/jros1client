@@ -1,8 +1,8 @@
 package id.jrosclient.melodic.impl.parsers;
 
 import id.jrosclient.RawResponse;
-import id.jrosclient.melodic.Response;
-import id.jrosclient.melodic.Response.StatusCode;
+import id.jrosclient.melodic.responses.Response;
+import id.jrosclient.melodic.responses.Response.StatusCode;
 
 public class ResponseParser {
 
