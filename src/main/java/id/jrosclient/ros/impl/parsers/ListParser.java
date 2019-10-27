@@ -1,8 +1,8 @@
-package id.jrosclient.melodic.impl.parsers;
+package id.jrosclient.ros.impl.parsers;
 
-import id.jrosclient.RawResponse;
-import id.jrosclient.melodic.responses.ListResponse;
-import id.jrosclient.melodic.responses.Response.StatusCode;
+import id.jrosclient.ros.impl.RawResponse;
+import id.jrosclient.ros.responses.ListResponse;
+import id.jrosclient.ros.responses.Response.StatusCode;
 
 public class ListParser extends ResponseParser {
 

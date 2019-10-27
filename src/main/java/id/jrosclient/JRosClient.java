@@ -1,12 +1,13 @@
-package id.jrosclient.melodic;
+package id.jrosclient;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 
-import id.jrosclient.RosRpcClient;
-import id.jrosclient.melodic.impl.MasterApiImpl;
+import id.jrosclient.impl.RosRpcClient;
+import id.jrosclient.ros.MasterApi;
+import id.jrosclient.ros.impl.MasterApiImpl;
 
 public class JRosClient {
 

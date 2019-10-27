@@ -1,13 +1,13 @@
-package id.jrosclient.melodic.impl;
+package id.jrosclient.ros.impl;
 
-import id.jrosclient.RosRpcClient;
-import id.jrosclient.melodic.MasterApi;
-import id.jrosclient.melodic.impl.parsers.ListParser;
-import id.jrosclient.melodic.impl.parsers.StringParser;
-import id.jrosclient.melodic.impl.parsers.SystemStateParser;
-import id.jrosclient.melodic.responses.ListResponse;
-import id.jrosclient.melodic.responses.StringResponse;
-import id.jrosclient.melodic.responses.SystemStateResponse;
+import id.jrosclient.impl.RosRpcClient;
+import id.jrosclient.ros.MasterApi;
+import id.jrosclient.ros.impl.parsers.ListParser;
+import id.jrosclient.ros.impl.parsers.StringParser;
+import id.jrosclient.ros.impl.parsers.SystemStateParser;
+import id.jrosclient.ros.responses.ListResponse;
+import id.jrosclient.ros.responses.StringResponse;
+import id.jrosclient.ros.responses.SystemStateResponse;
 
 public class MasterApiImpl implements MasterApi {
 

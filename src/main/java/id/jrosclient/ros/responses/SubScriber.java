@@ -1,4 +1,4 @@
-package id.jrosclient.melodic;
+package id.jrosclient.ros.responses;
 
 import java.util.List;
 

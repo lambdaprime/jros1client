@@ -1,4 +1,4 @@
-package id.jrosclient;
+package id.jrosclient.impl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -6,6 +6,8 @@ import java.util.function.Supplier;
 
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
+
+import id.jrosclient.ros.impl.RawResponse;
 
 public class RosRpcClient {
 

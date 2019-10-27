@@ -1,9 +1,9 @@
-package id.jrosclient.melodic.responses;
+package id.jrosclient.ros.responses;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import id.jrosclient.melodic.Utils;
+import id.jrosclient.ros.impl.Utils;
 
 public class ListResponse<T> extends Response {
 

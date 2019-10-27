@@ -1,5 +1,6 @@
 module jrosclient {
     requires xmlrpc.client;
-    exports id.jrosclient.melodic;
-    exports id.jrosclient.melodic.responses;
+    exports id.jrosclient;
+    exports id.jrosclient.ros;
+    exports id.jrosclient.ros.responses;
 }

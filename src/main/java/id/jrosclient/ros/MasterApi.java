@@ -1,8 +1,8 @@
-package id.jrosclient.melodic;
+package id.jrosclient.ros;
 
-import id.jrosclient.melodic.responses.ListResponse;
-import id.jrosclient.melodic.responses.StringResponse;
-import id.jrosclient.melodic.responses.SystemStateResponse;
+import id.jrosclient.ros.responses.ListResponse;
+import id.jrosclient.ros.responses.StringResponse;
+import id.jrosclient.ros.responses.SystemStateResponse;
 
 public interface MasterApi {
 

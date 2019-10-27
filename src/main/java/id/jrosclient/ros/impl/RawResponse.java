@@ -1,4 +1,4 @@
-package id.jrosclient;
+package id.jrosclient.ros.impl;
 
 import java.util.Arrays;
 import java.util.Iterator;
