@@ -1,0 +1,40 @@
+// Requires gradle 5.4
+// gradle clean test
+
+plugins {
+    id 'java'
+}
+
+apply plugin : 'eclipse'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    testImplementation project(':jrosclient')
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
+    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+}
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+version = "1.0"
+
+compileTestJava {
+    doFirst {
+        options.compilerArgs = [
+            '--module-path', classpath.asPath,
+        ]
+        classpath = files()
+    }
+}
+
+test {
+    useJUnitPlatform()
+    filter {
+        exclude '**/module-info.class'
+    }
+}

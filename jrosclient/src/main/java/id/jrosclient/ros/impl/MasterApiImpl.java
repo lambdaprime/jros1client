@@ -12,12 +12,14 @@ import id.jrosclient.ros.responses.SystemStateResponse;
 public class MasterApiImpl implements MasterApi {
 
     private RosRpcClient client;
+    private NodeServer nodeServer;
     private SystemStateParser systemStateParser = new SystemStateParser();
     private StringParser stringParser = new StringParser();
     private ListParser stringListParser = new ListParser();
 
-    public MasterApiImpl(RosRpcClient client) {
+    public MasterApiImpl(RosRpcClient client, NodeServer nodeServer) {
         this.client = client;
+        this.nodeServer = nodeServer;
     }
 
     @Override
@@ -40,9 +42,10 @@ public class MasterApiImpl implements MasterApi {
 
     @Override
     public ListResponse<String> registerPublisher(String callerId, String topic,
-            String topicType, String callerApi) 
+            String topicType) 
     {
-        Object[] params = new Object[]{callerId, topic, topicType, callerApi};
+        nodeServer.start();
+        Object[] params = new Object[]{callerId, topic, topicType, nodeServer.getNodeApi()};
         return stringListParser.parseString("subscriberApis", client.execute("registerPublisher", params));
     }
 

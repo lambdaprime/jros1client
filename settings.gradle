@@ -1,0 +1,2 @@
+include 'jrosclient'
+include 'jrosclient.tests'

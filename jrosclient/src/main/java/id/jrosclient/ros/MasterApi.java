@@ -9,5 +9,5 @@ public interface MasterApi {
     SystemStateResponse getSystemState(String callerId);
     StringResponse getUri(String callerId);
     StringResponse lookupService(String callerId, String service);
-    ListResponse<String> registerPublisher(String callerId, String topic, String topicType, String callerApi);
+    ListResponse<String> registerPublisher(String callerId, String topic, String topicType);
 }
