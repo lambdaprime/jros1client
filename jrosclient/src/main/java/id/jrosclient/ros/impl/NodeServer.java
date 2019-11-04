@@ -7,7 +7,7 @@ import org.apache.xmlrpc.server.XmlRpcServer;
 import org.apache.xmlrpc.server.XmlRpcServerConfigImpl;
 import org.apache.xmlrpc.webserver.WebServer;
 
-import id.functions.Safe;
+import id.xfunction.Unchecked;
 
 public class NodeServer {
 
@@ -43,7 +43,7 @@ public class NodeServer {
         serverConfig.setEnabledForExtensions(true);
         serverConfig.setContentLengthOptional(false);
 
-        Safe.run(s::start);
+        Unchecked.runUnchecked(s::start);
     }
 
     public String getNodeApi() {
