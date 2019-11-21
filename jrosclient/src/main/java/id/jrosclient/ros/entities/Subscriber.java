@@ -1,10 +1,10 @@
-package id.jrosclient.ros.responses;
+package id.jrosclient.ros.entities;
 
 import java.util.List;
 
 import id.jrosclient.ros.impl.Utils;
 
-public class SubScriber {
+public class Subscriber {
 
     public String topic;
     public List<String> topicSubscriber;

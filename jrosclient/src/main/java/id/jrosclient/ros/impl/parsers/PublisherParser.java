@@ -1,7 +1,7 @@
 package id.jrosclient.ros.impl.parsers;
 
+import id.jrosclient.ros.entities.Publisher;
 import id.jrosclient.ros.impl.RawResponse;
-import id.jrosclient.ros.responses.Publisher;
 
 public class PublisherParser {
 

@@ -4,5 +4,6 @@ module jrosclient {
     requires xfunction;
     exports id.jrosclient;
     exports id.jrosclient.ros;
+    exports id.jrosclient.ros.entities;
     exports id.jrosclient.ros.responses;
 }

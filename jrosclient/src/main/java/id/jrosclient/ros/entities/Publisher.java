@@ -1,4 +1,4 @@
-package id.jrosclient.ros.responses;
+package id.jrosclient.ros.entities;
 
 import java.util.List;
 
