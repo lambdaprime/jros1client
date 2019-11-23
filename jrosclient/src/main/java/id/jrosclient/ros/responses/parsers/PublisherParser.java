@@ -1,4 +1,4 @@
-package id.jrosclient.ros.impl.parsers;
+package id.jrosclient.ros.responses.parsers;
 
 import id.jrosclient.ros.entities.Publisher;
 import id.jrosclient.ros.impl.RawResponse;

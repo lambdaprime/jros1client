@@ -2,12 +2,12 @@ package id.jrosclient.ros.impl;
 
 import id.jrosclient.impl.RosRpcClient;
 import id.jrosclient.ros.MasterApi;
-import id.jrosclient.ros.impl.parsers.ListParser;
-import id.jrosclient.ros.impl.parsers.StringParser;
-import id.jrosclient.ros.impl.parsers.SystemStateParser;
 import id.jrosclient.ros.responses.ListResponse;
 import id.jrosclient.ros.responses.StringResponse;
 import id.jrosclient.ros.responses.SystemStateResponse;
+import id.jrosclient.ros.responses.parsers.ListParser;
+import id.jrosclient.ros.responses.parsers.StringParser;
+import id.jrosclient.ros.responses.parsers.SystemStateParser;
 
 public class MasterApiImpl implements MasterApi {
 
