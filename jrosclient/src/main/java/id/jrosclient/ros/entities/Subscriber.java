@@ -4,7 +4,7 @@ import java.util.List;
 
 import id.jrosclient.ros.impl.Utils;
 
-public class Subscriber {
+public class Subscriber implements Entity {
 
     public String topic;
     public List<String> topicSubscriber;

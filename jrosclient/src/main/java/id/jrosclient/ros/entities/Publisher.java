@@ -4,7 +4,7 @@ import java.util.List;
 
 import id.jrosclient.ros.impl.Utils;
 
-public class Publisher {
+public class Publisher implements Entity {
 
     public String topic;
     public List<String> topicPublisher;

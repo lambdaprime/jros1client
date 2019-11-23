@@ -4,7 +4,7 @@ import java.util.List;
 
 import id.jrosclient.ros.impl.Utils;
 
-public class Service {
+public class Service implements Entity {
 
     public String service;
     public List<String> serviceProvider;
