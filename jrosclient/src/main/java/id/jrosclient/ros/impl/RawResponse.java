@@ -45,4 +45,8 @@ public class RawResponse implements Iterable<RawResponse> {
             }
         };
     }
+
+    public Object getObject() {
+        return obj;
+    }
 }

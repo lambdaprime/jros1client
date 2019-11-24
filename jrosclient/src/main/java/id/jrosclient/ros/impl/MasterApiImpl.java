@@ -2,6 +2,7 @@ package id.jrosclient.ros.impl;
 
 import id.jrosclient.impl.RosRpcClient;
 import id.jrosclient.ros.MasterApi;
+import id.jrosclient.ros.entities.transformers.Transformers;
 import id.jrosclient.ros.responses.ListResponse;
 import id.jrosclient.ros.responses.StringResponse;
 import id.jrosclient.ros.responses.SystemStateResponse;
@@ -13,13 +14,15 @@ public class MasterApiImpl implements MasterApi {
 
     private RosRpcClient client;
     private NodeServer nodeServer;
-    private SystemStateParser systemStateParser = new SystemStateParser();
+    private SystemStateParser systemStateParser;
     private StringParser stringParser = new StringParser();
     private ListParser stringListParser = new ListParser();
 
     public MasterApiImpl(RosRpcClient client, NodeServer nodeServer) {
         this.client = client;
         this.nodeServer = nodeServer;
+        var transformers = new Transformers();
+        this.systemStateParser = new SystemStateParser(transformers.publisherTransformer);
     }
 
     @Override
