@@ -49,7 +49,16 @@ public class MasterApiImpl implements MasterApi {
     {
         nodeServer.start();
         Object[] params = new Object[]{callerId, topic, topicType, nodeServer.getNodeApi()};
-        return stringListParser.parseString("subscriberApis", client.execute("registerPublisher", params));
+        return stringListParser.parseString("subscriberApis",
+                client.execute("registerPublisher", params));
+    }
+
+    @Override
+    public ListResponse<String> registerSubscriber(String callerId, String topic, String topicType) {
+        nodeServer.start();
+        Object[] params = new Object[]{callerId, topic, topicType, nodeServer.getNodeApi()};
+        return stringListParser.parseString("publishers",
+                client.execute("registerSubscriber", params));
     }
 
 }

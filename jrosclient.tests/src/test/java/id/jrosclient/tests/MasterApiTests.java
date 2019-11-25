@@ -1,11 +1,8 @@
 package id.jrosclient.tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static id.jrosclient.tests.TestUtils.compare;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -34,17 +31,12 @@ public class MasterApiTests {
         compare(out.toString(), "/test_getUri");
     }
 
-    private void compare(String out, String file) {
-        var str = "";
-        try {
-            str = new BufferedReader(new InputStreamReader(getClass().getResource(file).openStream())).lines()
-                    .collect(Collectors.joining("\n"));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        assertEquals(str, out);
+    @Test
+    public void test_registerSubscriber() {
+        String topic = "topic";
+        var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, topic, "std_msgs/String");
+        TestUtils.compareWithTemplate(publishers.toString(), "/test_registerSubscriber");
     }
-    
 
     public static void main(String[] args) throws MalformedURLException, Exception {
         //System.out.println(client.getMasterApi().lookupService(CALLER_ID, "service"));

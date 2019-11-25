@@ -10,4 +10,5 @@ public interface MasterApi {
     StringResponse getUri(String callerId);
     StringResponse lookupService(String callerId, String service);
     ListResponse<String> registerPublisher(String callerId, String topic, String topicType);
+    ListResponse<String> registerSubscriber(String callerId, String topic, String topicType);
 }

@@ -1,14 +1,15 @@
 package id.jrosclient.ros.responses.parsers;
 
-import id.jrosclient.ros.entities.transformers.PublisherTransformer;
+import id.jrosclient.ros.entities.Publisher;
+import id.jrosclient.ros.entities.transformers.Transformer;
 import id.jrosclient.ros.impl.RawResponse;
 import id.jrosclient.ros.responses.SystemStateResponse;
 
 public class SystemStateParser extends ResponseParser {
 
-    private PublisherTransformer publisherTransformer = new PublisherTransformer();
+    private Transformer<Publisher> publisherTransformer;
 
-    public SystemStateParser(PublisherTransformer publisherTransformer) {
+    public SystemStateParser(Transformer<Publisher> publisherTransformer) {
         this.publisherTransformer = publisherTransformer;
     }
 

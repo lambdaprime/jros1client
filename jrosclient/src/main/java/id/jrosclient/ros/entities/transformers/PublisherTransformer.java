@@ -2,7 +2,7 @@ package id.jrosclient.ros.entities.transformers;
 
 import id.jrosclient.ros.entities.Publisher;
 
-public class PublisherTransformer implements Transformer<Publisher> {
+class PublisherTransformer implements Transformer<Publisher> {
 
     public Publisher transform(Object obj) {
         Object[] a = (Object[]) obj;
