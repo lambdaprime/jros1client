@@ -1,13 +1,12 @@
 package id.jrosclient.ros.entities.transformers;
 
-import java.util.Map;
-
-import id.jrosclient.ros.entities.Entity;
+import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.ros.entities.Publisher;
 
 public class Transformers {
 
-    public PublisherTransformer publisherTransformer = new PublisherTransformer();
+    public Transformer<Publisher> publisherTransformer = new PublisherTransformer();
+    public Transformer<Protocol> protocolTransformer = new ProtocolTransformer();
 
 //    private Map<Class<?>, Transformer<?>> transformers = Map.of(
 //            Publisher.class, publisherTransformer );
