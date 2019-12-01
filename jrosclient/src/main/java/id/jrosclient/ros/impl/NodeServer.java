@@ -9,7 +9,7 @@ import org.apache.xmlrpc.webserver.WebServer;
 
 import id.xfunction.Unchecked;
 
-public class NodeServer {
+public class NodeServer implements AutoCloseable {
 
     private Optional<WebServer> server = Optional.empty();
     private int port;
@@ -48,5 +48,10 @@ public class NodeServer {
 
     public String getNodeApi() {
         return "http://localhost:" + port;
+    }
+
+    @Override
+    public void close() throws Exception {
+        server.ifPresent(WebServer::shutdown);        
     }
 }
