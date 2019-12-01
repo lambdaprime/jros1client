@@ -1,4 +1,4 @@
-package id.jrosclient.ros.impl;
+package id.jrosclient.ros.api.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;

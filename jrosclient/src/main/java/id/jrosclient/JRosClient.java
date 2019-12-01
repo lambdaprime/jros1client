@@ -3,11 +3,11 @@ package id.jrosclient;
 import java.net.MalformedURLException;
 
 import id.jrosclient.impl.RosRpcClient;
-import id.jrosclient.ros.MasterApi;
-import id.jrosclient.ros.NodeApi;
-import id.jrosclient.ros.impl.MasterApiImpl;
-import id.jrosclient.ros.impl.NodeApiImpl;
-import id.jrosclient.ros.impl.NodeServer;
+import id.jrosclient.ros.api.MasterApi;
+import id.jrosclient.ros.api.NodeApi;
+import id.jrosclient.ros.api.impl.MasterApiImpl;
+import id.jrosclient.ros.api.impl.NodeApiImpl;
+import id.jrosclient.ros.api.impl.NodeServer;
 
 public class JRosClient implements AutoCloseable {
 

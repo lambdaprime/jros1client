@@ -1,7 +1,7 @@
-package id.jrosclient.ros.impl;
+package id.jrosclient.ros.api.impl;
 
 import id.jrosclient.impl.RosRpcClient;
-import id.jrosclient.ros.MasterApi;
+import id.jrosclient.ros.api.MasterApi;
 import id.jrosclient.ros.entities.transformers.Transformers;
 import id.jrosclient.ros.responses.ListResponse;
 import id.jrosclient.ros.responses.StringResponse;

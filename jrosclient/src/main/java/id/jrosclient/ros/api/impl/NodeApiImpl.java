@@ -1,9 +1,9 @@
-package id.jrosclient.ros.impl;
+package id.jrosclient.ros.api.impl;
 
 import java.util.List;
 
 import id.jrosclient.impl.RosRpcClient;
-import id.jrosclient.ros.NodeApi;
+import id.jrosclient.ros.api.NodeApi;
 import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.ros.entities.transformers.Transformers;
 import id.jrosclient.ros.responses.ProtocolParamsResponse;

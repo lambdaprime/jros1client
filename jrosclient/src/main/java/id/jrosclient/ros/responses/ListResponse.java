@@ -3,7 +3,7 @@ package id.jrosclient.ros.responses;
 import java.util.ArrayList;
 import java.util.List;
 
-import id.jrosclient.ros.impl.Utils;
+import id.jrosclient.ros.api.impl.Utils;
 
 public class ListResponse<T> extends Response {
 

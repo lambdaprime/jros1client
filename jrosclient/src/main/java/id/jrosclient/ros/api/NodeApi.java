@@ -1,4 +1,4 @@
-package id.jrosclient.ros;
+package id.jrosclient.ros.api;
 
 import java.util.List;
 

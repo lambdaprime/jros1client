@@ -1,6 +1,6 @@
 package id.jrosclient.ros.responses.parsers;
 
-import id.jrosclient.ros.impl.RawResponse;
+import id.jrosclient.ros.api.impl.RawResponse;
 import id.jrosclient.ros.responses.Response;
 import id.jrosclient.ros.responses.Response.StatusCode;
 

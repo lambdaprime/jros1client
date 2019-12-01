@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 
-import id.jrosclient.ros.impl.RawResponse;
+import id.jrosclient.ros.api.impl.RawResponse;
 
 public class RosRpcClient {
 
