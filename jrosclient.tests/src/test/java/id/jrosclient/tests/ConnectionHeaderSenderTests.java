@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 import id.jrosclient.ros.transport.ConnectionHeader;
-import id.jrosclient.ros.transport.ConnectionHeaderSender;
+import id.jrosclient.ros.transport.ConnectionHeaderWriter;
 import id.jrosclient.tests.utils.OutputStreamCollector;
 import id.xfunction.XUtils;
 
@@ -29,7 +29,7 @@ public class ConnectionHeaderSenderTests {
                 .withMd5Sum(XUtils.md5Sum(messageDefinition));
         OutputStreamCollector collector = new OutputStreamCollector();
         var dos = new DataOutputStream(collector);
-        new ConnectionHeaderSender(dos).send(ch);
+        new ConnectionHeaderWriter(dos).write(ch);
         List<String> expected = TestUtils.readFileAsStream("/connection_header")
             .map(l -> Arrays.asList(l.split(" ")))
             .flatMap(List::stream)

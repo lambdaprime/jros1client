@@ -4,7 +4,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Optional;
 
-public class ConnectionHeaderSender {
+public class ConnectionHeaderWriter {
 
     private static final String CALLER_ID = "callerid";
     private static final String TOPIC = "topic";
@@ -14,11 +14,11 @@ public class ConnectionHeaderSender {
 
     private DataOutput out;
 
-    public ConnectionHeaderSender(DataOutput out) {
+    public ConnectionHeaderWriter(DataOutput out) {
         this.out = out;
     }
 
-    public void send(ConnectionHeader header) throws IOException {
+    public void write(ConnectionHeader header) throws IOException {
         int len = 0;
         len += len(CALLER_ID, header.callerId) + 4;
         len += len(TOPIC, header.topic) + 4;
