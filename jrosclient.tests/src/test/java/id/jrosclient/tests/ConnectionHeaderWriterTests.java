@@ -14,7 +14,7 @@ import id.jrosclient.ros.transport.ConnectionHeaderWriter;
 import id.jrosclient.tests.utils.OutputStreamCollector;
 import id.xfunction.XUtils;
 
-public class ConnectionHeaderSenderTests {
+public class ConnectionHeaderWriterTests {
 
     @Test
     public void test_happy() throws Exception {
