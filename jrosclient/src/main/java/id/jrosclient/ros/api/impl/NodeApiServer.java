@@ -9,12 +9,12 @@ import org.apache.xmlrpc.webserver.WebServer;
 
 import id.xfunction.Unchecked;
 
-public class NodeServer implements AutoCloseable {
+public class NodeApiServer implements AutoCloseable {
 
     private Optional<WebServer> server = Optional.empty();
     private int port;
 
-    public NodeServer(int port) {
+    public NodeApiServer(int port) {
         this.port = port;
     }
 

@@ -13,12 +13,12 @@ import id.jrosclient.ros.responses.parsers.SystemStateParser;
 public class MasterApiImpl implements MasterApi {
 
     private RosRpcClient client;
-    private NodeServer nodeServer;
+    private NodeApiServer nodeServer;
     private SystemStateParser systemStateParser;
     private StringParser stringParser = new StringParser();
     private ListParser stringListParser = new ListParser();
 
-    public MasterApiImpl(RosRpcClient client, NodeServer nodeServer) {
+    public MasterApiImpl(RosRpcClient client, NodeApiServer nodeServer) {
         this.client = client;
         this.nodeServer = nodeServer;
         var transformers = new Transformers();

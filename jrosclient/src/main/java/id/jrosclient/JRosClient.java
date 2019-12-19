@@ -7,16 +7,16 @@ import id.jrosclient.ros.api.MasterApi;
 import id.jrosclient.ros.api.NodeApi;
 import id.jrosclient.ros.api.impl.MasterApiImpl;
 import id.jrosclient.ros.api.impl.NodeApiImpl;
-import id.jrosclient.ros.api.impl.NodeServer;
+import id.jrosclient.ros.api.impl.NodeApiServer;
 
 public class JRosClient implements AutoCloseable {
 
     private MasterApi masterApi;
-    private NodeServer nodeServer;
+    private NodeApiServer nodeServer;
 
     public JRosClient(String masterUrl, int nodePort) throws MalformedURLException {
         RosRpcClient client = new RosRpcClient(masterUrl);
-        nodeServer = new NodeServer(nodePort);
+        nodeServer = new NodeApiServer(nodePort);
         masterApi = new MasterApiImpl(client, nodeServer);
     }
 
