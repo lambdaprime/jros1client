@@ -1,7 +1,7 @@
 module jrosclient {
     requires xmlrpc.client;
     requires xmlrpc.server;
-    requires xfunction;
+    requires id.xfunction;
     requires xmlrpc.common;
     exports id.jrosclient;
     exports id.jrosclient.ros.api;

@@ -7,7 +7,7 @@ import org.apache.xmlrpc.server.XmlRpcServer;
 import org.apache.xmlrpc.server.XmlRpcServerConfigImpl;
 import org.apache.xmlrpc.webserver.WebServer;
 
-import id.xfunction.Unchecked;
+import id.xfunction.function.Unchecked;
 
 public class NodeApiServer implements AutoCloseable {
 
