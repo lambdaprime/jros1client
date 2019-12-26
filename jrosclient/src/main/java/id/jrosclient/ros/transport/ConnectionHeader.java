@@ -1,8 +1,15 @@
 package id.jrosclient.ros.transport;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class ConnectionHeader {
+
+    static final String CALLER_ID = "callerid";
+    static final String TOPIC = "topic";
+    static final String TYPE = "type";
+    static final String MESSAGE_DEFINITION = "message_definition";
+    static final String MD5_SUM = "md5sum";
 
     public Optional<String> callerId = Optional.empty();
     public Optional<String> topic = Optional.empty();
@@ -35,4 +42,39 @@ public class ConnectionHeader {
         return this;
     }
 
+    public void add(String key, String value) {
+        switch (key) {
+        case CALLER_ID: withCallerId(value); break;
+        case TOPIC: withTopic(value); break;
+        case TYPE: withType(value); break;
+        case MESSAGE_DEFINITION: withMessageDefinition(value); break;
+        case MD5_SUM: withMd5Sum(value); break;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return Map.of(
+            CALLER_ID, callerId.orElse("empty"),
+            TOPIC, topic.orElse("empty"),
+            TYPE, type.orElse("empty"),
+            MESSAGE_DEFINITION, messageDefinition.orElse("empty"),
+            MD5_SUM, md5sum.orElse("empty")).toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (this == obj)
+            return true;
+        if (this.getClass() != obj.getClass())
+            return false;
+        ConnectionHeader ch = (ConnectionHeader) obj;
+        return callerId.equals(ch.callerId)
+                && topic.equals(ch.topic)
+                && type.equals(ch.type)
+                && messageDefinition.equals(ch.messageDefinition)
+                && md5sum.equals(ch.md5sum);
+    }
 }

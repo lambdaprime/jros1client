@@ -4,13 +4,9 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Optional;
 
-public class ConnectionHeaderWriter {
+import static id.jrosclient.ros.transport.ConnectionHeader.*;
 
-    private static final String CALLER_ID = "callerid";
-    private static final String TOPIC = "topic";
-    private static final String TYPE = "type";
-    private static final String MESSAGE_DEFINITION = "message_definition";
-    private static final String MD5_SUM = "md5sum";
+public class ConnectionHeaderWriter {
 
     private DataOutput out;
 
