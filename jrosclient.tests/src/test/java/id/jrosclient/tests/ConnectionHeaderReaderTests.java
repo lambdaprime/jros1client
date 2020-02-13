@@ -1,6 +1,5 @@
 package id.jrosclient.tests;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayInputStream;
@@ -17,6 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.ConnectionHeaderReader;
 import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
+import id.xfunction.XUtils;
 import id.xfunction.function.Curry;
 import id.xfunction.function.Unchecked;
 
@@ -39,7 +39,7 @@ public class ConnectionHeaderReaderTests {
     private byte[] readByteCodes(String resource) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(bos);
-        TestUtils.readFileAsStream(resource)
+        XUtils.readResourceAsStream(resource)
             .map(l -> Arrays.asList(l.split(" ")))
             .flatMap(List::stream)
             .map(Unchecked.wrapApply(Curry.curry2nd(Integer::parseInt, 16)))
