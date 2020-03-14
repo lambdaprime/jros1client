@@ -29,10 +29,10 @@ public class SubscriberTests {
     @Test
     public void test_registerSubscriber() {
         var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String");
-        TestUtils.compareWithTemplate(publishers.toString(), "/test_registerSubscriber1");
+        TestUtils.compareWithTemplate(publishers.toString(), "test_registerSubscriber1");
         var nodeApi = client.getNodeApi(publishers.value.get(0));
         var protocols = nodeApi.requestTopic(CALLER_ID, TOPIC, List.of(Protocol.TCPROS));
-        TestUtils.compareWithTemplate(protocols.toString(), "/test_registerSubscriber2");
+        TestUtils.compareWithTemplate(protocols.toString(), "test_registerSubscriber2");
     }
 
     public static void main(String[] args) throws MalformedURLException, Exception {

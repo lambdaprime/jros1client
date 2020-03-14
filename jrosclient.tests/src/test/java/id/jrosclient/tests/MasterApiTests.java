@@ -28,19 +28,19 @@ public class MasterApiTests {
     @Test
     public void test_getSystemState() {
         var out = client.getMasterApi().getSystemState(CALLER_ID);
-        TestUtils.compareWithTemplate(out.toString(), "/test_getSystemState");
+        TestUtils.compareWithTemplate(out.toString(), "test_getSystemState");
     }
 
     @Test
     public void test_getUri() {
         var out = client.getMasterApi().getUri(CALLER_ID);
-        compare(out.toString(), "/test_getUri");
+        compare(out.toString(), "test_getUri");
     }
 
     @Test
     public void test_registerSubscriber() {
         var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String");
-        TestUtils.compareWithTemplate(publishers.toString(), "/test_registerSubscriber1");
+        TestUtils.compareWithTemplate(publishers.toString(), "test_registerSubscriber1");
     }
 
     public static void main(String[] args) throws MalformedURLException, Exception {

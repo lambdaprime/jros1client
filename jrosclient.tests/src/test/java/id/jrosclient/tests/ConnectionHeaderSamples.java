@@ -26,7 +26,7 @@ public class ConnectionHeaderSamples {
     
     private static final String MESSAGE_DATA = "string data";
 
-    static final ConnectionHeaderSample HEADER = new ConnectionHeaderSample("/connection_header", new ConnectionHeader()
+    static final ConnectionHeaderSample HEADER = new ConnectionHeaderSample("connection_header", new ConnectionHeader()
             .withTopic("/topic")
             .withCallerId("jrosclient")
             .withType("std_msgs/String")
