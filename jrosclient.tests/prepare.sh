@@ -1,1 +1,1 @@
-rostopic pub topic std_msgs/String "hello there"
+rostopic pub testTopic std_msgs/String "hello there"

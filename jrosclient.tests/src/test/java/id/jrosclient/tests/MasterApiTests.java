@@ -1,5 +1,6 @@
 package id.jrosclient.tests;
 
+import static id.jrosclient.tests.TestConstants.*;
 import static id.jrosclient.tests.TestUtils.compare;
 
 import java.net.MalformedURLException;
@@ -12,7 +13,6 @@ import id.jrosclient.JRosClient;
 
 public class MasterApiTests {
     
-    private static final String CALLER_ID = "jrosclient";
     private static JRosClient client;
 
     @BeforeAll
@@ -39,14 +39,13 @@ public class MasterApiTests {
 
     @Test
     public void test_registerSubscriber() {
-        String topic = "topic";
-        var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, topic, "std_msgs/String");
+        var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String");
         TestUtils.compareWithTemplate(publishers.toString(), "/test_registerSubscriber1");
     }
 
     public static void main(String[] args) throws MalformedURLException, Exception {
         //System.out.println(client.getMasterApi().lookupService(CALLER_ID, "service"));
-        var client = new JRosClient("http://ubuntu:11311/", 1234);
+        var client = new JRosClient(URL, PORT);
         System.out.println("Master response: " + client.getMasterApi().registerPublisher(CALLER_ID, "visualization_marker",
                 "visualization_msgs/Marker"));
         while(true);

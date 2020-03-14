@@ -10,9 +10,10 @@ import org.junit.jupiter.api.Test;
 import id.jrosclient.JRosClient;
 import id.jrosclient.ros.entities.Protocol;
 
+import static id.jrosclient.tests.TestConstants.*;
+
 public class SubscriberTests {
     
-    private static final String CALLER_ID = "jrosclient";
     private static JRosClient client;
 
     @BeforeAll
@@ -27,16 +28,15 @@ public class SubscriberTests {
 
     @Test
     public void test_registerSubscriber() {
-        String topic = "topic";
-        var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, topic, "std_msgs/String");
+        var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String");
         TestUtils.compareWithTemplate(publishers.toString(), "/test_registerSubscriber1");
         var nodeApi = client.getNodeApi(publishers.value.get(0));
-        var protocols = nodeApi.requestTopic(CALLER_ID, topic, List.of(Protocol.TCPROS));
+        var protocols = nodeApi.requestTopic(CALLER_ID, TOPIC, List.of(Protocol.TCPROS));
         TestUtils.compareWithTemplate(protocols.toString(), "/test_registerSubscriber2");
     }
 
     public static void main(String[] args) throws MalformedURLException, Exception {
-        JRosClient client = new JRosClient("http://ubuntu:11311/", 1234);
+        JRosClient client = new JRosClient(URL, PORT);
         String topic = "topic";
         var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, topic, "std_msgs/String");
         System.out.println(publishers);

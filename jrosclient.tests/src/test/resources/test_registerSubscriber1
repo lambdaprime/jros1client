@@ -1,1 +1,1 @@
-{"statusCode": "SUCCESS", "statusMessage": "Subscribed to [/topic]", "publishers": [*]}
+{"statusCode": "SUCCESS", "statusMessage": "Subscribed to [/testTopic]", "publishers": [*]}
