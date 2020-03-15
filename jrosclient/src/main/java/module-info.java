@@ -2,6 +2,7 @@ module jrosclient {
     requires xmlrpc.client;
     requires xmlrpc.server;
     requires id.xfunction;
+    requires id.kineticstreamer;
     requires xmlrpc.common;
     exports id.jrosclient;
     exports id.jrosclient.ros.api;
