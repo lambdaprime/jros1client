@@ -1,6 +1,6 @@
 package id.jrosclient.tests;
 
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.DataOutputStream;
 import java.util.Arrays;
@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import id.jrosclient.ros.transport.ConnectionHeaderWriter;
 import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
-import id.jrosclient.tests.utils.OutputStreamCollector;
+import id.kineticstreamer.OutputStreamByteList;
 import id.xfunction.XUtils;
 
 public class ConnectionHeaderWriterTests {
@@ -25,14 +25,14 @@ public class ConnectionHeaderWriterTests {
     @ParameterizedTest
     @MethodSource("headerSamples")
     public void test_happy(ConnectionHeaderSample sample) throws Exception {
-        OutputStreamCollector collector = new OutputStreamCollector();
+        OutputStreamByteList collector = new OutputStreamByteList();
         var dos = new DataOutputStream(collector);
         new ConnectionHeaderWriter(dos).write(sample.getHeader());
-        List<String> expected = XUtils.readResourceAsStream(sample.getResource())
+        var expected = XUtils.readResourceAsStream(sample.getResource())
             .map(l -> Arrays.asList(l.split(" ")))
             .flatMap(List::stream)
-            .collect(Collectors.toList());
-        assertIterableEquals(expected, collector.output);
+            .collect(Collectors.joining(", "));
+        assertEquals(expected, collector.asHexString());
     }
 
 }
