@@ -1,22 +1,22 @@
 package id.jrosclient.ros.transport;
 
 import java.io.DataInput;
-import java.io.DataInputStream;
 import java.io.IOException;
 
 public class MessagePacketReader {
 
-    private DataInput in;
+    private RosDataInput in;
     private ConnectionHeaderReader headerReader;
 
-    public MessagePacketReader(DataInputStream in) {
-        this.in = in;
+    public MessagePacketReader(DataInput input) {
+        this.in = new RosDataInput(input);
         headerReader = new ConnectionHeaderReader(in);
     }
 
     public MessagePacket read() throws IOException {
         var ch = headerReader.read();
-        return new MessagePacket(ch);
+        byte[] b = in.readBody(in.readLen());
+        return new MessagePacket(ch, b);
     }
 
 }
