@@ -11,7 +11,6 @@ import id.xfunction.function.Unchecked;
 
 public class RosTopic {
 
-    
     private static final String CALLER_ID = "jrosclient";
     private String masterUrl;
     private int nodePort;
@@ -47,6 +46,7 @@ public class RosTopic {
         var nodeApi = client.getNodeApi(publishers.value.get(0));
         var protocols = nodeApi.requestTopic(CALLER_ID, topic, List.of(Protocol.TCPROS));
         System.out.println(protocols);
+        client.close();
     }
 
 }

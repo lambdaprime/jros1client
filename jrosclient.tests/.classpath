@@ -25,12 +25,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/jrosclient-jrosclient/libs/xfunction-7.0.jar">
+	<classpathentry kind="lib" path="/jrosclient-jrosclient/libs/kineticstreamer-1.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/jrosclient-jrosclient/libs/kineticstreamer-1.0.jar">
+	<classpathentry kind="lib" path="/jrosclient-jrosclient/libs/xfunction-8.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
