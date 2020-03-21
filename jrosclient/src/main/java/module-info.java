@@ -4,6 +4,7 @@ module jrosclient {
     requires id.xfunction;
     requires id.kineticstreamer;
     requires xmlrpc.common;
+    requires java.logging;
     exports id.jrosclient;
     exports id.jrosclient.ros;
     exports id.jrosclient.ros.api;
