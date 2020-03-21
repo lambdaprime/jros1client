@@ -1,5 +1,10 @@
 package id.jrosclient.ros.transport;
 
+import java.io.ByteArrayInputStream;
+
+import id.kineticstreamer.OutputStreamByteList;
+import id.xfunction.function.Unchecked;
+
 public class MessagePacket {
 
     private ConnectionHeader header;
@@ -16,5 +21,16 @@ public class MessagePacket {
 
     public ConnectionHeader getHeader() {
         return header;
+    }
+
+    public byte[] getBody() {
+        return body;
+    }
+    
+    @Override
+    public String toString() {
+        var out = new OutputStreamByteList();
+        Unchecked.runUnchecked(() -> new ByteArrayInputStream(body).transferTo(out));
+        return String.format("{ header: %s, body: [%s]}", header, out.asHexString());
     }
 }
