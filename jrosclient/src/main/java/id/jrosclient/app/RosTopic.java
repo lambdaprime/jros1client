@@ -12,6 +12,7 @@ import id.jrosclient.ros.api.impl.NodeApiServer;
 import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.MessagePacket;
+import id.xfunction.ArgumentParsingException;
 import id.xfunction.XLogger;
 import id.xfunction.XUtils;
 import id.xfunction.function.Unchecked;
@@ -29,16 +30,16 @@ public class RosTopic {
     }
 
     public void execute(List<String> positionalArgs) {
-        Unchecked.runUnchecked(() -> executeInternal(positionalArgs));
+        Unchecked.run(() -> executeInternal(positionalArgs));
     }
 
-    public void executeInternal(List<String> args) throws Exception {
+    public void executeInternal(List<String> args) throws ArgumentParsingException {
         var rest = new LinkedList<>(args);
         var cmd = rest.removeFirst();
         switch (cmd) {
-        case "echo" : echo(rest);
+        case "echo" : Unchecked.run(() -> echo(rest));
         break;
-        default: XUtils.error("Command unknown");
+        default: throw new ArgumentParsingException();
         }
     }
 
@@ -57,7 +58,7 @@ public class RosTopic {
         var nodeClient = NodeClient.connect(protocol.host, protocol.port);
         Consumer<MessagePacket> handler = response -> {
             LOGGER.log(Level.INFO, "Message packet: {0}", response);
-            Unchecked.runUnchecked(nodeClient::close);
+            Unchecked.run(nodeClient::close);
         };
         nodeClient.setHandler(handler);
         String messageDefinition = "string data";

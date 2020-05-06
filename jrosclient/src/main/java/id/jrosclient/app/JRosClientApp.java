@@ -2,16 +2,14 @@ package id.jrosclient.app;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import id.xfunction.ArgumentParsingException;
 import id.xfunction.SmartArgs;
-import id.xfunction.XUtils;
 
 public class JRosClientApp {
 
@@ -48,16 +46,17 @@ public class JRosClientApp {
     public static void main(String[] args) {
         try {
             new SmartArgs(handlers, positionalArgs::add).parse(args);
-        } catch (Exception e) {
+            if (positionalArgs.isEmpty()) throw new ArgumentParsingException();
+            var cmd = positionalArgs.removeFirst();
+            switch (cmd) {
+            case "rostopic" : new RosTopic(withArg(masterUrl), withArg(nodePort))
+                .execute(positionalArgs); 
+                break;
+            default: throw new ArgumentParsingException();
+            }
+        } catch (ArgumentParsingException e) {
             usage();
-        }
-        if (positionalArgs.isEmpty()) usage();
-        var cmd = positionalArgs.removeFirst();
-        switch (cmd) {
-        case "rostopic" : new RosTopic(withArg(masterUrl), withArg(nodePort))
-            .execute(positionalArgs); 
-        break;
-        default: XUtils.error("Command unknown");
+            System.exit(1);
         }
     }
 

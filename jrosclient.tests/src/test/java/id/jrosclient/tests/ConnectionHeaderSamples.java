@@ -31,6 +31,6 @@ public class ConnectionHeaderSamples {
             .withCallerId("jrosclient")
             .withType("std_msgs/String")
             .withMessageDefinition(MESSAGE_DATA)
-            .withMd5Sum(Unchecked.runUnchecked(() -> XUtils.md5Sum(MESSAGE_DATA))));
+            .withMd5Sum(Unchecked.get(() -> XUtils.md5Sum(MESSAGE_DATA))));
 
 }

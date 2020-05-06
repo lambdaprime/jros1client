@@ -48,7 +48,7 @@ public class NodeApiServer implements AutoCloseable {
         serverConfig.setEnabledForExtensions(true);
         serverConfig.setContentLengthOptional(false);
 
-        Unchecked.runUnchecked(s::start);
+        Unchecked.run(s::start);
     }
 
     public String getNodeApi() {

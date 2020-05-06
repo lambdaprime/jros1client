@@ -54,8 +54,8 @@ public class NodeClient implements AutoCloseable {
         if (executorService.isPresent())
             return;
         executorService = Optional.of(Executors.newSingleThreadExecutor());
-        executorService.get().execute(() -> Unchecked.runUnchecked(
-                Curry.curry(this::run, header)));
+        executorService.get().execute(() -> Unchecked.run(
+                Curry.curryAccept(this::run, header)));
     }
 
     private void run(ConnectionHeader header) throws Exception {

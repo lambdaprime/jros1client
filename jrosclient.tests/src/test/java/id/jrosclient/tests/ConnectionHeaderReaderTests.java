@@ -43,7 +43,7 @@ public class ConnectionHeaderReaderTests {
         XUtils.readResourceAsStream(resource)
             .map(l -> Arrays.asList(l.split(" ")))
             .flatMap(List::stream)
-            .map(Unchecked.wrapApply(Curry.curry2nd(Integer::parseInt, 16)))
+            .map(Unchecked.wrapApply(Curry.curryApply2nd(Integer::parseInt, 16)))
             .forEach(Unchecked.wrapAccept(dos::writeByte));
         return bos.toByteArray();
     }

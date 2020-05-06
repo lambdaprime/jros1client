@@ -30,7 +30,7 @@ public class MessagePacket {
     @Override
     public String toString() {
         var out = new OutputStreamByteList();
-        Unchecked.runUnchecked(() -> new ByteArrayInputStream(body).transferTo(out));
+        Unchecked.run(() -> new ByteArrayInputStream(body).transferTo(out));
         return String.format("{ header: %s, body: [%s]}", header, out.asHexString());
     }
 }
