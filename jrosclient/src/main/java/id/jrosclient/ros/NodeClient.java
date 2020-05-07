@@ -17,7 +17,7 @@ import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.ConnectionHeaderWriter;
 import id.jrosclient.ros.transport.MessagePacket;
 import id.jrosclient.ros.transport.MessagePacketReader;
-import id.xfunction.function.Curry;
+import id.xfunction.XUtils;
 import id.xfunction.function.Unchecked;
 
 /**
@@ -54,8 +54,15 @@ public class NodeClient implements AutoCloseable {
         if (executorService.isPresent())
             return;
         executorService = Optional.of(Executors.newSingleThreadExecutor());
-        executorService.get().execute(() -> Unchecked.run(
-                Curry.curryAccept(this::run, header)));
+        executorService.get().execute(() -> {
+            try {
+                run(header);
+            } catch (Exception e) {
+                XUtils.printExceptions(e);
+            } finally {
+                executorService.get().shutdown();
+            }
+        });
     }
 
     private void run(ConnectionHeader header) throws Exception {
