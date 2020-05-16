@@ -13,9 +13,9 @@ import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.MessagePacket;
 import id.xfunction.ArgumentParsingException;
-import id.xfunction.XLogger;
 import id.xfunction.XUtils;
 import id.xfunction.function.Unchecked;
+import id.xfunction.logging.XLogger;
 
 public class RosTopic {
 

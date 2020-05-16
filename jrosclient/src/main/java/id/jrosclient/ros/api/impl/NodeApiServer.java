@@ -8,8 +8,8 @@ import org.apache.xmlrpc.server.XmlRpcServer;
 import org.apache.xmlrpc.server.XmlRpcServerConfigImpl;
 import org.apache.xmlrpc.webserver.WebServer;
 
-import id.xfunction.XLogger;
 import id.xfunction.function.Unchecked;
+import id.xfunction.logging.XLogger;
 
 public class NodeApiServer implements AutoCloseable {
 
