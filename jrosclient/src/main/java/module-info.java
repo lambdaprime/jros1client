@@ -11,4 +11,5 @@ module jrosclient {
     exports id.jrosclient.ros.transport;
     exports id.jrosclient.ros.entities;
     exports id.jrosclient.ros.responses;
+    exports id.jrosclient.ros.messages.std_msgs.msg to id.kineticstreamer;
 }

@@ -15,10 +15,6 @@ public class RosDataInput implements KineticDataInput {
         this.in = in;
     }
 
-    public int readLen() throws IOException {
-        return Integer.reverseBytes(in.readInt());
-    }
-
     public Entry<String, String> readField(int fieldLen) throws IOException {
         byte[] buf = new byte[fieldLen];
         in.readFully(buf);
@@ -34,19 +30,19 @@ public class RosDataInput implements KineticDataInput {
 
     @Override
     public int readInt() throws IOException {
-        // TODO Auto-generated method stub
-        return 0;
+        return in.readInt();
     }
 
     @Override
     public String readString() throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+        int len = readLen();
+        byte[] b = new byte[len];
+        in.readFully(b);
+        return new String(b);
     }
 
     @Override
-    public int readeLen() throws IOException {
-        // TODO Auto-generated method stub
-        return 0;
+    public int readLen() throws IOException {
+        return Integer.reverseBytes(in.readInt());
     }
 }
