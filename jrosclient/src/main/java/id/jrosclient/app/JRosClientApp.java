@@ -31,7 +31,7 @@ public class JRosClientApp {
     }
     
     private static void usage() {
-        readResourceAsStream("usage.txt")
+        readResourceAsStream("README.md")
             .forEach(System.out::println);
         System.exit(1);
     }

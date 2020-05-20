@@ -4,6 +4,8 @@ allprojects {
     }
 }
 
-subprojects {
+ext {
     version = '1.0'
+    projectName = 'jrosclient'
+    releaseFileName = "${projectName}-${version}.zip"
 }

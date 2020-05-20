@@ -18,7 +18,14 @@ dependencies {
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
-version = "1.0"
+def releaseDir = "release/${projectName}/${projectName}"
+
+jar { 
+    manifest { 
+        attributes 'Implementation-Version': "${rootProject.version}",
+                   'Class-Path': configurations.compile.collect { it.getName() }.join(' ')
+    }
+}
 
 compileJava {
     doFirst {
@@ -29,15 +36,46 @@ compileJava {
     }
 }
 
-task createRelease(type: Copy) {
-    def out = 'release'
+task packageDistribution(type: Zip) {
+    archiveFileName = "$releaseFileName"
+    destinationDirectory = file("$projectDir/release")
+    from file("$projectDir/release/$projectName")
+}
+
+packageDistribution.doLast {
+    delete "$projectDir/release/$projectName"
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+task updateVersion(type:Copy) {
+    from "${project.rootDir}/README.md"
+    into releaseDir
+    filter(ReplaceTokens, tokens: [version: rootProject.version])
+}
+
+task copyLibs(type: Copy) {
+    from "$projectDir/libs"
     from jar.archiveFile
-    into out
+    into "${releaseDir}/libs"
+}
+
+task createRelease(type: Copy, dependsOn: copyLibs) {
+    from "${project.rootDir}/README.md"
+    from "$projectDir/src/jrosclient"
+    into releaseDir
 }
 
 task cleanRelease(type: Delete) {
     delete "$projectDir/release"
 }
 
-assemble.dependsOn createRelease
+packageDistribution.dependsOn createRelease
+assemble.dependsOn packageDistribution
 clean.dependsOn cleanRelease
+
+task copyReadme(type: Copy) {
+    from("${project.rootDir}/README.md")
+    into("$projectDir/src/main/resources")
+}
+
+compileJava.dependsOn copyReadme

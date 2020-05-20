@@ -1,0 +1,15 @@
+JROSCLIENT_PATH=$(readlink -f "$0")
+JROSCLIENT_PATH=$(dirname "$JROSCLIENT_PATH")
+
+# Java accepts classpath either from -cp or CLASSPATH but not from both
+# Because parsing JAVA_ARGS is harder than just prepend to CLASSPATH
+# this script will only work if user pass classpath through CLASSPATH
+# and not through JAVA_ARGS
+
+if [ -z "${CLASSPATH}" ]; then
+    CLASSPATH="${JROSCLIENT_PATH}/libs/*"
+else
+    CLASSPATH="${JROSCLIENT_PATH}/libs/*:${CLASSPATH}"
+fi
+
+java ${JAVA_ARGS} -Xnoclassgc -noverify -cp "${CLASSPATH}" id.jrosclient.app.JRosClientApp "$@"
