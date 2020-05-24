@@ -6,4 +6,6 @@ open module jrosclient.tests {
     requires org.junit.jupiter.params;
     
     exports id.jrosclient.tests;
+    
+    exports id.jrosmessages.tests;
 }

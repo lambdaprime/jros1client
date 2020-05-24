@@ -1,16 +1,38 @@
 package id.jrosmessages.std_msgs;
 
+import java.util.Map;
+import java.util.Objects;
+
 import id.jrosmessages.Message;
 import id.kineticstreamer.annotations.Streamed;
 
 @Message(type = "std_msgs/String")
 public class StringMessage {
+    
+    public StringMessage() {
+
+    }
+    
+    public StringMessage(String data) {
+        this.data = data;
+    }
 
     @Streamed
     public String data;
 
     @Override
     public String toString() {
-        return "data: " + data;
+        return Map.of("data", data).toString();
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(data);
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        StringMessage other = (StringMessage) obj;
+        return Objects.equals(data, other.data);
     }
 }
