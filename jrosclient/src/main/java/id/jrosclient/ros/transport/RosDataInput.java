@@ -45,4 +45,18 @@ public class RosDataInput implements KineticDataInput {
     public int readLen() throws IOException {
         return Integer.reverseBytes(in.readInt());
     }
+
+    @Override
+    public double readDouble() throws IOException {
+        return Double.longBitsToDouble(
+                Long.reverseBytes(
+                        Double.doubleToRawLongBits(in.readDouble())));
+    }
+
+    @Override
+    public float readFloat() throws IOException {
+        return Float.intBitsToFloat(
+                Integer.reverseBytes(
+                        Float.floatToRawIntBits(in.readFloat())));
+    }
 }
