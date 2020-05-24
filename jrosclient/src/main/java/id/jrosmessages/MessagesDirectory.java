@@ -1,9 +1,9 @@
-package id.jrosclient.ros.messages;
+package id.jrosmessages;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import id.jrosclient.ros.messages.std_msgs.msg.StringMessage;
+import id.jrosmessages.std_msgs.StringMessage;
 
 public class MessagesDirectory {
 

@@ -15,8 +15,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.ConnectionHeaderReader;
-import id.jrosclient.ros.transport.RosDataInput;
 import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
+import id.jrosmessages.RosDataInput;
 import id.xfunction.XUtils;
 import id.xfunction.function.Curry;
 import id.xfunction.function.Unchecked;

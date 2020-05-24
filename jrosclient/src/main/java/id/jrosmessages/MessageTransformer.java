@@ -1,4 +1,4 @@
-package id.jrosclient.ros.transport;
+package id.jrosmessages;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;

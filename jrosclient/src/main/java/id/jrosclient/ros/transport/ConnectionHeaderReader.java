@@ -3,6 +3,8 @@ package id.jrosclient.ros.transport;
 import java.io.IOException;
 import java.util.HashMap;
 
+import id.jrosmessages.RosDataInput;
+
 public class ConnectionHeaderReader {
 
     private RosDataInput in;

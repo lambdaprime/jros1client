@@ -3,6 +3,8 @@ package id.jrosclient.ros.transport;
 import java.io.DataInput;
 import java.io.IOException;
 
+import id.jrosmessages.RosDataInput;
+
 public class MessagePacketReader {
 
     private RosDataInput in;

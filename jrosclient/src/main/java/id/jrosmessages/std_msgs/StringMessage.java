@@ -1,6 +1,6 @@
-package id.jrosclient.ros.messages.std_msgs.msg;
+package id.jrosmessages.std_msgs;
 
-import id.jrosclient.ros.messages.Message;
+import id.jrosmessages.Message;
 import id.kineticstreamer.annotations.Streamed;
 
 @Message(type = "std_msgs/String")

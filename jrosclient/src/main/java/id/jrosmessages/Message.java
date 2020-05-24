@@ -1,4 +1,4 @@
-package id.jrosclient.ros.messages;
+package id.jrosmessages;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
