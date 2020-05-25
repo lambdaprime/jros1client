@@ -10,8 +10,8 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import id.jrosmessages.RosDataInput;
 import id.jrosmessages.std_msgs.StringMessage;
-import id.kineticstreamer.DefaultKineticDataInput;
 import id.kineticstreamer.DefaultKineticDataOutput;
 import id.kineticstreamer.InputStreamByteList;
 import id.kineticstreamer.KineticStreamReader;
@@ -32,7 +32,7 @@ public class MessageTests {
     @MethodSource("dataProvider")
     public void testRead(List testData) throws Exception {
         var collector = new InputStreamByteList((String)testData.get(0));
-        var dis = new DefaultKineticDataInput(new DataInputStream(collector));
+        var dis = new RosDataInput(new DataInputStream(collector));
         var ks = new KineticStreamReader(dis);
         Object expected = testData.get(1);
         Object actual = expected.getClass().getConstructor().newInstance();
