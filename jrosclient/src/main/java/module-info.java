@@ -14,4 +14,5 @@ module jrosclient {
     
     exports id.jrosmessages;
     exports id.jrosmessages.std_msgs;
+    exports id.jrosmessages.geometry_msgs;
 }

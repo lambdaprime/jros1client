@@ -3,6 +3,7 @@ package id.jrosmessages;
 import java.util.HashMap;
 import java.util.Map;
 
+import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.std_msgs.StringMessage;
 
 public class MessagesDirectory {
@@ -11,6 +12,7 @@ public class MessagesDirectory {
 
     public MessagesDirectory() {
         add(StringMessage.class);
+        add(PointMessage.class);
     }
     
     public Class<?> get(String messageType) {
