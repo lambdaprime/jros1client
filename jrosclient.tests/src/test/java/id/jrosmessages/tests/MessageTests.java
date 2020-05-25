@@ -11,8 +11,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import id.jrosmessages.RosDataInput;
+import id.jrosmessages.RosDataOutput;
 import id.jrosmessages.std_msgs.StringMessage;
-import id.kineticstreamer.DefaultKineticDataOutput;
 import id.kineticstreamer.InputStreamByteList;
 import id.kineticstreamer.KineticStreamReader;
 import id.kineticstreamer.KineticStreamWriter;
@@ -46,7 +46,7 @@ public class MessageTests {
     public void testWrite(List testData) {
         var b = testData.get(1);
         OutputStreamByteList collector = new OutputStreamByteList();
-        var dos = new DefaultKineticDataOutput(new DataOutputStream(collector));
+        var dos = new RosDataOutput(new DataOutputStream(collector));
         var ks = new KineticStreamWriter(dos);
         ks.write(b);
         assertEquals(testData.get(0), collector.asHexString());
