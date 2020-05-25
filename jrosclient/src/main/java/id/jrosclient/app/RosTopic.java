@@ -50,7 +50,7 @@ public class RosTopic {
         JRosClient client = new JRosClient(masterUrl, nodePort);
         var topic = rest.removeFirst();
         var topicType = rest.removeFirst();
-        Class<?> clazz = messagesDirectory.get().get(topicType);
+        Class<?> clazz = messagesDirectory.get(topicType);
         if (clazz == null)
             XUtils.throwRuntime("Type %s is not found", topicType);
         var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, topic, topicType);
@@ -75,7 +75,7 @@ public class RosTopic {
                 .withCallerId(CALLER_ID)
                 .withType(topicType)
                 .withMessageDefinition(messageDefinition )
-                .withMd5Sum(XUtils.md5Sum(messageDefinition));
+                .withMd5Sum(messagesDirectory.getMd5(clazz));
         nodeClient.start(ch);
         client.close();
     }

@@ -6,7 +6,9 @@ import java.util.Objects;
 import id.jrosmessages.Message;
 import id.kineticstreamer.annotations.Streamed;
 
-@Message(type = "std_msgs/String")
+@Message(
+    type = "std_msgs/String",
+    md5sum = "992ce8a1687cec8c8bd883ec73ca41d1")
 public class StringMessage {
     
     public StringMessage() {

@@ -13,11 +13,15 @@ public class MessagesDirectory {
         add(StringMessage.class);
     }
     
-    public Map<String, Class<?>> get() {
-        return messages;
+    public Class<?> get(String messageType) {
+        return messages.get(messageType);
     }
-
-    public void add(Class<?> clazz) {
-        messages.put(clazz.getAnnotation(Message.class).type(), clazz);
+    
+    public String getMd5(Class<?> messageClass) {
+        return messageClass.getAnnotation(Message.class).md5sum();
+    }
+    
+    public void add(Class<?> messageClass) {
+        messages.put(messageClass.getAnnotation(Message.class).type(), messageClass);
     }
 }
