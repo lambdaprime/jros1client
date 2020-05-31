@@ -1,4 +1,4 @@
-**jrosclient** - Java module which allows to access some of the ROS (Robotic Operation System) functionality. This module is focused on ROS for Java and not ROS for Android. That is why it is based on Java 11 API. Its ultimate goal is to implement ROS client libraries requirements: http://wiki.ros.org/Implementing%20Client%20Libraries
+**jrosclient** - Java module which allows to access some of the ROS (Robotic Operation System) functionality. This module is focused on ROS for Java and not ROS for Android. That is why it is based on Java 11 API (which is not available in Android). Its ultimate goal is to implement ROS client libraries requirements: http://wiki.ros.org/Implementing%20Client%20Libraries
 
 This module still under development so any help is welcome.
 
@@ -18,18 +18,22 @@ You can download **jrosclient** from <https://github.com/lambdaprime/jrosclient/
 # Usage
 
 ```bash
-jrosclient <masterUrl> <nodePort> <command> [args ...]
+jrosclient <--masterUrl MASTER_URL> <--nodePort NODE_PORT> <COMMAND> [args ...]
 ```
 
 Where:
 
-masterUrl -- ROS master node URL
-nodePort -- client node port to use
-command -- one of the client commands
+MASTER\_URL -- ROS master node URL
+NODE\_PORT -- client node port to use
+COMMAND -- one of the client commands
 
 Available commands:
 
 rostopic echo <topicName> <topicType> -- display messages published to a topic
 
-
 # Examples
+
+```bash
+% jrosclient --masterUrl "http://ubuntu:11311/" --nodePort 1234 rostopic echo testTopic geometry_msgs/Point
+{z=1.0, y=1.0, x=1.0}
+```
