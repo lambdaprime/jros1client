@@ -18,7 +18,7 @@ You can download **jrosclient** from <https://github.com/lambdaprime/jrosclient/
 # Usage
 
 ```bash
-jrosclient <--masterUrl MASTER_URL> <--nodePort NODE_PORT> <COMMAND> [args ...]
+jrosclient <--masterUrl MASTER_URL> <--nodePort NODE_PORT> [--debug] <COMMAND> [args ...]
 ```
 
 Where:
@@ -26,6 +26,10 @@ Where:
 MASTER\_URL -- ROS master node URL
 NODE\_PORT -- client node port to use
 COMMAND -- one of the client commands
+
+Options:
+
+--debug - turns on debug mode
 
 Available commands:
 

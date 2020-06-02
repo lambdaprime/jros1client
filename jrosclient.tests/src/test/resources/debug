@@ -1,0 +1,7 @@
+* id.jrosclient.app.RosTopic echo
+FINE: Publishers: {"statusCode": "SUCCESS", "statusMessage": "Subscribed to [/testTopic]", "publishers": ["http://*:*/"]}
+* id.jrosclient.app.RosTopic echo
+FINE: Protocol configuration: {"name": "TCPROS", "host": "*", "port": *}
+* id.jrosclient.app.RosTopic lambda$echo$2
+FINE: Message packet: { header: { "callerid": "/rostopic_*", "topic": "/testTopic", "type": "std_msgs/String", "message_definition": "string data", "md5sum": "992ce8a1687cec8c8bd883ec73ca41d1" }, body: [0b, 00, 00, 00, 68, 65, 6c, 6c, 6f, 20, 74, 68, 65, 72, 65]}
+*

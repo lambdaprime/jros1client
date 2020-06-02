@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import id.xfunction.ArgumentParsingException;
 import id.xfunction.SmartArgs;
+import id.xfunction.logging.XLogger;
 
 public class JRosClientApp {
 
@@ -46,18 +47,31 @@ public class JRosClientApp {
     public static void main(String[] args) {
         try {
             new SmartArgs(handlers, positionalArgs::add).parse(args);
-            if (positionalArgs.isEmpty()) throw new ArgumentParsingException();
-            var cmd = positionalArgs.removeFirst();
-            switch (cmd) {
-            case "rostopic" : new RosTopic(withArg(masterUrl), withArg(nodePort))
-                .execute(positionalArgs); 
-                break;
-            default: throw new ArgumentParsingException();
-            }
+            run();
         } catch (ArgumentParsingException e) {
             usage();
             System.exit(1);
         }
+    }
+
+    private static void run() {
+        if (positionalArgs.isEmpty()) throw new ArgumentParsingException();
+        var cmd = positionalArgs.removeFirst();
+        switch (cmd) {
+        case "rostopic" : new RosTopic(withArg(masterUrl), withArg(nodePort))
+            .execute(positionalArgs); 
+            break;
+        case "--debug" : {
+            enableDebug();
+            run();
+            break;
+        }
+        default: throw new ArgumentParsingException();
+        }        
+    }
+
+    private static void enableDebug() {
+        XLogger.load("logging-debug.properties");
     }
 
 }

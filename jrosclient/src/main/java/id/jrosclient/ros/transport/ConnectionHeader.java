@@ -1,7 +1,8 @@
 package id.jrosclient.ros.transport;
 
-import java.util.Map;
 import java.util.Optional;
+
+import id.xfunction.XJson;
 
 public class ConnectionHeader {
 
@@ -54,12 +55,12 @@ public class ConnectionHeader {
 
     @Override
     public String toString() {
-        return Map.of(
+        return XJson.asString(
             CALLER_ID, callerId.orElse("empty"),
             TOPIC, topic.orElse("empty"),
             TYPE, type.orElse("empty"),
             MESSAGE_DEFINITION, messageDefinition.orElse("empty"),
-            MD5_SUM, md5sum.orElse("empty")).toString();
+            MD5_SUM, md5sum.orElse("empty"));
     }
 
     @Override
