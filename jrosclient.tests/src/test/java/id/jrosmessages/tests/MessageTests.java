@@ -14,6 +14,7 @@ import id.jrosmessages.RosDataInput;
 import id.jrosmessages.RosDataOutput;
 import id.jrosmessages.std_msgs.StringMessage;
 import id.jrosmessages.geometry_msgs.PointMessage;
+import id.jrosmessages.geometry_msgs.Quaternion;
 import id.kineticstreamer.InputStreamByteList;
 import id.kineticstreamer.KineticStreamReader;
 import id.kineticstreamer.KineticStreamWriter;
@@ -27,7 +28,9 @@ public class MessageTests {
             List.of(XUtils.readResource(MessageTests.class, "string"),
                     new StringMessage("hello there")),
             List.of(XUtils.readResource(MessageTests.class, "point"),
-                    new PointMessage(1.0, 1.0, 1.0))
+                    new PointMessage(1.0, 1.0, 1.0)),
+            List.of(XUtils.readResource(MessageTests.class, "quaternion"),
+                    new Quaternion(1.0, 1.0, 1.0, 3.0))
         );
     }
 

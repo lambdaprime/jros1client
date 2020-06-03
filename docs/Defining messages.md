@@ -1,6 +1,14 @@
 ROS keeps message definitions under /opt/ros/melodic/share
 Let's see how to add Marker.msg to JRosClient
 
+float64 - double
+
+# Find message definition md5sum
+```bash
+% rosmsg md5 geometry_msgs/Quaternion
+```
+
+
 geometry_msgs/Pose pose                 # Pose of the object
 Point position
 float64 x
