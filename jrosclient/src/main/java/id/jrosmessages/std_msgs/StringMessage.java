@@ -1,10 +1,10 @@
 package id.jrosmessages.std_msgs;
 
-import java.util.Map;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
 import id.kineticstreamer.annotations.Streamed;
+import id.xfunction.XJson;
 
 @Message(
     type = "std_msgs/String",
@@ -24,7 +24,7 @@ public class StringMessage {
 
     @Override
     public String toString() {
-        return Map.of("data", data).toString();
+        return XJson.asString("data", data).toString();
     }
     
     @Override

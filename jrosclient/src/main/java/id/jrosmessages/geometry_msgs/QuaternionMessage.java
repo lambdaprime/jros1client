@@ -1,23 +1,23 @@
 package id.jrosmessages.geometry_msgs;
 
-import java.util.Map;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
 import id.kineticstreamer.annotations.Streamed;
+import id.xfunction.XJson;
 
 @Message(
-    type = Quaternion.NAME,
+    type = QuaternionMessage.NAME,
     md5sum = "a779879fadf0160734f906b8c19c7004")
-public class Quaternion {
+public class QuaternionMessage {
 
     static final String NAME = "geometry_msgs/Quaternion";
 
-    public Quaternion() {
+    public QuaternionMessage() {
 
     }
 
-    public Quaternion(double x, double y, double z, double w) {
+    public QuaternionMessage(double x, double y, double z, double w) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -29,7 +29,7 @@ public class Quaternion {
 
     @Override
     public String toString() {
-        return Map.of("x", x,
+        return XJson.asString("x", x,
                 "y", y,
                 "z", z,
                 "w", w).toString();
@@ -42,7 +42,7 @@ public class Quaternion {
 
     @Override
     public boolean equals(Object obj) {
-        Quaternion other = (Quaternion) obj;
+        QuaternionMessage other = (QuaternionMessage) obj;
         return Objects.equals(x, other.x)
                 && Objects.equals(y, other.y)
                 && Objects.equals(z, other.z)

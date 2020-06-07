@@ -1,10 +1,10 @@
 package id.jrosmessages.geometry_msgs;
 
-import java.util.Map;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
 import id.kineticstreamer.annotations.Streamed;
+import id.xfunction.XJson;
 
 @Message(
     type = PointMessage.NAME,
@@ -28,7 +28,7 @@ public class PointMessage {
 
     @Override
     public String toString() {
-        return Map.of("x", x,
+        return XJson.asString("x", x,
                 "y", y,
                 "z", z).toString();
     }

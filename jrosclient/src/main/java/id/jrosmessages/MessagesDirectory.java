@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import id.jrosmessages.geometry_msgs.PointMessage;
-import id.jrosmessages.geometry_msgs.Quaternion;
+import id.jrosmessages.geometry_msgs.PoseMessage;
+import id.jrosmessages.geometry_msgs.QuaternionMessage;
 import id.jrosmessages.std_msgs.StringMessage;
 
 public class MessagesDirectory {
@@ -14,7 +15,8 @@ public class MessagesDirectory {
     public MessagesDirectory() {
         add(StringMessage.class);
         add(PointMessage.class);
-        add(Quaternion.class);
+        add(QuaternionMessage.class);
+        add(PoseMessage.class);
     }
     
     public Class<?> get(String messageType) {
