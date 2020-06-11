@@ -1,4 +1,4 @@
-**jrosclient** - Java module which allows to access some of the ROS (Robotic Operation System) functionality. This module is focused on ROS for Java and not ROS for Android. That is why it is based on Java 11 API (which is not available in Android). Its ultimate goal is to implement ROS client libraries requirements: http://wiki.ros.org/Implementing%20Client%20Libraries
+**jrosclient** - Java module which allows to interact with ROS (Robotic Operation System). This module is focused on ROS for Java and not ROS for Android. That is why it is based on Java 11 API (which is not available in Android). Its ultimate goal is to implement ROS client libraries requirements: http://wiki.ros.org/Implementing%20Client%20Libraries
 
 This module still under development so any help is welcome.
 
