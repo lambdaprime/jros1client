@@ -18,6 +18,7 @@ import id.jrosmessages.std_msgs.StringMessage;
 import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
+import id.jrosmessages.geometry_msgs.Vector3Message;
 import id.jrosmessages.primitives.Time;
 import id.kineticstreamer.InputStreamByteList;
 import id.kineticstreamer.KineticStreamReader;
@@ -40,7 +41,9 @@ public class MessageTests {
             List.of(XUtils.readResource(MessageTests.class, "header"),
                     new HeaderMessage(123, new Time(0, 1111), "aaaa")),
             List.of(XUtils.readResource(MessageTests.class, "colorrgba"),
-                    new ColorRGBAMessage(.12F, .13F, .14F, .15F))
+                    new ColorRGBAMessage(.12F, .13F, .14F, .15F)),
+            List.of(XUtils.readResource(MessageTests.class, "vector3"),
+                    new Vector3Message(.12, .13, .14))
         );
     }
 
