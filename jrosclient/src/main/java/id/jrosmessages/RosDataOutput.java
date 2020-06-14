@@ -38,7 +38,7 @@ public class RosDataOutput implements KineticDataOutput {
 
     @Override
     public void writeFloat(Float f) throws IOException {
-        out.writeDouble(Float.intBitsToFloat(
+        out.writeFloat(Float.intBitsToFloat(
                 Integer.reverseBytes(
                         Float.floatToRawIntBits(f))));
     }

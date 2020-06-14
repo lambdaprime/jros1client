@@ -6,6 +6,7 @@ import java.util.Map;
 import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
+import id.jrosmessages.std_msgs.ColorRGBAMessage;
 import id.jrosmessages.std_msgs.HeaderMessage;
 import id.jrosmessages.std_msgs.StringMessage;
 
@@ -19,6 +20,7 @@ public class MessagesDirectory {
         add(QuaternionMessage.class);
         add(PoseMessage.class);
         add(HeaderMessage.class);
+        add(ColorRGBAMessage.class);
     }
     
     public Class<?> get(String messageType) {
