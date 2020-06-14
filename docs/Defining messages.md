@@ -2,6 +2,8 @@ ROS keeps message definitions under /opt/ros/melodic/share
 Let's see how to add Marker.msg to JRosClient
 
 float64 - double
+uint32 - int
+time - Time
 
 # Find message definition md5sum
 ```bash

@@ -11,6 +11,9 @@ import id.xfunction.XJson;
     md5sum = "992ce8a1687cec8c8bd883ec73ca41d1")
 public class StringMessage {
     
+    @Streamed
+    public String data;
+
     public StringMessage() {
 
     }
@@ -18,9 +21,6 @@ public class StringMessage {
     public StringMessage(String data) {
         this.data = data;
     }
-
-    @Streamed
-    public String data;
 
     @Override
     public String toString() {

@@ -30,7 +30,7 @@ public class RosDataInput implements KineticDataInput {
 
     @Override
     public int readInt() throws IOException {
-        return in.readInt();
+        return Integer.reverseBytes(in.readInt());
     }
 
     @Override

@@ -12,10 +12,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import id.jrosmessages.RosDataInput;
 import id.jrosmessages.RosDataOutput;
+import id.jrosmessages.std_msgs.HeaderMessage;
 import id.jrosmessages.std_msgs.StringMessage;
 import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
+import id.jrosmessages.primitives.Time;
 import id.kineticstreamer.InputStreamByteList;
 import id.kineticstreamer.KineticStreamReader;
 import id.kineticstreamer.KineticStreamWriter;
@@ -33,7 +35,9 @@ public class MessageTests {
             List.of(XUtils.readResource(MessageTests.class, "quaternion"),
                     new QuaternionMessage(1.0, 1.0, 1.0, 3.0)),
             List.of(XUtils.readResource(MessageTests.class, "pose"),
-                    new PoseMessage(new PointMessage(1.0, 1.0, 1.0), new QuaternionMessage(1.0, 1.0, 1.0, 3.0)))
+                    new PoseMessage(new PointMessage(1.0, 1.0, 1.0), new QuaternionMessage(1.0, 1.0, 1.0, 3.0))),
+            List.of(XUtils.readResource(MessageTests.class, "header"),
+                    new HeaderMessage(123, new Time(0, 1111), "aaaa"))
         );
     }
 

@@ -26,7 +26,7 @@ public class RosDataOutput implements KineticDataOutput {
 
     @Override
     public void writeInt(Integer i) throws IOException {
-        out.writeInt(i);
+        out.writeInt(Integer.reverseBytes(i));
     }
 
     @Override

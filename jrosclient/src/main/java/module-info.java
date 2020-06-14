@@ -13,6 +13,7 @@ module jrosclient {
     exports id.jrosclient.ros.responses;
     
     exports id.jrosmessages;
+    exports id.jrosmessages.primitives;
     exports id.jrosmessages.std_msgs;
     exports id.jrosmessages.geometry_msgs;
 }
