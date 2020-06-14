@@ -13,6 +13,9 @@ public class PointMessage {
 
     static final String NAME = "geometry_msgs/Point";
 
+    @Streamed
+    public double x, y, z;
+
     public PointMessage() {
 
     }
@@ -22,9 +25,6 @@ public class PointMessage {
         this.y = y;
         this.z = z;
     }
-
-    @Streamed
-    public double x, y, z;
 
     @Override
     public String toString() {

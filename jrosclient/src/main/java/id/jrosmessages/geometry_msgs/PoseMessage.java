@@ -12,6 +12,12 @@ import id.xfunction.XJson;
 public class PoseMessage {
 
     static final String NAME = "geometry_msgs/Pose";
+    
+    @Streamed
+    public PointMessage position;
+    
+    @Streamed
+    public QuaternionMessage orientation;
 
     public PoseMessage() {
         
@@ -21,12 +27,6 @@ public class PoseMessage {
         this.position = position;
         this.orientation = orientation;
     }
-
-    @Streamed
-    public PointMessage position;
-    
-    @Streamed
-    public QuaternionMessage orientation;
 
     @Override
     public String toString() {

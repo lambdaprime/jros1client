@@ -12,6 +12,9 @@ import id.xfunction.XJson;
 public class ColorRGBAMessage {
 
     static final String NAME = "std_msgs/ColorRGBA";
+    
+    @Streamed
+    public float r, g, b, a;
 
     public ColorRGBAMessage() {
 
@@ -23,9 +26,6 @@ public class ColorRGBAMessage {
         this.b = b;
         this.a = a;
     }
-
-    @Streamed
-    public float r, g, b, a;
 
     @Override
     public String toString() {

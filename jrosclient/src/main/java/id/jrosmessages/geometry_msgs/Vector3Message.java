@@ -12,6 +12,9 @@ import id.xfunction.XJson;
 public class Vector3Message {
 
     static final String NAME = "geometry_msgs/Vector3";
+    
+    @Streamed
+    public double x, y, z;
 
     public Vector3Message() {
 
@@ -22,9 +25,6 @@ public class Vector3Message {
         this.y = y;
         this.z = z;
     }
-
-    @Streamed
-    public double x, y, z;
 
     @Override
     public String toString() {

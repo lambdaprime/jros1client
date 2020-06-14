@@ -12,6 +12,15 @@ import id.xfunction.XJson;
     md5sum = "2176decaecbce78abc3b96ef049fabed")
 public class HeaderMessage {
     
+    @Streamed
+    public int seq;
+    
+    @Streamed
+    public Time stamp;
+    
+    @Streamed
+    public String frame_id;
+    
     public HeaderMessage() {
 
     }
@@ -21,15 +30,6 @@ public class HeaderMessage {
         this.stamp = stamp;
         this.frame_id = frame_id;
     }
-
-    @Streamed
-    public int seq;
-
-    @Streamed
-    public Time stamp;
-    
-    @Streamed
-    public String frame_id;
 
     @Override
     public String toString() {

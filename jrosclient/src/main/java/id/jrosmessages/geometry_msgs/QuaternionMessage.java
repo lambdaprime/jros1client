@@ -12,6 +12,9 @@ import id.xfunction.XJson;
 public class QuaternionMessage {
 
     static final String NAME = "geometry_msgs/Quaternion";
+    
+    @Streamed
+    public double x, y, z, w;
 
     public QuaternionMessage() {
 
@@ -23,9 +26,6 @@ public class QuaternionMessage {
         this.z = z;
         this.w = w;
     }
-
-    @Streamed
-    public double x, y, z, w;
 
     @Override
     public String toString() {
