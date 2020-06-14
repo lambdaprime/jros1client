@@ -3,33 +3,33 @@ package id.jrosmessages.primitives;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
-public class Time {
+public class Duration {
 
     /**
-     * Seconds (stamp_secs) since epoch (unsigned)
+     * Seconds (stamp_secs) since epoch
      */
     @Streamed
     public int sec;
     
     /**
-     * Nanoseconds since this.sec (unsigned)
+     * Nanoseconds since this.sec
      */
     @Streamed
     public int nsec;
 
-    public Time() {
+    public Duration() {
 
     }
     
-    public Time(int sec, int nsec) {
+    public Duration(int sec, int nsec) {
         this.sec = sec;
         this.nsec = nsec;
     }
 
     @Override
     public String toString() {
-        return XJson.asString("sec", Integer.toUnsignedString(sec),
-                "nsec", Integer.toUnsignedString(nsec)).toString();
+        return XJson.asString("sec", sec,
+                "nsec", nsec).toString();
     }
     
     @Override
@@ -39,7 +39,7 @@ public class Time {
     
     @Override
     public boolean equals(Object obj) {
-        Time other = (Time) obj;
+        Duration other = (Duration) obj;
         return sec == other.sec
                 && nsec == other.nsec;
     }
