@@ -43,4 +43,9 @@ public class RosDataOutput implements KineticDataOutput {
                         Float.floatToRawIntBits(f))));
     }
 
+    @Override
+    public void writeBoolean(Boolean b) throws IOException {
+        out.writeBoolean(b);
+    }
+
 }

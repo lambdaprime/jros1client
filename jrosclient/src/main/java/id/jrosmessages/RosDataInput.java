@@ -59,4 +59,9 @@ public class RosDataInput implements KineticDataInput {
                 Integer.reverseBytes(
                         Float.floatToRawIntBits(in.readFloat())));
     }
+
+    @Override
+    public boolean readBool() throws IOException {
+        return in.readBoolean();
+    }
 }
