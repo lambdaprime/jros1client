@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import id.kineticstreamer.KineticDataInput;
+import id.kineticstreamer.InputKineticStream;
 
-public class RosDataInput implements KineticDataInput {
+public class RosDataInput implements InputKineticStream {
 
     private DataInput in;
 
@@ -41,7 +41,6 @@ public class RosDataInput implements KineticDataInput {
         return new String(b);
     }
 
-    @Override
     public int readLen() throws IOException {
         return Integer.reverseBytes(in.readInt());
     }
@@ -63,5 +62,11 @@ public class RosDataInput implements KineticDataInput {
     @Override
     public boolean readBool() throws IOException {
         return in.readBoolean();
+    }
+
+    @Override
+    public Object[] readArray(Class<?> arg0) throws IOException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

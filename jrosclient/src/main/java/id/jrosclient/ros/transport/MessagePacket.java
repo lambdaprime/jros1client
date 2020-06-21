@@ -2,8 +2,8 @@ package id.jrosclient.ros.transport;
 
 import java.io.ByteArrayInputStream;
 
-import id.kineticstreamer.OutputStreamByteList;
 import id.xfunction.function.Unchecked;
+import id.xfunction.io.XOutputStream;
 
 public class MessagePacket {
 
@@ -29,7 +29,7 @@ public class MessagePacket {
     
     @Override
     public String toString() {
-        var out = new OutputStreamByteList();
+        var out = new XOutputStream();
         Unchecked.run(() -> new ByteArrayInputStream(body).transferTo(out));
         return String.format("{ header: %s, body: [%s]}", header, out.asHexString());
     }

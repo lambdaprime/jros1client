@@ -3,9 +3,9 @@ package id.jrosmessages;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import id.kineticstreamer.KineticDataOutput;
+import id.kineticstreamer.OutputKineticStream;
 
-public class RosDataOutput implements KineticDataOutput {
+public class RosDataOutput implements OutputKineticStream {
 
     private DataOutput out;
 
@@ -13,8 +13,7 @@ public class RosDataOutput implements KineticDataOutput {
         this.out = out;
     }
 
-    @Override
-    public void writeLen(int len) throws IOException {
+    private void writeLen(int len) throws IOException {
         out.writeInt(Integer.reverseBytes(len));
     }
 
@@ -46,6 +45,11 @@ public class RosDataOutput implements KineticDataOutput {
     @Override
     public void writeBoolean(Boolean b) throws IOException {
         out.writeBoolean(b);
+    }
+
+    @Override
+    public void writeArray(Object[] arg0) throws Exception {
+        // TODO Auto-generated method stub
     }
 
 }

@@ -20,11 +20,11 @@ import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
 import id.jrosmessages.geometry_msgs.Vector3Message;
 import id.jrosmessages.primitives.Time;
-import id.kineticstreamer.InputStreamByteList;
 import id.kineticstreamer.KineticStreamReader;
 import id.kineticstreamer.KineticStreamWriter;
-import id.kineticstreamer.OutputStreamByteList;
 import id.xfunction.XUtils;
+import id.xfunction.io.XInputStream;
+import id.xfunction.io.XOutputStream;
 
 public class MessageTests {
     
@@ -50,21 +50,20 @@ public class MessageTests {
     @ParameterizedTest
     @MethodSource("dataProvider")
     public void testRead(List testData) throws Exception {
-        var collector = new InputStreamByteList((String)testData.get(0));
+        var collector = new XInputStream((String)testData.get(0));
         var dis = new RosDataInput(new DataInputStream(collector));
         var ks = new KineticStreamReader(dis);
         Object expected = testData.get(1);
-        Object actual = expected.getClass().getConstructor().newInstance();
-        ks.read(actual);
+        Object actual = ks.read(expected.getClass());
         System.out.println(actual);
         assertEquals(expected, actual);
     }
 
     @ParameterizedTest
     @MethodSource("dataProvider")
-    public void testWrite(List testData) {
+    public void testWrite(List testData) throws Exception {
         var b = testData.get(1);
-        OutputStreamByteList collector = new OutputStreamByteList();
+        var collector = new XOutputStream();
         var dos = new RosDataOutput(new DataOutputStream(collector));
         var ks = new KineticStreamWriter(dos);
         ks.write(b);

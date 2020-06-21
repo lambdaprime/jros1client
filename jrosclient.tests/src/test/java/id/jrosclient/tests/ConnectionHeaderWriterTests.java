@@ -13,8 +13,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import id.jrosclient.ros.transport.ConnectionHeaderWriter;
 import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
-import id.kineticstreamer.OutputStreamByteList;
 import id.xfunction.XUtils;
+import id.xfunction.io.XOutputStream;
 
 public class ConnectionHeaderWriterTests {
 
@@ -25,7 +25,7 @@ public class ConnectionHeaderWriterTests {
     @ParameterizedTest
     @MethodSource("headerSamples")
     public void test_happy(ConnectionHeaderSample sample) throws Exception {
-        OutputStreamByteList collector = new OutputStreamByteList();
+        var collector = new XOutputStream();
         var dos = new DataOutputStream(collector);
         new ConnectionHeaderWriter(dos).write(sample.getHeader());
         var expected = XUtils.readResourceAsStream(sample.getResource())
