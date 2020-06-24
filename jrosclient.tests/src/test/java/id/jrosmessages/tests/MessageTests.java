@@ -15,10 +15,12 @@ import id.jrosmessages.RosDataOutput;
 import id.jrosmessages.std_msgs.ColorRGBAMessage;
 import id.jrosmessages.std_msgs.HeaderMessage;
 import id.jrosmessages.std_msgs.StringMessage;
+import id.jrosmessages.visualization_msgs.MarkerMessage;
 import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
 import id.jrosmessages.geometry_msgs.Vector3Message;
+import id.jrosmessages.primitives.Duration;
 import id.jrosmessages.primitives.Time;
 import id.kineticstreamer.KineticStreamReader;
 import id.kineticstreamer.KineticStreamWriter;
@@ -66,7 +68,39 @@ public class MessageTests {
             List.of(XUtils.readResource(MessageTests.class, "vector3-empty"),
                     new Vector3Message()),
             List.of(XUtils.readResource(MessageTests.class, "vector3"),
-                    new Vector3Message().withX(.12).withY(.13).withZ(.14))
+                    new Vector3Message().withX(.12).withY(.13).withZ(.14)),
+
+            List.of(XUtils.readResource(MessageTests.class, "marker-empty"),
+                    new MarkerMessage()),
+            List.of(XUtils.readResource(MessageTests.class, "marker"),
+                    new MarkerMessage()
+                        .withHeader(new HeaderMessage()
+                                .withSeq(0)
+                                .withFrameId("/map"))
+                        .withNs(new StringMessage().withData("test"))
+                        .withType(MarkerMessage.Type.CUBE)
+                        .withAction(MarkerMessage.Action.ADD)
+                        .withPose(new PoseMessage()
+                                .withPosition(new PointMessage()
+                                        .withX(1.0)
+                                        .withY(1.0)
+                                        .withZ(1.0))
+                                .withQuaternion(new QuaternionMessage()
+                                        .withX(1.0)
+                                        .withY(1.0)
+                                        .withZ(1.0)
+                                        .withW(3.0)))
+                        .withScale(new Vector3Message()
+                                .withX(1.0)
+                                .withY(0.1)
+                                .withZ(0.1))
+                        .withColor(new ColorRGBAMessage()
+                                .withR(1.0F)
+                                .withG(0.13F)
+                                .withB(0.14F)
+                                .withA(1.0F))
+                        .withLifetime(new Duration())
+                        .withFrameLocked(false))
         );
     }
 

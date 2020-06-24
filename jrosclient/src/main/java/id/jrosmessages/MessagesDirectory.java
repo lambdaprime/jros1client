@@ -10,6 +10,7 @@ import id.jrosmessages.geometry_msgs.Vector3Message;
 import id.jrosmessages.std_msgs.ColorRGBAMessage;
 import id.jrosmessages.std_msgs.HeaderMessage;
 import id.jrosmessages.std_msgs.StringMessage;
+import id.jrosmessages.visualization_msgs.MarkerMessage;
 
 public class MessagesDirectory {
 
@@ -23,6 +24,7 @@ public class MessagesDirectory {
         add(HeaderMessage.class);
         add(ColorRGBAMessage.class);
         add(Vector3Message.class);
+        add(MarkerMessage.class);
     }
     
     public Class<?> get(String messageType) {

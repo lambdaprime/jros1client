@@ -3,6 +3,7 @@ package id.jrosmessages;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import id.kineticstreamer.KineticStreamWriter;
 import id.kineticstreamer.OutputKineticStream;
 
 public class RosDataOutput implements OutputKineticStream {
@@ -48,8 +49,11 @@ public class RosDataOutput implements OutputKineticStream {
     }
 
     @Override
-    public void writeArray(Object[] arg0) throws Exception {
-        // TODO Auto-generated method stub
+    public void writeArray(Object[] array) throws Exception {
+        writeLen(array.length);
+        for (var item: array) {
+            new KineticStreamWriter(this).write(item);
+        }
     }
 
 }

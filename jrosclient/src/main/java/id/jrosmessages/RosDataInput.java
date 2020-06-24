@@ -2,10 +2,12 @@ package id.jrosmessages;
 
 import java.io.DataInput;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import id.kineticstreamer.InputKineticStream;
+import id.kineticstreamer.KineticStreamReader;
 
 public class RosDataInput implements InputKineticStream {
 
@@ -65,8 +67,11 @@ public class RosDataInput implements InputKineticStream {
     }
 
     @Override
-    public Object[] readArray(Class<?> arg0) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+    public Object[] readArray(Class<?> type) throws Exception {
+        var array = (Object[])Array.newInstance(type, readLen());
+        for (int i = 0; i < array.length; i++) {
+            array[i] = new KineticStreamReader(this).read(type);
+        }
+        return array;
     }
 }
