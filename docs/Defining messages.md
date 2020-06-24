@@ -1,3 +1,5 @@
+Need to use default ctor and initialize all fields to default non null values otherwise the kineticstreamer will ignore them when writing to byte stream. Due to default ctor that way we can avoid all other ctors and allow user to overwrite only those values default values which needed through the setter methods
+
 ROS keeps message definitions under /opt/ros/melodic/share
 Let's see how to add Marker.msg to JRosClient
 

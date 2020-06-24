@@ -16,17 +16,26 @@ public class QuaternionMessage {
     @Streamed
     public double x, y, z, w;
 
-    public QuaternionMessage() {
-
-    }
-
-    public QuaternionMessage(double x, double y, double z, double w) {
+    public QuaternionMessage withX(double x) {
         this.x = x;
-        this.y = y;
-        this.z = z;
-        this.w = w;
+        return this;
     }
 
+    public QuaternionMessage withY(double y) {
+        this.y = y;
+        return this;
+    }
+
+    public QuaternionMessage withZ(double z) {
+        this.z = z;
+        return this;
+    }
+
+    public QuaternionMessage withW(double w) {
+        this.w = w;
+        return this;
+    }
+    
     @Override
     public String toString() {
         return XJson.asString("x", x,

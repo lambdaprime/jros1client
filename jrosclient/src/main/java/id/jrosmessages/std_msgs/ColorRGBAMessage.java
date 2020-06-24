@@ -16,15 +16,24 @@ public class ColorRGBAMessage {
     @Streamed
     public float r, g, b, a;
 
-    public ColorRGBAMessage() {
-
+    public ColorRGBAMessage withR(float r) {
+        this.r = r;
+        return this;
     }
 
-    public ColorRGBAMessage(float r, float g, float b, float a) {
-        this.r = r;
+    public ColorRGBAMessage withG(float g) {
         this.g = g;
+        return this;
+    }
+    
+    public ColorRGBAMessage withB(float b) {
         this.b = b;
+        return this;
+    }
+    
+    public ColorRGBAMessage withA(float a) {
         this.a = a;
+        return this;
     }
 
     @Override

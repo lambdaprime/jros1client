@@ -12,16 +12,13 @@ import id.xfunction.XJson;
 public class StringMessage {
     
     @Streamed
-    public String data;
+    public String data = "";
 
-    public StringMessage() {
-
+    public StringMessage withData(String data) {
+        this.data = data;
+        return this;
     }
     
-    public StringMessage(String data) {
-        this.data = data;
-    }
-
     @Override
     public String toString() {
         return XJson.asString("data", data).toString();

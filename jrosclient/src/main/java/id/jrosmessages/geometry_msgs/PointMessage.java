@@ -16,14 +16,19 @@ public class PointMessage {
     @Streamed
     public double x, y, z;
 
-    public PointMessage() {
-
+    public PointMessage withX(double x) {
+        this.x = x;
+        return this;
     }
 
-    public PointMessage(double x, double y, double z) {
-        this.x = x;
+    public PointMessage withY(double y) {
         this.y = y;
+        return this;
+    }
+
+    public PointMessage withZ(double z) {
         this.z = z;
+        return this;
     }
 
     @Override

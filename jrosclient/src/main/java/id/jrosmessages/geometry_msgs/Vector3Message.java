@@ -16,14 +16,19 @@ public class Vector3Message {
     @Streamed
     public double x, y, z;
 
-    public Vector3Message() {
-
+    public Vector3Message withX(double x) {
+        this.x = x;
+        return this;
     }
 
-    public Vector3Message(double x, double y, double z) {
-        this.x = x;
+    public Vector3Message withY(double y) {
         this.y = y;
+        return this;
+    }
+
+    public Vector3Message withZ(double z) {
         this.z = z;
+        return this;
     }
 
     @Override

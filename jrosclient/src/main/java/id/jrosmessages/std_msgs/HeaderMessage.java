@@ -16,19 +16,24 @@ public class HeaderMessage {
     public int seq;
     
     @Streamed
-    public Time stamp;
+    public Time stamp = new Time();
     
     @Streamed
-    public String frame_id;
+    public String frame_id = "";
     
-    public HeaderMessage() {
-
+    public HeaderMessage withSeq(int seq) {
+        this.seq = seq;
+        return this;
     }
     
-    public HeaderMessage(int seq, Time stamp, String frame_id) {
-        this.seq = seq;
+    public HeaderMessage withStamp(Time stamp) {
         this.stamp = stamp;
+        return this;
+    }
+
+    public HeaderMessage withFrameId(String frame_id) {
         this.frame_id = frame_id;
+        return this;
     }
 
     @Override

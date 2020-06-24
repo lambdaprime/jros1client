@@ -14,18 +14,19 @@ public class PoseMessage {
     static final String NAME = "geometry_msgs/Pose";
     
     @Streamed
-    public PointMessage position;
+    public PointMessage position = new PointMessage();
     
     @Streamed
-    public QuaternionMessage orientation;
+    public QuaternionMessage orientation = new QuaternionMessage();
 
-    public PoseMessage() {
-        
+    public PoseMessage withPosition(PointMessage position) {
+        this.position = position;
+        return this;
     }
 
-    public PoseMessage(PointMessage position, QuaternionMessage orientation) {
-        this.position = position;
+    public PoseMessage withQuaternion(QuaternionMessage orientation) {
         this.orientation = orientation;
+        return this;
     }
 
     @Override
