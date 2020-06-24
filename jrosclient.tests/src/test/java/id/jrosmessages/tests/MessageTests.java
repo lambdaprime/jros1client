@@ -30,21 +30,41 @@ public class MessageTests {
     
     static Stream<List> dataProvider() {
         return Stream.of(
+                List.of(XUtils.readResource(MessageTests.class, "string-empty"),
+                        new StringMessage()),
             List.of(XUtils.readResource(MessageTests.class, "string"),
                     new StringMessage().withData("hello there")),
+            
+            List.of(XUtils.readResource(MessageTests.class, "point-empty"),
+                    new PointMessage()),
             List.of(XUtils.readResource(MessageTests.class, "point"),
                     new PointMessage().withX(1.0).withY(1.0).withZ(1.0)),
+            
+            List.of(XUtils.readResource(MessageTests.class, "quaternion-empty"),
+                    new QuaternionMessage()),
             List.of(XUtils.readResource(MessageTests.class, "quaternion"),
                     new QuaternionMessage().withX(1.0).withY(1.0).withZ(1.0).withW(3.0)),
+            
+            List.of(XUtils.readResource(MessageTests.class, "pose-empty"),
+                    new PoseMessage()),
             List.of(XUtils.readResource(MessageTests.class, "pose"), new PoseMessage()
                     .withPosition(
                             new PointMessage().withX(1.0).withY(1.0).withZ(1.0))
                     .withQuaternion(
                             new QuaternionMessage().withX(1.0).withY(1.0).withZ(1.0).withW(3.0))),
+            
+            List.of(XUtils.readResource(MessageTests.class, "header-empty"),
+                    new HeaderMessage()),
             List.of(XUtils.readResource(MessageTests.class, "header"),
                     new HeaderMessage().withSeq(123).withStamp(new Time(0, 1111)).withFrameId("aaaa")),
+            
+            List.of(XUtils.readResource(MessageTests.class, "colorrgba-empty"),
+                    new ColorRGBAMessage()),
             List.of(XUtils.readResource(MessageTests.class, "colorrgba"),
                     new ColorRGBAMessage().withR(.12F).withG(.13F).withB(.14F).withA(.15F)),
+            
+            List.of(XUtils.readResource(MessageTests.class, "vector3-empty"),
+                    new Vector3Message()),
             List.of(XUtils.readResource(MessageTests.class, "vector3"),
                     new Vector3Message().withX(.12).withY(.13).withZ(.14))
         );
