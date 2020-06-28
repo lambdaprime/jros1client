@@ -9,6 +9,11 @@ import id.jrosclient.ros.entities.transformers.Transformers;
 import id.jrosclient.ros.responses.ProtocolParamsResponse;
 import id.jrosclient.ros.responses.parsers.ProtocolParamsParser;
 
+/**
+ * Client implementation of ROS Node API which allows to communicate
+ * with remote ROS nodes.
+ *
+ */
 public class NodeApiImpl implements NodeApi {
 
     private RosRpcClient client;

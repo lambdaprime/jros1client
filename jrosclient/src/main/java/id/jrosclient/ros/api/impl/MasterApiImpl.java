@@ -55,7 +55,6 @@ public class MasterApiImpl implements MasterApi {
 
     @Override
     public ListResponse<String> registerSubscriber(String callerId, String topic, String topicType) {
-        nodeServer.start();
         Object[] params = new Object[]{callerId, topic, topicType, nodeServer.getNodeApi()};
         return stringListParser.parseString("publishers",
                 client.execute("registerSubscriber", params));
