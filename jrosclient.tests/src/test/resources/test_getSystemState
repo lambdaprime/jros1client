@@ -1,1 +1,1 @@
-{"statusCode": "SUCCESS", "statusMessage": "current system state", "publishers": [*{ "topic": "/rosout_agg", "topicPublisher": ["/rosout"] }*], "subscribers": [], "services": []}
+{ "statusCode": "SUCCESS", "statusMessage": "current system state", "publishers": [*{ "topic": "/rosout_agg", "topicPublisher": ["/rosout"] }*], "subscribers": [], "services": [] }

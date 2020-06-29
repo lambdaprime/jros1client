@@ -15,7 +15,7 @@ import id.jrosclient.ros.transport.MessagePacket;
 import id.jrosmessages.MessageTransformer;
 import id.jrosmessages.MessagesDirectory;
 import id.xfunction.ArgumentParsingException;
-import id.xfunction.XUtils;
+import id.xfunction.XRE;
 import id.xfunction.function.Unchecked;
 import id.xfunction.logging.XLogger;
 
@@ -52,11 +52,11 @@ public class RosTopic {
         var topicType = rest.removeFirst();
         Class<?> clazz = messagesDirectory.get(topicType);
         if (clazz == null)
-            XUtils.throwRuntime("Type %s is not found", topicType);
+            throw new XRE("Type %s is not found", topicType);
         var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, topic, topicType);
         LOGGER.log(Level.FINE, "Publishers: {0}", publishers.toString());
         if (publishers.value.isEmpty()) {
-            throw new RuntimeException("No publishers for topic " + topic + " found");
+            throw new XRE("No publishers for topic %s found", topic);
         }
         var nodeApi = client.getNodeApi(publishers.value.get(0));
         var protocol = nodeApi.requestTopic(CALLER_ID, topic, List.of(Protocol.TCPROS));

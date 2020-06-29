@@ -1,5 +1,7 @@
 package id.jrosclient.ros.responses;
 
+import id.xfunction.XJson;
+
 public class Response {
 
     public enum StatusCode {
@@ -11,7 +13,8 @@ public class Response {
 
     @Override
     public String toString() {
-        return String.format("\"statusCode\": \"%s\", \"statusMessage\": \"%s\"",
-                statusCode, statusMessage);
+        return XJson.asString(
+                "statusCode", statusCode,
+                "statusMessage", statusMessage);
     }
 }

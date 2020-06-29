@@ -1,7 +1,6 @@
 package id.jrosclient.ros.responses;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import id.xfunction.XJson;
 
 public class StringResponse extends Response {
 
@@ -14,7 +13,7 @@ public class StringResponse extends Response {
 
     @Override
     public String toString() {
-        return "{" + Stream.of(super.toString(),
-                String.format("\"%s\": \"%s\"", key, value)).collect(Collectors.joining(", " )) + "}";
+        return XJson.merge(super.toString(), XJson.asString(
+                key, value));
     }
 }

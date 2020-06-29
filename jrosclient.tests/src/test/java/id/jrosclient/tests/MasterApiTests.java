@@ -28,6 +28,7 @@ public class MasterApiTests {
     @Test
     public void test_getSystemState() {
         var out = client.getMasterApi().getSystemState(CALLER_ID);
+        System.out.println(out);
         TestUtils.compareWithTemplate(out.toString(), "test_getSystemState");
     }
 
@@ -40,6 +41,7 @@ public class MasterApiTests {
     @Test
     public void test_registerSubscriber() {
         var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String");
+        System.out.println(publishers);
         TestUtils.compareWithTemplate(publishers.toString(), "test_registerSubscriber1");
     }
 

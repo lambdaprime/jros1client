@@ -1,5 +1,5 @@
 * id.jrosclient.app.RosTopic echo
-FINE: Publishers: {"statusCode": "SUCCESS", "statusMessage": "Subscribed to [/testTopic]", "publishers": ["http://*:*/"]}
+FINE: Publishers: { "statusCode": "SUCCESS", "statusMessage": "Subscribed to [/testTopic]", "publishers": ["http://*:*/"] }
 * id.jrosclient.app.RosTopic echo
 FINE: Protocol configuration: {"name": "TCPROS", "host": "*", "port": *}
 * id.jrosclient.app.RosTopic lambda$echo$2
