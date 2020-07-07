@@ -40,6 +40,7 @@ public class JRosClientIntegrationTests {
         test_no_args();
         test_echo();
         test_debug();
+        test_list();
     }
 
     private void test_echo() {
@@ -57,6 +58,11 @@ public class JRosClientIntegrationTests {
         Assertions.assertTrue(new TemplateMatcher(readResource("debug")).matches(out));
     }
 
+    private void test_list() {
+        var out = runOk("--masterUrl http://ubuntu:11311/ --nodePort 1234 rostopic list");
+        Assertions.assertTrue(new TemplateMatcher(readResource("list")).matches(out));
+    }
+    
     private String runFail(String fmt, Object...args) {
         return run(1, fmt, args);
     }

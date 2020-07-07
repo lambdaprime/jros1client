@@ -24,7 +24,9 @@ jrosclient <--masterUrl MASTER_URL> <--nodePort NODE_PORT> [--debug] <COMMAND> [
 Where:
 
 MASTER\_URL -- ROS master node URL
+
 NODE\_PORT -- client node port to use
+
 COMMAND -- one of the client commands
 
 Options:
@@ -34,6 +36,8 @@ Options:
 Available commands:
 
 rostopic echo <topicName> <topicType> -- display messages published to a topic
+
+rostopic list -- prints information about all publishers, subscribers in the system
 
 # Examples
 
