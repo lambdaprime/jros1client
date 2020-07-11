@@ -1,5 +1,6 @@
 package id.jrosclient.ros.api.impl;
 
+import id.jrosclient.NodeApiServer;
 import id.jrosclient.impl.RosRpcClient;
 import id.jrosclient.ros.api.MasterApi;
 import id.jrosclient.ros.entities.transformers.Transformers;
@@ -18,9 +19,8 @@ public class MasterApiImpl implements MasterApi {
     private StringParser stringParser = new StringParser();
     private ListParser stringListParser = new ListParser();
 
-    public MasterApiImpl(RosRpcClient client, NodeApiServer nodeServer) {
+    public MasterApiImpl(RosRpcClient client) {
         this.client = client;
-        this.nodeServer = nodeServer;
         var transformers = new Transformers();
         this.systemStateParser = new SystemStateParser(transformers.publisherTransformer);
     }
@@ -45,17 +45,18 @@ public class MasterApiImpl implements MasterApi {
 
     @Override
     public ListResponse<String> registerPublisher(String callerId, String topic,
-            String topicType) 
+            String topicType, String callerApi) 
     {
         nodeServer.start();
-        Object[] params = new Object[]{callerId, topic, topicType, nodeServer.getNodeApi()};
+        Object[] params = new Object[]{callerId, topic, topicType, callerApi};
         return stringListParser.parseString("subscriberApis",
                 client.execute("registerPublisher", params));
     }
 
     @Override
-    public ListResponse<String> registerSubscriber(String callerId, String topic, String topicType) {
-        Object[] params = new Object[]{callerId, topic, topicType, nodeServer.getNodeApi()};
+    public ListResponse<String> registerSubscriber(String callerId, String topic, String topicType,
+            String callerApi) {
+        Object[] params = new Object[]{callerId, topic, topicType, callerApi};
         return stringListParser.parseString("publishers",
                 client.execute("registerSubscriber", params));
     }

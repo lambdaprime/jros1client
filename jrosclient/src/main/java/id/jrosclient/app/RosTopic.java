@@ -7,8 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import id.jrosclient.JRosClient;
+import id.jrosclient.NodeApiServer;
 import id.jrosclient.ros.NodeClient;
-import id.jrosclient.ros.api.impl.NodeApiServer;
 import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.ros.responses.Response.StatusCode;
 import id.jrosclient.ros.transport.ConnectionHeader;
@@ -52,23 +52,24 @@ public class RosTopic {
     }
 
     private void list() throws Exception {
-        try (JRosClient client = new JRosClient(masterUrl, nodePort)) {
-            var systemState = client.getMasterApi().getSystemState(CALLER_ID);
-            if (systemState.statusCode != StatusCode.SUCCESS) {
-                throw new XRE("Failed to get system status: %s", systemState.statusMessage);
-            }
-            System.out.println(systemState);
+        JRosClient client = new JRosClient(masterUrl);
+        var systemState = client.getMasterApi().getSystemState(CALLER_ID);
+        if (systemState.statusCode != StatusCode.SUCCESS) {
+            throw new XRE("Failed to get system status: %s", systemState.statusMessage);
         }
+        System.out.println(systemState);
     }
 
     private void echo(LinkedList<String> rest) throws Exception {
-        try (JRosClient client = new JRosClient(masterUrl, nodePort)) {
-            var topic = rest.removeFirst();
-            var topicType = rest.removeFirst();
-            Class<?> clazz = messagesDirectory.get(topicType);
-            if (clazz == null)
-                throw new XRE("Type %s is not found", topicType);
-            var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, topic, topicType);
+        JRosClient client = new JRosClient(masterUrl);
+        var topic = rest.removeFirst();
+        var topicType = rest.removeFirst();
+        Class<?> clazz = messagesDirectory.get(topicType);
+        if (clazz == null)
+            throw new XRE("Type %s is not found", topicType);
+        try (var nodeServer = new NodeApiServer(nodePort)) {
+            var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, topic, topicType,
+                    nodeServer.getNodeApi());
             LOGGER.log(Level.FINE, "Publishers: {0}", publishers.toString());
             if (publishers.value.isEmpty()) {
                 throw new XRE("No publishers for topic %s found", topic);

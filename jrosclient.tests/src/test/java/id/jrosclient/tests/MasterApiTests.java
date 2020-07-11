@@ -1,15 +1,17 @@
 package id.jrosclient.tests;
 
-import static id.jrosclient.tests.TestConstants.*;
+import static id.jrosclient.tests.TestConstants.CALLER_ID;
+import static id.jrosclient.tests.TestConstants.PORT;
+import static id.jrosclient.tests.TestConstants.TOPIC;
 import static id.jrosclient.tests.TestUtils.compare;
 
 import java.net.MalformedURLException;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import id.jrosclient.JRosClient;
+import id.jrosclient.NodeApiServer;
 
 public class MasterApiTests {
     
@@ -17,12 +19,7 @@ public class MasterApiTests {
 
     @BeforeAll
     public static void setup() throws MalformedURLException {
-        client = new JRosClient("http://ubuntu:11311/", 1234);
-    }
-
-    @AfterAll
-    public static void cleanup() throws Exception {
-        client.close();
+        client = new JRosClient("http://ubuntu:11311/");
     }
 
     @Test
@@ -40,16 +37,12 @@ public class MasterApiTests {
 
     @Test
     public void test_registerSubscriber() {
-        var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String");
-        System.out.println(publishers);
-        TestUtils.compareWithTemplate(publishers.toString(), "test_registerSubscriber1");
+        try (var nodeServer = new NodeApiServer(PORT)) {
+            var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String",
+                    nodeServer.getNodeApi());
+            System.out.println(publishers);
+            TestUtils.compareWithTemplate(publishers.toString(), "test_registerSubscriber1");
+        }
     }
 
-    public static void main(String[] args) throws MalformedURLException, Exception {
-        //System.out.println(client.getMasterApi().lookupService(CALLER_ID, "service"));
-        var client = new JRosClient(URL, PORT);
-        System.out.println("Master response: " + client.getMasterApi().registerPublisher(CALLER_ID, "visualization_marker",
-                "visualization_msgs/Marker"));
-        while(true);
-    }
 }

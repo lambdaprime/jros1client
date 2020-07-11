@@ -31,19 +31,24 @@ public interface MasterApi {
      * @param callerId ROS caller ID 
      * @param topic Fully-qualified name of topic
      * @param topicType Message name
+     * @param callerApi API URI of publisher to register
      * @return List of current subscribers of topic
      */
-    ListResponse<String> registerPublisher(String callerId, String topic, String topicType);
+    ListResponse<String> registerPublisher(String callerId, String topic, String topicType,
+            String callerApi);
     
     /**
      * Subscribe the caller to the specified topic
      * 
      * @param callerId ROS caller ID 
-     * @param topic Fully-qualified name of topic.
+     * @param topic Fully-qualified name of topic
      * @param topicType Message name
+     * @param callerApi API URI of subscriber to register. Will be used for new publisher
+     * notifications
      * @return list of current publishers
      */
-    ListResponse<String> registerSubscriber(String callerId, String topic, String topicType);
+    ListResponse<String> registerSubscriber(String callerId, String topic, String topicType,
+            String callerApi);
     
     StringResponse lookupService(String callerId, String service);
 }

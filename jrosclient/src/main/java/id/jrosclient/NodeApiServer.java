@@ -1,4 +1,4 @@
-package id.jrosclient.ros.api.impl;
+package id.jrosclient;
 
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -56,7 +56,7 @@ public class NodeApiServer implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         LOGGER.entering(CLASS_NAME, "close");
         server.ifPresent(WebServer::shutdown);
         LOGGER.exiting(CLASS_NAME, "close");
