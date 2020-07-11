@@ -7,12 +7,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import id.jrosclient.JRosClient;
-import id.jrosclient.NodeApiServer;
-import id.jrosclient.ros.NodeClient;
+import id.jrosclient.ros.NodeServer;
 import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.ros.responses.Response.StatusCode;
 import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.MessagePacket;
+import id.jrosclient.ros.transport.TcpRosClient;
 import id.jrosmessages.MessageTransformer;
 import id.jrosmessages.MessagesDirectory;
 import id.xfunction.ArgumentParsingException;
@@ -22,7 +22,7 @@ import id.xfunction.logging.XLogger;
 
 public class RosTopic {
 
-    private static final Logger LOGGER = XLogger.getLogger(NodeApiServer.class);
+    private static final Logger LOGGER = XLogger.getLogger(RosTopic.class);
     private static final String CALLER_ID = "jrosclient";
     private String masterUrl;
     private int nodePort;
@@ -67,7 +67,7 @@ public class RosTopic {
         Class<?> clazz = messagesDirectory.get(topicType);
         if (clazz == null)
             throw new XRE("Type %s is not found", topicType);
-        try (var nodeServer = new NodeApiServer(nodePort)) {
+        try (var nodeServer = new NodeServer(nodePort)) {
             var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, topic, topicType,
                     nodeServer.getNodeApi());
             LOGGER.log(Level.FINE, "Publishers: {0}", publishers.toString());
@@ -77,7 +77,7 @@ public class RosTopic {
             var nodeApi = client.getNodeApi(publishers.value.get(0));
             var protocol = nodeApi.requestTopic(CALLER_ID, topic, List.of(Protocol.TCPROS));
             LOGGER.log(Level.FINE, "Protocol configuration: {0}", protocol);
-            var nodeClient = NodeClient.connect(protocol.host, protocol.port);
+            var nodeClient = TcpRosClient.connect(protocol.host, protocol.port);
             Consumer<MessagePacket> handler = response -> {
                 LOGGER.log(Level.FINE, "Message packet: {0}", response);
                 var msg = new MessageTransformer().transform(response.getBody(), clazz);

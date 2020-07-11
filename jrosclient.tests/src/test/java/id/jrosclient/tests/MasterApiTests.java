@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import id.jrosclient.JRosClient;
-import id.jrosclient.NodeApiServer;
+import id.jrosclient.ros.NodeServer;
 
 public class MasterApiTests {
     
@@ -37,7 +37,7 @@ public class MasterApiTests {
 
     @Test
     public void test_registerSubscriber() {
-        try (var nodeServer = new NodeApiServer(PORT)) {
+        try (var nodeServer = new NodeServer(PORT)) {
             var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String",
                     nodeServer.getNodeApi());
             System.out.println(publishers);

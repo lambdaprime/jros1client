@@ -14,13 +14,13 @@ import id.jrosclient.ros.responses.parsers.ProtocolParamsParser;
  * with remote ROS nodes.
  *
  */
-public class NodeApiImpl implements NodeApi {
+public class NodeApiClientImpl implements NodeApi {
 
     private RosRpcClient client;
     private ProtocolParamsParser protocolParamsParser = new ProtocolParamsParser();
     private Transformers transformers = new Transformers();
 
-    public NodeApiImpl(RosRpcClient client) {
+    public NodeApiClientImpl(RosRpcClient client) {
         this.client = client;
     }
 

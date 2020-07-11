@@ -1,4 +1,4 @@
-package id.jrosclient.ros;
+package id.jrosclient.ros.transport;
 
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -13,17 +13,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-import id.jrosclient.ros.transport.ConnectionHeader;
-import id.jrosclient.ros.transport.ConnectionHeaderWriter;
-import id.jrosclient.ros.transport.MessagePacket;
-import id.jrosclient.ros.transport.MessagePacketReader;
 import id.xfunction.XUtils;
 import id.xfunction.function.Unchecked;
 
 /**
  * Allows to communicate with other ROS nodes.
  */
-public class NodeClient implements AutoCloseable {
+public class TcpRosClient implements AutoCloseable {
 
     private DataOutputStream dos;
     private DataInputStream dis;
@@ -32,7 +28,7 @@ public class NodeClient implements AutoCloseable {
     private MessagePacketReader reader;
     private Optional<ExecutorService> executorService = Optional.empty();
 
-    private NodeClient(SocketChannel channel) {
+    private TcpRosClient(SocketChannel channel) {
         OutputStream os = Channels.newOutputStream(channel);
         dis = new DataInputStream(Channels.newInputStream(channel));
         dos = new DataOutputStream(new BufferedOutputStream(os));
@@ -40,10 +36,10 @@ public class NodeClient implements AutoCloseable {
         reader = new MessagePacketReader(dis);
     }
 
-    public static NodeClient connect(String host, int port)
+    public static TcpRosClient connect(String host, int port)
             throws IOException {
         SocketChannel channel = SocketChannel.open(new InetSocketAddress(host, port));
-        return new NodeClient(channel);
+        return new TcpRosClient(channel);
     }
 
     public void setHandler(Consumer<MessagePacket> handler) {

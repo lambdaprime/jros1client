@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import id.jrosclient.JRosClient;
-import id.jrosclient.NodeApiServer;
+import id.jrosclient.ros.NodeServer;
 import id.jrosclient.ros.entities.Protocol;
 
 public class SubscriberTests {
@@ -25,7 +25,7 @@ public class SubscriberTests {
 
     @Test
     public void test_registerSubscriber() {
-        try (var nodeServer = new NodeApiServer(PORT)) {
+        try (var nodeServer = new NodeServer(PORT)) {
             var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String",
                     nodeServer.getNodeApi());
             TestUtils.compareWithTemplate(publishers.toString(), "test_registerSubscriber1");

@@ -1,4 +1,4 @@
-package id.jrosclient;
+package id.jrosclient.ros;
 
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -11,15 +11,15 @@ import org.apache.xmlrpc.webserver.WebServer;
 import id.xfunction.function.Unchecked;
 import id.xfunction.logging.XLogger;
 
-public class NodeApiServer implements AutoCloseable {
+public class NodeServer implements AutoCloseable {
 
-    private static final String CLASS_NAME = NodeApiServer.class.getName();
-    private static final Logger LOGGER = XLogger.getLogger(NodeApiServer.class);
+    private static final String CLASS_NAME = NodeServer.class.getName();
+    private static final Logger LOGGER = XLogger.getLogger(NodeServer.class);
 
     private Optional<WebServer> server = Optional.empty();
     private int port;
 
-    public NodeApiServer(int port) {
+    public NodeServer(int port) {
         this.port = port;
     }
 

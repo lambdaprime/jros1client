@@ -5,8 +5,8 @@ import java.net.MalformedURLException;
 import id.jrosclient.impl.RosRpcClient;
 import id.jrosclient.ros.api.MasterApi;
 import id.jrosclient.ros.api.NodeApi;
-import id.jrosclient.ros.api.impl.MasterApiImpl;
-import id.jrosclient.ros.api.impl.NodeApiImpl;
+import id.jrosclient.ros.api.impl.MasterApiClientImpl;
+import id.jrosclient.ros.api.impl.NodeApiClientImpl;
 
 public class JRosClient {
 
@@ -14,7 +14,7 @@ public class JRosClient {
 
     public JRosClient(String masterUrl) throws MalformedURLException {
         RosRpcClient client = new RosRpcClient(masterUrl);
-        masterApi = new MasterApiImpl(client);
+        masterApi = new MasterApiClientImpl(client);
     }
 
     public MasterApi getMasterApi() {
@@ -27,7 +27,7 @@ public class JRosClient {
      */
     public NodeApi getNodeApi(String nodeUrl) {
         RosRpcClient client = new RosRpcClient(nodeUrl);
-        return new NodeApiImpl(client);
+        return new NodeApiClientImpl(client);
     }
 
 }
