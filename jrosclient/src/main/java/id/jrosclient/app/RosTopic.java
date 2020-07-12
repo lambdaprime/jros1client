@@ -15,6 +15,7 @@ import id.jrosclient.ros.transport.MessagePacket;
 import id.jrosclient.ros.transport.TcpRosClient;
 import id.jrosmessages.MessageTransformer;
 import id.jrosmessages.MessagesDirectory;
+import id.jrosmessages.MetadataAccessor;
 import id.xfunction.ArgumentParsingException;
 import id.xfunction.XRE;
 import id.xfunction.function.Unchecked;
@@ -27,7 +28,8 @@ public class RosTopic {
     private String masterUrl;
     private int nodePort;
     private MessagesDirectory messagesDirectory = new MessagesDirectory();
-
+    private MetadataAccessor metadataAccessor = new MetadataAccessor();
+    
     public RosTopic(String masterUrl, int nodePort) {
         this.masterUrl = masterUrl;
         this.nodePort = nodePort;
@@ -91,7 +93,7 @@ public class RosTopic {
                     .withCallerId(CALLER_ID)
                     .withType(topicType)
                     .withMessageDefinition(messageDefinition )
-                    .withMd5Sum(messagesDirectory.getMd5(clazz));
+                    .withMd5Sum(metadataAccessor.getMd5(clazz));
             nodeClient.start(ch);
         }
     }

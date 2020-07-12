@@ -14,6 +14,7 @@ import id.jrosmessages.visualization_msgs.MarkerMessage;
 
 public class MessagesDirectory {
 
+    private MetadataAccessor accessor = new MetadataAccessor();
     private final Map<String, Class<?>> messages = new HashMap<>();
 
     public MessagesDirectory() {
@@ -31,11 +32,7 @@ public class MessagesDirectory {
         return messages.get(messageType);
     }
     
-    public String getMd5(Class<?> messageClass) {
-        return messageClass.getAnnotation(Message.class).md5sum();
-    }
-    
     public void add(Class<?> messageClass) {
-        messages.put(messageClass.getAnnotation(Message.class).type(), messageClass);
+        messages.put(accessor.getType(messageClass), messageClass);
     }
 }
