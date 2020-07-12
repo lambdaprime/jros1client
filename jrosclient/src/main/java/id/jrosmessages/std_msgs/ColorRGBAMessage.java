@@ -3,13 +3,14 @@ package id.jrosmessages.std_msgs;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
+import id.jrosmessages.MessageMetadata;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
-@Message(
+@MessageMetadata(
     type = ColorRGBAMessage.NAME,
     md5sum = "a29a96539573343b1310c73607334b00")
-public class ColorRGBAMessage {
+public class ColorRGBAMessage implements Message {
 
     static final String NAME = "std_msgs/ColorRGBA";
     

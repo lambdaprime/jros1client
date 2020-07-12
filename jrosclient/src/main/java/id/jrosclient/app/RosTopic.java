@@ -13,6 +13,7 @@ import id.jrosclient.ros.responses.Response.StatusCode;
 import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.MessagePacket;
 import id.jrosclient.ros.transport.TcpRosClient;
+import id.jrosmessages.Message;
 import id.jrosmessages.MessageTransformer;
 import id.jrosmessages.MessagesDirectory;
 import id.jrosmessages.MetadataAccessor;
@@ -66,7 +67,7 @@ public class RosTopic {
         JRosClient client = new JRosClient(masterUrl);
         var topic = rest.removeFirst();
         var topicType = rest.removeFirst();
-        Class<?> clazz = messagesDirectory.get(topicType);
+        Class<? extends Message> clazz = messagesDirectory.get(topicType);
         if (clazz == null)
             throw new XRE("Type %s is not found", topicType);
         try (var nodeServer = new NodeServer(nodePort)) {

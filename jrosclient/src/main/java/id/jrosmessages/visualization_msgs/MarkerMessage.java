@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
+import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.Vector3Message;
@@ -14,10 +15,10 @@ import id.jrosmessages.std_msgs.StringMessage;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
-@Message(
+@MessageMetadata(
     type = MarkerMessage.NAME,
     md5sum = "4048c9de2a16f4ae8e0538085ebf1b97")
-public class MarkerMessage {
+public class MarkerMessage implements Message {
 
     static final String NAME = "visualization_msgs/Marker";
 

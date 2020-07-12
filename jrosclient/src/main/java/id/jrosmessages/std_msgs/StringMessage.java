@@ -3,13 +3,14 @@ package id.jrosmessages.std_msgs;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
+import id.jrosmessages.MessageMetadata;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
-@Message(
+@MessageMetadata(
     type = "std_msgs/String",
     md5sum = "992ce8a1687cec8c8bd883ec73ca41d1")
-public class StringMessage {
+public class StringMessage implements Message {
     
     @Streamed
     public String data = "";

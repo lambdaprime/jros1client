@@ -3,13 +3,14 @@ package id.jrosmessages.geometry_msgs;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
+import id.jrosmessages.MessageMetadata;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
-@Message(
+@MessageMetadata(
     type = Vector3Message.NAME,
     md5sum = "4a842b65f413084dc2b10fb484ea7f17")
-public class Vector3Message {
+public class Vector3Message implements Message {
 
     static final String NAME = "geometry_msgs/Vector3";
     

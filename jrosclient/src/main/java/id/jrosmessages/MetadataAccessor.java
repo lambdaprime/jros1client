@@ -6,12 +6,12 @@ package id.jrosmessages;
  */
 public class MetadataAccessor {
     
-    public String getMd5(Class<?> messageClass) {
-        return messageClass.getAnnotation(Message.class).md5sum();
+    public String getMd5(Class<? extends Message> messageClass) {
+        return messageClass.getAnnotation(MessageMetadata.class).md5sum();
     }
     
-    public String getType(Class<?> messageClass) {
-        return messageClass.getAnnotation(Message.class).type();
+    public String getType(Class<? extends Message> messageClass) {
+        return messageClass.getAnnotation(MessageMetadata.class).type();
     }
 
 }

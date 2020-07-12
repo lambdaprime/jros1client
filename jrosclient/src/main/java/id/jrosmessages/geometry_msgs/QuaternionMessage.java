@@ -3,13 +3,14 @@ package id.jrosmessages.geometry_msgs;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
+import id.jrosmessages.MessageMetadata;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
-@Message(
+@MessageMetadata(
     type = QuaternionMessage.NAME,
     md5sum = "a779879fadf0160734f906b8c19c7004")
-public class QuaternionMessage {
+public class QuaternionMessage implements Message {
 
     static final String NAME = "geometry_msgs/Quaternion";
     

@@ -3,14 +3,15 @@ package id.jrosmessages.std_msgs;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
+import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.primitives.Time;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
-@Message(
+@MessageMetadata(
     type = "std_msgs/Header",
     md5sum = "2176decaecbce78abc3b96ef049fabed")
-public class HeaderMessage {
+public class HeaderMessage implements Message {
     
     @Streamed
     public int seq;

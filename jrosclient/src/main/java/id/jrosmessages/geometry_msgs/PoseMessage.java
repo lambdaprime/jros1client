@@ -3,13 +3,14 @@ package id.jrosmessages.geometry_msgs;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
+import id.jrosmessages.MessageMetadata;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
-@Message(
+@MessageMetadata(
     type = PoseMessage.NAME,
     md5sum = "e45d45a5a1ce597b249e23fb30fc871f")
-public class PoseMessage {
+public class PoseMessage implements Message {
 
     static final String NAME = "geometry_msgs/Pose";
     
