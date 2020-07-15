@@ -1,7 +1,6 @@
 package id.jrosclient.tests;
 
 import static id.jrosclient.tests.TestConstants.CALLER_ID;
-import static id.jrosclient.tests.TestConstants.PORT;
 import static id.jrosclient.tests.TestConstants.TOPIC;
 
 import java.net.MalformedURLException;
@@ -25,7 +24,7 @@ public class SubscriberTests {
 
     @Test
     public void test_registerSubscriber() {
-        try (var nodeServer = new NodeServer(PORT)) {
+        try (var nodeServer = new NodeServer()) {
             var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String",
                     nodeServer.getNodeApi());
             TestUtils.compareWithTemplate(publishers.toString(), "test_registerSubscriber1");

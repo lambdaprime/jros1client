@@ -1,7 +1,6 @@
 package id.jrosclient.ros.api.impl;
 
 import id.jrosclient.impl.RosRpcClient;
-import id.jrosclient.ros.NodeServer;
 import id.jrosclient.ros.api.MasterApi;
 import id.jrosclient.ros.entities.transformers.Transformers;
 import id.jrosclient.ros.responses.ListResponse;
@@ -14,7 +13,6 @@ import id.jrosclient.ros.responses.parsers.SystemStateParser;
 public class MasterApiClientImpl implements MasterApi {
 
     private RosRpcClient client;
-    private NodeServer nodeServer;
     private SystemStateParser systemStateParser;
     private StringParser stringParser = new StringParser();
     private ListParser stringListParser = new ListParser();
@@ -47,7 +45,6 @@ public class MasterApiClientImpl implements MasterApi {
     public ListResponse<String> registerPublisher(String callerId, String topic,
             String topicType, String callerApi) 
     {
-        nodeServer.start();
         Object[] params = new Object[]{callerId, topic, topicType, callerApi};
         return stringListParser.parseString("subscriberApis",
                 client.execute("registerPublisher", params));

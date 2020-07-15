@@ -58,7 +58,7 @@ public class JRosClientApp {
         if (positionalArgs.isEmpty()) throw new ArgumentParsingException();
         var cmd = positionalArgs.removeFirst();
         switch (cmd) {
-        case "rostopic" : new RosTopic(withArg(masterUrl), withArg(nodePort))
+        case "rostopic" : new RosTopic(withArg(masterUrl), nodePort)
             .execute(positionalArgs); 
             break;
         case "--debug" : {

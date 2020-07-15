@@ -2,21 +2,14 @@ package id.jrosclient.app;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.logging.Level;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import id.jrosclient.JRosClient;
-import id.jrosclient.ros.NodeServer;
-import id.jrosclient.ros.entities.Protocol;
+import id.jrosclient.Subscriber;
 import id.jrosclient.ros.responses.Response.StatusCode;
-import id.jrosclient.ros.transport.ConnectionHeader;
-import id.jrosclient.ros.transport.MessagePacket;
-import id.jrosclient.ros.transport.TcpRosClient;
 import id.jrosmessages.Message;
-import id.jrosmessages.MessageTransformer;
 import id.jrosmessages.MessagesDirectory;
-import id.jrosmessages.MetadataAccessor;
 import id.xfunction.ArgumentParsingException;
 import id.xfunction.XRE;
 import id.xfunction.function.Unchecked;
@@ -25,13 +18,11 @@ import id.xfunction.logging.XLogger;
 public class RosTopic {
 
     private static final Logger LOGGER = XLogger.getLogger(RosTopic.class);
-    private static final String CALLER_ID = "jrosclient";
+    private static final String CALLER_ID = "jrosclient-rostopic";
     private String masterUrl;
-    private int nodePort;
-    private MessagesDirectory messagesDirectory = new MessagesDirectory();
-    private MetadataAccessor metadataAccessor = new MetadataAccessor();
+    private Optional<Integer> nodePort;
     
-    public RosTopic(String masterUrl, int nodePort) {
+    public RosTopic(String masterUrl, Optional<Integer> nodePort) {
         this.masterUrl = masterUrl;
         this.nodePort = nodePort;
     }
@@ -55,48 +46,33 @@ public class RosTopic {
     }
 
     private void list() throws Exception {
-        JRosClient client = new JRosClient(masterUrl);
-        var systemState = client.getMasterApi().getSystemState(CALLER_ID);
-        if (systemState.statusCode != StatusCode.SUCCESS) {
-            throw new XRE("Failed to get system status: %s", systemState.statusMessage);
+        try (JRosClient client = new JRosClient(masterUrl)) {
+            var systemState = client.getMasterApi().getSystemState(CALLER_ID);
+            if (systemState.statusCode != StatusCode.SUCCESS) {
+                throw new XRE("Failed to get system status: %s", systemState.statusMessage);
+            }
+            System.out.println(systemState);
         }
-        System.out.println(systemState);
     }
 
     private void echo(LinkedList<String> rest) throws Exception {
         JRosClient client = new JRosClient(masterUrl);
-        var topic = rest.removeFirst();
-        var topicType = rest.removeFirst();
-        Class<? extends Message> clazz = messagesDirectory.get(topicType);
-        if (clazz == null)
-            throw new XRE("Type %s is not found", topicType);
-        try (var nodeServer = new NodeServer(nodePort)) {
-            var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, topic, topicType,
-                    nodeServer.getNodeApi());
-            LOGGER.log(Level.FINE, "Publishers: {0}", publishers.toString());
-            if (publishers.value.isEmpty()) {
-                throw new XRE("No publishers for topic %s found", topic);
-            }
-            var nodeApi = client.getNodeApi(publishers.value.get(0));
-            var protocol = nodeApi.requestTopic(CALLER_ID, topic, List.of(Protocol.TCPROS));
-            LOGGER.log(Level.FINE, "Protocol configuration: {0}", protocol);
-            var nodeClient = TcpRosClient.connect(protocol.host, protocol.port);
-            Consumer<MessagePacket> handler = response -> {
-                LOGGER.log(Level.FINE, "Message packet: {0}", response);
-                var msg = new MessageTransformer().transform(response.getBody(), clazz);
-                System.out.println(msg);
-                Unchecked.run(nodeClient::close);
+            if (nodePort.isPresent())
+                client.withPort(nodePort.get());
+            var topic = rest.removeFirst();
+            var topicType = rest.removeFirst();
+            Class<Message> clazz = (Class<Message>) new MessagesDirectory().get(topicType);
+            if (clazz == null)
+                throw new XRE("Type %s is not found", topicType);
+            var subscriber = new Subscriber<Message>(clazz) {
+                @Override
+                public void onNext(Message message) {
+                    System.out.println(message);
+                    getSubscription().cancel();
+                    Unchecked.run(() -> client.close());
+                }
             };
-            nodeClient.setHandler(handler);
-            String messageDefinition = "string data";
-            var ch = new ConnectionHeader()
-                    .withTopic("/" + topic)
-                    .withCallerId(CALLER_ID)
-                    .withType(topicType)
-                    .withMessageDefinition(messageDefinition )
-                    .withMd5Sum(metadataAccessor.getMd5(clazz));
-            nodeClient.start(ch);
-        }
+            client.subscribe(topic, subscriber);
     }
-
+    
 }

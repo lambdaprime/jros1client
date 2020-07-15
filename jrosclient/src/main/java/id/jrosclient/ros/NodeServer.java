@@ -15,18 +15,20 @@ public class NodeServer implements AutoCloseable {
 
     private static final String CLASS_NAME = NodeServer.class.getName();
     private static final Logger LOGGER = XLogger.getLogger(NodeServer.class);
+    private static final Integer DEFAULT_PORT = 1234;
 
     private Optional<WebServer> server = Optional.empty();
-    private int port;
+    private int port = DEFAULT_PORT;
 
-    public NodeServer(int port) {
+    public NodeServer withPort(int port) {
         this.port = port;
+        return this;
     }
 
     public void start() {
         if (!server.isEmpty()) return;
         var s = new WebServer(port);
-        startInternal(s);
+        Unchecked.run(() -> startInternal(s));
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
