@@ -8,13 +8,13 @@ import id.jrosmessages.Message;
 import id.xfunction.XUtils;
 import id.xfunction.logging.XLogger;
 
-public abstract class Subscriber<M extends Message> implements Flow.Subscriber<M> {
+public abstract class TopicSubscriber<M extends Message> implements Flow.Subscriber<M> {
 
-    private static final Logger LOGGER = XLogger.getLogger(Subscriber.class);
+    private static final Logger LOGGER = XLogger.getLogger(TopicSubscriber.class);
     private Class<M> messageClass;
     private Subscription subscription;
     
-    public Subscriber(Class<M> messageClass) {
+    public TopicSubscriber(Class<M> messageClass) {
         this.messageClass = messageClass;
     }
 

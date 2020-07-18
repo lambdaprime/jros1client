@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import id.jrosclient.JRosClient;
-import id.jrosclient.Subscriber;
+import id.jrosclient.TopicSubscriber;
 import id.jrosclient.ros.responses.Response.StatusCode;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessagesDirectory;
@@ -64,7 +64,7 @@ public class RosTopic {
             Class<Message> clazz = (Class<Message>) new MessagesDirectory().get(topicType);
             if (clazz == null)
                 throw new XRE("Type %s is not found", topicType);
-            var subscriber = new Subscriber<Message>(clazz) {
+            var subscriber = new TopicSubscriber<Message>(clazz) {
                 @Override
                 public void onNext(Message message) {
                     System.out.println(message);

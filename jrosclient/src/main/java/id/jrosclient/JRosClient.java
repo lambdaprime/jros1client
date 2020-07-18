@@ -62,7 +62,7 @@ public class JRosClient implements AutoCloseable {
         return new NodeApiClientImpl(client);
     }
 
-    public <M extends Message> void subscribe(String topic, Subscriber<M> subscriber) 
+    public <M extends Message> void subscribe(String topic, TopicSubscriber<M> subscriber) 
             throws Exception
     {
         var clazz = subscriber.getMessageClass();
