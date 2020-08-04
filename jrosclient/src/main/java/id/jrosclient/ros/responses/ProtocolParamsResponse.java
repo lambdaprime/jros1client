@@ -1,5 +1,7 @@
 package id.jrosclient.ros.responses;
 
+import id.xfunction.XJson;
+
 public class ProtocolParamsResponse extends Response {
 
     public String name;
@@ -8,9 +10,8 @@ public class ProtocolParamsResponse extends Response {
 
     @Override
     public String toString() {
-        return "{" +
-                "\"name\": \"" + name + "\", " +
-                "\"host\": \"" + host + "\", " +
-                "\"port\": " + port + "}";
+        return XJson.asString("name", name,
+                "host", host,
+                "port", port);
     }
 }
