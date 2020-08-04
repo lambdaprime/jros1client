@@ -13,9 +13,11 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
     private static final Logger LOGGER = XLogger.getLogger(TopicSubscriber.class);
     private Class<M> messageClass;
     private Subscription subscription;
+    private String topic;
     
-    public TopicSubscriber(Class<M> messageClass) {
+    public TopicSubscriber(Class<M> messageClass, String topic) {
         this.messageClass = messageClass;
+        this.topic = topic;
     }
 
     @Override
@@ -40,5 +42,9 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
 
     public Subscription getSubscription() {
         return subscription;
+    }
+    
+    public String getTopic() {
+        return topic;
     }
 }

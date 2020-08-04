@@ -64,7 +64,7 @@ public class RosTopic {
             Class<Message> clazz = (Class<Message>) new MessagesDirectory().get(topicType);
             if (clazz == null)
                 throw new XRE("Type %s is not found", topicType);
-            var subscriber = new TopicSubscriber<Message>(clazz) {
+            var subscriber = new TopicSubscriber<Message>(clazz, topic) {
                 @Override
                 public void onNext(Message message) {
                     System.out.println(message);
@@ -72,7 +72,7 @@ public class RosTopic {
                     Unchecked.run(() -> client.close());
                 }
             };
-            client.subscribe(topic, subscriber);
+            client.subscribe(subscriber);
     }
     
 }

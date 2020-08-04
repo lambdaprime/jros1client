@@ -62,9 +62,10 @@ public class JRosClient implements AutoCloseable {
         return new NodeApiClientImpl(client);
     }
 
-    public <M extends Message> void subscribe(String topic, TopicSubscriber<M> subscriber) 
+    public <M extends Message> void subscribe(TopicSubscriber<M> subscriber) 
             throws Exception
     {
+        String topic = subscriber.getTopic();
         var clazz = subscriber.getMessageClass();
         var topicType = metadataAccessor.getType(clazz);
         var publishers = getMasterApi().registerSubscriber(CALLER_ID, topic, topicType,
