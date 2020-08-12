@@ -30,6 +30,7 @@ public class SubscriberTests {
             TestUtils.compareWithTemplate(publishers.toString(), "test_registerSubscriber1");
             var nodeApi = client.getNodeApi(publishers.value.get(0));
             var protocols = nodeApi.requestTopic(CALLER_ID, TOPIC, List.of(Protocol.TCPROS));
+            System.out.println(protocols);
             TestUtils.compareWithTemplate(protocols.toString(), "test_registerSubscriber2");
         }
     }

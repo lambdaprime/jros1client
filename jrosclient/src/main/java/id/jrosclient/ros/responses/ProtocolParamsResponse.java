@@ -26,8 +26,8 @@ public class ProtocolParamsResponse extends Response {
 
     @Override
     public String toString() {
-        return XJson.asString("name", name,
+        return XJson.merge(super.toString(), XJson.asString("name", name,
                 "host", host,
-                "port", port);
+                "port", port));
     }
 }
