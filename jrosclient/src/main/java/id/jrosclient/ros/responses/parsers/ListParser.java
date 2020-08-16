@@ -4,7 +4,7 @@ import id.jrosclient.ros.api.impl.RawResponse;
 import id.jrosclient.ros.responses.ListResponse;
 import id.jrosclient.ros.responses.Response.StatusCode;
 
-public class ListParser extends ResponseParser {
+public class ListParser extends ResponseTransformer {
 
     public ListResponse<String> parseString(String key, RawResponse response) {
         ListResponse<String> ss = new ListResponse<>(key);

@@ -3,7 +3,7 @@ package id.jrosclient.ros.responses.parsers;
 import id.jrosclient.ros.api.impl.RawResponse;
 import id.jrosclient.ros.responses.ProtocolParamsResponse;
 
-public class ProtocolParamsParser extends ResponseParser {
+public class ProtocolParamsParser extends ResponseTransformer {
 
     public ProtocolParamsResponse parse(RawResponse response) {
         ProtocolParamsResponse ss = new ProtocolParamsResponse();

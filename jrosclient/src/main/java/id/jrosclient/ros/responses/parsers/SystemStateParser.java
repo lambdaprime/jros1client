@@ -5,7 +5,7 @@ import id.jrosclient.ros.entities.Publisher;
 import id.jrosclient.ros.entities.transformers.Transformer;
 import id.jrosclient.ros.responses.SystemStateResponse;
 
-public class SystemStateParser extends ResponseParser {
+public class SystemStateParser extends ResponseTransformer {
 
     private Transformer<Publisher> publisherTransformer;
 

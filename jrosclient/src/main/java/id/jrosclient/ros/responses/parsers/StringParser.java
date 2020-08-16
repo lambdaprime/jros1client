@@ -3,7 +3,7 @@ package id.jrosclient.ros.responses.parsers;
 import id.jrosclient.ros.api.impl.RawResponse;
 import id.jrosclient.ros.responses.StringResponse;
 
-public class StringParser extends ResponseParser {
+public class StringParser extends ResponseTransformer {
 
     public StringResponse parse(String key, RawResponse response) {
         StringResponse ss = new StringResponse(key);

@@ -4,7 +4,7 @@ import id.jrosclient.ros.api.impl.RawResponse;
 import id.jrosclient.ros.responses.Response;
 import id.jrosclient.ros.responses.Response.StatusCode;
 
-public class ResponseParser {
+public class ResponseTransformer {
 
     protected void populate(Response response, RawResponse rawResponse) {
         switch (rawResponse.get(0).integer()) {
