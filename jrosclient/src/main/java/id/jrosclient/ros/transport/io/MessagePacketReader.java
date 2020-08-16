@@ -1,8 +1,9 @@
-package id.jrosclient.ros.transport;
+package id.jrosclient.ros.transport.io;
 
 import java.io.DataInput;
 import java.io.IOException;
 
+import id.jrosclient.ros.transport.MessagePacket;
 import id.jrosmessages.RosDataInput;
 
 public class MessagePacketReader {

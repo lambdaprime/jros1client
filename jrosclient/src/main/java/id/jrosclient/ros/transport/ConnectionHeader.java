@@ -6,11 +6,11 @@ import id.xfunction.XJson;
 
 public class ConnectionHeader {
 
-    static final String CALLER_ID = "callerid";
-    static final String TOPIC = "topic";
-    static final String TYPE = "type";
-    static final String MESSAGE_DEFINITION = "message_definition";
-    static final String MD5_SUM = "md5sum";
+    public static final String CALLER_ID = "callerid";
+    public static final String TOPIC = "topic";
+    public static final String TYPE = "type";
+    public static final String MESSAGE_DEFINITION = "message_definition";
+    public static final String MD5_SUM = "md5sum";
 
     public Optional<String> callerId = Optional.empty();
     public Optional<String> topic = Optional.empty();

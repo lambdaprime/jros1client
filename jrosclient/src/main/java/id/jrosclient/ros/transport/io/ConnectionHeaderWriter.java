@@ -1,8 +1,10 @@
-package id.jrosclient.ros.transport;
+package id.jrosclient.ros.transport.io;
 
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Optional;
+
+import id.jrosclient.ros.transport.ConnectionHeader;
 
 import static id.jrosclient.ros.transport.ConnectionHeader.*;
 

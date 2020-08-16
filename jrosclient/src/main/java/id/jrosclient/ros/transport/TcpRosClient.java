@@ -14,6 +14,8 @@ import java.util.concurrent.SubmissionPublisher;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import id.jrosclient.ros.transport.io.ConnectionHeaderWriter;
+import id.jrosclient.ros.transport.io.MessagePacketReader;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageTransformer;
 import id.jrosmessages.MetadataAccessor;

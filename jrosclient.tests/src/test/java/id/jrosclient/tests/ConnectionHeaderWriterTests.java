@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import id.jrosclient.ros.transport.ConnectionHeaderWriter;
+import id.jrosclient.ros.transport.io.ConnectionHeaderWriter;
 import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
 import id.xfunction.XUtils;
 import id.xfunction.io.XOutputStream;

@@ -1,8 +1,9 @@
-package id.jrosclient.ros.transport;
+package id.jrosclient.ros.transport.io;
 
 import java.io.IOException;
 import java.util.HashMap;
 
+import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosmessages.RosDataInput;
 
 public class ConnectionHeaderReader {

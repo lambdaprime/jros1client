@@ -14,7 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import id.jrosclient.ros.transport.ConnectionHeader;
-import id.jrosclient.ros.transport.ConnectionHeaderReader;
+import id.jrosclient.ros.transport.io.ConnectionHeaderReader;
 import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
 import id.jrosmessages.RosDataInput;
 import id.xfunction.XUtils;
