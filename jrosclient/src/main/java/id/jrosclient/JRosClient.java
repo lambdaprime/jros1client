@@ -13,9 +13,12 @@ import id.jrosclient.ros.api.NodeApi;
 import id.jrosclient.ros.api.impl.MasterApiClientImpl;
 import id.jrosclient.ros.api.impl.NodeApiClientImpl;
 import id.jrosclient.ros.entities.Protocol;
+import id.jrosclient.ros.transport.PublishersManager;
 import id.jrosclient.ros.transport.TcpRosClient;
+import id.jrosclient.ros.transport.TcpRosServer;
 import id.jrosmessages.Message;
 import id.jrosmessages.MetadataAccessor;
+import id.jrosmessages.std_msgs.StringMessage;
 import id.xfunction.XRE;
 import id.xfunction.function.Unchecked;
 import id.xfunction.logging.XLogger;
@@ -26,16 +29,17 @@ public class JRosClient implements AutoCloseable {
     private static final String CALLER_ID = "jrosclient";
 
     private String masterUrl;
-    private NodeServer nodeServer;
+    private NodeServer nodeServer = new NodeServer();
     private MetadataAccessor metadataAccessor = new MetadataAccessor();
     private Set<TcpRosClient<?>> clients = new HashSet<>();
+    private PublishersManager publishersManager = new PublishersManager();
+    private TcpRosServer tcpRosServer = new TcpRosServer(publishersManager);
 
     /**
      * @param masterUrl master node URL
      */
     public JRosClient(String masterUrl) {
         this.masterUrl = masterUrl;
-        nodeServer = new NodeServer();
     }
 
     /**
@@ -83,6 +87,20 @@ public class JRosClient implements AutoCloseable {
         clients.add(nodeClient);
     }
 
+    public <M extends Message> void publish(TopicPublisher<M> publisher) 
+            throws Exception
+    {
+        var topic = publisher.getTopic();
+        var clazz = publisher.getMessageClass();
+        var topicType = metadataAccessor.getType(clazz);
+        publishersManager.add(publisher);
+        tcpRosServer.start();
+        nodeServer.start();
+        var subscribers = getMasterApi().registerPublisher(CALLER_ID, topic, topicType,
+                nodeServer.getNodeApi());
+        LOGGER.log(Level.FINE, "Current subscribers: {0}", subscribers.toString());
+    }
+    
     @Override
     public void close() throws Exception {
         nodeServer.close();
@@ -90,4 +108,12 @@ public class JRosClient implements AutoCloseable {
         clients.clear();
     }
 
+    public static void main(String[] args) throws Exception {
+        var publisher = new TopicSubmissionPublisher<>(StringMessage.class, "/testTopic2");
+        new JRosClient("http://ubuntu:11311/").publish(publisher);
+        while (true) {
+            publisher.submit(new StringMessage().withData("hello"));
+            Thread.sleep(1000);
+        }
+    }
 }
