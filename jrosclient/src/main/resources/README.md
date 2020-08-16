@@ -35,7 +35,7 @@ Options:
 
 Available commands:
 
-rostopic echo <topicName> <topicType> -- display messages published to a topic
+rostopic echo [-n count] <topicName> <topicType> -- display 'count' messages published to a topic. If 'count' is not set keep displaying messages forever.
 
 rostopic list -- prints information about all publishers, subscribers in the system
 

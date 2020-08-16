@@ -44,7 +44,7 @@ public class JRosClientIntegrationTests {
     }
 
     private void test_echo() {
-        var out = runOk("--masterUrl http://ubuntu:11311/ --nodePort 1234 rostopic echo testTopic std_msgs/String");
+        var out = runOk("--masterUrl http://ubuntu:11311/ --nodePort 1234 rostopic echo -n 5 testTopic std_msgs/String");
         Assertions.assertTrue(new TemplateMatcher(readResource("echo")).matches(out));
     }
 
@@ -54,7 +54,7 @@ public class JRosClientIntegrationTests {
     }
 
     private void test_debug() {
-        var out = runOk("--masterUrl http://ubuntu:11311/ --nodePort 1234 --debug rostopic echo testTopic std_msgs/String");
+        var out = runOk("--masterUrl http://ubuntu:11311/ --nodePort 1234 --debug rostopic echo -n 1 testTopic std_msgs/String");
         Assertions.assertTrue(new TemplateMatcher(readResource("debug")).matches(out));
     }
 

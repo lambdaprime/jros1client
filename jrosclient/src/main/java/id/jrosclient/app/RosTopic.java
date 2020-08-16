@@ -2,7 +2,9 @@ package id.jrosclient.app;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import id.jrosclient.JRosClient;
 import id.jrosclient.TopicSubscriber;
@@ -10,6 +12,7 @@ import id.jrosclient.ros.responses.Response.StatusCode;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessagesDirectory;
 import id.xfunction.ArgumentParsingException;
+import id.xfunction.SmartArgs;
 import id.xfunction.XRE;
 import id.xfunction.function.Unchecked;
 
@@ -53,12 +56,18 @@ public class RosTopic {
     }
 
     private void echo(LinkedList<String> rest) throws Exception {
-        if (rest.size() != 2) throw new ArgumentParsingException();
+        if (rest.size() < 2) throw new ArgumentParsingException();
+        LinkedList<String> positionalArgs = new LinkedList<>();
+        int[] count = new int[1];
+        Map<String, Consumer<String>> handlers = Map.of(
+                "-n", n -> { count[0] = Integer.parseInt(n); }
+        );
+        new SmartArgs(handlers, positionalArgs::add).parse(rest.toArray(new String[0]));
         JRosClient client = new JRosClient(masterUrl);
             if (nodePort.isPresent())
                 client.withPort(nodePort.get());
-            var topic = rest.removeFirst();
-            var topicType = rest.removeFirst();
+            var topic = positionalArgs.removeFirst();
+            var topicType = positionalArgs.removeFirst();
             Class<Message> clazz = (Class<Message>) new MessagesDirectory().get(topicType);
             if (clazz == null)
                 throw new XRE("Type %s is not found", topicType);
@@ -66,8 +75,13 @@ public class RosTopic {
                 @Override
                 public void onNext(Message message) {
                     System.out.println(message);
-                    getSubscription().cancel();
-                    Unchecked.run(() -> client.close());
+                    count[0]--;
+                    if (count[0] == 0) { 
+                        getSubscription().cancel();
+                        Unchecked.run(() -> client.close());
+                        return;
+                    }
+                    request(1);
                 }
             };
             client.subscribe(subscriber);

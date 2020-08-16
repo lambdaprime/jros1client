@@ -44,4 +44,8 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
     public String getTopic() {
         return topic;
     }
+    
+    public void request(int n) {
+        subscription.request(n);
+    }
 }

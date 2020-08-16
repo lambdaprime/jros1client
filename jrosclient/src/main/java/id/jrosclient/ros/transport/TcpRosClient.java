@@ -78,13 +78,16 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
     }
 
     private void run(ConnectionHeader header) throws Exception {
+        writer.write(header);
+        dos.flush();
+        MessagePacket response = reader.read();
+        LOGGER.log(Level.FINE, "Message packet: {0}", response);
+        byte[] body = response.getBody();
         while (!executorService.isShutdown()) {
-            writer.write(header);
-            dos.flush();
-            MessagePacket response = reader.read();
-            LOGGER.log(Level.FINE, "Message packet: {0}", response);
-            var msg = new MessageTransformer().transform(response.getBody(), messageClass);
+            var msg = new MessageTransformer().transform(body, messageClass);
             submit(msg);
+            writer.write(header);
+            body = reader.readBody();
         }
     }
 
