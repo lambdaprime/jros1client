@@ -1,7 +1,6 @@
 package id.jrosclient.ros;
 
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import org.apache.xmlrpc.server.XmlRpcServer;
 import org.apache.xmlrpc.server.XmlRpcServerConfigImpl;
@@ -12,7 +11,7 @@ import id.xfunction.logging.XLogger;
 
 public class NodeServer implements AutoCloseable {
 
-    static final Logger LOGGER = XLogger.getLogger(NodeServer.class);
+    static final XLogger LOGGER = XLogger.getLogger(NodeServer.class);
     private static final String CLASS_NAME = NodeServer.class.getName();
     private static final Integer DEFAULT_PORT = 1234;
 
@@ -38,6 +37,7 @@ public class NodeServer implements AutoCloseable {
     }
     
     private void startInternal(WebServer s) throws Exception {
+        LOGGER.fine("Starting...");
         XmlRpcServer xmlRpcServer = s.getXmlRpcServer();
         xmlRpcServer.setHandlerMapping(new MethodHandlerMapping(new NodeApiServerDispatcher()));
         XmlRpcServerConfigImpl serverConfig =
@@ -54,6 +54,7 @@ public class NodeServer implements AutoCloseable {
     @Override
     public void close() {
         LOGGER.entering(CLASS_NAME, "close");
+        LOGGER.fine("Stopping...");
         server.ifPresent(WebServer::shutdown);
         LOGGER.exiting(CLASS_NAME, "close");
     }
