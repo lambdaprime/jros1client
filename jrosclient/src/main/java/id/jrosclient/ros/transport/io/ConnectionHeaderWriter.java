@@ -11,6 +11,7 @@ import static id.jrosclient.ros.transport.ConnectionHeader.*;
 public class ConnectionHeaderWriter {
 
     private DataOutput out;
+    private Utils utils = new Utils();
 
     public ConnectionHeaderWriter(DataOutput out) {
         this.out = out;
@@ -23,21 +24,17 @@ public class ConnectionHeaderWriter {
         len += len(TYPE, header.type) + 4;
         len += len(MESSAGE_DEFINITION, header.messageDefinition) + 4;
         len += len(MD5_SUM, header.md5sum) + 4;
-        writeLen(out, len);
-        writeField(CALLER_ID, header.callerId, out);
-        writeField(TOPIC, header.topic, out);
-        writeField(TYPE, header.type, out);
-        writeField(MESSAGE_DEFINITION, header.messageDefinition, out);
-        writeField(MD5_SUM, header.md5sum, out);
+        utils.writeLen(out, len);
+        writeField(CALLER_ID, header.callerId);
+        writeField(TOPIC, header.topic);
+        writeField(TYPE, header.type);
+        writeField(MESSAGE_DEFINITION, header.messageDefinition);
+        writeField(MD5_SUM, header.md5sum);
     }
-
-    private void writeLen(DataOutput out, int len) throws IOException {
-        out.writeInt(Integer.reverseBytes(len));
-    }
-
-    private void writeField(String field, Optional<String> value, DataOutput out) throws IOException {
+    
+    private void writeField(String field, Optional<String> value) throws IOException {
         if (value.isEmpty()) return;
-        writeLen(out, len(field, value));
+        utils.writeLen(out, len(field, value));
         out.write(field.getBytes());
         out.write('=');
         out.write(value.get().getBytes());

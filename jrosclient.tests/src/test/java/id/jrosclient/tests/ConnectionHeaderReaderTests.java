@@ -16,7 +16,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.io.ConnectionHeaderReader;
 import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
-import id.jrosmessages.RosDataInput;
 import id.xfunction.XUtils;
 import id.xfunction.function.Curry;
 import id.xfunction.function.Unchecked;
@@ -31,7 +30,7 @@ public class ConnectionHeaderReaderTests {
     @MethodSource("headerSamples")
     public void test_happy(ConnectionHeaderSample header) throws Exception {
         byte[] b = readByteCodes(header.getResource());
-        var in = new RosDataInput(new DataInputStream(new ByteArrayInputStream(b)));
+        var in = new DataInputStream(new ByteArrayInputStream(b));
         var chr = new ConnectionHeaderReader(in);
         ConnectionHeader ch = chr.read();
         assertEquals(header.getHeader(), ch);

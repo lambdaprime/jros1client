@@ -14,10 +14,10 @@ public class RosDataOutput implements OutputKineticStream {
         this.out = out;
     }
 
-    private void writeLen(int len) throws IOException {
+    public void writeLen(int len) throws IOException {
         out.writeInt(Integer.reverseBytes(len));
     }
-
+    
     @Override
     public void writeString(String str) throws IOException {
         writeLen(str.length());

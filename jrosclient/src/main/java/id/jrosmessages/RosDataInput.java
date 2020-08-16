@@ -3,8 +3,6 @@ package id.jrosmessages;
 import java.io.DataInput;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import id.kineticstreamer.InputKineticStream;
 import id.kineticstreamer.KineticStreamReader;
@@ -15,19 +13,6 @@ public class RosDataInput implements InputKineticStream {
 
     public RosDataInput(DataInput in) {
         this.in = in;
-    }
-
-    public Entry<String, String> readField(int fieldLen) throws IOException {
-        byte[] buf = new byte[fieldLen];
-        in.readFully(buf);
-        var a = new String(buf).split("=");
-        return Map.entry(a[0], a[1]);
-    }
-
-    public byte[] readBody(int bodyLen) throws IOException {
-        byte[] buf = new byte[bodyLen];
-        in.readFully(buf);
-        return buf;
     }
 
     @Override
