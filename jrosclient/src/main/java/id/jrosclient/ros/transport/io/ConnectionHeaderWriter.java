@@ -18,13 +18,33 @@ public class ConnectionHeaderWriter {
     }
 
     public void write(ConnectionHeader header) throws IOException {
+        int totalLen = 0;
         int len = 0;
-        len += len(CALLER_ID, header.callerId) + 4;
-        len += len(TOPIC, header.topic) + 4;
-        len += len(TYPE, header.type) + 4;
-        len += len(MESSAGE_DEFINITION, header.messageDefinition) + 4;
-        len += len(MD5_SUM, header.md5sum) + 4;
-        utils.writeLen(out, len);
+        
+        len = len(CALLER_ID, header.callerId);
+        if (len > 0)
+            totalLen += len + 4;
+        
+        len = len(TOPIC, header.topic);
+        if (len > 0)
+            totalLen += len + 4;
+        
+        len = len(TYPE, header.type);
+        if (len > 0)
+            totalLen += len + 4;
+        
+        len = len(MESSAGE_DEFINITION, header.messageDefinition);
+        if (len > 0)
+            totalLen += len + 4;
+        
+        len = len(MD5_SUM, header.md5sum);
+        if (len > 0)
+            totalLen += len + 4;
+        
+        utils.writeLen(out, totalLen);
+        
+        if (totalLen == 0) return;
+        
         writeField(CALLER_ID, header.callerId);
         writeField(TOPIC, header.topic);
         writeField(TYPE, header.type);
@@ -41,7 +61,9 @@ public class ConnectionHeaderWriter {
     }
 
     private int len(String field, Optional<String> value) {
+        if (value.isEmpty()) return 0;
         int len = lenField(value, field.length());
+        if (len == 0) return 0;
         len += 1; // '='
         return len;
     }

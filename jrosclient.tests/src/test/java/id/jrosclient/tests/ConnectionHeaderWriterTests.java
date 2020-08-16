@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.io.ConnectionHeaderWriter;
 import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
 import id.xfunction.XUtils;
@@ -35,4 +37,11 @@ public class ConnectionHeaderWriterTests {
         assertEquals(expected, collector.asHexString());
     }
 
+    @Test
+    public void test_write_empty_header() throws Exception {
+        var collector = new XOutputStream();
+        var dos = new DataOutputStream(collector);
+        new ConnectionHeaderWriter(dos).write(new ConnectionHeader());
+        assertEquals("00, 00, 00, 00", collector.asHexString());
+    }
 }
