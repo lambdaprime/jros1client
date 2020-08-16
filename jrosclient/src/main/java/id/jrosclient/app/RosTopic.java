@@ -56,6 +56,7 @@ public class RosTopic {
     }
 
     private void echo(LinkedList<String> rest) throws Exception {
+        if (rest.size() != 2) throw new ArgumentParsingException();
         JRosClient client = new JRosClient(masterUrl);
             if (nodePort.isPresent())
                 client.withPort(nodePort.get());
