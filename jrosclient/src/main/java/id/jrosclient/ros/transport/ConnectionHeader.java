@@ -4,6 +4,9 @@ import java.util.Optional;
 
 import id.xfunction.XJson;
 
+/**
+ * @see http://wiki.ros.org/ROS/Connection%20Header
+ */
 public class ConnectionHeader {
 
     public static final String CALLER_ID = "callerid";
@@ -12,11 +15,42 @@ public class ConnectionHeader {
     public static final String MESSAGE_DEFINITION = "message_definition";
     public static final String MD5_SUM = "md5sum";
 
+    /**
+     * Name of node sending data.
+     * 
+     * Required to be set by the subscriber.
+     * It is recommended to set it by publisher as well for debugging purposes.
+     */
     public Optional<String> callerId = Optional.empty();
+    
+    /**
+     * Name of the topic the subscriber is connecting to
+     * 
+     * Required to be set by the subscriber.
+     */
     public Optional<String> topic = Optional.empty();
+    
+    /**
+     * Message type.
+     * 
+     * Required to be set by the subscriber.
+     * Required to be set by the publisher.
+     */
     public Optional<String> type = Optional.empty();
-    public Optional<String> messageDefinition = Optional.empty();
+    
+    /**
+     * Md5sum of the message type
+     * 
+     * Required to be set by the subscriber.
+     * Required to be set by the publisher.
+     */
     public Optional<String> md5sum = Optional.empty();
+
+    /**
+     * 
+     * Required to be set by the subscriber.
+     */
+    public Optional<String> messageDefinition = Optional.empty();
 
     public ConnectionHeader withCallerId(String callerId) {
         this.callerId = Optional.of(callerId);
@@ -53,6 +87,22 @@ public class ConnectionHeader {
         }
     }
 
+    public Optional<String> getMd5sum() {
+        return md5sum;
+    }
+    
+    public Optional<String> getType() {
+        return type;
+    }
+    
+    public Optional<String> getCallerId() {
+        return callerId;
+    }
+    
+    public Optional<String> getTopic() {
+        return topic;
+    }
+    
     @Override
     public String toString() {
         return XJson.asString(
