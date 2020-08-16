@@ -14,5 +14,6 @@ public interface TopicPublisher<M extends Message> extends Flow.Publisher<M> {
     /**
      * @return Topic name
      */
-    String getTopic() ;
+    String getTopic();
+
 }

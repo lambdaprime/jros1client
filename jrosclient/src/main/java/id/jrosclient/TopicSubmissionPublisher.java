@@ -1,15 +1,13 @@
 package id.jrosclient;
 
 import java.util.concurrent.SubmissionPublisher;
-import java.util.logging.Logger;
 
 import id.jrosmessages.Message;
-import id.xfunction.logging.XLogger;
 
-public class TopicSubmissionPublisher<M extends Message> extends SubmissionPublisher<M> implements TopicPublisher<M>
+public class TopicSubmissionPublisher<M extends Message> extends SubmissionPublisher<M> 
+    implements TopicPublisher<M>
 {
 
-    private static final Logger LOGGER = XLogger.getLogger(TopicSubmissionPublisher.class);
     private Class<M> messageClass;
     private String topic;
     
@@ -25,4 +23,5 @@ public class TopicSubmissionPublisher<M extends Message> extends SubmissionPubli
     public String getTopic() {
         return topic;
     }
+    
 }

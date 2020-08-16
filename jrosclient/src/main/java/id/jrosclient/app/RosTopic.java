@@ -3,7 +3,6 @@ package id.jrosclient.app;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import id.jrosclient.JRosClient;
 import id.jrosclient.TopicSubscriber;
@@ -13,11 +12,9 @@ import id.jrosmessages.MessagesDirectory;
 import id.xfunction.ArgumentParsingException;
 import id.xfunction.XRE;
 import id.xfunction.function.Unchecked;
-import id.xfunction.logging.XLogger;
 
 public class RosTopic {
 
-    private static final Logger LOGGER = XLogger.getLogger(RosTopic.class);
     private static final String CALLER_ID = "jrosclient-rostopic";
     private String masterUrl;
     private Optional<Integer> nodePort;
