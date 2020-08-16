@@ -7,7 +7,7 @@ import id.jrosclient.ros.api.NodeApi;
 import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.ros.entities.transformers.Transformers;
 import id.jrosclient.ros.responses.ProtocolParamsResponse;
-import id.jrosclient.ros.responses.parsers.ProtocolParamsParser;
+import id.jrosclient.ros.responses.transformers.ProtocolParamsTransformer;
 
 /**
  * Client implementation of ROS Node API which allows to communicate
@@ -17,7 +17,7 @@ import id.jrosclient.ros.responses.parsers.ProtocolParamsParser;
 public class NodeApiClientImpl implements NodeApi {
 
     private RosRpcClient client;
-    private ProtocolParamsParser protocolParamsParser = new ProtocolParamsParser();
+    private ProtocolParamsTransformer protocolParamsParser = new ProtocolParamsTransformer();
     private Transformers transformers = new Transformers();
 
     public NodeApiClientImpl(RosRpcClient client) {

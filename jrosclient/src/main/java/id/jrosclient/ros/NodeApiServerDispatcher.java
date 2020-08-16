@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import id.jrosclient.ros.api.NodeApi;
 import id.jrosclient.ros.api.impl.NodeApiServerImpl;
 import id.jrosclient.ros.entities.transformers.Transformers;
-import id.jrosclient.ros.responses.parsers.ProtocolParamsParser;
+import id.jrosclient.ros.responses.transformers.ProtocolParamsTransformer;
 
 /**
  * Dispatches the calls from Apache XML RPC client to NodeApi performing
@@ -14,7 +14,7 @@ import id.jrosclient.ros.responses.parsers.ProtocolParamsParser;
  */
 public class NodeApiServerDispatcher {
 
-    private ProtocolParamsParser protocolParamsParser = new ProtocolParamsParser();
+    private ProtocolParamsTransformer protocolParamsParser = new ProtocolParamsTransformer();
     private Transformers transformers = new Transformers();
     private NodeApi nodeApi = new NodeApiServerImpl();
 

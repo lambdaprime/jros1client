@@ -1,17 +1,17 @@
-package id.jrosclient.ros.responses.parsers;
+package id.jrosclient.ros.responses.transformers;
 
 import id.jrosclient.ros.api.impl.RawResponse;
 import id.jrosclient.ros.responses.Response;
 import id.jrosclient.ros.responses.Response.StatusCode;
 
-public class ResponseTransformer {
+public interface ResponseTransformer {
 
-    protected void populate(Response dst, RawResponse src) {
+    static void populate(Response dst, RawResponse src) {
         dst.statusCode = StatusCode.valueOf(src.get(0).integer());
         dst.statusMessage = src.get(1).string();
     }
 
-    protected void populate(RawResponse dst, Response src) {
+    static void populate(RawResponse dst, Response src) {
         dst.list().set(0, src.statusCode.code());
         dst.list().set(1, src.statusMessage);
     }

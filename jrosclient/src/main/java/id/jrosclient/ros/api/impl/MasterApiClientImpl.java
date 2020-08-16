@@ -6,21 +6,21 @@ import id.jrosclient.ros.entities.transformers.Transformers;
 import id.jrosclient.ros.responses.ListResponse;
 import id.jrosclient.ros.responses.StringResponse;
 import id.jrosclient.ros.responses.SystemStateResponse;
-import id.jrosclient.ros.responses.parsers.ListParser;
-import id.jrosclient.ros.responses.parsers.StringParser;
-import id.jrosclient.ros.responses.parsers.SystemStateParser;
+import id.jrosclient.ros.responses.transformers.ListTransformer;
+import id.jrosclient.ros.responses.transformers.StringTransformer;
+import id.jrosclient.ros.responses.transformers.SystemStateTransformer;
 
 public class MasterApiClientImpl implements MasterApi {
 
     private RosRpcClient client;
-    private SystemStateParser systemStateParser;
-    private StringParser stringParser = new StringParser();
-    private ListParser stringListParser = new ListParser();
+    private SystemStateTransformer systemStateParser;
+    private StringTransformer stringParser = new StringTransformer();
+    private ListTransformer stringListParser = new ListTransformer();
 
     public MasterApiClientImpl(RosRpcClient client) {
         this.client = client;
         var transformers = new Transformers();
-        this.systemStateParser = new SystemStateParser(transformers.publisherTransformer);
+        this.systemStateParser = new SystemStateTransformer(transformers.publisherTransformer);
     }
 
     @Override

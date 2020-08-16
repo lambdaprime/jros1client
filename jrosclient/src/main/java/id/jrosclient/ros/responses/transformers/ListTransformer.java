@@ -1,14 +1,14 @@
-package id.jrosclient.ros.responses.parsers;
+package id.jrosclient.ros.responses.transformers;
 
 import id.jrosclient.ros.api.impl.RawResponse;
 import id.jrosclient.ros.responses.ListResponse;
 import id.jrosclient.ros.responses.Response.StatusCode;
 
-public class ListParser extends ResponseTransformer {
+public class ListTransformer implements ResponseTransformer {
 
     public ListResponse<String> parseString(String key, RawResponse response) {
         ListResponse<String> ss = new ListResponse<>(key);
-        populate(ss, response);
+        ResponseTransformer.populate(ss, response);
         if (ss.statusCode == StatusCode.ERROR) {
             return ss;
         }
