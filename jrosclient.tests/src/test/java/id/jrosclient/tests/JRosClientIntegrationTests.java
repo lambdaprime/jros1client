@@ -74,9 +74,8 @@ public class JRosClientIntegrationTests {
     private String run(int expectedCode, String fmt, Object...args) {
         var proc = new XExec(JROSCLIENT_PATH + " " + String.format(fmt, args))
                 .run();
-        var code = proc.getCode();
-        proc.flushStdout();
-        proc.flushStderr();
+        proc.flush(false);
+        var code = proc.await();
         var out = proc.stdoutAsString() + "\n" + proc.stderrAsString() + "\n";
         System.out.print(out);
         Assertions.assertEquals(expectedCode, code);
