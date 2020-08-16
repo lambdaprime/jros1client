@@ -15,4 +15,10 @@ public class ProtocolParamsParser extends ResponseTransformer {
         return ss;
     }
     
+    public RawResponse transform(ProtocolParamsResponse response) {
+        var raw = new RawResponse(new Object[3]);
+        populate(raw, response);
+        raw.list().set(2, new Object[]{response.name, response.host, response.port});
+        return raw;
+    }
 }

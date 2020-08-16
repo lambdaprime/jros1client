@@ -14,7 +14,8 @@ public class ProtocolTransformer implements Transformer<Protocol> {
 
     @Override
     public Protocol transform(Object protocol) {
-        return null;
+        Object[] a = (Object[]) protocol;
+        return new Protocol((String) a[0]);
     }
 
 }

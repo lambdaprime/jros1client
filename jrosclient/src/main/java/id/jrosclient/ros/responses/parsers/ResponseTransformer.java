@@ -6,13 +6,14 @@ import id.jrosclient.ros.responses.Response.StatusCode;
 
 public class ResponseTransformer {
 
-    protected void populate(Response response, RawResponse rawResponse) {
-        switch (rawResponse.get(0).integer()) {
-        case -1: response.statusCode = StatusCode.ERROR; break;
-        case 0: response.statusCode = StatusCode.FAILURE; break;
-        case 1: response.statusCode = StatusCode.SUCCESS; break;
-        default: throw new RuntimeException();
-        }
-        response.statusMessage = rawResponse.get(1).string();
+    protected void populate(Response dst, RawResponse src) {
+        dst.statusCode = StatusCode.valueOf(src.get(0).integer());
+        dst.statusMessage = src.get(1).string();
     }
+
+    protected void populate(RawResponse dst, Response src) {
+        dst.list().set(0, src.statusCode.code());
+        dst.list().set(1, src.statusMessage);
+    }
+
 }
