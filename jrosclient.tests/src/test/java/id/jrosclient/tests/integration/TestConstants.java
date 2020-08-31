@@ -1,4 +1,4 @@
-package id.jrosclient.tests;
+package id.jrosclient.tests.integration;
 
 public interface TestConstants {
 

@@ -1,8 +1,8 @@
-package id.jrosclient.tests;
+package id.jrosclient.tests.integration;
 
-import static id.jrosclient.tests.TestConstants.CALLER_ID;
-import static id.jrosclient.tests.TestConstants.TOPIC;
 import static id.jrosclient.tests.TestUtils.compare;
+import static id.jrosclient.tests.integration.TestConstants.CALLER_ID;
+import static id.jrosclient.tests.integration.TestConstants.TOPIC;
 
 import java.net.MalformedURLException;
 
@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import id.jrosclient.JRosClient;
 import id.jrosclient.ros.NodeServer;
+import id.jrosclient.tests.TestUtils;
 
 public class MasterApiTests {
     

@@ -5,7 +5,7 @@
  * Website: https://github.com/lambdaprime
  * 
  */
-package id.jrosclient.tests;
+package id.jrosclient.tests.integration;
 
 import static id.xfunction.XUtils.readResource;
 
