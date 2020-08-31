@@ -56,13 +56,13 @@ public class RosTopic {
     }
 
     private void echo(LinkedList<String> rest) throws Exception {
-        if (rest.size() < 2) throw new ArgumentParsingException();
         LinkedList<String> positionalArgs = new LinkedList<>();
         int[] count = new int[1];
         Map<String, Consumer<String>> handlers = Map.of(
                 "-n", n -> { count[0] = Integer.parseInt(n); }
         );
         new SmartArgs(handlers, positionalArgs::add).parse(rest.toArray(new String[0]));
+        if (positionalArgs.size() < 2) throw new ArgumentParsingException();
         JRosClient client = new JRosClient(masterUrl);
             if (nodePort.isPresent())
                 client.withPort(nodePort.get());

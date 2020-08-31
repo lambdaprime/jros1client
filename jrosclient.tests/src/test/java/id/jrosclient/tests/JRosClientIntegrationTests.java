@@ -39,6 +39,7 @@ public class JRosClientIntegrationTests {
     public void test() throws Exception {
         test_no_args();
         test_echo();
+        test_echo_missing_args();
         test_debug();
         test_list();
     }
@@ -48,6 +49,11 @@ public class JRosClientIntegrationTests {
         Assertions.assertTrue(new TemplateMatcher(readResource("echo")).matches(out));
     }
 
+    private void test_echo_missing_args() {
+        var out = runFail("--masterUrl http://ubuntu:11311/ --nodePort 1234 rostopic echo testTopic");
+        Assertions.assertEquals(readResource("README.md") + "\n\n", out);
+    }
+    
     private void test_no_args() throws Exception {
         var out = runFail("");
         Assertions.assertEquals(readResource("README.md") + "\n\n", out);
