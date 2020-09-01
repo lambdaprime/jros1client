@@ -28,7 +28,7 @@ public class NodeApiServerImpl implements NodeApi {
         response.withProtocol(Protocol.TCPROS);
         response.withPort(1235);
         response.withHost("ubuntu");
-        LOGGER.exiting("requestTopicxx", response);
+        LOGGER.exiting("requestTopic", response);
         return response;
     }
 

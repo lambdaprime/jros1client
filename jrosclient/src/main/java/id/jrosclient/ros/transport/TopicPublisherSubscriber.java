@@ -13,6 +13,7 @@ import id.jrosclient.ros.transport.io.MessagePacketWriter;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageTransformer;
 import id.jrosmessages.MetadataAccessor;
+import id.xfunction.XAsserts;
 import id.xfunction.io.XOutputStream;
 import id.xfunction.logging.XLogger;
 
@@ -20,12 +21,8 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
 
     private static final XLogger LOGGER = XLogger.getLogger(TcpRosServer.class);
     private MessageTransformer transformer = new MessageTransformer();
-    private CompletableFuture<MessageResponse> future;
+    private CompletableFuture<MessageResponse> future = CompletableFuture.completedFuture(null);
     private Subscription subscription;
-
-    public TopicPublisherSubscriber(CompletableFuture<MessageResponse> future) {
-        this.future = future;
-    }
 
     @Override
     public void onSubscribe(Subscription subscription) {
@@ -52,9 +49,23 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         LOGGER.fine("Sending message to subscriber");
         LOGGER.fine(os.asHexString());
         future.complete(new MessageResponse(ByteBuffer.wrap(os.toByteArray()), false));
-        //subscription.request(1);
     }
 
+    /**
+     * Requests a new message from the publisher to be delivered to subscribed ROS
+     * clients.
+     * 
+     * @return future which completes when new message is published
+     */
+    public CompletableFuture<MessageResponse> request() {
+        XAsserts.assertTrue(future.isDone(),
+                "Fail to request new message since previously published message was not processed");
+        future = new CompletableFuture<MessageResponse>();
+        if (subscription != null)
+            subscription.request(1);
+        return future;
+    }
+    
     @Override
     public void onError(Throwable throwable) {
         LOGGER.severe(throwable.getMessage());

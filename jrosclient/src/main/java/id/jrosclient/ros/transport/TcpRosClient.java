@@ -20,6 +20,7 @@ import id.jrosmessages.Message;
 import id.jrosmessages.MessageTransformer;
 import id.jrosmessages.MetadataAccessor;
 import id.xfunction.XUtils;
+import id.xfunction.concurrent.NamedThreadFactory;
 import id.xfunction.concurrent.SameThreadExecutorService;
 import id.xfunction.logging.XLogger;
 
@@ -39,7 +40,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
     private DataInputStream dis;
     private ConnectionHeaderWriter writer;
     private MessagePacketReader reader;
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private ExecutorService executorService;
 
     public TcpRosClient(String callerId, String topic, String host, int port,
             Class<M> messageClass) {
@@ -49,6 +50,8 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
         this.host = host;
         this.port = port;
         this.messageClass = messageClass;
+        executorService = Executors.newSingleThreadExecutor(
+                new NamedThreadFactory("tcp-ros-client-" + topic.replace("/", "")));
     }
     
     public void connect() throws IOException {
@@ -61,7 +64,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
         MetadataAccessor metadataAccessor = new MetadataAccessor();
         String messageDefinition = "string data";
         var ch = new ConnectionHeader()
-                .withTopic("/" + topic)
+                .withTopic(topic.startsWith("/")? topic: "/" + topic)
                 .withCallerId(callerId)
                 .withType(metadataAccessor.getType(messageClass))
                 .withMessageDefinition(messageDefinition )
@@ -85,8 +88,11 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
         byte[] body = response.getBody();
         while (!executorService.isShutdown()) {
             var msg = new MessageTransformer().transform(body, messageClass);
+            LOGGER.log(Level.FINE, "Submitting received message to subscriber");
             submit(msg);
+            LOGGER.log(Level.FINE, "Requesting next message");
             writer.write(header);
+            dos.flush();
             body = reader.readBody();
         }
     }

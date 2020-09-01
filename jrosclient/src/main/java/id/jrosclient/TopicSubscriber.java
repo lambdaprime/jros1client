@@ -12,6 +12,11 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
     private Subscription subscription;
     private String topic;
     
+    /**
+     * @param messageClass class of the messages in this topic
+     * @param topic topic name which should always start from '/' or
+     * it will be added automatically
+     */
     public TopicSubscriber(Class<M> messageClass, String topic) {
         this.messageClass = messageClass;
         this.topic = topic;

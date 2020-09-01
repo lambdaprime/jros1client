@@ -18,7 +18,6 @@ import id.jrosclient.ros.transport.TcpRosClient;
 import id.jrosclient.ros.transport.TcpRosServer;
 import id.jrosmessages.Message;
 import id.jrosmessages.MetadataAccessor;
-import id.jrosmessages.std_msgs.StringMessage;
 import id.xfunction.XRE;
 import id.xfunction.function.Unchecked;
 import id.xfunction.logging.XLogger;
@@ -108,12 +107,4 @@ public class JRosClient implements AutoCloseable {
         clients.clear();
     }
 
-    public static void main(String[] args) throws Exception {
-        var publisher = new TopicSubmissionPublisher<>(StringMessage.class, "/testTopic2");
-        new JRosClient("http://ubuntu:11311/").publish(publisher);
-        while (true) {
-            publisher.submit(new StringMessage().withData("hello"));
-            Thread.sleep(1000);
-        }
-    }
 }
