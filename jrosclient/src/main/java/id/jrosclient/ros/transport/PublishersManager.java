@@ -21,4 +21,8 @@ public class PublishersManager {
     public Optional<TopicPublisher<?>> getPublisher(String topic) {
         return Optional.ofNullable(publishers.get(topic));
     }
+
+    public void remove(String topic) {
+        publishers.remove(topic);
+    }
 }

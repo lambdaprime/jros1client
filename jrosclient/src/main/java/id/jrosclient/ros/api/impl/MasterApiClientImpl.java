@@ -3,9 +3,11 @@ package id.jrosclient.ros.api.impl;
 import id.jrosclient.impl.RosRpcClient;
 import id.jrosclient.ros.api.MasterApi;
 import id.jrosclient.ros.entities.transformers.Transformers;
+import id.jrosclient.ros.responses.IntResponse;
 import id.jrosclient.ros.responses.ListResponse;
 import id.jrosclient.ros.responses.StringResponse;
 import id.jrosclient.ros.responses.SystemStateResponse;
+import id.jrosclient.ros.responses.transformers.IntTransformer;
 import id.jrosclient.ros.responses.transformers.ListTransformer;
 import id.jrosclient.ros.responses.transformers.StringTransformer;
 import id.jrosclient.ros.responses.transformers.SystemStateTransformer;
@@ -16,6 +18,7 @@ public class MasterApiClientImpl implements MasterApi {
     private SystemStateTransformer systemStateParser;
     private StringTransformer stringParser = new StringTransformer();
     private ListTransformer stringListParser = new ListTransformer();
+    private IntTransformer intParser = new IntTransformer();
 
     public MasterApiClientImpl(RosRpcClient client) {
         this.client = client;
@@ -56,6 +59,13 @@ public class MasterApiClientImpl implements MasterApi {
         Object[] params = new Object[]{callerId, topic, topicType, callerApi};
         return stringListParser.parseString("publishers",
                 client.execute("registerSubscriber", params));
+    }
+
+    @Override
+    public IntResponse unregisterPublisher(String callerId, String topic, String callerApi) {
+        Object[] params = new Object[]{callerId, topic, callerApi};
+        return intParser.parse("subscriberApis",
+                client.execute("unregisterPublisher", params));
     }
 
 }

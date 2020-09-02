@@ -24,19 +24,32 @@ public class JRosClientTests {
     @Test
     public void test_publish() throws Exception {
         var future = new CompletableFuture<String>();
-        var publisher = new TopicSubmissionPublisher<>(StringMessage.class, "/testTopic2");
+        String topic = "/testTopic2";
+        var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);
         String data = "hello";
         client.publish(publisher);
-        client.subscribe(new TopicSubscriber<>(StringMessage.class, "/testTopic2") {
+        client.subscribe(new TopicSubscriber<>(StringMessage.class, topic) {
             @Override
             public void onNext(StringMessage item) {
                 System.out.println(item);
                 future.complete(item.data);
             }
-        });
+        }); 
         while (!future.isDone()) {
             publisher.submit(new StringMessage().withData(data));
         }
+        client.unpublish(topic);
         Assertions.assertEquals(data, future.get());
+    }
+    
+    @Test
+    public void test_unpublish() throws Exception {
+        var topic = "/testTopic3";
+        Assertions.assertFalse(client.hasPublisher(topic));
+        var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);
+        client.publish(publisher);
+        Assertions.assertTrue(client.hasPublisher(topic));
+        client.unpublish(topic);
+        Assertions.assertFalse(client.hasPublisher(topic));
     }
 }

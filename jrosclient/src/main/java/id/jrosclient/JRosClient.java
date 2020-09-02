@@ -100,6 +100,33 @@ public class JRosClient implements AutoCloseable {
         LOGGER.log(Level.FINE, "Current subscribers: {0}", subscribers.toString());
     }
     
+    public <M extends Message> void unpublish(String topic) 
+            throws Exception
+    {
+        var publisherOpt = publishersManager.getPublisher(topic);
+        if (publisherOpt.isEmpty()) {
+            LOGGER.log(Level.FINE, "There is no publishers for topic {0}, nothing to unpublish",
+                    topic);
+            return;
+        }
+        var publisher = publisherOpt.get();
+        if (publisher instanceof TopicSubmissionPublisher) {
+            ((TopicSubmissionPublisher<?>)publisher).close();
+        }
+        var num = getMasterApi().unregisterPublisher(CALLER_ID, topic,
+                nodeServer.getNodeApi());
+        LOGGER.log(Level.FINE, "Unregistered publisher response: {0}", num.toString());
+        publishersManager.remove(topic);
+    }
+    
+    /**
+     * Checks if there are any publisher for given topic
+     */
+    public boolean hasPublisher(String topic) {
+        return getMasterApi().getSystemState(CALLER_ID).publishers.stream()
+                .anyMatch(p -> topic.equals(p.topic));
+    }
+    
     @Override
     public void close() throws Exception {
         nodeServer.close();
