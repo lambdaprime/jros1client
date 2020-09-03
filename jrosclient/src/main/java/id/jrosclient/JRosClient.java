@@ -110,9 +110,7 @@ public class JRosClient implements AutoCloseable {
             return;
         }
         var publisher = publisherOpt.get();
-        if (publisher instanceof TopicSubmissionPublisher) {
-            ((TopicSubmissionPublisher<?>)publisher).close();
-        }
+        publisher.close();
         var num = getMasterApi().unregisterPublisher(CALLER_ID, topic,
                 nodeServer.getNodeApi());
         LOGGER.log(Level.FINE, "Unregistered publisher response: {0}", num.toString());

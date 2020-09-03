@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Flow.Subscriber;
 import java.util.logging.Level;
 
 import id.ICE.MessageResponse;
@@ -62,6 +63,9 @@ public class TcpRosServer implements MessageService, AutoCloseable {
             throw new XRE("Attempt to close client with active publishers: %s", publishers);
         }
         LOGGER.fine("Stopping...");
+        subscribers.values()
+            .forEach(Subscriber::onComplete);
+        subscribers.clear();
         Unchecked.run(() -> server.close());
         isStarted = false;
     }

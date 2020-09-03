@@ -5,6 +5,9 @@ import java.util.concurrent.SubmissionPublisher;
 import id.jrosmessages.Message;
 import id.xfunction.XJson;
 
+/**
+ * Default TopicPublisher implementation
+ */
 public class TopicSubmissionPublisher<M extends Message> extends SubmissionPublisher<M> 
     implements TopicPublisher<M>
 {
@@ -29,4 +32,5 @@ public class TopicSubmissionPublisher<M extends Message> extends SubmissionPubli
     public String toString() {
         return XJson.asString("topic", topic);
     }
+
 }

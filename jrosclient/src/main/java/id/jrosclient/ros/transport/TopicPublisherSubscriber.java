@@ -23,6 +23,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     private MessageTransformer transformer = new MessageTransformer();
     private CompletableFuture<MessageResponse> future = CompletableFuture.completedFuture(null);
     private Subscription subscription;
+    private boolean isEstablished;
 
     @Override
     public void onSubscribe(Subscription subscription) {
@@ -37,9 +38,12 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         var dos = new DataOutputStream(new BufferedOutputStream(os));
         var writer = new MessagePacketWriter(dos);
         MetadataAccessor metadataAccessor = new MetadataAccessor();
-        var ch = new ConnectionHeader()
-                .withType(metadataAccessor.getType(message.getClass()))
+        var ch = new ConnectionHeader();
+        if (!isEstablished) {
+            ch.withType(metadataAccessor.getType(message.getClass()))
                 .withMd5Sum(metadataAccessor.getMd5(message.getClass()));
+            isEstablished = true;
+        }
         try {
             writer.write(new MessagePacket(ch, transformer.transform(message)));
             dos.flush();

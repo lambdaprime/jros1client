@@ -4,7 +4,7 @@ import java.util.concurrent.Flow;
 
 import id.jrosmessages.Message;
 
-public interface TopicPublisher<M extends Message> extends Flow.Publisher<M> {
+public interface TopicPublisher<M extends Message> extends Flow.Publisher<M>, AutoCloseable {
 
     /**
      * @return class of messages which are published
@@ -16,4 +16,8 @@ public interface TopicPublisher<M extends Message> extends Flow.Publisher<M> {
      */
     String getTopic();
 
+    /**
+     * Stop to emit any new messages
+     */
+    void close() throws Exception;
 }

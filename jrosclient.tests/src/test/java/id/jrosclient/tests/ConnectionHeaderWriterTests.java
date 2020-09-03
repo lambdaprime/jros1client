@@ -42,6 +42,6 @@ public class ConnectionHeaderWriterTests {
         var collector = new XOutputStream();
         var dos = new DataOutputStream(collector);
         new ConnectionHeaderWriter(dos).write(new ConnectionHeader());
-        assertEquals("00, 00, 00, 00", collector.asHexString());
+        assertEquals("", collector.asHexString());
     }
 }

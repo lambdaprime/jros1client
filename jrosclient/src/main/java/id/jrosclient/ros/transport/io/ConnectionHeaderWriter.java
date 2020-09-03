@@ -41,9 +41,8 @@ public class ConnectionHeaderWriter {
         if (len > 0)
             totalLen += len + 4;
         
-        utils.writeLen(out, totalLen);
-        
         if (totalLen == 0) return;
+        utils.writeLen(out, totalLen);        
         
         writeField(CALLER_ID, header.callerId);
         writeField(TOPIC, header.topic);
