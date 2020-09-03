@@ -9,6 +9,7 @@ import id.jrosmessages.geometry_msgs.QuaternionMessage;
 import id.jrosmessages.geometry_msgs.Vector3Message;
 import id.jrosmessages.std_msgs.ColorRGBAMessage;
 import id.jrosmessages.std_msgs.HeaderMessage;
+import id.jrosmessages.std_msgs.Int32Message;
 import id.jrosmessages.std_msgs.StringMessage;
 import id.jrosmessages.visualization_msgs.MarkerMessage;
 
@@ -26,6 +27,7 @@ public class MessagesDirectory {
         add(ColorRGBAMessage.class);
         add(Vector3Message.class);
         add(MarkerMessage.class);
+        add(Int32Message.class);
     }
     
     public Class<? extends Message> get(String messageType) {
