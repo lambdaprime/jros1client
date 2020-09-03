@@ -3,8 +3,9 @@ package id.jrosclient.tests.integration;
 import java.net.MalformedURLException;
 import java.util.concurrent.CompletableFuture;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import id.jrosclient.JRosClient;
@@ -16,9 +17,14 @@ public class JRosClientTests {
 
     private static JRosClient client;
 
-    @BeforeAll
-    public static void setup() throws MalformedURLException {
+    @BeforeEach
+    public void setup() throws MalformedURLException {
         client = new JRosClient("http://ubuntu:11311/");
+    }
+
+    @AfterEach
+    public void clean() throws Exception {
+        client.close();
     }
 
     @Test
@@ -32,9 +38,10 @@ public class JRosClientTests {
             @Override
             public void onNext(StringMessage item) {
                 System.out.println(item);
+                getSubscription().cancel();
                 future.complete(item.data);
             }
-        }); 
+        });
         while (!future.isDone()) {
             publisher.submit(new StringMessage().withData(data));
         }

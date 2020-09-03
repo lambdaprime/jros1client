@@ -14,6 +14,7 @@ import id.ICE.MessageService;
 import id.jrosclient.TopicPublisher;
 import id.jrosclient.ros.transport.io.ConnectionHeaderReader;
 import id.jrosmessages.MetadataAccessor;
+import id.xfunction.XRE;
 import id.xfunction.function.Unchecked;
 import id.xfunction.io.ByteBufferInputStream;
 import id.xfunction.logging.XLogger;
@@ -56,6 +57,10 @@ public class TcpRosServer implements MessageService, AutoCloseable {
 
     @Override
     public void close() {
+        var publishers = publishersManager.getPublishers();
+        if (!publishers.isEmpty()) {
+            throw new XRE("Attempt to close client with active publishers: %s", publishers);
+        }
         LOGGER.fine("Stopping...");
         Unchecked.run(() -> server.close());
         isStarted = false;

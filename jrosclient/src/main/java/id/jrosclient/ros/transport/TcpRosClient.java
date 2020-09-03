@@ -86,7 +86,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
         MessagePacket response = reader.read();
         LOGGER.log(Level.FINE, "Message packet: {0}", response);
         byte[] body = response.getBody();
-        while (!executorService.isShutdown()) {
+        while (!executorService.isShutdown() && hasSubscribers()) {
             var msg = new MessageTransformer().transform(body, messageClass);
             LOGGER.log(Level.FINE, "Submitting received message to subscriber");
             submit(msg);
@@ -99,7 +99,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
 
     @Override
     public void close() {
-        super.close();
         executorService.shutdown();
+        super.close();
     }
 }

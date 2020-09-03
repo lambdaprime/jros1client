@@ -1,6 +1,7 @@
 package id.jrosclient.ros.transport;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import id.xfunction.XRE;
 
 public class PublishersManager {
 
+    // topic name to its publisher
     private Map<String, TopicPublisher<?>> publishers = new HashMap<>();
     
     public <M extends Message> void add(TopicPublisher<M> publisher) {
@@ -24,5 +26,9 @@ public class PublishersManager {
 
     public void remove(String topic) {
         publishers.remove(topic);
+    }
+    
+    public List<TopicPublisher<?>> getPublishers() {
+        return List.copyOf(publishers.values());
     }
 }

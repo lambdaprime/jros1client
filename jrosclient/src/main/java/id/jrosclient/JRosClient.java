@@ -131,6 +131,7 @@ public class JRosClient implements AutoCloseable {
     public void close() throws Exception {
         nodeServer.close();
         clients.forEach(Unchecked.wrapAccept(TcpRosClient::close));
+        tcpRosServer.close();
         clients.clear();
     }
 

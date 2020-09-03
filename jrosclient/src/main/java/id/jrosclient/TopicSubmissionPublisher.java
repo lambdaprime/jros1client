@@ -3,6 +3,7 @@ package id.jrosclient;
 import java.util.concurrent.SubmissionPublisher;
 
 import id.jrosmessages.Message;
+import id.xfunction.XJson;
 
 public class TopicSubmissionPublisher<M extends Message> extends SubmissionPublisher<M> 
     implements TopicPublisher<M>
@@ -24,4 +25,8 @@ public class TopicSubmissionPublisher<M extends Message> extends SubmissionPubli
         return topic;
     }
     
+    @Override
+    public String toString() {
+        return XJson.asString("topic", topic);
+    }
 }
