@@ -23,7 +23,9 @@ public class MasterApiClientImpl implements MasterApi {
     public MasterApiClientImpl(RosRpcClient client) {
         this.client = client;
         var transformers = new Transformers();
-        this.systemStateParser = new SystemStateTransformer(transformers.publisherTransformer);
+        this.systemStateParser = new SystemStateTransformer(
+                transformers.publisherTransformer,
+                transformers.subscriberTransformer);
     }
 
     @Override
