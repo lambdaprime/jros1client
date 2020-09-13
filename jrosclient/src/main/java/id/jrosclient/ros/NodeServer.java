@@ -42,7 +42,7 @@ public class NodeServer implements AutoCloseable {
         xmlRpcServer.setHandlerMapping(new MethodHandlerMapping(new NodeApiServerDispatcher()));
         XmlRpcServerConfigImpl serverConfig =
             (XmlRpcServerConfigImpl) xmlRpcServer.getConfig();
-        serverConfig.setEnabledForExtensions(true);
+        serverConfig.setEnabledForExtensions(false);
         serverConfig.setContentLengthOptional(false);
         Unchecked.run(s::start);
     }
