@@ -13,10 +13,23 @@ import id.xfunction.XJson;
 public class ColorRGBAMessage implements Message {
 
     static final String NAME = "std_msgs/ColorRGBA";
+
+    public static final ColorRGBAMessage RED = new ColorRGBAMessage(0.F, 1.F, 0.F, 1.F);
     
     @Streamed
     public float r, g, b, a;
 
+    public ColorRGBAMessage() {
+        // TODO Auto-generated constructor stub
+    }
+    
+    public ColorRGBAMessage(float r, float g, float b, float a) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
+    }
+    
     public ColorRGBAMessage withR(float r) {
         this.r = r;
         return this;

@@ -17,6 +17,15 @@ public class Vector3Message implements Message {
     @Streamed
     public double x, y, z;
 
+    public Vector3Message() {
+    }
+    
+    public Vector3Message(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    
     public Vector3Message withX(double x) {
         this.x = x;
         return this;
