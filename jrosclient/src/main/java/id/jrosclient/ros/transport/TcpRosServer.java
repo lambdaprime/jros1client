@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import id.ICE.MessageResponse;
 import id.ICE.MessageServer;
 import id.ICE.MessageService;
+import id.jrosclient.JRosClientConfig;
 import id.jrosclient.TopicPublisher;
 import id.jrosclient.ros.transport.io.ConnectionHeaderReader;
 import id.jrosmessages.MetadataAccessor;
@@ -33,11 +34,10 @@ import id.xfunction.logging.XLogger;
 public class TcpRosServer implements MessageService, AutoCloseable {
 
     private static final XLogger LOGGER = XLogger.getLogger(TcpRosServer.class);
-    private static final int DEFAULT_PORT = 1235;
     
     private MetadataAccessor metadataAccessor = new MetadataAccessor();
     private MessageServer server = new MessageServer(this, new ConnectionHeaderScanner())
-            .withPort(DEFAULT_PORT);
+            .withPort(JRosClientConfig.TCPROS_SERVER_PORT);
     private ConnectionHeaderValidator headerValidator = new ConnectionHeaderValidator(
             metadataAccessor);
     private PublishersManager publishersManager;
@@ -103,6 +103,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
             LOGGER.log(Level.FINE, "Requested message validation error, closing...");
             return CompletableFuture.completedFuture(null);
         }
+        LOGGER.log(Level.FINE, "Received connection header {0}", header);
         return requestMessage(publisher, callerId );
     }
 

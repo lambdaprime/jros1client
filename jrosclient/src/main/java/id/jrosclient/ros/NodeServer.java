@@ -6,6 +6,7 @@ import org.apache.xmlrpc.server.XmlRpcServer;
 import org.apache.xmlrpc.server.XmlRpcServerConfigImpl;
 import org.apache.xmlrpc.webserver.WebServer;
 
+import id.jrosclient.JRosClientConfig;
 import id.xfunction.function.Unchecked;
 import id.xfunction.logging.XLogger;
 
@@ -13,10 +14,9 @@ public class NodeServer implements AutoCloseable {
 
     static final XLogger LOGGER = XLogger.getLogger(NodeServer.class);
     private static final String CLASS_NAME = NodeServer.class.getName();
-    private static final Integer DEFAULT_PORT = 1234;
 
     private Optional<WebServer> server = Optional.empty();
-    private int port = DEFAULT_PORT;
+    private int port = JRosClientConfig.NODE_SERVER_PORT;
 
     public NodeServer withPort(int port) {
         this.port = port;
