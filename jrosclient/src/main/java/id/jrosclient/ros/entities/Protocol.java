@@ -15,6 +15,10 @@ public class Protocol implements Entity {
         protocolName = name;
     }
 
+    public String getProtocolName() {
+        return protocolName;
+    }
+    
     @Override
     public String toString() {
         return XJson.asString("name", protocolName);

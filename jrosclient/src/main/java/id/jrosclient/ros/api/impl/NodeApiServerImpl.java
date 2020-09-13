@@ -1,11 +1,14 @@
 package id.jrosclient.ros.api.impl;
 
 import java.util.List;
+import java.util.function.Predicate;
 
+import id.jrosclient.JRosClientConfig;
 import id.jrosclient.ros.api.NodeApi;
 import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.ros.responses.ProtocolParamsResponse;
 import id.jrosclient.ros.responses.Response.StatusCode;
+import id.xfunction.XRE;
 import id.xfunction.logging.XLogger;
 
 /**
@@ -22,11 +25,16 @@ public class NodeApiServerImpl implements NodeApi {
             List<Protocol> protocols) 
     {
         LOGGER.entering(LOGGER.getName(), "requestTopic", protocols);
+        boolean hasTcpRos = protocols.stream()
+                .map(Protocol::getProtocolName)
+                .anyMatch(Predicate.isEqual(Protocol.TCPROS.protocolName));
+        if (!hasTcpRos) throw new XRE("Subscriber %s requested non TCPROS protocol",
+                callerId);
         var response = new ProtocolParamsResponse();
         response.withStatusCode(StatusCode.SUCCESS);
-        response.withStatusMessage("");
+        response.withStatusMessage("ready on ubuntu:38245");
         response.withProtocol(Protocol.TCPROS);
-        response.withPort(1235);
+        response.withPort(JRosClientConfig.TCPROS_SERVER_PORT);
         response.withHost("ubuntu");
         LOGGER.exiting("requestTopic", response);
         return response;
