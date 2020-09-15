@@ -19,6 +19,7 @@ public class MessagePacketWriter {
     public void write(MessagePacket packet) throws IOException {
         headerWriter.write(packet.getHeader());
         var body = packet.getBody();
+        if (body == null) return;
         utils.writeLen(out, body.length);
         out.write(body);
     }

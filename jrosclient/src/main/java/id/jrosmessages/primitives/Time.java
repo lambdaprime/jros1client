@@ -1,5 +1,7 @@
 package id.jrosmessages.primitives;
 
+import java.time.Instant;
+
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
@@ -44,4 +46,8 @@ public class Time {
                 && nsec == other.nsec;
     }
 
+    public static Time now() {
+        var now = Instant.now();
+        return new Time((int) now.getEpochSecond(), now.getNano());
+    }
 }

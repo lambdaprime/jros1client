@@ -37,22 +37,17 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         var os = new XOutputStream();
         var dos = new DataOutputStream(new BufferedOutputStream(os));
         var writer = new MessagePacketWriter(dos);
-        MetadataAccessor metadataAccessor = new MetadataAccessor();
-        var ch = new ConnectionHeader();
-        if (!isEstablished) {
-            ch.withType(metadataAccessor.getType(message.getClass()))
-                .withMd5Sum(metadataAccessor.getMd5(message.getClass()));
-            isEstablished = true;
-        }
+        var packet = createMessagePacket(message);
         try {
-            writer.write(new MessagePacket(ch, transformer.transform(message)));
+            writer.write(packet);
             dos.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         LOGGER.fine("Sending message to subscriber");
         LOGGER.fine(os.asHexString());
-        future.complete(new MessageResponse(ByteBuffer.wrap(os.toByteArray()), false));
+        future.complete(new MessageResponse(ByteBuffer.wrap(os.toByteArray()))
+                .withIgnoreNextRequest());
     }
 
     /**
@@ -79,5 +74,18 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     public void onComplete() {
         
     }
-
+    
+    private MessagePacket createMessagePacket(Message message) {
+        MetadataAccessor metadataAccessor = new MetadataAccessor();
+        var ch = new ConnectionHeader();
+        byte[] body = null;
+        if (!isEstablished) {
+            ch.withType(metadataAccessor.getType(message.getClass()))
+                .withMd5Sum(metadataAccessor.getMd5(message.getClass()));
+            isEstablished = true;
+        } else {
+            body = transformer.transform(message);
+        }
+        return new MessagePacket(ch, body);
+    }
 }
