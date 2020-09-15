@@ -1,2 +1,3 @@
 include 'jrosclient'
 include 'jrosclient.tests'
+include 'jrosclient.samples'

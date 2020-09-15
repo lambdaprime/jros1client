@@ -1,0 +1,30 @@
+// Requires gradle 5.4
+// gradle clean test
+
+plugins {
+    id 'java'
+}
+
+apply plugin : 'eclipse'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation project(':jrosclient')
+}
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+
+compileJava {
+    doFirst {
+        options.compilerArgs = [
+            '--module-path', classpath.asPath,
+        ]
+        classpath = files()
+    }
+}
