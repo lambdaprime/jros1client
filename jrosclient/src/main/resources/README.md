@@ -45,3 +45,8 @@ rostopic list -- prints information about all publishers, subscribers in the sys
 % jrosclient --masterUrl "http://ubuntu:11311/" --nodePort 1234 rostopic echo testTopic geometry_msgs/Point
 {z=1.0, y=1.0, x=1.0}
 ```
+
+# Samples
+
+Java samples can be found at <https://github.com/lambdaprime/jrosclient/tree/master/jrosclient.samples>
+
