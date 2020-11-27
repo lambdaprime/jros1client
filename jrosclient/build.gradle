@@ -1,4 +1,4 @@
-// Requires gradle 5.4
+// Requires gradle 6.5
 // gradle clean build
 
 plugins {
@@ -27,13 +27,8 @@ jar {
     }
 }
 
-compileJava {
-    doFirst {
-        options.compilerArgs = [
-            '--module-path', classpath.asPath,
-        ]
-        classpath = files()
-    }
+java {
+    modularity.inferModulePath = true
 }
 
 task packageDistribution(type: Zip) {
