@@ -59,4 +59,9 @@ public class RosDataInput implements InputKineticStream {
         }
         return array;
     }
+
+    @Override
+    public void close() throws Exception {
+        // nothing to release
+    }
 }

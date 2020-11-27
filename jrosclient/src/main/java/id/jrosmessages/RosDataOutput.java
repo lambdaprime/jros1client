@@ -56,4 +56,8 @@ public class RosDataOutput implements OutputKineticStream {
         }
     }
 
+    @Override
+    public void close() throws Exception {
+        // nothing to release
+    }
 }
