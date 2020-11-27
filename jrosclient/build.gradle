@@ -31,6 +31,14 @@ java {
     modularity.inferModulePath = true
 }
 
+javadoc {
+    options.noTimestamp = true;
+    options.noQualifiers = ["all"];
+    options.noTree = true;
+    options.noIndex = true;
+    options.noNavBar = true;
+}
+
 task packageDistribution(type: Zip) {
     archiveFileName = "$releaseFileName"
     destinationDirectory = file("$projectDir/release")
@@ -64,7 +72,7 @@ task cleanRelease(type: Delete) {
     delete "$projectDir/release"
 }
 
-packageDistribution.dependsOn createRelease
+packageDistribution.dependsOn createRelease, javadoc
 assemble.dependsOn packageDistribution
 clean.dependsOn cleanRelease
 

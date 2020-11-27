@@ -5,7 +5,7 @@ import java.util.Optional;
 import id.xfunction.XJson;
 
 /**
- * @see http://wiki.ros.org/ROS/Connection%20Header
+ * <a href="http://wiki.ros.org/ROS/Connection%20Header">http://wiki.ros.org/ROS/Connection%20Header</a>
  */
 public class ConnectionHeader {
 
