@@ -2,6 +2,11 @@ package id.jrosclient.ros.responses;
 
 import id.xfunction.XJson;
 
+/**
+ * Base class for all ROS API returned values.
+ * 
+ * @see <a href="http://wiki.ros.org/ROS/Master_Slave_APIs">Return value format</a>
+ */
 public class Response {
 
     public enum StatusCode {

@@ -10,6 +10,10 @@ import id.jrosclient.JRosClientConfig;
 import id.xfunction.function.Unchecked;
 import id.xfunction.logging.XLogger;
 
+/**
+ * <p>XMLRPC server which is used to negotiate connections with
+ * other ROS nodes and communicate with the Master.</p>
+ */
 public class NodeServer implements AutoCloseable {
 
     static final XLogger LOGGER = XLogger.getLogger(NodeServer.class);

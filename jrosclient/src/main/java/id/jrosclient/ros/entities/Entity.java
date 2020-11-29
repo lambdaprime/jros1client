@@ -1,7 +1,7 @@
 package id.jrosclient.ros.entities;
 
 /**
- * Marker iface for ROS entities.
+ * Marker interface for all ROS API entities.
  */
 public interface Entity {
 

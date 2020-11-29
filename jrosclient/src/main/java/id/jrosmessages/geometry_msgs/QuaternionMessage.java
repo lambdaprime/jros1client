@@ -7,6 +7,9 @@ import id.jrosmessages.MessageMetadata;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
+/**
+ * Definition for geometry_msgs/Quaternion
+ */
 @MessageMetadata(
     type = QuaternionMessage.NAME,
     md5sum = "a779879fadf0160734f906b8c19c7004")

@@ -10,8 +10,6 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import id.jrosmessages.RosDataInput;
-import id.jrosmessages.RosDataOutput;
 import id.jrosmessages.std_msgs.ColorRGBAMessage;
 import id.jrosmessages.std_msgs.HeaderMessage;
 import id.jrosmessages.std_msgs.StringMessage;
@@ -20,6 +18,8 @@ import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
 import id.jrosmessages.geometry_msgs.Vector3Message;
+import id.jrosmessages.impl.RosDataInput;
+import id.jrosmessages.impl.RosDataOutput;
 import id.jrosmessages.primitives.Duration;
 import id.jrosmessages.primitives.Time;
 import id.kineticstreamer.KineticStreamReader;

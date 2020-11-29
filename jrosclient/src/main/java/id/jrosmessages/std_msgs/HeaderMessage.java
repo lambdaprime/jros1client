@@ -8,6 +8,9 @@ import id.jrosmessages.primitives.Time;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
+/**
+ * Definition for std_msgs/Header
+ */
 @MessageMetadata(
     type = "std_msgs/Header",
     md5sum = "2176decaecbce78abc3b96ef049fabed")

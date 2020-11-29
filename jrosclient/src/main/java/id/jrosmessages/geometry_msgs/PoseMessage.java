@@ -7,6 +7,9 @@ import id.jrosmessages.MessageMetadata;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
+/**
+ * Definition for geometry_msgs/Pose
+ */
 @MessageMetadata(
     type = PoseMessage.NAME,
     md5sum = "e45d45a5a1ce597b249e23fb30fc871f")

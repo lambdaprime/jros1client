@@ -17,11 +17,14 @@ import id.jrosclient.ros.transport.PublishersManager;
 import id.jrosclient.ros.transport.TcpRosClient;
 import id.jrosclient.ros.transport.TcpRosServer;
 import id.jrosmessages.Message;
-import id.jrosmessages.MetadataAccessor;
+import id.jrosmessages.impl.MetadataAccessor;
 import id.xfunction.XRE;
 import id.xfunction.function.Unchecked;
 import id.xfunction.logging.XLogger;
 
+/**
+ * Main class of the library which allows to interact with ROS.
+ */
 public class JRosClient implements AutoCloseable {
 
     private static final Logger LOGGER = XLogger.getLogger(JRosClient.class);
@@ -42,22 +45,26 @@ public class JRosClient implements AutoCloseable {
     }
 
     /**
-     * @param port port on which this node's server will run on.
-     * Other nodes will be using it to retrieve published messages.
+     * @param port port on which node server will run on.
      * If empty default port will be used.
+     * @see JRosClientConfig#NODE_SERVER_PORT
      */
     public JRosClient withPort(int port) {
         nodeServer.withPort(port);
         return this;
     }
-    
+
+    /**
+     * Access to ROS master API
+     */
     public MasterApi getMasterApi() {
         RosRpcClient client = new RosRpcClient(masterUrl);
         return new MasterApiClientImpl(client);
     }
 
     /**
-     * Returns Node API of the foreign node
+     * Return Node API of the foreign node. It allows to
+     * interact with other ROS nodes directly.
      * @param nodeUrl URL of the foreign node to connect
      */
     public NodeApi getNodeApi(String nodeUrl) {
@@ -65,6 +72,14 @@ public class JRosClient implements AutoCloseable {
         return new NodeApiClientImpl(client);
     }
 
+    /**
+     * Subscribe to ROS topic
+     * @param <M> type of messages in the topic
+     * @param subscriber provides information about the topic to subscribe
+     * for. Once subscribed it will be notified for
+     * any new message which gets published with given topic.
+     * @throws Exception
+     */
     public <M extends Message> void subscribe(TopicSubscriber<M> subscriber) 
             throws Exception
     {
@@ -86,6 +101,14 @@ public class JRosClient implements AutoCloseable {
         clients.add(nodeClient);
     }
 
+    /**
+     * Create a new topic and start publishing messages for it.
+     * @param <M> type of messages in the topic
+     * @param publisher provides information about new topic. Once topic
+     * created publisher is used to emit messages which will be sent
+     * to topic subscribers
+     * @throws Exception
+     */
     public <M extends Message> void publish(TopicPublisher<M> publisher) 
             throws Exception
     {
@@ -99,8 +122,14 @@ public class JRosClient implements AutoCloseable {
                 nodeServer.getNodeApi());
         LOGGER.log(Level.FINE, "Current subscribers: {0}", subscribers.toString());
     }
-    
-    public <M extends Message> void unpublish(String topic) 
+
+    /**
+     * Unregister publisher in Master node and stop publisher from emitting
+     * new messages
+     * @param topic name of the topic used by the publisher
+     * @throws Exception
+     */
+    public void unpublish(String topic) 
             throws Exception
     {
         var publisherOpt = publishersManager.getPublisher(topic);
@@ -118,13 +147,16 @@ public class JRosClient implements AutoCloseable {
     }
     
     /**
-     * Checks if there are any publisher for given topic
+     * Check if there is any publisher available for the given topic
      */
     public boolean hasPublisher(String topic) {
         return getMasterApi().getSystemState(CALLER_ID).publishers.stream()
                 .anyMatch(p -> topic.equals(p.topic));
     }
-    
+
+    /**
+     * Release the resources, stop TCPROS server and node server  
+     */
     @Override
     public void close() throws Exception {
         nodeServer.close();

@@ -7,6 +7,9 @@ import id.jrosmessages.MessageMetadata;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
+/**
+ * Definition for geometry_msgs/Vector3
+ */
 @MessageMetadata(
     type = Vector3Message.NAME,
     md5sum = "4a842b65f413084dc2b10fb484ea7f17")

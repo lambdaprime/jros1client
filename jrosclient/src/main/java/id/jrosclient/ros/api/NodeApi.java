@@ -6,17 +6,19 @@ import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.ros.responses.ProtocolParamsResponse;
 
 /**
+ * An API to interact with ROS nodes.
+ * 
  * @see <a href="http://wiki.ros.org/ROS/Slave_API">ROS Node API</a>
  */
 public interface NodeApi {
 
     /**
-     * Publisher node API method called by a subscriber node. This requests
-     * that source allocate a channel for communication. Subscriber provides
+     * Publisher node API method called by a subscriber node. It requests
+     * publisher node to allocate a channel for communication. Subscriber provides
      * a list of desired protocols for communication. Publisher returns the
-     * selected protocol along with any additional params required for establishing
-     * connection. For example, for a TCP/IP-based connection, the source node may
-     * return a port number of TCP/IP server. 
+     * selected protocol along with any additional parameters required for establishing
+     * connection. For example, for a TCP/IP-based connection, the publisher node may
+     * return a port number of its TCP/IP server. 
      * 
      * @param callerId ROS caller ID
      * @param topic Topic name

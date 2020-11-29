@@ -6,13 +6,15 @@ import id.jrosclient.ros.responses.StringResponse;
 import id.jrosclient.ros.responses.SystemStateResponse;
 
 /**
+ * An API to interact with ROS Master node. 
+ * 
  * @see <a href="http://wiki.ros.org/ROS/Master_API">ROS Maste API</a>
  */
 public interface MasterApi {
 
     /**
-     * Retrieve list representation of system state (i.e. publishers, subscribers,
-     * and services)
+     * <p>Retrieve list representation of system state (for example available
+     * publishers, subscribers and services).</p>
      * 
      * @param callerId ROS caller ID
      */
@@ -27,23 +29,25 @@ public interface MasterApi {
     StringResponse getUri(String callerId);
         
     /**
-     * Register the caller as a publisher the topic
+     * Register the caller as a publisher of the topic.
      * 
      * @param callerId ROS caller ID 
-     * @param topic Fully-qualified name of topic
-     * @param topicType Message name
-     * @param callerApi API URI of publisher to register
-     * @return List of current subscribers of topic
+     * @param topic Fully-qualified name of the topic
+     * @param topicType Type of the messages in the given topic
+     * @param callerApi URI of publisher API to register (other nodes
+     * will use that API to subscribe for the topic)
+     * @return List of current subscribers of the topic
      */
     ListResponse<String> registerPublisher(String callerId, String topic, String topicType,
             String callerApi);
     
     /**
-     * Unregister the caller as a publisher of the topic. 
-     * @param callerId ROS caller ID
-     * @param topic Fully-qualified name of topic to unregister.
-     * @param callerApi API URI of publisher to unregister. 
+     * Unregister the caller from being publisher of the topic.
      * Unregistration will only occur if current registration matches.
+     * 
+     * @param callerId ROS caller ID
+     * @param topic Fully-qualified name of the topic to unregister.
+     * @param callerApi URI of publisher API to unregister. 
      * @return number of unregistered publishers. If it is zero it means
      * that the caller was not registered as a publisher. The call still
      * succeeds as the intended final state is reached. 
@@ -54,15 +58,16 @@ public interface MasterApi {
      * Subscribe the caller to the specified topic
      * 
      * @param callerId ROS caller ID 
-     * @param topic Fully-qualified name of topic
-     * @param topicType Message name
-     * @param callerApi API URI of subscriber to register. Will be used for new publisher
-     * notifications
+     * @param topic Fully-qualified name of the topic
+     * @param topicType Type of the messages in the given topic
+     * @param callerApi URI of subscriber API to register. If topic is not
+     * yet available it will be used later to notify new publisher about already
+     * active subscribers.
      * @return list of current publishers
      */
     ListResponse<String> registerSubscriber(String callerId, String topic, String topicType,
             String callerApi);
 
-    StringResponse lookupService(String callerId, String service);
+    //StringResponse lookupService(String callerId, String service);
 
 }

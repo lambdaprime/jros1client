@@ -7,6 +7,9 @@ import id.jrosmessages.MessageMetadata;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
+/**
+ * Definition for std_msgs/String
+ */
 @MessageMetadata(
     type = "std_msgs/String",
     md5sum = "992ce8a1687cec8c8bd883ec73ca41d1")

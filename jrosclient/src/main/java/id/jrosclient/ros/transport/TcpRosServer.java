@@ -15,7 +15,7 @@ import id.ICE.MessageService;
 import id.jrosclient.JRosClientConfig;
 import id.jrosclient.TopicPublisher;
 import id.jrosclient.ros.transport.io.ConnectionHeaderReader;
-import id.jrosmessages.MetadataAccessor;
+import id.jrosmessages.impl.MetadataAccessor;
 import id.xfunction.XRE;
 import id.xfunction.function.Unchecked;
 import id.xfunction.io.ByteBufferInputStream;

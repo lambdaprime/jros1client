@@ -7,6 +7,9 @@ import id.jrosmessages.MessageMetadata;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
+/**
+ * Definition for std_msgs/ColorRGBA
+ */
 @MessageMetadata(
     type = ColorRGBAMessage.NAME,
     md5sum = "a29a96539573343b1310c73607334b00")

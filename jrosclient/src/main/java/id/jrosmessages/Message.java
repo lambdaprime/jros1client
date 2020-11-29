@@ -1,7 +1,7 @@
 package id.jrosmessages;
 
 /**
- * Marker iface for all messages
+ * Marker interface for all ROS messages available in <b>jrosclient</b>
  */
 public interface Message {
     

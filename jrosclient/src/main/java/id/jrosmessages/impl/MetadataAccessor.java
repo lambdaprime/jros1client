@@ -1,8 +1,10 @@
-package id.jrosmessages;
+package id.jrosmessages.impl;
+
+import id.jrosmessages.Message;
+import id.jrosmessages.MessageMetadata;
 
 /**
- * Allows to access Message's metadata
- * 
+ * Allows to access message metadata based on their class object.
  */
 public class MetadataAccessor {
     

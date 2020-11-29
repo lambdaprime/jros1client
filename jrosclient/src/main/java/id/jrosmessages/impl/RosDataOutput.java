@@ -1,4 +1,4 @@
-package id.jrosmessages;
+package id.jrosmessages.impl;
 
 import java.io.DataOutput;
 import java.io.IOException;

@@ -3,7 +3,7 @@ package id.jrosclient.ros.transport;
 import java.util.logging.Level;
 
 import id.jrosmessages.Message;
-import id.jrosmessages.MetadataAccessor;
+import id.jrosmessages.impl.MetadataAccessor;
 import id.xfunction.logging.XLogger;
 
 public class ConnectionHeaderValidator {

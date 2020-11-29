@@ -12,6 +12,11 @@ import org.apache.xmlrpc.server.XmlRpcNoSuchHandlerException;
 
 import id.xfunction.logging.XLogger;
 
+/**
+ * Receives an XmlRpcRequest, extracts method name and arguments
+ * from it and then calls this method on a HANDLER object using
+ * {@link MethodCaller}
+ */
 final class MethodHandlerMapping implements XmlRpcHandlerMapping {
 
     private static final Logger LOGGER = XLogger.getLogger(NodeServer.class);

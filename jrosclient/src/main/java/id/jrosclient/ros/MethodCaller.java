@@ -14,7 +14,8 @@ import java.util.Map;
 /**
  * <p>Allows to call methods of an object by name dynamically at a
  * runtime.</p>
- * <p>Calls are done thru MethodHandle and not reflection which.</p>
+ * <p>Calls are done thru MethodHandle and not reflection which supposed
+ * to be faster.</p>
  * <p>Overloaded methods are not supported.</p>
  */
 public class MethodCaller {

@@ -40,7 +40,7 @@ public class MasterApiClientImpl implements MasterApi {
         return stringParser.parse("masterURI", client.execute("getUri", params));
     }
 
-    @Override
+    //@Override
     public StringResponse lookupService(String callerId, String service) {
         Object[] params = new Object[]{callerId, service};
         return stringParser.parse("serviceUrl", client.execute("lookupService", params));
