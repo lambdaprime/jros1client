@@ -6,7 +6,7 @@ import org.apache.xmlrpc.server.XmlRpcServer;
 import org.apache.xmlrpc.server.XmlRpcServerConfigImpl;
 import org.apache.xmlrpc.webserver.WebServer;
 
-import id.jrosclient.JRosClientConfig;
+import id.jrosclient.JRosClientConfiguration;
 import id.xfunction.function.Unchecked;
 import id.xfunction.logging.XLogger;
 
@@ -20,16 +20,15 @@ public class NodeServer implements AutoCloseable {
     private static final String CLASS_NAME = NodeServer.class.getName();
 
     private Optional<WebServer> server = Optional.empty();
-    private int port = JRosClientConfig.NODE_SERVER_PORT;
+    private JRosClientConfiguration config;
 
-    public NodeServer withPort(int port) {
-        this.port = port;
-        return this;
+    public NodeServer(JRosClientConfiguration config) {
+        this.config = config;
     }
 
     public void start() {
         if (!server.isEmpty()) return;
-        var s = new WebServer(port);
+        var s = new WebServer(config.getNodeServerPort());
         Unchecked.run(() -> startInternal(s));
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
@@ -43,7 +42,7 @@ public class NodeServer implements AutoCloseable {
     private void startInternal(WebServer s) throws Exception {
         LOGGER.fine("Starting...");
         XmlRpcServer xmlRpcServer = s.getXmlRpcServer();
-        xmlRpcServer.setHandlerMapping(new MethodHandlerMapping(new NodeApiServerDispatcher()));
+        xmlRpcServer.setHandlerMapping(new MethodHandlerMapping(new NodeApiServerDispatcher(config)));
         XmlRpcServerConfigImpl serverConfig =
             (XmlRpcServerConfigImpl) xmlRpcServer.getConfig();
         serverConfig.setEnabledForExtensions(false);
@@ -52,7 +51,7 @@ public class NodeServer implements AutoCloseable {
     }
 
     public String getNodeApi() {
-        return "http://localhost:" + port;
+        return String.format("http://%s:%d", config.getHostName(), config.getNodeServerPort());
     }
 
     @Override

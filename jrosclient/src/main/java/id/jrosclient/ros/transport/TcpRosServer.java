@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import id.ICE.MessageResponse;
 import id.ICE.MessageServer;
 import id.ICE.MessageService;
-import id.jrosclient.JRosClientConfig;
+import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.TopicPublisher;
 import id.jrosclient.ros.transport.io.ConnectionHeaderReader;
 import id.jrosmessages.impl.MetadataAccessor;
@@ -36,8 +36,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
     private static final XLogger LOGGER = XLogger.getLogger(TcpRosServer.class);
     
     private MetadataAccessor metadataAccessor = new MetadataAccessor();
-    private MessageServer server = new MessageServer(this, new ConnectionHeaderScanner())
-            .withPort(JRosClientConfig.TCPROS_SERVER_PORT);
+    private MessageServer server;
     private ConnectionHeaderValidator headerValidator = new ConnectionHeaderValidator(
             metadataAccessor);
     private PublishersManager publishersManager;
@@ -45,8 +44,10 @@ public class TcpRosServer implements MessageService, AutoCloseable {
     private Map<String, TopicPublisherSubscriber> subscribers = new ConcurrentHashMap<>();
     private boolean isStarted;
     
-    public TcpRosServer(PublishersManager publishersManager) {
+    public TcpRosServer(PublishersManager publishersManager, JRosClientConfiguration config) {
         this.publishersManager = publishersManager;
+        server = new MessageServer(this, new ConnectionHeaderScanner())
+                .withPort(config.getTcpRosServerPort());
     }
     
     public void start() throws IOException {

@@ -3,6 +3,7 @@ package id.jrosclient.ros;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.ros.api.NodeApi;
 import id.jrosclient.ros.api.impl.NodeApiServerImpl;
 import id.jrosclient.ros.entities.transformers.Transformers;
@@ -16,7 +17,11 @@ public class NodeApiServerDispatcher {
 
     private ProtocolParamsTransformer protocolParamsParser = new ProtocolParamsTransformer();
     private Transformers transformers = new Transformers();
-    private NodeApi nodeApi = new NodeApiServerImpl();
+    private NodeApi nodeApi;
+
+    public NodeApiServerDispatcher(JRosClientConfiguration config) {
+        nodeApi = new NodeApiServerImpl(config);
+    }
 
     public Object requestTopic(String callerId, String topic, Object[] protocols) {
         var protos = Arrays.stream(protocols)

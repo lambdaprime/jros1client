@@ -3,7 +3,7 @@ package id.jrosclient.ros.api.impl;
 import java.util.List;
 import java.util.function.Predicate;
 
-import id.jrosclient.JRosClientConfig;
+import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.ros.api.NodeApi;
 import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.ros.responses.ProtocolParamsResponse;
@@ -19,6 +19,12 @@ import id.xfunction.logging.XLogger;
 public class NodeApiServerImpl implements NodeApi {
 
     private static final XLogger LOGGER = XLogger.getLogger(NodeApiServerImpl.class);
+    
+    private JRosClientConfiguration config;
+
+    public NodeApiServerImpl(JRosClientConfiguration config) {
+        this.config = config;
+    }
 
     @Override
     public ProtocolParamsResponse requestTopic(String callerId, String topic,
@@ -34,8 +40,8 @@ public class NodeApiServerImpl implements NodeApi {
         response.withStatusCode(StatusCode.SUCCESS);
         response.withStatusMessage("ready on ubuntu:38245");
         response.withProtocol(Protocol.TCPROS);
-        response.withPort(JRosClientConfig.TCPROS_SERVER_PORT);
-        response.withHost("ubuntu");
+        response.withPort(config.getTcpRosServerPort());
+        response.withHost(config.getHostName());
         LOGGER.exiting("requestTopic", response);
         return response;
     }

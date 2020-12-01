@@ -31,27 +31,23 @@ public class JRosClient implements AutoCloseable {
     private static final String CALLER_ID = "jrosclient";
 
     private String masterUrl;
-    private NodeServer nodeServer = new NodeServer();
+    private NodeServer nodeServer;
+    private TcpRosServer tcpRosServer;
     private MetadataAccessor metadataAccessor = new MetadataAccessor();
     private Set<TcpRosClient<?>> clients = new HashSet<>();
     private PublishersManager publishersManager = new PublishersManager();
-    private TcpRosServer tcpRosServer = new TcpRosServer(publishersManager);
 
     /**
      * @param masterUrl master node URL
      */
     public JRosClient(String masterUrl) {
-        this.masterUrl = masterUrl;
+        this(masterUrl, new JRosClientConfiguration());
     }
 
-    /**
-     * @param port port on which node server will run on.
-     * If empty default port will be used.
-     * @see JRosClientConfig#NODE_SERVER_PORT
-     */
-    public JRosClient withPort(int port) {
-        nodeServer.withPort(port);
-        return this;
+    public JRosClient(String masterUrl, JRosClientConfiguration config) {
+        this.masterUrl = masterUrl;
+        nodeServer = new NodeServer(config);
+        tcpRosServer = new TcpRosServer(publishersManager, config);
     }
 
     /**

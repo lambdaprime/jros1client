@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import id.jrosclient.JRosClient;
+import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.TopicSubscriber;
 import id.jrosclient.ros.responses.Response.StatusCode;
 import id.jrosmessages.Message;
@@ -62,28 +63,29 @@ public class RosTopic {
         );
         new SmartArgs(handlers, positionalArgs::add).parse(rest.toArray(new String[0]));
         if (positionalArgs.size() < 2) throw new ArgumentParsingException();
-        JRosClient client = new JRosClient(masterUrl);
-            if (nodePort.isPresent())
-                client.withPort(nodePort.get());
-            var topic = positionalArgs.removeFirst();
-            var topicType = positionalArgs.removeFirst();
-            Class<Message> clazz = (Class<Message>) new MessagesDirectory().get(topicType);
-            if (clazz == null)
-                throw new XRE("Type %s is not found", topicType);
-            var subscriber = new TopicSubscriber<Message>(clazz, topic) {
-                @Override
-                public void onNext(Message message) {
-                    System.out.println(message);
-                    count[0]--;
-                    if (count[0] == 0) { 
-                        getSubscription().cancel();
-                        Unchecked.run(() -> client.close());
-                        return;
-                    }
-                    request(1);
+        JRosClientConfiguration config = new JRosClientConfiguration();
+        if (nodePort.isPresent())
+            config.setNodeServerPort(nodePort.get());
+        JRosClient client = new JRosClient(masterUrl, config);
+        var topic = positionalArgs.removeFirst();
+        var topicType = positionalArgs.removeFirst();
+        Class<Message> clazz = (Class<Message>) new MessagesDirectory().get(topicType);
+        if (clazz == null)
+            throw new XRE("Type %s is not found", topicType);
+        var subscriber = new TopicSubscriber<Message>(clazz, topic) {
+            @Override
+            public void onNext(Message message) {
+                System.out.println(message);
+                count[0]--;
+                if (count[0] == 0) { 
+                    getSubscription().cancel();
+                    Unchecked.run(() -> client.close());
+                    return;
                 }
-            };
-            client.subscribe(subscriber);
+                request(1);
+            }
+        };
+        client.subscribe(subscriber);
     }
     
 }

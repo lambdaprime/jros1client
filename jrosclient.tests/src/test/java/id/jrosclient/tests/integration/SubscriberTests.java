@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import id.jrosclient.JRosClient;
+import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.ros.NodeServer;
 import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.tests.TestUtils;
@@ -25,7 +26,7 @@ public class SubscriberTests {
 
     @Test
     public void test_registerSubscriber() {
-        try (var nodeServer = new NodeServer()) {
+        try (var nodeServer = new NodeServer(new JRosClientConfiguration())) {
             var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String",
                     nodeServer.getNodeApi());
             TestUtils.compareWithTemplate(publishers.toString(), "test_registerSubscriber1");
