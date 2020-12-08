@@ -44,8 +44,16 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     private MessageTransformer transformer = new MessageTransformer();
     private CompletableFuture<MessageResponse> future = CompletableFuture.completedFuture(null);
     private Subscription subscription;
-    private boolean isEstablished;
+    private boolean isConnectionEstablished;
+    private boolean isCompleted;
+    private String topic;
+    private String callerId;
 
+    public TopicPublisherSubscriber(String callerId, String topic) {
+        this.callerId = callerId;
+        this.topic = topic;
+    }
+    
     @Override
     public void onSubscribe(Subscription subscription) {
         this.subscription = subscription;
@@ -68,7 +76,8 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         LOGGER.fine("Sending message to subscriber");
         LOGGER.fine(os.asHexString());
         future.complete(new MessageResponse(ByteBuffer.wrap(os.toByteArray()))
-                .withIgnoreNextRequest());
+                .withIgnoreNextRequest()
+                .withErrorHandler(this::onError));
     }
 
     /**
@@ -78,8 +87,10 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
      * @return future which completes when new message is published
      */
     public CompletableFuture<MessageResponse> request() {
-        XAsserts.assertTrue(future.isDone(),
-                "Fail to request new message since previously published message was not processed");
+        XAsserts.assertTrue(!isCompleted,
+                "Fail to request new message since subscriber is completed");
+        if (!future.isDone())
+            return future;
         future = new CompletableFuture<MessageResponse>();
         if (subscription != null)
             subscription.request(1);
@@ -89,21 +100,35 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     @Override
     public void onError(Throwable throwable) {
         LOGGER.severe(throwable.getMessage());
+        subscription.cancel();
+        isCompleted = true;
     }
 
     @Override
     public void onComplete() {
-        
+        isCompleted = true;
+    }
+    
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+    
+    public String getTopic() {
+        return topic;
+    }
+
+    public String getCallerId() {
+        return callerId;
     }
     
     private MessagePacket createMessagePacket(Message message) {
         MetadataAccessor metadataAccessor = new MetadataAccessor();
         var ch = new ConnectionHeader();
         byte[] body = null;
-        if (!isEstablished) {
+        if (!isConnectionEstablished) {
             ch.withType(metadataAccessor.getType(message.getClass()))
                 .withMd5Sum(metadataAccessor.getMd5(message.getClass()));
-            isEstablished = true;
+            isConnectionEstablished = true;
         } else {
             body = transformer.transform(message);
         }

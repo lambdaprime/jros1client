@@ -32,16 +32,22 @@ import static id.xfunction.XUtils.readResource;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import id.jrosclient.JRosClient;
+import id.jrosclient.TopicSubmissionPublisher;
+import id.jrosmessages.std_msgs.StringMessage;
 import id.xfunction.TemplateMatcher;
 import id.xfunction.XExec;
+import id.xfunction.XUtils;
 
-public class JRosClientIntegrationTests {
+public class JRosClientAppTests {
 
     private static final String JROSCLIENT_PATH = Paths.get("")
             .toAbsolutePath()
@@ -63,6 +69,41 @@ public class JRosClientIntegrationTests {
         test_echo_missing_args();
         test_debug();
         test_list();
+    }
+
+    /**
+     * Test that client can reconnect successfully in case their connection
+     * was abruptly closed.
+     */
+    @Test
+    public void test_client_reconnect() throws Exception {
+        String topicName = "/testTopic2";
+        var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topicName);
+        var client = new JRosClient("http://ubuntu:11311/");
+        client.publish(publisher);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
+            while (!executor.isShutdown()) {
+                publisher.submit(new StringMessage().withData("Hello ROS"));
+                System.out.println("Published");
+                XUtils.sleep(1000);
+            }
+        });
+
+        String actual, expected;
+
+        for (int i = 0; i < 3; i++) {
+            actual = runOk("--masterUrl http://ubuntu:11311/ --nodePort 1234 rostopic echo -n 1 testTopic2 std_msgs/String")
+                    .replace("\n", "");
+            expected = new StringMessage()
+                    .withData("Hello ROS")
+                    .toString();
+            Assertions.assertEquals(expected, actual);
+        }
+
+        client.unpublish(topicName);
+        executor.shutdown();
+        client.close();
     }
 
     private void test_echo() {
