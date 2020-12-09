@@ -39,7 +39,7 @@ import id.xfunction.XUtils;
  * <p>Before subscriber can start to receive messages it needs
  * to be subscribed for the topic.</p>
  * 
- * <p>See <a href="{@docRoot}/index.html">Module documentation</a> for examples.</p>
+ * <p>See <a href="{@docRoot}/../index.html">Module documentation</a> for examples.</p>
  * 
  * @param <M> type of messages in the topic
  */

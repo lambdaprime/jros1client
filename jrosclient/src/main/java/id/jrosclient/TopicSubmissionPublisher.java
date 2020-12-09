@@ -38,7 +38,7 @@ import id.xfunction.XJson;
  * <p>If there is no subscribers available for a given topic then all published
  * messages are discarded.</p>
  * 
- * <p>See <a href="{@docRoot}/index.html">Module documentation</a> for examples.</p>
+ * <p>See <a href="{@docRoot}/../index.html">Module documentation</a> for examples.</p>
  * 
  */
 public class TopicSubmissionPublisher<M extends Message> extends SubmissionPublisher<M> 
