@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import id.jrosmessages.Message;
+import id.jrosmessages.geometry_msgs.Point32Message;
 import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
@@ -49,6 +50,7 @@ public class MessagesDirectory {
     public MessagesDirectory() {
         add(StringMessage.class);
         add(PointMessage.class);
+        add(Point32Message.class);
         add(QuaternionMessage.class);
         add(PoseMessage.class);
         add(HeaderMessage.class);

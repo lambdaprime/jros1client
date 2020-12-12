@@ -35,6 +35,7 @@ import id.jrosmessages.std_msgs.ColorRGBAMessage;
 import id.jrosmessages.std_msgs.HeaderMessage;
 import id.jrosmessages.std_msgs.StringMessage;
 import id.jrosmessages.visualization_msgs.MarkerMessage;
+import id.jrosmessages.geometry_msgs.Point32Message;
 import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
@@ -62,6 +63,9 @@ public class MessageTests {
                     new PointMessage()),
             List.of(XUtils.readResource(MessageTests.class, "point"),
                     new PointMessage().withX(1.0).withY(1.0).withZ(1.0)),
+            
+            List.of(XUtils.readResource(MessageTests.class, "point32"),
+                    new Point32Message().withX(1.0F).withY(1.0F).withZ(1.0F)),
             
             List.of(XUtils.readResource(MessageTests.class, "quaternion-empty"),
                     new QuaternionMessage()),
