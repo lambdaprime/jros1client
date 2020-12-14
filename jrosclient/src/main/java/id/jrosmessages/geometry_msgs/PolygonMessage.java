@@ -21,6 +21,7 @@
  */
 package id.jrosmessages.geometry_msgs;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
@@ -29,59 +30,36 @@ import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * Definition for geometry_msgs/Point32
+ * Definition for geometry_msgs/Polygon
  */
 @MessageMetadata(
-    type = Point32Message.NAME,
-    md5sum = "cc153912f1453b708d221682bc23d9ac")
-public class Point32Message implements Message {
+    type = PolygonMessage.NAME,
+    md5sum = "cd60a26494a087f577976f0329fa120e")
+public class PolygonMessage implements Message {
 
-    static final String NAME = "geometry_msgs/Point32";
+    static final String NAME = "geometry_msgs/Polygon";
 
     @Streamed
-    public float x, y, z;
+    public Point32Message[] points = new Point32Message[0];
 
-    public Point32Message() {
-    }
-
-    public Point32Message(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    public Point32Message withX(float x) {
-        this.x = x;
-        return this;
-    }
-
-    public Point32Message withY(float y) {
-        this.y = y;
-        return this;
-    }
-
-    public Point32Message withZ(float z) {
-        this.z = z;
+    public PolygonMessage withPoints(Point32Message[] points) {
+        this.points = points;
         return this;
     }
 
     @Override
     public String toString() {
-        return XJson.asString("x", x,
-                "y", y,
-                "z", z).toString();
+        return XJson.asString("points", Arrays.asList(points));
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, z);
+        return Objects.hash(points);
     }
     
     @Override
     public boolean equals(Object obj) {
-        Point32Message other = (Point32Message) obj;
-        return Objects.equals(x, other.x)
-                && Objects.equals(y, other.y)
-                && Objects.equals(z, other.z);
+        PolygonMessage other = (PolygonMessage) obj;
+        return Objects.deepEquals(points, other.points);
     }
 }

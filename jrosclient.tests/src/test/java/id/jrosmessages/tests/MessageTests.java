@@ -37,6 +37,8 @@ import id.jrosmessages.std_msgs.StringMessage;
 import id.jrosmessages.visualization_msgs.MarkerMessage;
 import id.jrosmessages.geometry_msgs.Point32Message;
 import id.jrosmessages.geometry_msgs.PointMessage;
+import id.jrosmessages.geometry_msgs.PolygonMessage;
+import id.jrosmessages.geometry_msgs.PolygonStampedMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
 import id.jrosmessages.geometry_msgs.Vector3Message;
@@ -66,7 +68,19 @@ public class MessageTests {
             
             List.of(XUtils.readResource(MessageTests.class, "point32"),
                     new Point32Message().withX(1.0F).withY(1.0F).withZ(1.0F)),
-            
+
+            List.of(XUtils.readResource(MessageTests.class, "polygonstamped"),
+                    new PolygonStampedMessage()
+                        .withHeader(new HeaderMessage()
+                                .withSeq(123)
+                                .withStamp(new Time(0, 1111))
+                                .withFrameId("aaaa"))
+                        .withPolygon(new PolygonMessage()
+                                .withPoints(new Point32Message[]{
+                                        new Point32Message(2F, 2F, 0F),
+                                        new Point32Message(1F, 2F, 3F),
+                                        new Point32Message(0F, 0F, 0F)}))),
+
             List.of(XUtils.readResource(MessageTests.class, "quaternion-empty"),
                     new QuaternionMessage()),
             List.of(XUtils.readResource(MessageTests.class, "quaternion"),
@@ -83,7 +97,10 @@ public class MessageTests {
             List.of(XUtils.readResource(MessageTests.class, "header-empty"),
                     new HeaderMessage()),
             List.of(XUtils.readResource(MessageTests.class, "header"),
-                    new HeaderMessage().withSeq(123).withStamp(new Time(0, 1111)).withFrameId("aaaa")),
+                    new HeaderMessage()
+                        .withSeq(123)
+                        .withStamp(new Time(0, 1111))
+                        .withFrameId("aaaa")),
             
             List.of(XUtils.readResource(MessageTests.class, "colorrgba-empty"),
                     new ColorRGBAMessage()),

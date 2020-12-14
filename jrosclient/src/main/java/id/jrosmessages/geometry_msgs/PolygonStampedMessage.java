@@ -25,63 +25,51 @@ import java.util.Objects;
 
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
+import id.jrosmessages.std_msgs.HeaderMessage;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * Definition for geometry_msgs/Point32
+ * Definition for geometry_msgs/PolygonStamped
  */
 @MessageMetadata(
-    type = Point32Message.NAME,
-    md5sum = "cc153912f1453b708d221682bc23d9ac")
-public class Point32Message implements Message {
+    type = PolygonStampedMessage.NAME,
+    md5sum = "c6be8f7dc3bee7fe9e8d296070f53340")
+public class PolygonStampedMessage implements Message {
 
-    static final String NAME = "geometry_msgs/Point32";
+    static final String NAME = "geometry_msgs/PolygonStamped";
 
     @Streamed
-    public float x, y, z;
+    public HeaderMessage header = new HeaderMessage();
+    
+    @Streamed
+    public PolygonMessage polygon = new PolygonMessage();
 
-    public Point32Message() {
-    }
-
-    public Point32Message(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    public Point32Message withX(float x) {
-        this.x = x;
+    public PolygonStampedMessage withPolygon(PolygonMessage polygon) {
+        this.polygon = polygon;
         return this;
     }
 
-    public Point32Message withY(float y) {
-        this.y = y;
-        return this;
-    }
-
-    public Point32Message withZ(float z) {
-        this.z = z;
+    public PolygonStampedMessage withHeader(HeaderMessage header) {
+        this.header = header;
         return this;
     }
 
     @Override
     public String toString() {
-        return XJson.asString("x", x,
-                "y", y,
-                "z", z).toString();
+        return XJson.asString("header", header,
+                "polygon", polygon);
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, z);
+        return Objects.hash(header, polygon);
     }
     
     @Override
     public boolean equals(Object obj) {
-        Point32Message other = (Point32Message) obj;
-        return Objects.equals(x, other.x)
-                && Objects.equals(y, other.y)
-                && Objects.equals(z, other.z);
+        PolygonStampedMessage other = (PolygonStampedMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(polygon, other.polygon);
     }
 }

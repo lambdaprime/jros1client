@@ -22,5 +22,6 @@
 module jrosclient.samples {
     requires jrosclient;
     requires id.xfunction;
+    requires id.kineticstreamer;
     exports id.jrosclient.samples;
 }
