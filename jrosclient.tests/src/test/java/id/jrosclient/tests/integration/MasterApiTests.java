@@ -22,6 +22,7 @@
 package id.jrosclient.tests.integration;
 
 import static id.jrosclient.tests.TestUtils.compare;
+import static id.jrosclient.tests.TestUtils.compareWithTemplate;
 import static id.jrosclient.tests.integration.TestConstants.CALLER_ID;
 import static id.jrosclient.tests.integration.TestConstants.TOPIC;
 
@@ -33,7 +34,8 @@ import org.junit.jupiter.api.Test;
 import id.jrosclient.JRosClient;
 import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.ros.NodeServer;
-import id.jrosclient.tests.TestUtils;
+
+import static id.jrosclient.tests.integration.TestConstants.URL;
 
 public class MasterApiTests {
     
@@ -41,20 +43,20 @@ public class MasterApiTests {
 
     @BeforeAll
     public static void setup() throws MalformedURLException {
-        client = new JRosClient("http://ubuntu:11311/");
+        client = new JRosClient(URL);
     }
 
     @Test
     public void test_getSystemState() {
         var out = client.getMasterApi().getSystemState(CALLER_ID);
         System.out.println(out);
-        TestUtils.compareWithTemplate(out.toString(), "test_getSystemState");
+        compareWithTemplate(out.toString(), "test_getSystemState");
     }
 
     @Test
     public void test_getUri() {
         var out = client.getMasterApi().getUri(CALLER_ID);
-        compare(out.toString(), "test_getUri");
+        compareWithTemplate(out.toString(), "test_getUri");
     }
 
     @Test
@@ -63,7 +65,7 @@ public class MasterApiTests {
             var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String",
                     nodeServer.getNodeApi());
             System.out.println(publishers);
-            TestUtils.compareWithTemplate(publishers.toString(), "test_registerSubscriber1");
+            compareWithTemplate(publishers.toString(), "test_registerSubscriber1");
         }
     }
 

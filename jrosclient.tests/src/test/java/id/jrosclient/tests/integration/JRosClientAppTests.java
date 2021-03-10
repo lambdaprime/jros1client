@@ -29,6 +29,7 @@
 package id.jrosclient.tests.integration;
 
 import static id.xfunction.XUtils.readResource;
+import static id.jrosclient.tests.integration.TestConstants.URL;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -79,7 +80,7 @@ public class JRosClientAppTests {
     public void test_client_reconnect() throws Exception {
         String topicName = "/testTopic2";
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topicName);
-        var client = new JRosClient("http://ubuntu:11311/");
+        var client = new JRosClient(URL);
         client.publish(publisher);
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(() -> {
@@ -91,9 +92,10 @@ public class JRosClientAppTests {
         });
 
         String actual, expected;
-
+        var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo -n 1 testTopic2 std_msgs/String",
+                URL);
         for (int i = 0; i < 3; i++) {
-            actual = runOk("--masterUrl http://ubuntu:11311/ --nodePort 1234 rostopic echo -n 1 testTopic2 std_msgs/String")
+            actual = runOk(args)
                     .replace("\n", "");
             expected = new StringMessage()
                     .withData("Hello ROS")
@@ -107,12 +109,16 @@ public class JRosClientAppTests {
     }
 
     private void test_echo() {
-        var out = runOk("--masterUrl http://ubuntu:11311/ --nodePort 1234 rostopic echo -n 5 testTopic std_msgs/String");
+        var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo -n 5 testTopic std_msgs/String",
+                URL);
+        var out = runOk(args);
         Assertions.assertTrue(new TemplateMatcher(readResource("echo")).matches(out));
     }
 
     private void test_echo_missing_args() {
-        var out = runFail("--masterUrl http://ubuntu:11311/ --nodePort 1234 rostopic echo testTopic");
+        var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo testTopic",
+                URL);
+        var out = runFail(args);
         Assertions.assertEquals(readResource("README.md") + "\n\n", out);
     }
     
@@ -122,12 +128,16 @@ public class JRosClientAppTests {
     }
 
     private void test_debug() {
-        var out = runOk("--masterUrl http://ubuntu:11311/ --nodePort 1234 --debug rostopic echo -n 1 testTopic std_msgs/String");
+        var args = String.format("--masterUrl %s --nodePort 1234 --debug rostopic echo -n 1 testTopic std_msgs/String",
+                URL);
+        var out = runOk(args);
         Assertions.assertTrue(new TemplateMatcher(readResource("debug")).matches(out));
     }
 
     private void test_list() {
-        var out = runOk("--masterUrl http://ubuntu:11311/ --nodePort 1234 rostopic list");
+        var args = String.format("--masterUrl %s --nodePort 1234 rostopic list",
+                URL);
+        var out = runOk(args);
         Assertions.assertTrue(new TemplateMatcher(readResource("list")).matches(out));
     }
     
@@ -145,7 +155,10 @@ public class JRosClientAppTests {
         proc.flush(false);
         var code = proc.await();
         var out = proc.stdoutAsString() + "\n" + proc.stderrAsString() + "\n";
+        System.out.println("Output:");
+        System.out.println(">>>");
         System.out.print(out);
+        System.out.println("<<<");
         Assertions.assertEquals(expectedCode, code);
         return out;
     }

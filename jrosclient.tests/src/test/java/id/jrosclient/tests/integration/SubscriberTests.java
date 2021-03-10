@@ -36,13 +36,15 @@ import id.jrosclient.ros.NodeServer;
 import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.tests.TestUtils;
 
+import static id.jrosclient.tests.integration.TestConstants.URL;
+
 public class SubscriberTests {
     
     private static JRosClient client;
 
     @BeforeAll
     public static void setup() throws MalformedURLException {
-        client = new JRosClient("http://ubuntu:11311/");
+        client = new JRosClient(URL);
     }
 
     @Test

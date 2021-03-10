@@ -37,13 +37,15 @@ import id.jrosclient.TopicSubscriber;
 import id.jrosmessages.std_msgs.Int32Message;
 import id.jrosmessages.std_msgs.StringMessage;
 
+import static id.jrosclient.tests.integration.TestConstants.URL;
+
 public class JRosClientTests {
 
     private static JRosClient client;
 
     @BeforeEach
     public void setup() throws MalformedURLException {
-        client = new JRosClient("http://ubuntu:11311/");
+        client = new JRosClient(URL);
     }
 
     @AfterEach

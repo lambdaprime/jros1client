@@ -1,1 +1,1 @@
-{ "statusCode": "SUCCESS", "statusMessage": "*", "name": "TCPROS", "host": "ubuntu", "port": * }
+{ "statusCode": "SUCCESS", "statusMessage": "*", "name": "TCPROS", "host": "*", "port": * }

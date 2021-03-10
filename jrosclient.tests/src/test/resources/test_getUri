@@ -1,1 +1,1 @@
-{ "statusCode": "SUCCESS", "statusMessage": "", "masterURI": "http://ubuntu:11311/" }
+{ "statusCode": "SUCCESS", "statusMessage": "", "masterURI": "http://*:11311/" }
