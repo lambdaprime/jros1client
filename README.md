@@ -37,6 +37,6 @@ rostopic list -- prints information about all publishers, subscribers in the sys
 # Examples
 
 ```bash
-% jrosclient --masterUrl "http://ubuntu:11311/" --nodePort 1234 rostopic echo testTopic geometry_msgs/Point
+% jrosclient --masterUrl "http://localhost:11311/" --nodePort 1234 rostopic echo testTopic geometry_msgs/Point
 {z=1.0, y=1.0, x=1.0}
 ```

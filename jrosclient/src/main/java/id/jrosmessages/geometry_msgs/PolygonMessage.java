@@ -49,7 +49,7 @@ public class PolygonMessage implements Message {
 
     @Override
     public String toString() {
-        return XJson.asString("points", Arrays.asList(points));
+        return XJson.asString("points", Arrays.toString(points));
     }
     
     @Override

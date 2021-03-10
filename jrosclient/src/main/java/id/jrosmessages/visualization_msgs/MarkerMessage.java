@@ -229,8 +229,8 @@ public class MarkerMessage implements Message {
                 "color", color,
                 "lifetime", lifetime,
                 "frame_locked", frame_locked,
-                "points", Arrays.asList(points),
-                "colors", Arrays.asList(colors),
+                "points", Arrays.toString(points),
+                "colors", Arrays.toString(colors),
                 "mesh_resource", mesh_resource,
                 "text", text,
                 "mesh_use_embedded_materials", mesh_use_embedded_materials);
