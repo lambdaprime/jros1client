@@ -81,4 +81,22 @@ public class RosDataOutput implements OutputKineticStream {
     public void close() throws Exception {
         // nothing to release
     }
+
+    @Override
+    public void writeByte(Byte b) throws Exception {
+        out.writeByte(0);
+    }
+
+    @Override
+    public void writeIntArray(int[] array) throws Exception {
+        throw new RuntimeException("Not supported");
+    }
+
+    @Override
+    public void writeByteArray(byte[] array) throws Exception {
+        writeLen(array.length);
+        for (var item: array) {
+            out.writeByte(item);
+        }
+    }
 }
