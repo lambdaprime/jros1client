@@ -40,7 +40,6 @@ import id.jrosclient.ros.transport.io.MessagePacketReader;
 import id.jrosmessages.Message;
 import id.jrosmessages.impl.MessageTransformer;
 import id.jrosmessages.impl.MetadataAccessor;
-import id.xfunction.XUtils;
 import id.xfunction.concurrent.NamedThreadFactory;
 import id.xfunction.concurrent.SameThreadExecutorService;
 import id.xfunction.logging.XLogger;
@@ -94,7 +93,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
             try {
                 run(ch);
             } catch (Exception e) {
-                XUtils.printExceptions(e);
+                e.printStackTrace();
             } finally {
                 executorService.shutdown();
             }

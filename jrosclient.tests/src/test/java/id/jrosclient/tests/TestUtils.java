@@ -25,8 +25,7 @@ import static id.xfunction.XUtils.readResource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
-import id.xfunction.TemplateMatcher;
+import id.xfunction.text.WildcardMatcher;
 
 public class TestUtils {
 
@@ -37,7 +36,7 @@ public class TestUtils {
 
     public static void compareWithTemplate(String out, String templateFile) {
         var template = readResource(templateFile);
-        assertTrue(new TemplateMatcher(template).matches(out));
+        assertTrue(new WildcardMatcher(template).matches(out));
     }
 
 }

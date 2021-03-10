@@ -25,7 +25,6 @@ import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscription;
 
 import id.jrosmessages.Message;
-import id.xfunction.XUtils;
 
 /**
  * <p>Subscriber receives messages for the topic it is
@@ -67,7 +66,7 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
 
     @Override
     public void onError(Throwable throwable) {
-        XUtils.printExceptions(throwable);
+        throwable.printStackTrace();
     }
 
     /**

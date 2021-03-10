@@ -44,9 +44,9 @@ import org.junit.jupiter.api.Test;
 import id.jrosclient.JRosClient;
 import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosmessages.std_msgs.StringMessage;
-import id.xfunction.TemplateMatcher;
 import id.xfunction.XExec;
 import id.xfunction.XUtils;
+import id.xfunction.text.WildcardMatcher;
 
 public class JRosClientAppTests {
 
@@ -112,7 +112,7 @@ public class JRosClientAppTests {
         var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo -n 5 testTopic std_msgs/String",
                 URL);
         var out = runOk(args);
-        Assertions.assertTrue(new TemplateMatcher(readResource("echo")).matches(out));
+        Assertions.assertTrue(new WildcardMatcher(readResource("echo")).matches(out));
     }
 
     private void test_echo_missing_args() {
@@ -131,14 +131,14 @@ public class JRosClientAppTests {
         var args = String.format("--masterUrl %s --nodePort 1234 --debug rostopic echo -n 1 testTopic std_msgs/String",
                 URL);
         var out = runOk(args);
-        Assertions.assertTrue(new TemplateMatcher(readResource("debug")).matches(out));
+        Assertions.assertTrue(new WildcardMatcher(readResource("debug")).matches(out));
     }
 
     private void test_list() {
         var args = String.format("--masterUrl %s --nodePort 1234 rostopic list",
                 URL);
         var out = runOk(args);
-        Assertions.assertTrue(new TemplateMatcher(readResource("list")).matches(out));
+        Assertions.assertTrue(new WildcardMatcher(readResource("list")).matches(out));
     }
     
     private String runFail(String fmt, Object...args) {
