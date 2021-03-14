@@ -49,7 +49,6 @@ import id.xfunction.logging.XLogger;
 public class JRosClient implements AutoCloseable {
 
     private static final Logger LOGGER = XLogger.getLogger(JRosClient.class);
-    private static final String CALLER_ID = "jrosclient";
 
     private String masterUrl;
     private NodeServer nodeServer;
@@ -57,6 +56,7 @@ public class JRosClient implements AutoCloseable {
     private MetadataAccessor metadataAccessor = new MetadataAccessor();
     private Set<TcpRosClient<?>> clients = new HashSet<>();
     private PublishersManager publishersManager = new PublishersManager();
+    private JRosClientConfiguration configuration;
 
     /**
      * @param masterUrl master node URL
@@ -69,6 +69,7 @@ public class JRosClient implements AutoCloseable {
         this.masterUrl = masterUrl;
         nodeServer = new NodeServer(config);
         tcpRosServer = new TcpRosServer(publishersManager, config);
+        configuration = config;
     }
 
     /**
@@ -103,16 +104,17 @@ public class JRosClient implements AutoCloseable {
         String topic = subscriber.getTopic();
         var clazz = subscriber.getMessageClass();
         var topicType = metadataAccessor.getType(clazz);
-        var publishers = getMasterApi().registerSubscriber(CALLER_ID, topic, topicType,
+        var callerId = configuration.getCallerId();
+        var publishers = getMasterApi().registerSubscriber(callerId, topic, topicType,
                 nodeServer.getNodeApi());
         LOGGER.log(Level.FINE, "Publishers: {0}", publishers.toString());
         if (publishers.value.isEmpty()) {
             throw new XRE("No publishers for topic %s found", topic);
         }
         var nodeApi = getNodeApi(publishers.value.get(0));
-        var protocol = nodeApi.requestTopic(CALLER_ID, topic, List.of(Protocol.TCPROS));
+        var protocol = nodeApi.requestTopic(callerId, topic, List.of(Protocol.TCPROS));
         LOGGER.log(Level.FINE, "Protocol configuration: {0}", protocol);
-        var nodeClient = new TcpRosClient<M>(CALLER_ID, topic, protocol.host, protocol.port, clazz);
+        var nodeClient = new TcpRosClient<M>(callerId, topic, protocol.host, protocol.port, clazz);
         nodeClient.subscribe(subscriber);
         nodeClient.connect();
         clients.add(nodeClient);
@@ -135,7 +137,7 @@ public class JRosClient implements AutoCloseable {
         publishersManager.add(publisher);
         tcpRosServer.start();
         nodeServer.start();
-        var subscribers = getMasterApi().registerPublisher(CALLER_ID, topic, topicType,
+        var subscribers = getMasterApi().registerPublisher(configuration.getCallerId(), topic, topicType,
                 nodeServer.getNodeApi());
         LOGGER.log(Level.FINE, "Current subscribers: {0}", subscribers.toString());
     }
@@ -157,7 +159,7 @@ public class JRosClient implements AutoCloseable {
         }
         var publisher = publisherOpt.get();
         publisher.close();
-        var num = getMasterApi().unregisterPublisher(CALLER_ID, topic,
+        var num = getMasterApi().unregisterPublisher(configuration.getCallerId(), topic,
                 nodeServer.getNodeApi());
         LOGGER.log(Level.FINE, "Unregistered publisher response: {0}", num.toString());
         publishersManager.remove(topic);
@@ -167,7 +169,7 @@ public class JRosClient implements AutoCloseable {
      * Check if there is any publisher available for the given topic
      */
     public boolean hasPublisher(String topic) {
-        return getMasterApi().getSystemState(CALLER_ID).publishers.stream()
+        return getMasterApi().getSystemState(configuration.getCallerId()).publishers.stream()
                 .anyMatch(p -> topic.equals(p.topic));
     }
 

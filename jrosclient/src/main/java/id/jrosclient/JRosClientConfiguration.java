@@ -33,6 +33,7 @@ public class JRosClientConfiguration {
     private int tcpRosServerPort = DEFAULT_TCP_ROS_SERVER_PORT;
     private int nodeServerPort = DEFAULT_NODE_SERVER_PORT;
     private String hostName = HOST_NAME;
+    private String callerId = "jrosclient";
 
     /**
      * <p>Port for TCPROS.</p>
@@ -77,4 +78,7 @@ public class JRosClientConfiguration {
         this.hostName = hostName;
     }
     
+    public String getCallerId() {
+        return callerId;
+    }
 }
