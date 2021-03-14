@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="14.3.0">
-  <zoom_level>5</zoom_level>
+  <zoom_level>6</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>755</x>
-      <y>165</y>
-      <w>70</w>
-      <h>15</h>
+      <x>630</x>
+      <y>108</y>
+      <w>84</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>MasterApiClient</panel_attributes>
     <additional_attributes/>
@@ -15,10 +15,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>785</x>
-      <y>95</y>
-      <w>15</w>
-      <h>80</h>
+      <x>666</x>
+      <y>24</y>
+      <w>18</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
@@ -26,10 +26,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>690</x>
-      <y>310</y>
-      <w>70</w>
-      <h>15</h>
+      <x>552</x>
+      <y>282</y>
+      <w>84</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>NodeApiClient</panel_attributes>
     <additional_attributes/>
@@ -37,10 +37,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>720</x>
-      <y>230</y>
-      <w>70</w>
-      <h>90</h>
+      <x>588</x>
+      <y>186</y>
+      <w>84</w>
+      <h>108</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>120.0;10.0;10.0;160.0</additional_attributes>
@@ -48,10 +48,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>820</x>
-      <y>310</y>
-      <w>70</w>
-      <h>15</h>
+      <x>708</x>
+      <y>282</y>
+      <w>84</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>NodeApiServer</panel_attributes>
     <additional_attributes/>
@@ -59,10 +59,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>800</x>
-      <y>230</y>
-      <w>65</w>
-      <h>90</h>
+      <x>684</x>
+      <y>186</y>
+      <w>78</w>
+      <h>108</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;110.0;160.0</additional_attributes>
@@ -70,10 +70,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>765</x>
-      <y>485</y>
-      <w>70</w>
-      <h>15</h>
+      <x>642</x>
+      <y>492</y>
+      <w>84</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>NodeServer</panel_attributes>
     <additional_attributes/>
@@ -81,10 +81,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>765</x>
-      <y>530</y>
-      <w>70</w>
-      <h>15</h>
+      <x>642</x>
+      <y>546</y>
+      <w>84</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>NodeApiServer</panel_attributes>
     <additional_attributes/>
@@ -92,10 +92,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>795</x>
-      <y>495</y>
-      <w>15</w>
-      <h>45</h>
+      <x>678</x>
+      <y>504</y>
+      <w>18</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
@@ -103,10 +103,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>770</x>
-      <y>575</y>
-      <w>65</w>
-      <h>15</h>
+      <x>648</x>
+      <y>600</y>
+      <w>78</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>TopicPublisher</panel_attributes>
     <additional_attributes/>
@@ -114,10 +114,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>795</x>
-      <y>540</y>
-      <w>15</w>
-      <h>45</h>
+      <x>678</x>
+      <y>558</y>
+      <w>18</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
     <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
@@ -125,10 +125,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>810</x>
-      <y>425</y>
-      <w>55</w>
-      <h>15</h>
+      <x>696</x>
+      <y>420</y>
+      <w>66</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>TcpRosServer</panel_attributes>
     <additional_attributes/>
@@ -136,10 +136,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>765</x>
-      <y>75</y>
-      <w>50</w>
-      <h>25</h>
+      <x>642</x>
+      <y>0</y>
+      <w>60</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 MasterApi</panel_attributes>
@@ -148,10 +148,10 @@ MasterApi</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>765</x>
-      <y>210</y>
-      <w>50</w>
-      <h>25</h>
+      <x>642</x>
+      <y>162</y>
+      <w>60</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 NodeApi</panel_attributes>
@@ -160,10 +160,10 @@ NodeApi</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>810</x>
-      <y>365</y>
-      <w>50</w>
-      <h>25</h>
+      <x>696</x>
+      <y>348</y>
+      <w>60</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 Publisher
@@ -173,10 +173,10 @@ Publisher
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>830</x>
-      <y>385</y>
-      <w>15</w>
-      <h>50</h>
+      <x>720</x>
+      <y>372</y>
+      <w>18</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
@@ -184,10 +184,10 @@ Publisher
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>720</x>
-      <y>425</y>
-      <w>50</w>
-      <h>15</h>
+      <x>588</x>
+      <y>420</y>
+      <w>60</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>TcpRosClient</panel_attributes>
     <additional_attributes/>
@@ -195,10 +195,10 @@ Publisher
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>720</x>
-      <y>365</y>
-      <w>50</w>
-      <h>25</h>
+      <x>588</x>
+      <y>348</y>
+      <w>60</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 Publisher
@@ -208,10 +208,10 @@ Publisher
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>740</x>
-      <y>385</y>
-      <w>15</w>
-      <h>50</h>
+      <x>612</x>
+      <y>372</y>
+      <w>18</w>
+      <h>60</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
@@ -219,10 +219,10 @@ Publisher
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>435</x>
-      <y>645</y>
-      <w>265</w>
-      <h>225</h>
+      <x>246</x>
+      <y>684</y>
+      <w>318</w>
+      <h>270</h>
     </coordinates>
     <panel_attributes>symbol=component
 
@@ -232,10 +232,10 @@ Node (Subscriber)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>900</x>
-      <y>640</y>
-      <w>255</w>
-      <h>225</h>
+      <x>804</x>
+      <y>678</y>
+      <w>306</w>
+      <h>270</h>
     </coordinates>
     <panel_attributes>symbol=component
 
@@ -245,22 +245,22 @@ Node (Publisher)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>695</x>
-      <y>710</y>
-      <w>215</w>
-      <h>20</h>
+      <x>558</x>
+      <y>762</y>
+      <w>258</w>
+      <h>24</h>
     </coordinates>
-    <panel_attributes>lt=[]&lt;-
+    <panel_attributes>lt=[]&lt;-&gt;[]
 ConnectionHeader</panel_attributes>
     <additional_attributes>10.0;20.0;410.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>570</x>
-      <y>720</y>
-      <w>90</w>
-      <h>20</h>
+      <x>408</x>
+      <y>774</y>
+      <w>108</w>
+      <h>24</h>
     </coordinates>
     <panel_attributes>lt=&lt;-
 Message</panel_attributes>
@@ -269,32 +269,21 @@ Message</panel_attributes>
   <element>
     <id>UMLDeployment</id>
     <coordinates>
-      <x>475</x>
-      <y>700</y>
-      <w>100</w>
-      <h>45</h>
+      <x>294</x>
+      <y>750</y>
+      <w>120</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>TopicSubscriber</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>1035</x>
-      <y>705</y>
-      <w>60</w>
-      <h>35</h>
-    </coordinates>
-    <panel_attributes>TopicPublisher</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>UMLObject</id>
     <coordinates>
-      <x>465</x>
-      <y>675</y>
-      <w>675</w>
-      <h>90</h>
+      <x>282</x>
+      <y>720</y>
+      <w>810</w>
+      <h>108</h>
     </coordinates>
     <panel_attributes>Topic
 valign=top</panel_attributes>
@@ -303,10 +292,10 @@ valign=top</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>570</x>
-      <y>705</y>
-      <w>90</w>
-      <h>25</h>
+      <x>408</x>
+      <y>756</y>
+      <w>108</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=-
 m1=0..n
@@ -317,10 +306,10 @@ subscribes to &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>650</x>
-      <y>705</y>
-      <w>50</w>
-      <h>35</h>
+      <x>504</x>
+      <y>756</y>
+      <w>60</w>
+      <h>42</h>
     </coordinates>
     <panel_attributes>TcpRosClient</panel_attributes>
     <additional_attributes/>
@@ -328,38 +317,12 @@ subscribes to &gt;</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>900</x>
-      <y>705</y>
-      <w>55</w>
-      <h>35</h>
+      <x>804</x>
+      <y>756</y>
+      <w>84</w>
+      <h>36</h>
     </coordinates>
     <panel_attributes>TcpRosServer</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>950</x>
-      <y>705</y>
-      <w>95</w>
-      <h>25</h>
-    </coordinates>
-    <panel_attributes>lt=-
-m1=0..1
-m2=0..1
-subscribes to &gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>950</x>
-      <y>720</y>
-      <w>95</w>
-      <h>20</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-
-Message</panel_attributes>
-    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
   </element>
 </diagram>
