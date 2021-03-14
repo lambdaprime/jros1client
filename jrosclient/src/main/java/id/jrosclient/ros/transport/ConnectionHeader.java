@@ -24,17 +24,21 @@ package id.jrosclient.ros.transport;
 import java.util.Optional;
 
 import id.xfunction.XJson;
+import id.xfunction.logging.XLogger;
 
 /**
  * <a href="http://wiki.ros.org/ROS/Connection%20Header">http://wiki.ros.org/ROS/Connection%20Header</a>
  */
 public class ConnectionHeader {
 
+    private static final XLogger LOGGER = XLogger.getLogger(ConnectionHeader.class);
+    
     public static final String CALLER_ID = "callerid";
     public static final String TOPIC = "topic";
     public static final String TYPE = "type";
     public static final String MESSAGE_DEFINITION = "message_definition";
     public static final String MD5_SUM = "md5sum";
+    public static final String LATCHING = "latching";
 
     /**
      * Name of node sending data.
@@ -68,7 +72,16 @@ public class ConnectionHeader {
     public Optional<String> md5sum = Optional.empty();
 
     /**
+     * Enables "latching" on a connection. When a connection is
+     * latched, the last message published is saved and automatically
+     * sent to any future subscribers that connect. This is useful for
+     * slow-changing to static data like a map.
      * 
+     * Optional by the publisher/subscriber.
+     */
+    public Optional<Boolean> latching = Optional.of(false);
+
+    /**
      * Required to be set by the subscriber.
      */
     public Optional<String> messageDefinition = Optional.empty();
@@ -98,6 +111,11 @@ public class ConnectionHeader {
         return this;
     }
 
+    public ConnectionHeader withLatching(String value) {
+        this.latching = Optional.of(Integer.parseInt(value) == 1);
+        return this;
+    }
+    
     public void add(String key, String value) {
         switch (key) {
         case CALLER_ID: withCallerId(value); break;
@@ -105,6 +123,9 @@ public class ConnectionHeader {
         case TYPE: withType(value); break;
         case MESSAGE_DEFINITION: withMessageDefinition(value); break;
         case MD5_SUM: withMd5Sum(value); break;
+        case LATCHING: withLatching(value); break;
+        default:
+            LOGGER.warning("Received unknown Connection Header field: {0} = {1} ", key, value);
         }
     }
 
@@ -124,6 +145,10 @@ public class ConnectionHeader {
         return topic;
     }
     
+    public Optional<Boolean> getLatching() {
+        return latching;
+    }
+    
     @Override
     public String toString() {
         return XJson.asString(
@@ -131,7 +156,8 @@ public class ConnectionHeader {
             TOPIC, topic.orElse("empty"),
             TYPE, type.orElse("empty"),
             MESSAGE_DEFINITION, messageDefinition.orElse("empty"),
-            MD5_SUM, md5sum.orElse("empty"));
+            MD5_SUM, md5sum.orElse("empty"),
+            LATCHING, latching.get());
     }
 
     @Override
@@ -147,6 +173,7 @@ public class ConnectionHeader {
                 && topic.equals(ch.topic)
                 && type.equals(ch.type)
                 && messageDefinition.equals(ch.messageDefinition)
-                && md5sum.equals(ch.md5sum);
+                && md5sum.equals(ch.md5sum)
+                && latching.equals(ch.latching);
     }
 }
