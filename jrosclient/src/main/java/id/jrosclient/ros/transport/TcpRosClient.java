@@ -33,23 +33,24 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import id.jrosclient.ros.transport.io.ConnectionHeaderWriter;
 import id.jrosclient.ros.transport.io.MessagePacketReader;
 import id.jrosmessages.Message;
 import id.jrosmessages.impl.MessageTransformer;
 import id.jrosmessages.impl.MetadataAccessor;
+import id.xfunction.XAsserts;
 import id.xfunction.concurrent.NamedThreadFactory;
 import id.xfunction.concurrent.SameThreadExecutorService;
 import id.xfunction.logging.XLogger;
 
 /**
  * Allows to communicate with other ROS nodes.
+ * Handles only one subscriber.
  */
 public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> implements AutoCloseable {
 
-    private static final Logger LOGGER = XLogger.getLogger(TcpRosClient.class);
+    private static final XLogger LOGGER = XLogger.getLogger(TcpRosClient.class);
     
     private String callerId;
     private String topic;
@@ -61,6 +62,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
     private ConnectionHeaderWriter writer;
     private MessagePacketReader reader;
     private ExecutorService executorService;
+    private SocketChannel channel;
 
     public TcpRosClient(String callerId, String topic, String host, int port,
             Class<M> messageClass) {
@@ -75,7 +77,8 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
     }
     
     public void connect() throws IOException {
-        SocketChannel channel = SocketChannel.open(new InetSocketAddress(host, port));
+        XAsserts.assertTrue(channel == null, "Already connected");
+        channel = SocketChannel.open(new InetSocketAddress(host, port));
         OutputStream os = Channels.newOutputStream(channel);
         dis = new DataInputStream(Channels.newInputStream(channel));
         dos = new DataOutputStream(new BufferedOutputStream(os));
@@ -93,11 +96,21 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
             try {
                 run(ch);
             } catch (Exception e) {
-                e.printStackTrace();
+                sendOnError(e);
             } finally {
                 executorService.shutdown();
             }
         });
+    }
+
+    private void sendOnError(Exception e) {
+        LOGGER.entering("sendOnError");
+        var subscribers = getSubscribers();
+        if (!subscribers.isEmpty()) {
+            XAsserts.assertEquals(1, subscribers.size(), "Unexpected number of subscribers");
+            subscribers.get(0).onError(e);
+        }
+        LOGGER.exiting("sendOnError");
     }
 
     private void run(ConnectionHeader header) throws Exception {
@@ -119,7 +132,14 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
 
     @Override
     public void close() {
+        LOGGER.entering("close");
+        try {
+            channel.close();
+        } catch (IOException e) {
+            LOGGER.severe(e.getMessage());
+        }
         executorService.shutdown();
         super.close();
+        LOGGER.exiting("close");
     }
 }

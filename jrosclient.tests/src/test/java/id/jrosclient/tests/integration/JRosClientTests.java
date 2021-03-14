@@ -21,6 +21,7 @@
  */
 package id.jrosclient.tests.integration;
 
+import java.io.EOFException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -118,5 +119,33 @@ public class JRosClientTests {
         for (int i = 0; i < received.size(); i++) {
             Assertions.assertEquals(start + i, received.get(i));
         }
+    }
+    
+    /**
+     * Test that when publisher unexpectedly closes connection, subscriber notified
+     * about this through onError
+     */
+    @Test
+    public void test_publisher_crash() throws Exception {
+        var future = new CompletableFuture<List<Integer>>();
+        String topic = "/testTopic2";
+        var publisher = new TopicSubmissionPublisher<>(Int32Message.class, topic);
+        client.publish(publisher);
+        client.subscribe(new TopicSubscriber<>(Int32Message.class, topic) {
+            List<Integer> data = new ArrayList<>();
+            @Override
+            public void onNext(Int32Message item) {
+                System.out.println(item);
+            }
+            public void onError(Throwable throwable) {
+                Assertions.assertTrue(throwable instanceof EOFException);
+                future.complete(data);
+            }
+        });
+        var msg = new Int32Message().withData(1);
+        publisher.submit(msg);
+        publisher.closeExceptionally(new Exception());
+        future.join();
+        client.unpublish(topic);
     }
 }

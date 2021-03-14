@@ -62,6 +62,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
 
     @Override
     public void onNext(Message message) {
+        LOGGER.entering("onNext");
         LOGGER.fine("Published new message: {0}", message);
         var os = new XOutputStream();
         var dos = new DataOutputStream(new BufferedOutputStream(os));
@@ -78,6 +79,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         future.complete(new MessageResponse(ByteBuffer.wrap(os.toByteArray()))
                 .withIgnoreNextRequest()
                 .withErrorHandler(this::onError));
+        LOGGER.exiting("onNext");
     }
 
     /**
@@ -99,14 +101,19 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     
     @Override
     public void onError(Throwable throwable) {
+        LOGGER.entering("onError");
         LOGGER.severe(throwable.getMessage());
         subscription.cancel();
         isCompleted = true;
+        future.complete(null);
+        LOGGER.exiting("onError");
     }
 
     @Override
     public void onComplete() {
+        LOGGER.entering("onComplete");
         isCompleted = true;
+        LOGGER.exiting("onComplete");
     }
     
     public boolean isCompleted() {

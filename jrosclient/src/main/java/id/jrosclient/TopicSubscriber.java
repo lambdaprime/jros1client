@@ -64,6 +64,13 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
         subscription.request(1);
     }
 
+    /**
+     * <p>Common throwable types:</p>
+     * 
+     * <ul>
+     * <li>EOFException - publisher unexpectedly closed the connection</li>
+     * </ul>
+     */
     @Override
     public void onError(Throwable throwable) {
         throwable.printStackTrace();
