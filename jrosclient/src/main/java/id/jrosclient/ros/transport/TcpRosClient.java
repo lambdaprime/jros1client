@@ -34,6 +34,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.logging.Level;
 
+import id.jrosclient.impl.TextUtils;
 import id.jrosclient.ros.transport.io.ConnectionHeaderWriter;
 import id.jrosclient.ros.transport.io.MessagePacketReader;
 import id.jrosmessages.Message;
@@ -51,6 +52,7 @@ import id.xfunction.logging.XLogger;
 public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> implements AutoCloseable {
 
     private static final XLogger LOGGER = XLogger.getLogger(TcpRosClient.class);
+    private TextUtils utils = new TextUtils();
     
     private String callerId;
     private String topic;
@@ -117,7 +119,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
         writer.write(header);
         dos.flush();
         MessagePacket response = reader.read();
-        LOGGER.log(Level.FINE, "Message packet: {0}", response);
+        LOGGER.log(Level.FINE, "Message packet: {0}", utils.toString(response));
         byte[] body = response.getBody();
         while (!executorService.isShutdown() && hasSubscribers()) {
             var msg = new MessageTransformer().transform(body, messageClass);

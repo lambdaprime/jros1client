@@ -30,6 +30,7 @@ import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 
 import id.ICE.MessageResponse;
+import id.jrosclient.impl.TextUtils;
 import id.jrosclient.ros.transport.io.MessagePacketWriter;
 import id.jrosmessages.Message;
 import id.jrosmessages.impl.MessageTransformer;
@@ -41,6 +42,7 @@ import id.xfunction.logging.XLogger;
 public class TopicPublisherSubscriber implements Subscriber<Message> {
 
     private static final XLogger LOGGER = XLogger.getLogger(TcpRosServer.class);
+    private TextUtils utils = new TextUtils();
     private MessageTransformer transformer = new MessageTransformer();
     private CompletableFuture<MessageResponse> future = CompletableFuture.completedFuture(null);
     private Subscription subscription;
@@ -63,7 +65,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     @Override
     public void onNext(Message message) {
         LOGGER.entering("onNext");
-        LOGGER.fine("Published new message: {0}", message);
+        LOGGER.fine("Published new message: {0}", utils.toString(message));
         var os = new XOutputStream();
         var dos = new DataOutputStream(new BufferedOutputStream(os));
         var writer = new MessagePacketWriter(dos);
@@ -75,7 +77,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
             throw new RuntimeException(e);
         }
         LOGGER.fine("Sending message to subscriber");
-        LOGGER.fine(os.asHexString());
+        LOGGER.fine(utils.toString(os.asHexString()));
         future.complete(new MessageResponse(ByteBuffer.wrap(os.toByteArray()))
                 .withIgnoreNextRequest()
                 .withErrorHandler(this::onError));
