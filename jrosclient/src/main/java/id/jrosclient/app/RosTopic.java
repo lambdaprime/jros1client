@@ -24,12 +24,13 @@ package id.jrosclient.app;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 import id.jrosclient.JRosClient;
 import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.TopicSubscriber;
+import id.jrosclient.impl.TextUtils;
+import id.jrosclient.impl.TextUtilsFactory;
 import id.jrosclient.ros.responses.Response.StatusCode;
 import id.jrosmessages.Message;
 import id.xfunction.ArgumentParsingException;
@@ -41,11 +42,13 @@ public class RosTopic {
 
     private static final String CALLER_ID = "jrosclient-rostopic";
     private String masterUrl;
-    private Optional<Integer> nodePort;
+    private JRosClientConfiguration config;
+    private TextUtils utils;
     
-    public RosTopic(String masterUrl, Optional<Integer> nodePort) {
+    public RosTopic(String masterUrl, JRosClientConfiguration config) {
         this.masterUrl = masterUrl;
-        this.nodePort = nodePort;
+        this.config = config;
+        utils = TextUtilsFactory.create(config);
     }
 
     public void execute(List<String> positionalArgs) {
@@ -84,9 +87,6 @@ public class RosTopic {
         );
         new SmartArgs(handlers, positionalArgs::add).parse(rest.toArray(new String[0]));
         if (positionalArgs.size() < 2) throw new ArgumentParsingException();
-        JRosClientConfiguration config = new JRosClientConfiguration();
-        if (nodePort.isPresent())
-            config.setNodeServerPort(nodePort.get());
         JRosClient client = new JRosClient(masterUrl, config);
         var topic = positionalArgs.removeFirst();
         var topicType = positionalArgs.removeFirst();
@@ -96,7 +96,7 @@ public class RosTopic {
         var subscriber = new TopicSubscriber<Message>(clazz, topic) {
             @Override
             public void onNext(Message message) {
-                System.out.println(message);
+                System.out.println(utils.toString(message));
                 count[0]--;
                 if (count[0] == 0) { 
                     getSubscription().cancel();

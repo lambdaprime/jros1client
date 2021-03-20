@@ -13,7 +13,7 @@ Documentation is available here <http://portal2.atwebpages.com/jrosclient>
 # Usage
 
 ```bash
-jrosclient <--masterUrl MASTER_URL> [--nodePort NODE_PORT] [--debug] <COMMAND> [args ...]
+jrosclient <--masterUrl MASTER_URL> [--nodePort NODE_PORT] [--truncate MAX_LENGTH] [--debug] <COMMAND> [args ...]
 ```
 
 Where:
@@ -25,6 +25,8 @@ NODE_PORT -- client node port to use
 COMMAND -- one of the client commands
 
 Options:
+
+--truncate - truncate objects logging
 
 --debug - turns on debug mode
 
@@ -39,4 +41,5 @@ rostopic list -- prints information about all publishers, subscribers in the sys
 ```bash
 % jrosclient --masterUrl "http://localhost:11311/" --nodePort 1234 rostopic echo testTopic geometry_msgs/Point
 {z=1.0, y=1.0, x=1.0}
+% jrosclient --masterUrl "http://localhost:11311/" rostopic echo testTopic std_msgs/String
 ```

@@ -29,6 +29,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import id.jrosclient.JRosClientConfiguration;
 import id.xfunction.ArgumentParsingException;
 import id.xfunction.SmartArgs;
 import id.xfunction.logging.XLogger;
@@ -36,10 +37,11 @@ import id.xfunction.logging.XLogger;
 public class JRosClientApp {
 
     private static Optional<String> masterUrl = Optional.empty();
-    private static Optional<Integer> nodePort = Optional.empty();
+    private static JRosClientConfiguration config = new JRosClientConfiguration();
     private static Map<String, Consumer<String>> handlers = Map.of(
         "--masterUrl", url -> { masterUrl = Optional.of(url); },
-        "--nodePort", port -> { nodePort = Optional.of(Integer.parseInt(port));}
+        "--nodePort", port -> { config.setNodeServerPort(Integer.parseInt(port));},
+        "--truncate", maxLength -> { config.setMaxMessageLoggingLength(Integer.parseInt(maxLength));}
     );
     private static LinkedList<String> positionalArgs = new LinkedList<>();
 
@@ -79,7 +81,7 @@ public class JRosClientApp {
         if (positionalArgs.isEmpty()) throw new ArgumentParsingException();
         var cmd = positionalArgs.removeFirst();
         switch (cmd) {
-        case "rostopic" : new RosTopic(withArg(masterUrl), nodePort)
+        case "rostopic" : new RosTopic(withArg(masterUrl), config)
             .execute(positionalArgs); 
             break;
         case "--debug" : {

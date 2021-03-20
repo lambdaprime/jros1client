@@ -22,22 +22,36 @@
 package id.jrosclient.impl;
 
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 
 import id.xfunction.text.Ellipsizer;
 
 public class TextUtils {
 
-    private Ellipsizer ellipsizer = new Ellipsizer(400);
+    private Optional<Ellipsizer> ellipsizerOpt = Optional.empty();
     
-    /**
-     * Converts array to string and ellipsize it in the
-     * middle if it is long
-     */
-    public String toString(Object[] a) {
-        return ellipsizer.ellipsizeMiddle(Arrays.toString(a));
+    public TextUtils withEllipsize(int maxLength) {
+        ellipsizerOpt = Optional.of(new Ellipsizer(maxLength));
+        return this;
     }
 
+    /**
+     * Converts array to string and truncates it in the
+     * middle if it is longer than maximum allowed value
+     */
     public String toString(Object obj) {
-        return ellipsizer.ellipsizeMiddle(obj.toString());
+        var str = Objects.toString(obj);
+        return ellipsizerOpt
+                .map(e -> e.ellipsizeMiddle(str))
+                .orElse(str);
+    }
+    
+    public String toString(Object[] a) {
+        return toString(Arrays.toString(a));
+    }
+
+    public String toString(byte[] obj) {
+        return toString(Arrays.toString(obj));
     }
 }

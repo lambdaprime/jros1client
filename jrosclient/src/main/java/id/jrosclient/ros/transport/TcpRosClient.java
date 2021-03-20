@@ -52,7 +52,7 @@ import id.xfunction.logging.XLogger;
 public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> implements AutoCloseable {
 
     private static final XLogger LOGGER = XLogger.getLogger(TcpRosClient.class);
-    private TextUtils utils = new TextUtils();
+    private TextUtils utils;
     
     private String callerId;
     private String topic;
@@ -67,7 +67,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
     private SocketChannel channel;
 
     public TcpRosClient(String callerId, String topic, String host, int port,
-            Class<M> messageClass) {
+            Class<M> messageClass, TextUtils utils) {
         super(new SameThreadExecutorService(), 1);
         this.callerId = callerId;
         this.topic = topic;
@@ -76,6 +76,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
         this.messageClass = messageClass;
         executorService = Executors.newSingleThreadExecutor(
                 new NamedThreadFactory("tcp-ros-client-" + topic.replace("/", "")));
+        this.utils = utils;
     }
     
     public void connect() throws IOException {
@@ -129,6 +130,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
             writer.write(header);
             dos.flush();
             body = reader.readBody();
+            LOGGER.log(Level.FINE, "Next packet body: {0}", utils.toString(body));
         }
     }
 

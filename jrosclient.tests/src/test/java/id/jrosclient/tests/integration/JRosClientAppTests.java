@@ -70,6 +70,7 @@ public class JRosClientAppTests {
         test_echo_missing_args();
         test_debug();
         test_list();
+        test_truncate();
     }
 
     /**
@@ -139,6 +140,13 @@ public class JRosClientAppTests {
                 URL);
         var out = runOk(args);
         Assertions.assertTrue(new WildcardMatcher(readResource("list")).matches(out));
+    }
+    
+    private void test_truncate() {
+        var args = String.format("--masterUrl %s --debug --truncate 6 rostopic echo -n 1 testTopic std_msgs/String",
+                URL);
+        var out = runOk(args);
+        Assertions.assertTrue(new WildcardMatcher(readResource("truncate")).matches(out));
     }
     
     private String runFail(String fmt, Object...args) {

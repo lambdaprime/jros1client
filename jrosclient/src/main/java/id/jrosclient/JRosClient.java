@@ -28,6 +28,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import id.jrosclient.impl.RosRpcClient;
+import id.jrosclient.impl.TextUtils;
+import id.jrosclient.impl.TextUtilsFactory;
 import id.jrosclient.ros.NodeServer;
 import id.jrosclient.ros.api.MasterApi;
 import id.jrosclient.ros.api.NodeApi;
@@ -57,6 +59,7 @@ public class JRosClient implements AutoCloseable {
     private Set<TcpRosClient<?>> clients = new HashSet<>();
     private PublishersManager publishersManager = new PublishersManager();
     private JRosClientConfiguration configuration;
+    private TextUtils utils;
 
     /**
      * @param masterUrl master node URL
@@ -70,6 +73,7 @@ public class JRosClient implements AutoCloseable {
         nodeServer = new NodeServer(config);
         tcpRosServer = new TcpRosServer(publishersManager, config);
         configuration = config;
+        utils = TextUtilsFactory.create(config);
     }
 
     /**
@@ -114,7 +118,7 @@ public class JRosClient implements AutoCloseable {
         var nodeApi = getNodeApi(publishers.value.get(0));
         var protocol = nodeApi.requestTopic(callerId, topic, List.of(Protocol.TCPROS));
         LOGGER.log(Level.FINE, "Protocol configuration: {0}", protocol);
-        var nodeClient = new TcpRosClient<M>(callerId, topic, protocol.host, protocol.port, clazz);
+        var nodeClient = new TcpRosClient<M>(callerId, topic, protocol.host, protocol.port, clazz, utils);
         nodeClient.subscribe(subscriber);
         nodeClient.connect();
         clients.add(nodeClient);

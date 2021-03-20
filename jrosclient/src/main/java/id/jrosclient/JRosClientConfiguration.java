@@ -34,6 +34,7 @@ public class JRosClientConfiguration {
     private int nodeServerPort = DEFAULT_NODE_SERVER_PORT;
     private String hostName = HOST_NAME;
     private String callerId = "jrosclient";
+    private int maxMessageLoggingLength = -1;
 
     /**
      * <p>Port for TCPROS.</p>
@@ -80,5 +81,23 @@ public class JRosClientConfiguration {
     
     public String getCallerId() {
         return callerId;
+    }
+    
+    /**
+     * <p>Allows to limit length of logged variable length objects.</p>
+     * <p>Example of such objects are ROS messages which may contain a lot of
+     * data which quickly fill up the logs. Setting maximum length will
+     * truncate logging of such objects.</p>
+     * <p>Default value is -1 which means that truncation is off.</p>
+     */
+    public void setMaxMessageLoggingLength(int length) {
+        this.maxMessageLoggingLength = length;
+    }
+    
+    /**
+     * @see setMaxMessageLoggingLength
+     */
+    public int getMaxMessageLoggingLength() {
+        return maxMessageLoggingLength;
     }
 }
