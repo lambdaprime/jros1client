@@ -110,7 +110,7 @@ public class JRosClient implements AutoCloseable {
         var topicType = metadataAccessor.getType(clazz);
         var callerId = configuration.getCallerId();
         var publishers = getMasterApi().registerSubscriber(callerId, topic, topicType,
-                nodeServer.getNodeApi());
+                configuration.getNodeApiUrl());
         LOGGER.log(Level.FINE, "Publishers: {0}", publishers.toString());
         if (publishers.value.isEmpty()) {
             throw new XRE("No publishers for topic %s found", topic);
@@ -142,7 +142,7 @@ public class JRosClient implements AutoCloseable {
         tcpRosServer.start();
         nodeServer.start();
         var subscribers = getMasterApi().registerPublisher(configuration.getCallerId(), topic, topicType,
-                nodeServer.getNodeApi());
+                configuration.getNodeApiUrl());
         LOGGER.log(Level.FINE, "Current subscribers: {0}", subscribers.toString());
     }
 
@@ -164,7 +164,7 @@ public class JRosClient implements AutoCloseable {
         var publisher = publisherOpt.get();
         publisher.close();
         var num = getMasterApi().unregisterPublisher(configuration.getCallerId(), topic,
-                nodeServer.getNodeApi());
+                configuration.getNodeApiUrl());
         LOGGER.log(Level.FINE, "Unregistered publisher response: {0}", num.toString());
         publishersManager.remove(topic);
     }

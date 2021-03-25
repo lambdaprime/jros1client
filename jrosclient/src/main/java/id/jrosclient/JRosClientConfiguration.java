@@ -100,4 +100,8 @@ public class JRosClientConfiguration {
     public int getMaxMessageLoggingLength() {
         return maxMessageLoggingLength;
     }
+    
+    public String getNodeApiUrl() {
+        return String.format("http://%s:%d", getHostName(), getNodeServerPort());
+    }
 }

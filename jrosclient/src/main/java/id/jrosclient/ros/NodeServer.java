@@ -71,10 +71,6 @@ public class NodeServer implements AutoCloseable {
         Unchecked.run(s::start);
     }
 
-    public String getNodeApi() {
-        return String.format("http://%s:%d", config.getHostName(), config.getNodeServerPort());
-    }
-
     @Override
     public void close() {
         LOGGER.entering(CLASS_NAME, "close");
