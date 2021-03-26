@@ -84,7 +84,7 @@ public class RosDataOutput implements OutputKineticStream {
 
     @Override
     public void writeByte(Byte b) throws Exception {
-        out.writeByte(0);
+        out.writeByte(b);
     }
 
     @Override

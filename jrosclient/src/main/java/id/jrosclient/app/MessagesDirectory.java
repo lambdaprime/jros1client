@@ -31,6 +31,8 @@ import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
 import id.jrosmessages.geometry_msgs.Vector3Message;
 import id.jrosmessages.impl.MetadataAccessor;
+import id.jrosmessages.sensor_msgs.PointCloud2Message;
+import id.jrosmessages.sensor_msgs.PointFieldMessage;
 import id.jrosmessages.std_msgs.ColorRGBAMessage;
 import id.jrosmessages.std_msgs.HeaderMessage;
 import id.jrosmessages.std_msgs.Int32Message;
@@ -58,6 +60,8 @@ public class MessagesDirectory {
         add(Vector3Message.class);
         add(MarkerMessage.class);
         add(Int32Message.class);
+        add(PointCloud2Message.class);
+        add(PointFieldMessage.class);
     }
     
     public Class<? extends Message> get(String messageType) {

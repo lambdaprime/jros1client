@@ -46,6 +46,9 @@ import id.jrosmessages.impl.RosDataInput;
 import id.jrosmessages.impl.RosDataOutput;
 import id.jrosmessages.primitives.Duration;
 import id.jrosmessages.primitives.Time;
+import id.jrosmessages.sensor_msgs.PointCloud2Message;
+import id.jrosmessages.sensor_msgs.PointFieldMessage;
+import id.jrosmessages.sensor_msgs.PointFieldMessage.DataType;
 import id.kineticstreamer.KineticStreamReader;
 import id.kineticstreamer.KineticStreamWriter;
 import id.xfunction.XUtils;
@@ -142,7 +145,33 @@ public class MessageTests {
                                 .withB(0.14F)
                                 .withA(1.0F))
                         .withLifetime(new Duration())
-                        .withFrameLocked(false))
+                        .withFrameLocked(false)),
+            
+            List.of(XUtils.readResource(MessageTests.class, "pointcloud2"),
+                    new PointCloud2Message()
+                    .withHeader(new HeaderMessage()
+                            .withSeq(8)
+                            .withFrameId("map")
+                            .withStamp(new Time(1616650098, 493819000)))
+                    .withHeight(1)
+                    .withIsDense(true)
+                    .withPointStep(12)
+                    .withFields(
+                        new PointFieldMessage().withName("x")
+                            .withOffset(0)
+                            .withCount(1)
+                            .withDataType(DataType.FLOAT64),
+                        new PointFieldMessage().withName("y")
+                            .withOffset(4)
+                            .withCount(1)
+                            .withDataType(DataType.FLOAT64),
+                        new PointFieldMessage().withName("z")
+                            .withOffset(8)
+                            .withCount(1)
+                            .withDataType(DataType.FLOAT64))
+                    .withData("a".repeat(96).getBytes())
+                    .withRowStep(96)
+                    .withWidth(8))
         );
     }
 
