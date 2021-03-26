@@ -42,7 +42,7 @@ import id.xfunction.logging.XLogger;
 public class TopicPublisherSubscriber implements Subscriber<Message> {
 
     private static final XLogger LOGGER = XLogger.getLogger(TcpRosServer.class);
-    private TextUtils utils = new TextUtils();
+    private TextUtils utils;
     private MessageTransformer transformer = new MessageTransformer();
     private CompletableFuture<MessageResponse> future = CompletableFuture.completedFuture(null);
     private Subscription subscription;
@@ -51,9 +51,10 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     private String topic;
     private String callerId;
 
-    public TopicPublisherSubscriber(String callerId, String topic) {
+    public TopicPublisherSubscriber(String callerId, String topic, TextUtils utils) {
         this.callerId = callerId;
         this.topic = topic;
+        this.utils = utils;
     }
     
     @Override

@@ -71,9 +71,9 @@ public class JRosClient implements AutoCloseable {
     public JRosClient(String masterUrl, JRosClientConfiguration config) {
         this.masterUrl = masterUrl;
         nodeServer = new NodeServer(config);
-        tcpRosServer = new TcpRosServer(publishersManager, config);
-        configuration = config;
         utils = TextUtilsFactory.create(config);
+        tcpRosServer = new TcpRosServer(publishersManager, config, utils);
+        configuration = config;
     }
 
     /**

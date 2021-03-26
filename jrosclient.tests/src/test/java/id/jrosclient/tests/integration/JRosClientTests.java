@@ -23,6 +23,8 @@ package id.jrosclient.tests.integration;
 
 import java.io.EOFException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -33,12 +35,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import id.jrosclient.JRosClient;
+import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosclient.TopicSubscriber;
 import id.jrosmessages.std_msgs.Int32Message;
 import id.jrosmessages.std_msgs.StringMessage;
+import id.xfunction.logging.XLogger;
+import id.xfunction.text.WildcardMatcher;
 
 import static id.jrosclient.tests.integration.TestConstants.URL;
+import static id.xfunction.XUtils.readResource;
 
 public class JRosClientTests {
 
@@ -46,6 +52,8 @@ public class JRosClientTests {
 
     @BeforeEach
     public void setup() throws MalformedURLException {
+        // restore logging
+        XLogger.load("logging.properties");
         client = new JRosClient(URL);
     }
 
@@ -147,5 +155,21 @@ public class JRosClientTests {
         publisher.closeExceptionally(new Exception());
         future.join();
         client.unpublish(topic);
+    }
+    
+    /**
+     * Test that message truncation is working
+     */
+    @Test
+    public void test_log_truncation() throws Exception {
+        XLogger.load("logging-test.properties");
+        var config = new JRosClientConfiguration();
+        config.setMaxMessageLoggingLength(6);
+        client = new JRosClient(URL, config);
+        test_publish_single();
+        var actual = Files.readString(Paths.get("/tmp/jrosclient-test.log"));
+        System.out.println(actual);
+        Assertions.assertTrue(new WildcardMatcher(readResource("test_subscriber_truncate"))
+                .matches(actual));
     }
 }

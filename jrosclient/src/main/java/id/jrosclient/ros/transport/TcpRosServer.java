@@ -35,6 +35,7 @@ import id.ICE.MessageResponse;
 import id.ICE.MessageServer;
 import id.ICE.MessageService;
 import id.jrosclient.JRosClientConfiguration;
+import id.jrosclient.impl.TextUtils;
 import id.jrosclient.ros.transport.io.ConnectionHeaderReader;
 import id.jrosmessages.impl.MetadataAccessor;
 import id.xfunction.XAsserts;
@@ -65,12 +66,15 @@ public class TcpRosServer implements MessageService, AutoCloseable {
     // connection id to subscriber serving it
     private Map<Integer, TopicPublisherSubscriber> subscribers = new ConcurrentHashMap<>();
     
+    private TextUtils utils;
     private boolean isStarted;
     
-    public TcpRosServer(PublishersManager publishersManager, JRosClientConfiguration config) {
+    public TcpRosServer(PublishersManager publishersManager, JRosClientConfiguration config,
+            TextUtils utils) {
         this.publishersManager = publishersManager;
         server = new MessageServer(this, new ConnectionHeaderScanner())
                 .withPort(config.getTcpRosServerPort());
+        this.utils = utils;
     }
     
     public void start() throws IOException {
@@ -161,7 +165,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
             return Optional.empty();
         }
         
-        var subscriber = new TopicPublisherSubscriber(callerId, topic) {
+        var subscriber = new TopicPublisherSubscriber(callerId, topic, utils) {
             @Override
             public void onError(Throwable throwable) {
                 LOGGER.log(Level.WARNING, "Failed to deliver message to ROS subscriber {0} due to: {1}",

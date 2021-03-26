@@ -1,0 +1,19 @@
+*
+FINE: Current subscribers: { "statusCode": "SUCCESS", "statusMessage": "Registered [jrosclient] as publisher of [/testTopic2]", "subscriberApis": ["http://*:1234"] }
+*
+FINE: incoming connection
+*
+FINE: spawned looper
+*
+FINE: Requesting next message for jrosclient
+*
+FINE: Published new message: { ...}
+*
+FINE: 43...1
+*
+FINE: Message packet: { ...}
+*
+FINE: Submitting received message to subscriber
+*
+FINE: Unregistered publisher response: { "statusCode": "SUCCESS", "statusMessage": "Unregistered [jrosclient] as provider of [/testTopic2]", "subscriberApis": "1" }
+*
