@@ -26,6 +26,9 @@ import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.Point32Message;
 import id.kineticstreamer.annotations.Streamed;
 
+/**
+ * Example of custom message definition
+ */
 @MessageMetadata(
     type = PolygonMessage.NAME,
     md5sum = "cd60a26494a087f577976f0329fa120e")

@@ -26,27 +26,35 @@ import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosmessages.geometry_msgs.Point32Message;
 import id.jrosmessages.primitives.Time;
 import id.jrosmessages.std_msgs.HeaderMessage;
+import id.xfunction.CommandLineInterface;
 
+/**
+ * Demonstrates how to define custom messages using PolygonStampedMessage
+ * as an example.
+ */
 public class PolygonApp {
 
     public static void main(String[] args) throws Exception {
-        var client = new JRosClient("http://localhost:11311/");
+        var cli = new CommandLineInterface();
         String topic = "/PolygonExample";
-        var publisher = new TopicSubmissionPublisher<>(PolygonStampedMessage.class, topic);
-        client.publish(publisher);
-        while (true) {
-            PolygonStampedMessage polygon = new PolygonStampedMessage()
-                    .withHeader(new HeaderMessage()
-                            .withFrameId("/map")
-                            .withStamp(Time.now()))
-                    .withPolygon(new PolygonMessage()
-                            .withPoints(new Point32Message[]{
-                                    new Point32Message(2F, 2F, 0F),
-                                    new Point32Message(1F, 2F, 3F),
-                                    new Point32Message(0F, 0F, 0F)}));
-            publisher.submit(polygon);
-            System.out.println("Published");
-            Thread.sleep(1000);
+        try (var client = new JRosClient("http://localhost:11311/")) {
+            var publisher = new TopicSubmissionPublisher<>(PolygonStampedMessage.class, topic);
+            client.publish(publisher);
+            cli.print("Press any key to stop publishing...");
+            while (!cli.wasKeyPressed()) {
+                PolygonStampedMessage polygon = new PolygonStampedMessage()
+                        .withHeader(new HeaderMessage()
+                                .withFrameId("/map")
+                                .withStamp(Time.now()))
+                        .withPolygon(new PolygonMessage()
+                                .withPoints(new Point32Message[]{
+                                        new Point32Message(2F, 2F, 0F),
+                                        new Point32Message(1F, 2F, 3F),
+                                        new Point32Message(0F, 0F, 0F)}));
+                publisher.submit(polygon);
+                cli.print("Published");
+                Thread.sleep(1000);
+            }
         }
     }
 }

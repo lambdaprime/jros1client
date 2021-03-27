@@ -38,7 +38,7 @@ import id.jrosmessages.std_msgs.StringMessage;
 import id.jrosmessages.visualization_msgs.MarkerMessage;
 import id.jrosmessages.visualization_msgs.MarkerMessage.Action;
 import id.jrosmessages.visualization_msgs.MarkerMessage.Type;
-import id.xfunction.lang.XRuntime;
+import id.xfunction.CommandLineInterface;
 import id.xfunction.lang.XThread;
 
 /**
@@ -50,39 +50,38 @@ import id.xfunction.lang.XThread;
 public class BasicShapesApp {
 
     public static void main(String[] args) throws Exception {
-        var client = new JRosClient("http://ubuntu:11311/");
+        var cli = new CommandLineInterface();
         String topic = "/BasicShapesExampleXXX";
-        var publisher = new TopicSubmissionPublisher<>(MarkerMessage.class, topic);
-        client.publish(publisher);
-        XRuntime.addShutdownHook(() -> {
-            client.unpublish(topic);
-            client.close();
-        });
-        var deque = new LinkedList<Type>(EnumSet.of(
-                Type.CUBE,
-                Type.SPHERE,
-                Type.CYLINDER));
-        while (true) {
-            Type shape = deque.removeFirst();
-            MarkerMessage marker = new MarkerMessage()
-                    .withHeader(new HeaderMessage()
-                            .withFrameId("/map")
-                            .withStamp(Time.now()))
-                    .withNs(new StringMessage().withData("basic_shapes"))
-                    .withId(0)
-                    .withType(shape)
-                    .withAction(Action.ADD)
-                    .withPose(new PoseMessage()
-                            .withPosition(new PointMessage())
-                            .withQuaternion(new QuaternionMessage()
-                                    .withW(1.0)))
-                    .withScale(new Vector3Message(1., 1., 1.))
-                    .withColor(ColorRGBAMessage.RED)
-                    .withLifetime(new Duration());
-            publisher.submit(marker);
-            System.out.println("Published");
-            deque.add(shape);
-            XThread.sleep(1000);
+        try (var client = new JRosClient("http://localhost:11311/")) {
+            var publisher = new TopicSubmissionPublisher<>(MarkerMessage.class, topic);
+            client.publish(publisher);
+            var deque = new LinkedList<Type>(EnumSet.of(
+                    Type.CUBE,
+                    Type.SPHERE,
+                    Type.CYLINDER));
+            cli.print("Press any key to stop publishing...");
+            while (!cli.wasKeyPressed()) {
+                Type shape = deque.removeFirst();
+                MarkerMessage marker = new MarkerMessage()
+                        .withHeader(new HeaderMessage()
+                                .withFrameId("map")
+                                .withStamp(Time.now()))
+                        .withNs(new StringMessage().withData("basic_shapes"))
+                        .withId(0)
+                        .withType(shape)
+                        .withAction(Action.ADD)
+                        .withPose(new PoseMessage()
+                                .withPosition(new PointMessage())
+                                .withQuaternion(new QuaternionMessage()
+                                        .withW(1.0)))
+                        .withScale(new Vector3Message(1., 1., 1.))
+                        .withColor(ColorRGBAMessage.RED)
+                        .withLifetime(new Duration());
+                publisher.submit(marker);
+                deque.add(shape);
+                cli.print("Published");
+                XThread.sleep(1000);
+            }
         }
     }
 }

@@ -182,6 +182,9 @@ public class JRosClient implements AutoCloseable {
      */
     @Override
     public void close() throws Exception {
+        publishersManager.getPublishers().stream()
+            .map(TopicPublisher::getTopic)
+            .forEach(Unchecked.wrapAccept(this::unpublish));
         nodeServer.close();
         clients.forEach(Unchecked.wrapAccept(TcpRosClient::close));
         tcpRosServer.close();

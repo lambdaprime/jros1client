@@ -26,6 +26,9 @@ import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.std_msgs.HeaderMessage;
 import id.kineticstreamer.annotations.Streamed;
 
+/**
+ * Example of custom message definition
+ */
 @MessageMetadata(
     type = PolygonStampedMessage.NAME,
     md5sum = "c6be8f7dc3bee7fe9e8d296070f53340")
