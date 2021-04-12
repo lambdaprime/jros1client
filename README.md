@@ -1,7 +1,5 @@
 **jrosclient** - Java module which allows to interact with ROS (Robotic Operation System).
 
-lambdaprime <id.blackmesa@gmail.com>
-
 # Download
 
 You can download **jrosclient** from <https://github.com/lambdaprime/jrosclient/releases>
@@ -43,3 +41,6 @@ rostopic list -- prints information about all publishers, subscribers in the sys
 {z=1.0, y=1.0, x=1.0}
 % jrosclient --masterUrl "http://localhost:11311/" rostopic echo testTopic std_msgs/String
 ```
+# Contributors
+
+lambdaprime <intid@protonmail.com>

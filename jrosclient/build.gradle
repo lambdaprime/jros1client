@@ -18,8 +18,6 @@ dependencies {
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
-def releaseDir = "release/${projectName}/${projectName}"
-
 jar { 
     manifest { 
         attributes 'Implementation-Version': "${rootProject.version}",
@@ -40,46 +38,47 @@ javadoc {
     options.noNavBar = true;
 }
 
-task packageDistribution(type: Zip) {
+def packageDir = "$buildDir/package/${projectName}"
+
+ext.artifacts = fileTree(include: ['*'], dir: "$packageDir/libs")
+
+task createRelease(type: Zip) {
     archiveFileName = "$releaseFileName"
     destinationDirectory = file("$projectDir/release")
-    from file("$projectDir/release/$projectName")
+    from file("$packageDir/..")
 }
-
-packageDistribution.doLast {
-    delete "$projectDir/release/$projectName"
-}
-
+/*
 import org.apache.tools.ant.filters.ReplaceTokens
 task updateVersion(type:Copy) {
     from "${project.rootDir}/README.md"
     into releaseDir
     filter(ReplaceTokens, tokens: [version: rootProject.version])
-}
+}*/
 
 task copyLibs(type: Copy) {
     from "$projectDir/libs"
     from jar.archiveFile
-    into "${releaseDir}/libs"
+    into "${packageDir}/libs"
 }
-
-task createRelease(type: Copy, dependsOn: copyLibs) {
-    from "${project.rootDir}/README.md"
-    from "$projectDir/src/jrosclient"
-    into releaseDir
-}
-
-task cleanRelease(type: Delete) {
-    delete "$projectDir/release"
-}
-
-packageDistribution.dependsOn createRelease, javadoc
-assemble.dependsOn packageDistribution
-clean.dependsOn cleanRelease
 
 task copyReadme(type: Copy) {
     from("${project.rootDir}/README.md")
     into("$projectDir/src/main/resources")
 }
 
+task createPackage(type: Copy, dependsOn: copyLibs) {
+    from "${project.rootDir}/README.md"
+    from "${project.rootDir}/LICENSE-2.0.txt"
+    from file("$projectDir/src/jrosclient")
+    into packageDir
+}
+
+task cleanRelease(type: Delete) {
+    delete "$projectDir/release"
+}
+
 compileJava.dependsOn copyReadme
+createRelease.dependsOn createPackage, javadoc
+assemble.dependsOn createRelease
+clean.dependsOn cleanRelease
+
