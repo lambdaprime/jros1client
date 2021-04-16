@@ -62,8 +62,8 @@ task copyLibs(type: Copy) {
 }
 
 task copyReadme(type: Copy) {
-    from("${project.rootDir}/README.md")
-    into("$projectDir/src/main/resources")
+    //from("${project.rootDir}/README.md")
+    //into("$projectDir/src/main/resources")
 }
 
 task createPackage(type: Copy, dependsOn: copyLibs) {
