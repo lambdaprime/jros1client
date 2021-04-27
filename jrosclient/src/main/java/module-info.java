@@ -23,7 +23,8 @@
  * <p>Java module which allows to interact with
  * ROS (Robotic Operation System).</p>
  * 
- * @see <a href="https://github.com/lambdaprime/jrosclient">jrosclient</a>
+ * @see <a href="https://github.com/lambdaprime/jrosclient/releases">Download</a>
+ * @see <a href="https://github.com/lambdaprime/jrosclient">GitHub repository</a>
  * 
  */
 module jrosclient {
