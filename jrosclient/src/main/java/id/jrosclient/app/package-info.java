@@ -17,7 +17,7 @@
  */
 /*
  * Authors:
- * - lambdaprime <id.blackmesa@gmail.com>
+ * - lambdaprime <intid@protonmail.com>
  */
 /**
  * Provides all classes which implement JRosClient standalone Java application.

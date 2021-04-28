@@ -17,7 +17,7 @@
  */
 /*
  * Authors:
- * - lambdaprime <id.blackmesa@gmail.com>
+ * - lambdaprime <intid@protonmail.com>
  */
 /**
  * Java message definitions for ROS geometry_msgs package

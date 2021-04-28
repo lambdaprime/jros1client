@@ -17,7 +17,7 @@
  */
 /*
  * Authors:
- * - lambdaprime <id.blackmesa@gmail.com>
+ * - lambdaprime <intid@protonmail.com>
  */
 /**
  * Low level interaction with ROS API.
