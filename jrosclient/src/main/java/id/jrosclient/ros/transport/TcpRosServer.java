@@ -104,6 +104,8 @@ public class TcpRosServer implements MessageService, AutoCloseable {
         var connId = request.getConnectionId();
         
         var subscriber = subscribers.get(connId);
+
+        // if there is no subscriber for that connection, we try to create one
         if (subscriber == null) {
             var subscriberOpt = registerSubscriber(request);
             if (subscriberOpt.isEmpty()) {
@@ -133,6 +135,11 @@ public class TcpRosServer implements MessageService, AutoCloseable {
         return future;
     }
 
+    /**
+     * Find publisher for the topic for which this request is for.
+     * If such publisher exist - create a subscriber for it and return this subscriber.
+     * If not - return empty value.
+     */
     private Optional<TopicPublisherSubscriber> registerSubscriber(MessageRequest request) {
         var message = request.getMessage().orElseThrow(() ->
         new XRE("Incoming request has no message"));
