@@ -19,8 +19,6 @@
  * Authors:
  * - lambdaprime <intid@protonmail.com>
  */
-package id.jrosclient.samples.pointcloud;
-
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -47,6 +45,8 @@ public class PointCloudApp {
 
     /**
      * Populates PointCloud2Message from obj file
+     * @param srcObjFile path to obj file
+     * @param dst message to populate
      */
     private static void populateFromObj(Path srcObjFile, PointCloud2Message dst) {
         var pointStep = 12;
@@ -91,8 +91,14 @@ public class PointCloudApp {
     public static void main(String[] args) throws Exception {
         var cli = new CommandLineInterface();
         var config = new JRosClientConfiguration();
+        
+        // printing pointcloud messages to standard output may cause
+        // too much noise so we truncate any long lines in the output (optional)
         config.setMaxMessageLoggingLength(1200);
+        
+        // defining topic name
         String topic = "/PointCloud";
+        
         try (var client = new JRosClient("http://localhost:11311/", config)) {
             var publisher = new TopicSubmissionPublisher<>(PointCloud2Message.class, topic);
             client.publish(publisher);

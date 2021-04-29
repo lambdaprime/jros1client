@@ -61,12 +61,14 @@ task copyLibs(type: Copy) {
     into "${packageDir}/libs"
 }
 
-task copyReadme(type: Copy) {
-    //from("${project.rootDir}/README.md")
-    //into("$projectDir/src/main/resources")
+task copySamples(type: Copy) {
+    from("${project.rootDir}/jrosclient.samples/src") {
+        include "**"
+    }
+    into "${packageDir}/samples"
 }
 
-task createPackage(type: Copy, dependsOn: copyLibs) {
+task createPackage(type: Copy, dependsOn: [copyLibs, copySamples]) {
     from "${project.rootDir}/README.md"
     from "${project.rootDir}/LICENSE-2.0.txt"
     from file("$projectDir/src/jrosclient")
@@ -77,7 +79,6 @@ task cleanRelease(type: Delete) {
     delete "$projectDir/release"
 }
 
-compileJava.dependsOn copyReadme
 createRelease.dependsOn createPackage, javadoc
 assemble.dependsOn createRelease
 clean.dependsOn cleanRelease

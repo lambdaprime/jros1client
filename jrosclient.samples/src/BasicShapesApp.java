@@ -19,8 +19,6 @@
  * Authors:
  * - lambdaprime <intid@protonmail.com>
  */
-package id.jrosclient.samples;
-
 import java.util.EnumSet;
 import java.util.LinkedList;
 
@@ -51,17 +49,31 @@ public class BasicShapesApp {
 
     public static void main(String[] args) throws Exception {
         var cli = new CommandLineInterface();
+
+        // define topic name where to publish
         String topic = "/BasicShapesExampleXXX";
+
+        // creating client and making it to connect to given master node URL
         try (var client = new JRosClient("http://localhost:11311/")) {
+
+            // creating publisher for a topic
             var publisher = new TopicSubmissionPublisher<>(MarkerMessage.class, topic);
+
+            // registering with ROS master node
             client.publish(publisher);
+
+            // set of shapes to iterate on
             var deque = new LinkedList<Type>(EnumSet.of(
                     Type.CUBE,
                     Type.SPHERE,
                     Type.CYLINDER));
+            
             cli.print("Press any key to stop publishing...");
+            
             while (!cli.wasKeyPressed()) {
                 Type shape = deque.removeFirst();
+
+                // creating a new message and populating it
                 MarkerMessage marker = new MarkerMessage()
                         .withHeader(new HeaderMessage()
                                 .withFrameId("map")
@@ -77,7 +89,10 @@ public class BasicShapesApp {
                         .withScale(new Vector3Message(1., 1., 1.))
                         .withColor(ColorRGBAMessage.RED)
                         .withLifetime(new Duration());
+
+                // publishing message
                 publisher.submit(marker);
+                
                 deque.add(shape);
                 cli.print("Published");
                 XThread.sleep(1000);

@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     testImplementation project(':jrosclient')
+    testImplementation project(':jrosclient.samples')
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
     testImplementation('org.junit.jupiter:junit-jupiter-params:5.4.2')
     testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
@@ -22,12 +23,8 @@ dependencies {
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
-String testDir = "$buildDir/fireguard"
-String testSrcDir = "$projectDir/src/test"
-
 // Gradle has no UnZip task so we reuse Copy for that
 task myTest(type: Copy) {
-    mkdir file(testDir)
     from zipTree("${project.rootDir}/jrosclient/release/${releaseFileName}")
     into "$buildDir"
 }
@@ -46,6 +43,11 @@ test {
     filter {
         exclude '**/module-info.class'
     }
+}
+
+task testSamples(type: Exec) {
+    standardInput = System.in
+    commandLine "java", "-classpath"
 }
 
 test.dependsOn myTest
