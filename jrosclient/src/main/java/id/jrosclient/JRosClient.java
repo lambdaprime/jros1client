@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import id.jrosclient.impl.RosRpcClient;
 import id.jrosclient.impl.TextUtils;
 import id.jrosclient.impl.TextUtilsFactory;
+import id.jrosclient.impl.Utils;
 import id.jrosclient.ros.NodeServer;
 import id.jrosclient.ros.api.MasterApi;
 import id.jrosclient.ros.api.NodeApi;
@@ -51,6 +52,7 @@ import id.xfunction.logging.XLogger;
 public class JRosClient implements AutoCloseable {
 
     private static final Logger LOGGER = XLogger.getLogger(JRosClient.class);
+    private static final Utils utils = new Utils();
 
     private String masterUrl;
     private NodeServer nodeServer;
@@ -59,7 +61,7 @@ public class JRosClient implements AutoCloseable {
     private Set<TcpRosClient<?>> clients = new HashSet<>();
     private PublishersManager publishersManager = new PublishersManager();
     private JRosClientConfiguration configuration;
-    private TextUtils utils;
+    private TextUtils textUtils;
 
     /**
      * @param masterUrl master node URL
@@ -71,8 +73,8 @@ public class JRosClient implements AutoCloseable {
     public JRosClient(String masterUrl, JRosClientConfiguration config) {
         this.masterUrl = masterUrl;
         nodeServer = new NodeServer(config);
-        utils = TextUtilsFactory.create(config);
-        tcpRosServer = new TcpRosServer(publishersManager, config, utils);
+        textUtils = TextUtilsFactory.create(config);
+        tcpRosServer = new TcpRosServer(publishersManager, config, textUtils);
         configuration = config;
     }
 
@@ -118,7 +120,7 @@ public class JRosClient implements AutoCloseable {
         var nodeApi = getNodeApi(publishers.value.get(0));
         var protocol = nodeApi.requestTopic(callerId, topic, List.of(Protocol.TCPROS));
         LOGGER.log(Level.FINE, "Protocol configuration: {0}", protocol);
-        var nodeClient = new TcpRosClient<M>(callerId, topic, protocol.host, protocol.port, clazz, utils);
+        var nodeClient = new TcpRosClient<M>(callerId, topic, protocol.host, protocol.port, clazz, textUtils);
         nodeClient.subscribe(subscriber);
         nodeClient.connect();
         clients.add(nodeClient);
@@ -155,7 +157,7 @@ public class JRosClient implements AutoCloseable {
     public void unpublish(String topic) 
             throws Exception
     {
-        var publisherOpt = publishersManager.getPublisher(topic);
+        var publisherOpt = publishersManager.getPublisher(utils.formatTopicName(topic));
         if (publisherOpt.isEmpty()) {
             LOGGER.log(Level.FINE, "There is no publishers for topic {0}, nothing to unpublish",
                     topic);

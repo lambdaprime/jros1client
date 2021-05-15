@@ -24,6 +24,7 @@ package id.jrosclient;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscription;
 
+import id.jrosclient.impl.Utils;
 import id.jrosmessages.Message;
 
 /**
@@ -44,6 +45,8 @@ import id.jrosmessages.Message;
  */
 public abstract class TopicSubscriber<M extends Message> implements Flow.Subscriber<M> {
 
+    private static final Utils utils = new Utils();
+
     private Class<M> messageClass;
     private Subscription subscription;
     private String topic;
@@ -55,7 +58,7 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
      */
     public TopicSubscriber(Class<M> messageClass, String topic) {
         this.messageClass = messageClass;
-        this.topic = topic;
+        this.topic = utils.formatTopicName(topic);
     }
 
     @Override

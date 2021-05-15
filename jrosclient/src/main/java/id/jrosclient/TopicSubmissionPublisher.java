@@ -23,6 +23,7 @@ package id.jrosclient;
 
 import java.util.concurrent.SubmissionPublisher;
 
+import id.jrosclient.impl.Utils;
 import id.jrosmessages.Message;
 import id.xfunction.XJson;
 
@@ -44,6 +45,7 @@ import id.xfunction.XJson;
 public class TopicSubmissionPublisher<M extends Message> extends SubmissionPublisher<M> 
     implements TopicPublisher<M>
 {
+    private static final Utils utils = new Utils();
 
     private Class<M> messageClass;
     private String topic;
@@ -54,7 +56,7 @@ public class TopicSubmissionPublisher<M extends Message> extends SubmissionPubli
      */
     public TopicSubmissionPublisher(Class<M> messageClass, String topic) {
         this.messageClass = messageClass;
-        this.topic = topic;
+        this.topic = utils.formatTopicName(topic);
     }
     
     public Class<M> getMessageClass() {

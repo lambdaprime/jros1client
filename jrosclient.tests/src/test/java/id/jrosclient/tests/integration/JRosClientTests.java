@@ -65,7 +65,7 @@ public class JRosClientTests {
     @Test
     public void test_publish_single() throws Exception {
         var future = new CompletableFuture<String>();
-        String topic = "/testTopic2";
+        String topic = "testTopic2";
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);
         String data = "hello";
         client.publish(publisher);

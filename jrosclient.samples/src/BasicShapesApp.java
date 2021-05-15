@@ -51,7 +51,7 @@ public class BasicShapesApp {
         var cli = new CommandLineInterface();
 
         // define topic name where to publish
-        String topic = "/BasicShapesExampleXXX";
+        String topic = "BasicShapesExampleXXX";
 
         // creating client and making it to connect to given master node URL
         try (var client = new JRosClient("http://localhost:11311/")) {
