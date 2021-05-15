@@ -105,7 +105,7 @@ public class MarkerMessage implements Message {
      * Pose of the object
      */
     @Streamed
-    public PoseMessage pose = new PoseMessage();;
+    public PoseMessage pose = new PoseMessage();
 
     /**
      * Scale of the object 1,1,1 means default (usually 1 meter square)
@@ -151,13 +151,13 @@ public class MarkerMessage implements Message {
      * Only used for text markers
      */
     @Streamed
-    public StringMessage mesh_resource = new StringMessage();;
+    public StringMessage mesh_resource = new StringMessage();
     
     /**
      * Only used for MESH_RESOURCE markers
      */
     @Streamed
-    public StringMessage text = new StringMessage();;
+    public StringMessage text = new StringMessage();
     
     /**
      * If this marker should be frame-locked, i.e. retransformed into its

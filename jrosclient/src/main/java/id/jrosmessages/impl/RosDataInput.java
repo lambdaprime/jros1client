@@ -116,7 +116,6 @@ public class RosDataInput implements InputKineticStream {
     public byte[] readByteArray() throws Exception {
         LOGGER.entering("readByteArray");
         var array = new byte[readLen()];
-        System.out.println("");
         for (int i = 0; i < array.length; i++) {
             array[i] = in.readByte();
         }
@@ -127,5 +126,16 @@ public class RosDataInput implements InputKineticStream {
     @Override
     public int[] readIntArray() throws Exception {
         throw new RuntimeException("Not supported");
+    }
+    
+    @Override
+    public double[] readDoubleArray() throws Exception {
+        LOGGER.entering("readDoubleArray");
+        var array = new double[readLen()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = readDouble();
+        }
+        LOGGER.exiting("readDoubleArray");
+        return array;
     }
 }

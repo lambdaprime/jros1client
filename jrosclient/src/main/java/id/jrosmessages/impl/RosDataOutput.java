@@ -99,4 +99,12 @@ public class RosDataOutput implements OutputKineticStream {
             out.writeByte(item);
         }
     }
+    
+    @Override
+    public void writeDoubleArray(double[] array) throws Exception {
+        writeLen(array.length);
+        for (var item: array) {
+            writeDouble(item);
+        }
+    }
 }
