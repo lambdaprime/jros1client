@@ -46,6 +46,7 @@ import id.jrosmessages.impl.RosDataInput;
 import id.jrosmessages.impl.RosDataOutput;
 import id.jrosmessages.primitives.Duration;
 import id.jrosmessages.primitives.Time;
+import id.jrosmessages.sensor_msgs.JointStateMessage;
 import id.jrosmessages.sensor_msgs.PointCloud2Message;
 import id.jrosmessages.sensor_msgs.PointFieldMessage;
 import id.jrosmessages.sensor_msgs.PointFieldMessage.DataType;
@@ -59,100 +60,100 @@ public class MessageTests {
     
     static Stream<List> dataProvider() {
         return Stream.of(
-                List.of(XUtils.readResource(MessageTests.class, "string-empty"),
-                        new StringMessage()),
+            List.of(XUtils.readResource(MessageTests.class, "string-empty"),
+                new StringMessage()),
             List.of(XUtils.readResource(MessageTests.class, "string"),
-                    new StringMessage().withData("hello there")),
+                new StringMessage().withData("hello there")),
             
             List.of(XUtils.readResource(MessageTests.class, "point-empty"),
-                    new PointMessage()),
+                new PointMessage()),
             List.of(XUtils.readResource(MessageTests.class, "point"),
-                    new PointMessage().withX(1.0).withY(1.0).withZ(1.0)),
+                new PointMessage().withX(1.0).withY(1.0).withZ(1.0)),
             
             List.of(XUtils.readResource(MessageTests.class, "point32"),
-                    new Point32Message().withX(1.0F).withY(1.0F).withZ(1.0F)),
+                new Point32Message().withX(1.0F).withY(1.0F).withZ(1.0F)),
 
             List.of(XUtils.readResource(MessageTests.class, "polygonstamped"),
-                    new PolygonStampedMessage()
-                        .withHeader(new HeaderMessage()
-                                .withSeq(123)
-                                .withStamp(new Time(0, 1111))
-                                .withFrameId("aaaa"))
-                        .withPolygon(new PolygonMessage()
-                                .withPoints(new Point32Message[]{
-                                        new Point32Message(2F, 2F, 0F),
-                                        new Point32Message(1F, 2F, 3F),
-                                        new Point32Message(0F, 0F, 0F)}))),
-
-            List.of(XUtils.readResource(MessageTests.class, "quaternion-empty"),
-                    new QuaternionMessage()),
-            List.of(XUtils.readResource(MessageTests.class, "quaternion"),
-                    new QuaternionMessage().withX(1.0).withY(1.0).withZ(1.0).withW(3.0)),
-            
-            List.of(XUtils.readResource(MessageTests.class, "pose-empty"),
-                    new PoseMessage()),
-            List.of(XUtils.readResource(MessageTests.class, "pose"), new PoseMessage()
-                    .withPosition(
-                            new PointMessage().withX(1.0).withY(1.0).withZ(1.0))
-                    .withQuaternion(
-                            new QuaternionMessage().withX(1.0).withY(1.0).withZ(1.0).withW(3.0))),
-            
-            List.of(XUtils.readResource(MessageTests.class, "header-empty"),
-                    new HeaderMessage()),
-            List.of(XUtils.readResource(MessageTests.class, "header"),
-                    new HeaderMessage()
+                new PolygonStampedMessage()
+                    .withHeader(new HeaderMessage()
                         .withSeq(123)
                         .withStamp(new Time(0, 1111))
-                        .withFrameId("aaaa")),
+                        .withFrameId("aaaa"))
+                    .withPolygon(new PolygonMessage()
+                        .withPoints(new Point32Message[]{
+                            new Point32Message(2F, 2F, 0F),
+                            new Point32Message(1F, 2F, 3F),
+                            new Point32Message(0F, 0F, 0F)}))),
+
+            List.of(XUtils.readResource(MessageTests.class, "quaternion-empty"),
+                new QuaternionMessage()),
+            List.of(XUtils.readResource(MessageTests.class, "quaternion"),
+                new QuaternionMessage().withX(1.0).withY(1.0).withZ(1.0).withW(3.0)),
+            
+            List.of(XUtils.readResource(MessageTests.class, "pose-empty"),
+                new PoseMessage()),
+            List.of(XUtils.readResource(MessageTests.class, "pose"), new PoseMessage()
+                .withPosition(
+                    new PointMessage().withX(1.0).withY(1.0).withZ(1.0))
+                .withQuaternion(
+                    new QuaternionMessage().withX(1.0).withY(1.0).withZ(1.0).withW(3.0))),
+            
+            List.of(XUtils.readResource(MessageTests.class, "header-empty"),
+                new HeaderMessage()),
+            List.of(XUtils.readResource(MessageTests.class, "header"),
+                new HeaderMessage()
+                    .withSeq(123)
+                    .withStamp(new Time(0, 1111))
+                    .withFrameId("aaaa")),
             
             List.of(XUtils.readResource(MessageTests.class, "colorrgba-empty"),
-                    new ColorRGBAMessage()),
+                new ColorRGBAMessage()),
             List.of(XUtils.readResource(MessageTests.class, "colorrgba"),
-                    new ColorRGBAMessage().withR(.12F).withG(.13F).withB(.14F).withA(.15F)),
+                new ColorRGBAMessage().withR(.12F).withG(.13F).withB(.14F).withA(.15F)),
             
             List.of(XUtils.readResource(MessageTests.class, "vector3-empty"),
-                    new Vector3Message()),
+                new Vector3Message()),
             List.of(XUtils.readResource(MessageTests.class, "vector3"),
-                    new Vector3Message().withX(.12).withY(.13).withZ(.14)),
+                new Vector3Message().withX(.12).withY(.13).withZ(.14)),
 
             List.of(XUtils.readResource(MessageTests.class, "marker-empty"),
-                    new MarkerMessage()),
+                new MarkerMessage()),
             List.of(XUtils.readResource(MessageTests.class, "marker"),
-                    new MarkerMessage()
-                        .withHeader(new HeaderMessage()
-                                .withSeq(0)
-                                .withFrameId("/map"))
-                        .withNs(new StringMessage().withData("test"))
-                        .withType(MarkerMessage.Type.CUBE)
-                        .withAction(MarkerMessage.Action.ADD)
-                        .withPose(new PoseMessage()
-                                .withPosition(new PointMessage()
-                                        .withX(1.0)
-                                        .withY(1.0)
-                                        .withZ(1.0))
-                                .withQuaternion(new QuaternionMessage()
-                                        .withX(1.0)
-                                        .withY(1.0)
-                                        .withZ(1.0)
-                                        .withW(3.0)))
-                        .withScale(new Vector3Message()
-                                .withX(1.0)
-                                .withY(0.1)
-                                .withZ(0.1))
-                        .withColor(new ColorRGBAMessage()
-                                .withR(1.0F)
-                                .withG(0.13F)
-                                .withB(0.14F)
-                                .withA(1.0F))
-                        .withLifetime(new Duration())
-                        .withFrameLocked(false)),
+                new MarkerMessage()
+                    .withHeader(new HeaderMessage()
+                        .withSeq(0)
+                        .withFrameId("/map"))
+                    .withNs(new StringMessage().withData("test"))
+                    .withType(MarkerMessage.Type.CUBE)
+                    .withAction(MarkerMessage.Action.ADD)
+                    .withPose(new PoseMessage()
+                        .withPosition(new PointMessage()
+                            .withX(1.0)
+                            .withY(1.0)
+                            .withZ(1.0))
+                        .withQuaternion(new QuaternionMessage()
+                            .withX(1.0)
+                            .withY(1.0)
+                            .withZ(1.0)
+                            .withW(3.0)))
+                    .withScale(new Vector3Message()
+                        .withX(1.0)
+                        .withY(0.1)
+                        .withZ(0.1))
+                    .withColor(new ColorRGBAMessage()
+                        .withR(1.0F)
+                        .withG(0.13F)
+                        .withB(0.14F)
+                        .withA(1.0F))
+                    .withLifetime(new Duration())
+                    .withFrameLocked(false)),
             
             List.of(XUtils.readResource(MessageTests.class, "pointcloud2"),
-                    new PointCloud2Message()
+                new PointCloud2Message()
                     .withHeader(new HeaderMessage()
-                            .withSeq(8)
-                            .withFrameId("map")
-                            .withStamp(new Time(1616650098, 493819000)))
+                        .withSeq(8)
+                        .withFrameId("map")
+                        .withStamp(new Time(1616650098, 493819000)))
                     .withHeight(1)
                     .withIsDense(true)
                     .withPointStep(12)
@@ -171,7 +172,15 @@ public class MessageTests {
                             .withDataType(DataType.FLOAT64))
                     .withData("a".repeat(96).getBytes())
                     .withRowStep(96)
-                    .withWidth(8))
+                    .withWidth(8)),
+
+            List.of(XUtils.readResource(MessageTests.class, "joint-state"),
+                new JointStateMessage()
+                    .withHeader(new HeaderMessage()
+                        .withSeq(43)
+                        .withStamp(new Time(1621056685, 970860000)))
+                    .withNames("joint_0", "joint_1", "joint_2", "joint_3", "joint_4")
+                    .withPositions(new double[]{0.0, 0.0, 0.0, 0.767944870877505, 0.0}))
         );
     }
 
