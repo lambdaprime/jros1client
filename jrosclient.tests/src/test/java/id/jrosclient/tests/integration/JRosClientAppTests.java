@@ -28,8 +28,8 @@
  */
 package id.jrosclient.tests.integration;
 
-import static id.xfunction.XUtils.readResource;
 import static id.jrosclient.tests.integration.TestConstants.URL;
+import static id.xfunction.XUtils.readResource;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -45,7 +45,7 @@ import id.jrosclient.JRosClient;
 import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosmessages.std_msgs.StringMessage;
 import id.xfunction.XExec;
-import id.xfunction.XUtils;
+import id.xfunction.lang.XThread;
 import id.xfunction.text.WildcardMatcher;
 
 public class JRosClientAppTests {
@@ -88,7 +88,7 @@ public class JRosClientAppTests {
             while (!executor.isShutdown()) {
                 publisher.submit(new StringMessage().withData("Hello ROS"));
                 System.out.println("Published");
-                XUtils.sleep(1000);
+                XThread.sleep(1000);
             }
         });
 
