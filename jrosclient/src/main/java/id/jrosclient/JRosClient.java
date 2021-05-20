@@ -24,6 +24,7 @@ package id.jrosclient;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -174,10 +175,13 @@ public class JRosClient implements AutoCloseable {
         }
         var publisher = publisherOpt.get();
         publisher.close();
-        var num = getMasterApi().unregisterPublisher(configuration.getCallerId(), topic,
-                configuration.getNodeApiUrl());
-        LOGGER.log(Level.FINE, "Unregistered publisher response: {0}", num.toString());
-        publishersManager.remove(topic);
+        try {
+            var num = getMasterApi().unregisterPublisher(configuration.getCallerId(), topic,
+                    configuration.getNodeApiUrl());
+            LOGGER.log(Level.FINE, "Unregistered publisher response: {0}", num.toString());
+        } finally {
+            publishersManager.remove(topic);
+        }
     }
     
     /**
@@ -193,13 +197,18 @@ public class JRosClient implements AutoCloseable {
      */
     @Override
     public void close() throws Exception {
-        publishersManager.getPublishers().stream()
-            .map(TopicPublisher::getTopic)
-            .forEach(Unchecked.wrapAccept(this::unpublish));
-        nodeServer.close();
-        clients.forEach(Unchecked.wrapAccept(TcpRosClient::close));
-        tcpRosServer.close();
-        clients.clear();
+        try {
+            var exception = new RuntimeException();
+            publishersManager.getPublishers().stream()
+                .map(TopicPublisher::getTopic)
+                .forEach(Unchecked.wrapAccept(this::unpublish, exception));
+            if (exception.getSuppressed().length != 0)
+                throw exception;
+        } finally {
+            nodeServer.close();
+            clients.forEach(Unchecked.wrapAccept(TcpRosClient::close));
+            tcpRosServer.close();
+            clients.clear();
+        }
     }
-
 }

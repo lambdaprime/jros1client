@@ -47,7 +47,8 @@ module jrosclient {
     exports id.jrosmessages.geometry_msgs;
     exports id.jrosmessages.visualization_msgs;
     exports id.jrosmessages.sensor_msgs;
-    
+
+    exports id.jrosclient.impl to jrosclient.tests;
     exports id.jrosclient.ros to jrosclient.tests;
     exports id.jrosclient.ros.transport to jrosclient.tests;
     exports id.jrosclient.ros.transport.io to jrosclient.tests;

@@ -42,6 +42,7 @@ public class NodeServer implements AutoCloseable {
 
     private Optional<WebServer> server = Optional.empty();
     private JRosClientConfiguration config;
+    private boolean isClosed;
 
     public NodeServer(JRosClientConfiguration config) {
         this.config = config;
@@ -76,6 +77,11 @@ public class NodeServer implements AutoCloseable {
         LOGGER.entering(CLASS_NAME, "close");
         LOGGER.fine("Stopping...");
         server.ifPresent(WebServer::shutdown);
+        isClosed = true;
         LOGGER.exiting(CLASS_NAME, "close");
+    }
+    
+    public boolean isClosed() {
+        return isClosed;
     }
 }

@@ -21,6 +21,10 @@
  */
 package id.jrosclient.tests.integration;
 
+import static id.jrosclient.tests.integration.TestConstants.URL;
+import static id.xfunction.XUtils.readResource;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.io.EOFException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -42,9 +46,6 @@ import id.jrosmessages.std_msgs.Int32Message;
 import id.jrosmessages.std_msgs.StringMessage;
 import id.xfunction.logging.XLogger;
 import id.xfunction.text.WildcardMatcher;
-
-import static id.jrosclient.tests.integration.TestConstants.URL;
-import static id.xfunction.XUtils.readResource;
 
 public class JRosClientTests {
 
@@ -171,5 +172,22 @@ public class JRosClientTests {
         System.out.println(actual);
         Assertions.assertTrue(new WildcardMatcher(readResource("test_subscriber_truncate"))
                 .matches(actual));
+    }
+
+    @Test
+    public void test_cannot_connect() throws Exception {
+        var topic = "/testTopic3";
+        var objectsFactory = new TestObjectsFactory();
+        Exception exception = null;
+        try (var myclient = new JRosClient("http://localhost:12/", objectsFactory.createConfig(),
+                objectsFactory);
+                var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);) {
+            exception = assertThrows(Exception.class, () -> myclient.publish(publisher));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        Assertions.assertEquals("Failed to read server's response: Connection refused (Connection refused)", exception.getCause().getMessage());
+        Assertions.assertEquals(true, objectsFactory.nodeServer.isClosed());
+        Assertions.assertEquals(true, objectsFactory.tcpRosServer.isClosed());
     }
 }

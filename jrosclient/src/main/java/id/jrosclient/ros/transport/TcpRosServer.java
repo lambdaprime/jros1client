@@ -186,4 +186,8 @@ public class TcpRosServer implements MessageService, AutoCloseable {
         LOGGER.log(Level.FINE, "Received connection header {0}", header);
         return Optional.of(subscriber);
     }
+
+    public boolean isClosed() {
+        return !isStarted;
+    }
 }
