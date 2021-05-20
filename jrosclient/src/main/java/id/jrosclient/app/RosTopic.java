@@ -29,8 +29,8 @@ import java.util.function.Consumer;
 import id.jrosclient.JRosClient;
 import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.TopicSubscriber;
+import id.jrosclient.impl.ObjectsFactory;
 import id.jrosclient.impl.TextUtils;
-import id.jrosclient.impl.TextUtilsFactory;
 import id.jrosclient.ros.responses.Response.StatusCode;
 import id.jrosmessages.Message;
 import id.xfunction.ArgumentParsingException;
@@ -48,7 +48,7 @@ public class RosTopic {
     public RosTopic(String masterUrl, JRosClientConfiguration config) {
         this.masterUrl = masterUrl;
         this.config = config;
-        utils = TextUtilsFactory.create(config);
+        utils = new ObjectsFactory().createTextUtils(config);
     }
 
     public void execute(List<String> positionalArgs) {

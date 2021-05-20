@@ -27,9 +27,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import id.jrosclient.impl.ObjectsFactory;
 import id.jrosclient.impl.RosRpcClient;
 import id.jrosclient.impl.TextUtils;
-import id.jrosclient.impl.TextUtilsFactory;
 import id.jrosclient.impl.Utils;
 import id.jrosclient.ros.NodeServer;
 import id.jrosclient.ros.api.MasterApi;
@@ -43,6 +43,7 @@ import id.jrosclient.ros.transport.TcpRosServer;
 import id.jrosmessages.Message;
 import id.jrosmessages.impl.MetadataAccessor;
 import id.xfunction.XRE;
+import id.xfunction.function.ThrowingConsumer;
 import id.xfunction.function.Unchecked;
 import id.xfunction.logging.XLogger;
 
@@ -52,6 +53,7 @@ import id.xfunction.logging.XLogger;
 public class JRosClient implements AutoCloseable {
 
     private static final Logger LOGGER = XLogger.getLogger(JRosClient.class);
+    private static final ObjectsFactory objectsFactory = new ObjectsFactory();
     private static final Utils utils = new Utils();
 
     private String masterUrl;
@@ -67,14 +69,21 @@ public class JRosClient implements AutoCloseable {
      * @param masterUrl master node URL
      */
     public JRosClient(String masterUrl) {
-        this(masterUrl, new JRosClientConfiguration());
+        this(masterUrl, objectsFactory.createConfig());
     }
 
     public JRosClient(String masterUrl, JRosClientConfiguration config) {
+        this(masterUrl, config, objectsFactory);
+    }
+
+    /**
+     * @hidden
+     */
+    public JRosClient(String masterUrl, JRosClientConfiguration config, ObjectsFactory factory) {
         this.masterUrl = masterUrl;
-        nodeServer = new NodeServer(config);
-        textUtils = TextUtilsFactory.create(config);
-        tcpRosServer = new TcpRosServer(publishersManager, config, textUtils);
+        nodeServer = factory.createNodeServer(config);
+        textUtils = factory.createTextUtils(config);
+        tcpRosServer = factory.createTcpRosServer(publishersManager, config, textUtils);
         configuration = config;
     }
 
