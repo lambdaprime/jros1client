@@ -1,4 +1,4 @@
-**jrosclient** - Java module which allows to interact with ROS (Robotic Operation System).
+**jrosclient** - command-line application which allows to interact with ROS (Robotic Operation System).
 
 # Download
 
@@ -6,7 +6,7 @@ You can download **jrosclient** from <https://github.com/lambdaprime/jrosclient/
 
 # Documentation
 
-Documentation is available here <http://portal2.atwebpages.com/jrosclient>
+Documentation is available here <http://portal2.atwebpages.com/jrosclient/jrosclient-command.html>
 
 # Usage
 
@@ -28,19 +28,11 @@ Options:
 
 --debug - turns on debug mode
 
-Available commands:
+Available client commands:
 
-rostopic echo [-n count] <topicName> <topicType> -- display 'count' messages published to a topic. If 'count' is not set keep displaying messages forever.
+rostopic list
 
-rostopic list -- prints information about all publishers, subscribers in the system
-
-# Examples
-
-```bash
-% jrosclient --masterUrl "http://localhost:11311/" --nodePort 1234 rostopic echo testTopic geometry_msgs/Point
-{z=1.0, y=1.0, x=1.0}
-% jrosclient --masterUrl "http://localhost:11311/" rostopic echo testTopic std_msgs/String
-```
+rostopic echo [-n count] <topicName> <topicType>
 
 # Contributors
 
