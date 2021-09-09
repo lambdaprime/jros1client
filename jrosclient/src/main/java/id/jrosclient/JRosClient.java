@@ -21,6 +21,7 @@
  */
 package id.jrosclient;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -160,10 +161,9 @@ public class JRosClient implements AutoCloseable {
      * Unregister publisher in Master node and stop publisher from emitting
      * new messages
      * @param topic name of the topic used by the publisher
-     * @throws Exception
      */
     public void unpublish(String topic) 
-            throws Exception
+            throws IOException
     {
         var publisherOpt = publishersManager.getPublisher(utils.formatTopicName(topic));
         if (publisherOpt.isEmpty()) {
@@ -194,7 +194,7 @@ public class JRosClient implements AutoCloseable {
      * Release the resources, stop TCPROS server and node server  
      */
     @Override
-    public void close() throws Exception {
+    public void close() throws IOException {
         try {
             var exception = new RuntimeException();
             publishersManager.getPublishers().stream()

@@ -21,6 +21,7 @@
  */
 package id.jrosclient;
 
+import java.io.IOException;
 import java.util.concurrent.Flow;
 
 import id.jrosmessages.Message;
@@ -50,5 +51,5 @@ public interface TopicPublisher<M extends Message> extends Flow.Publisher<M>, Au
     /**
      * Stop to emit any new messages
      */
-    void close() throws Exception;
+    void close() throws IOException;
 }
