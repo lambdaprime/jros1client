@@ -26,6 +26,8 @@ import id.xfunction.XJson;
 
 public class Duration {
 
+    public static final Duration UNLIMITED = new Duration();
+
     /**
      * Seconds (stamp_secs) since epoch
      */

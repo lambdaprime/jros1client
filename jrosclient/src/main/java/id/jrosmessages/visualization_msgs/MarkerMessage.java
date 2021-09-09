@@ -151,13 +151,13 @@ public class MarkerMessage implements Message {
      * Only used for text markers
      */
     @Streamed
-    public StringMessage mesh_resource = new StringMessage();
+    public StringMessage text = new StringMessage();
     
     /**
      * Only used for MESH_RESOURCE markers
      */
     @Streamed
-    public StringMessage text = new StringMessage();
+    public StringMessage mesh_resource = new StringMessage();
     
     /**
      * If this marker should be frame-locked, i.e. retransformed into its
@@ -216,6 +216,11 @@ public class MarkerMessage implements Message {
         return this;
     }
 
+    public MarkerMessage withText(StringMessage text) {
+        this.text = text;
+        return this;
+    }
+    
     @Override
     public String toString() {
         return XJson.asString(

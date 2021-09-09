@@ -146,6 +146,7 @@ public class MessageTests {
                         .withG(0.13F)
                         .withB(0.14F)
                         .withA(1.0F))
+                    .withText(new StringMessage().withData("aa"))
                     .withLifetime(new Duration())
                     .withFrameLocked(false)),
             
