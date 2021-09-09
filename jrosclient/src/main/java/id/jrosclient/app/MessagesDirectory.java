@@ -38,6 +38,7 @@ import id.jrosmessages.std_msgs.ColorRGBAMessage;
 import id.jrosmessages.std_msgs.HeaderMessage;
 import id.jrosmessages.std_msgs.Int32Message;
 import id.jrosmessages.std_msgs.StringMessage;
+import id.jrosmessages.visualization_msgs.MarkerArrayMessage;
 import id.jrosmessages.visualization_msgs.MarkerMessage;
 
 /**
@@ -64,6 +65,7 @@ public class MessagesDirectory {
         add(PointCloud2Message.class);
         add(PointFieldMessage.class);
         add(JointStateMessage.class);
+        add(MarkerArrayMessage.class);
     }
     
     public Class<? extends Message> get(String messageType) {

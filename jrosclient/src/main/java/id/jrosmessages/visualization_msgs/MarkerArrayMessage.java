@@ -19,9 +19,9 @@
  * Authors:
  * - lambdaprime <intid@protonmail.com>
  */
-package id.jrosmessages.std_msgs;
+package id.jrosmessages.visualization_msgs;
 
-import java.util.Objects;
+import java.util.Arrays;
 
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
@@ -29,43 +29,37 @@ import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * Definition for std_msgs/String
+ * Definition for visualization_msgs/MarkerArray
  */
 @MessageMetadata(
-    type = "std_msgs/String",
-    md5sum = "992ce8a1687cec8c8bd883ec73ca41d1")
-public class StringMessage implements Message {
-    
+    type = MarkerArrayMessage.NAME,
+    md5sum = "d155b9ce5188fbaf89745847fd5882d7")
+public class MarkerArrayMessage implements Message {
+
+    static final String NAME = "visualization_msgs/MarkerArray";
+
     @Streamed
-    public String data = "";
+    public MarkerMessage[] markers = new MarkerMessage[0];
     
-    // for kineticstreamer
-    public StringMessage() {
-
-    }
-    
-    public StringMessage(String data) {
-        this.data = data;
-    }
-
-    public StringMessage withData(String data) {
-        this.data = data;
+    public MarkerArrayMessage withMarkers(MarkerMessage... markers) {
+        this.markers = markers;
         return this;
     }
     
     @Override
     public String toString() {
-        return XJson.asString("data", data).toString();
+        return XJson.asString(
+                "markers", Arrays.toString(markers));
     }
-    
+
     @Override
     public int hashCode() {
-        return Objects.hashCode(data);
+        return Arrays.hashCode(markers);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
-        StringMessage other = (StringMessage) obj;
-        return Objects.equals(data, other.data);
+        MarkerArrayMessage other = (MarkerArrayMessage) obj;
+        return Arrays.equals(markers, other.markers);
     }
 }
