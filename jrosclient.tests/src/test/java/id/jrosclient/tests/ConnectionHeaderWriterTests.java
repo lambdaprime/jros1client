@@ -36,11 +36,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.io.ConnectionHeaderWriter;
 import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
-import id.xfunction.XUtils;
+import id.xfunction.ResourceUtils;
 import id.xfunction.io.XOutputStream;
 
 public class ConnectionHeaderWriterTests {
 
+    private static final ResourceUtils resourceUtils = new ResourceUtils();
+    
     private static Stream<ConnectionHeaderSample> headerSamples() {
         return Stream.of(ConnectionHeaderSamples.HEADER);
     }
@@ -51,7 +53,7 @@ public class ConnectionHeaderWriterTests {
         var collector = new XOutputStream();
         var dos = new DataOutputStream(collector);
         new ConnectionHeaderWriter(dos).write(sample.getHeader());
-        var expected = XUtils.readResourceAsStream(sample.getResource())
+        var expected = resourceUtils.readResourceAsStream(sample.getResource())
             .map(l -> Arrays.asList(l.split(" ")))
             .flatMap(List::stream)
             .collect(Collectors.joining(", "));

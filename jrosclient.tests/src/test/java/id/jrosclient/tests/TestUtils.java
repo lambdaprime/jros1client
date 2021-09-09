@@ -21,21 +21,23 @@
  */
 package id.jrosclient.tests;
 
-import static id.xfunction.XUtils.readResource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import id.xfunction.ResourceUtils;
 import id.xfunction.text.WildcardMatcher;
 
 public class TestUtils {
 
+    private static final ResourceUtils resourceUtils = new ResourceUtils();
+    
     public static void compare(String out, String file) {
-        var str = readResource(file);
+        var str = resourceUtils.readResource(file);
         assertEquals(str, out);
     }
 
     public static void compareWithTemplate(String out, String templateFile) {
-        var template = readResource(templateFile);
+        var template = resourceUtils.readResource(templateFile);
         assertTrue(new WildcardMatcher(template).matches(out));
     }
 

@@ -36,7 +36,7 @@ import id.jrosmessages.std_msgs.StringMessage;
 import id.jrosmessages.visualization_msgs.MarkerMessage;
 import id.jrosmessages.visualization_msgs.MarkerMessage.Action;
 import id.jrosmessages.visualization_msgs.MarkerMessage.Type;
-import id.xfunction.CommandLineInterface;
+import id.xfunction.cli.CommandLineInterface;
 import id.xfunction.lang.XThread;
 
 /**

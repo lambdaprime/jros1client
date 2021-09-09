@@ -27,7 +27,7 @@ import id.jrosmessages.geometry_msgs.Point32Message;
 import id.jrosmessages.primitives.Time;
 import id.jrosmessages.std_msgs.HeaderMessage;
 import id.kineticstreamer.annotations.Streamed;
-import id.xfunction.CommandLineInterface;
+import id.xfunction.cli.CommandLineInterface;
 
 /**
  * Demonstrates how to define custom messages using PolygonStampedMessage

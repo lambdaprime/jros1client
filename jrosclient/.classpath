@@ -37,12 +37,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/xfunction-12.0.jar">
+	<classpathentry kind="lib" path="libs/kineticstreamer-2.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/kineticstreamer-2.0.jar">
+	<classpathentry kind="lib" path="libs/xfunction-13.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

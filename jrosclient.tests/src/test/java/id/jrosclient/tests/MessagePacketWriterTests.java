@@ -35,11 +35,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import id.jrosclient.ros.transport.MessagePacket;
 import id.jrosclient.ros.transport.io.MessagePacketWriter;
 import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
+import id.xfunction.ResourceUtils;
 import id.xfunction.XByte;
-import id.xfunction.XUtils;
 import id.xfunction.io.XOutputStream;
 
 public class MessagePacketWriterTests {
+    private static final ResourceUtils resourceUtils = new ResourceUtils();
 
     private static Stream<List> headerSamples() {
         return Stream.of(buildTestSample(ConnectionHeaderSamples.HEADER));
@@ -57,7 +58,7 @@ public class MessagePacketWriterTests {
     }
 
     private static List buildTestSample(ConnectionHeaderSample headerSample) {
-        var hexString = XUtils.readResourceAsStream(headerSample.getResource())
+        var hexString = resourceUtils.readResourceAsStream(headerSample.getResource())
                 .map(l -> Arrays.asList(l.split(" ")))
                 .flatMap(List::stream)
                 .collect(Collectors.joining(", "));

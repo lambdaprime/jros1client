@@ -34,7 +34,7 @@ import id.jrosmessages.sensor_msgs.PointCloud2Message;
 import id.jrosmessages.sensor_msgs.PointFieldMessage;
 import id.jrosmessages.sensor_msgs.PointFieldMessage.DataType;
 import id.jrosmessages.std_msgs.HeaderMessage;
-import id.xfunction.CommandLineInterface;
+import id.xfunction.cli.CommandLineInterface;
 
 /**
  * Reads point cloud from obj file and creates a message which

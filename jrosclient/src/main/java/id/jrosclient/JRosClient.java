@@ -24,7 +24,6 @@ package id.jrosclient;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,9 +42,8 @@ import id.jrosclient.ros.transport.TcpRosClient;
 import id.jrosclient.ros.transport.TcpRosServer;
 import id.jrosmessages.Message;
 import id.jrosmessages.impl.MetadataAccessor;
-import id.xfunction.XRE;
-import id.xfunction.function.ThrowingConsumer;
 import id.xfunction.function.Unchecked;
+import id.xfunction.lang.XRE;
 import id.xfunction.logging.XLogger;
 
 /**

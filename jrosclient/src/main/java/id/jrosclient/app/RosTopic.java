@@ -33,10 +33,10 @@ import id.jrosclient.impl.ObjectsFactory;
 import id.jrosclient.impl.TextUtils;
 import id.jrosclient.ros.responses.Response.StatusCode;
 import id.jrosmessages.Message;
-import id.xfunction.ArgumentParsingException;
-import id.xfunction.SmartArgs;
-import id.xfunction.XRE;
+import id.xfunction.cli.ArgumentParsingException;
+import id.xfunction.cli.SmartArgs;
 import id.xfunction.function.Unchecked;
+import id.xfunction.lang.XRE;
 
 public class RosTopic {
 

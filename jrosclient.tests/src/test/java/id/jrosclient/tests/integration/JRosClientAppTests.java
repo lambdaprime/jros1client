@@ -29,7 +29,6 @@
 package id.jrosclient.tests.integration;
 
 import static id.jrosclient.tests.integration.TestConstants.URL;
-import static id.xfunction.XUtils.readResource;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -44,7 +43,8 @@ import org.junit.jupiter.api.Test;
 import id.jrosclient.JRosClient;
 import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosmessages.std_msgs.StringMessage;
-import id.xfunction.XExec;
+import id.xfunction.ResourceUtils;
+import id.xfunction.lang.XExec;
 import id.xfunction.lang.XThread;
 import id.xfunction.text.WildcardMatcher;
 
@@ -54,6 +54,7 @@ public class JRosClientAppTests {
             .toAbsolutePath()
             .resolve("build/jrosclient/jrosclient")
             .toString();
+    private static final ResourceUtils resourceUtils = new ResourceUtils();
 
     @BeforeEach
     void setup() throws IOException {
@@ -113,40 +114,40 @@ public class JRosClientAppTests {
         var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo -n 5 testTopic std_msgs/String",
                 URL);
         var out = runOk(args);
-        Assertions.assertTrue(new WildcardMatcher(readResource("echo")).matches(out));
+        Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("echo")).matches(out));
     }
 
     private void test_echo_missing_args() {
         var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo testTopic",
                 URL);
         var out = runFail(args);
-        Assertions.assertEquals(readResource("README.md") + "\n\n", out);
+        Assertions.assertEquals(resourceUtils.readResource("README.md") + "\n\n", out);
     }
     
     private void test_no_args() throws Exception {
         var out = runFail("");
-        Assertions.assertEquals(readResource("README.md") + "\n\n", out);
+        Assertions.assertEquals(resourceUtils.readResource("README.md") + "\n\n", out);
     }
 
     private void test_debug() {
         var args = String.format("--masterUrl %s --nodePort 1234 --debug rostopic echo -n 1 testTopic std_msgs/String",
                 URL);
         var out = runOk(args);
-        Assertions.assertTrue(new WildcardMatcher(readResource("debug")).matches(out));
+        Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("debug")).matches(out));
     }
 
     private void test_list() {
         var args = String.format("--masterUrl %s --nodePort 1234 rostopic list",
                 URL);
         var out = runOk(args);
-        Assertions.assertTrue(new WildcardMatcher(readResource("list")).matches(out));
+        Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("list")).matches(out));
     }
     
     private void test_truncate() {
         var args = String.format("--masterUrl %s --debug --truncate 6 rostopic echo -n 1 testTopic std_msgs/String",
                 URL);
         var out = runOk(args);
-        Assertions.assertTrue(new WildcardMatcher(readResource("truncate")).matches(out));
+        Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("truncate")).matches(out));
     }
     
     private String runFail(String fmt, Object...args) {

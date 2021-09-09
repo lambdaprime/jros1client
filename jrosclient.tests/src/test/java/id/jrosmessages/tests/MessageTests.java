@@ -52,28 +52,29 @@ import id.jrosmessages.sensor_msgs.PointFieldMessage;
 import id.jrosmessages.sensor_msgs.PointFieldMessage.DataType;
 import id.kineticstreamer.KineticStreamReader;
 import id.kineticstreamer.KineticStreamWriter;
-import id.xfunction.XUtils;
+import id.xfunction.ResourceUtils;
 import id.xfunction.io.XInputStream;
 import id.xfunction.io.XOutputStream;
 
 public class MessageTests {
+    private static final ResourceUtils resourceUtils = new ResourceUtils();
     
     static Stream<List> dataProvider() {
         return Stream.of(
-            List.of(XUtils.readResource(MessageTests.class, "string-empty"),
+            List.of(resourceUtils.readResource(MessageTests.class, "string-empty"),
                 new StringMessage()),
-            List.of(XUtils.readResource(MessageTests.class, "string"),
+            List.of(resourceUtils.readResource(MessageTests.class, "string"),
                 new StringMessage().withData("hello there")),
             
-            List.of(XUtils.readResource(MessageTests.class, "point-empty"),
+            List.of(resourceUtils.readResource(MessageTests.class, "point-empty"),
                 new PointMessage()),
-            List.of(XUtils.readResource(MessageTests.class, "point"),
+            List.of(resourceUtils.readResource(MessageTests.class, "point"),
                 new PointMessage().withX(1.0).withY(1.0).withZ(1.0)),
             
-            List.of(XUtils.readResource(MessageTests.class, "point32"),
+            List.of(resourceUtils.readResource(MessageTests.class, "point32"),
                 new Point32Message().withX(1.0F).withY(1.0F).withZ(1.0F)),
 
-            List.of(XUtils.readResource(MessageTests.class, "polygonstamped"),
+            List.of(resourceUtils.readResource(MessageTests.class, "polygonstamped"),
                 new PolygonStampedMessage()
                     .withHeader(new HeaderMessage()
                         .withSeq(123)
@@ -85,40 +86,40 @@ public class MessageTests {
                             new Point32Message(1F, 2F, 3F),
                             new Point32Message(0F, 0F, 0F)}))),
 
-            List.of(XUtils.readResource(MessageTests.class, "quaternion-empty"),
+            List.of(resourceUtils.readResource(MessageTests.class, "quaternion-empty"),
                 new QuaternionMessage()),
-            List.of(XUtils.readResource(MessageTests.class, "quaternion"),
+            List.of(resourceUtils.readResource(MessageTests.class, "quaternion"),
                 new QuaternionMessage().withX(1.0).withY(1.0).withZ(1.0).withW(3.0)),
             
-            List.of(XUtils.readResource(MessageTests.class, "pose-empty"),
+            List.of(resourceUtils.readResource(MessageTests.class, "pose-empty"),
                 new PoseMessage()),
-            List.of(XUtils.readResource(MessageTests.class, "pose"), new PoseMessage()
+            List.of(resourceUtils.readResource(MessageTests.class, "pose"), new PoseMessage()
                 .withPosition(
                     new PointMessage().withX(1.0).withY(1.0).withZ(1.0))
                 .withQuaternion(
                     new QuaternionMessage().withX(1.0).withY(1.0).withZ(1.0).withW(3.0))),
             
-            List.of(XUtils.readResource(MessageTests.class, "header-empty"),
+            List.of(resourceUtils.readResource(MessageTests.class, "header-empty"),
                 new HeaderMessage()),
-            List.of(XUtils.readResource(MessageTests.class, "header"),
+            List.of(resourceUtils.readResource(MessageTests.class, "header"),
                 new HeaderMessage()
                     .withSeq(123)
                     .withStamp(new Time(0, 1111))
                     .withFrameId("aaaa")),
             
-            List.of(XUtils.readResource(MessageTests.class, "colorrgba-empty"),
+            List.of(resourceUtils.readResource(MessageTests.class, "colorrgba-empty"),
                 new ColorRGBAMessage()),
-            List.of(XUtils.readResource(MessageTests.class, "colorrgba"),
+            List.of(resourceUtils.readResource(MessageTests.class, "colorrgba"),
                 new ColorRGBAMessage().withR(.12F).withG(.13F).withB(.14F).withA(.15F)),
             
-            List.of(XUtils.readResource(MessageTests.class, "vector3-empty"),
+            List.of(resourceUtils.readResource(MessageTests.class, "vector3-empty"),
                 new Vector3Message()),
-            List.of(XUtils.readResource(MessageTests.class, "vector3"),
+            List.of(resourceUtils.readResource(MessageTests.class, "vector3"),
                 new Vector3Message().withX(.12).withY(.13).withZ(.14)),
 
-            List.of(XUtils.readResource(MessageTests.class, "marker-empty"),
+            List.of(resourceUtils.readResource(MessageTests.class, "marker-empty"),
                 new MarkerMessage()),
-            List.of(XUtils.readResource(MessageTests.class, "marker"),
+            List.of(resourceUtils.readResource(MessageTests.class, "marker"),
                 new MarkerMessage()
                     .withHeader(new HeaderMessage()
                         .withSeq(0)
@@ -148,7 +149,7 @@ public class MessageTests {
                     .withLifetime(new Duration())
                     .withFrameLocked(false)),
             
-            List.of(XUtils.readResource(MessageTests.class, "pointcloud2"),
+            List.of(resourceUtils.readResource(MessageTests.class, "pointcloud2"),
                 new PointCloud2Message()
                     .withHeader(new HeaderMessage()
                         .withSeq(8)
@@ -174,7 +175,7 @@ public class MessageTests {
                     .withRowStep(96)
                     .withWidth(8)),
 
-            List.of(XUtils.readResource(MessageTests.class, "joint-state"),
+            List.of(resourceUtils.readResource(MessageTests.class, "joint-state"),
                 new JointStateMessage()
                     .withHeader(new HeaderMessage()
                         .withSeq(43)

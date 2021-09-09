@@ -30,8 +30,8 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import id.jrosclient.JRosClientConfiguration;
-import id.xfunction.ArgumentParsingException;
-import id.xfunction.SmartArgs;
+import id.xfunction.cli.ArgumentParsingException;
+import id.xfunction.cli.SmartArgs;
 import id.xfunction.logging.XLogger;
 
 public class JRosClientApp {

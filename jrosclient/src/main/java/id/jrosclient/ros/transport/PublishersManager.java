@@ -28,8 +28,8 @@ import java.util.Optional;
 
 import id.jrosclient.TopicPublisher;
 import id.jrosmessages.Message;
-import id.xfunction.XRE;
 import id.xfunction.function.Unchecked;
+import id.xfunction.lang.XRE;
 
 public class PublishersManager implements AutoCloseable {
 

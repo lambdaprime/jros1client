@@ -37,11 +37,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.io.ConnectionHeaderReader;
 import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
-import id.xfunction.XUtils;
+import id.xfunction.ResourceUtils;
 import id.xfunction.function.Curry;
 import id.xfunction.function.Unchecked;
 
 public class ConnectionHeaderReaderTests {
+
+    private static final ResourceUtils resourceUtils = new ResourceUtils();
 
     private static Stream<ConnectionHeaderSample> headerSamples() {
         return Stream.of(ConnectionHeaderSamples.HEADER);
@@ -60,7 +62,7 @@ public class ConnectionHeaderReaderTests {
     private byte[] readByteCodes(String resource) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(bos);
-        XUtils.readResourceAsStream(resource)
+        resourceUtils.readResourceAsStream(resource)
             .map(l -> Arrays.asList(l.split(" ")))
             .flatMap(List::stream)
             .map(Unchecked.wrapApply(Curry.curryApply2nd(Integer::parseInt, 16)))

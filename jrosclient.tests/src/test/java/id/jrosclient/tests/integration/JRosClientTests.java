@@ -22,7 +22,6 @@
 package id.jrosclient.tests.integration;
 
 import static id.jrosclient.tests.integration.TestConstants.URL;
-import static id.xfunction.XUtils.readResource;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.EOFException;
@@ -44,11 +43,13 @@ import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosclient.TopicSubscriber;
 import id.jrosmessages.std_msgs.Int32Message;
 import id.jrosmessages.std_msgs.StringMessage;
+import id.xfunction.ResourceUtils;
 import id.xfunction.logging.XLogger;
 import id.xfunction.text.WildcardMatcher;
 
 public class JRosClientTests {
 
+    private static final ResourceUtils resourceUtils = new ResourceUtils();
     private static JRosClient client;
 
     @BeforeEach
@@ -170,7 +171,7 @@ public class JRosClientTests {
         test_publish_single();
         var actual = Files.readString(Paths.get("/tmp/jrosclient-test.log"));
         System.out.println(actual);
-        Assertions.assertTrue(new WildcardMatcher(readResource("test_subscriber_truncate"))
+        Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("test_subscriber_truncate"))
                 .matches(actual));
     }
 

@@ -29,7 +29,7 @@ import id.jrosclient.ros.api.NodeApi;
 import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.ros.responses.ProtocolParamsResponse;
 import id.jrosclient.ros.responses.Response.StatusCode;
-import id.xfunction.XRE;
+import id.xfunction.lang.XRE;
 import id.xfunction.logging.XLogger;
 
 /**
