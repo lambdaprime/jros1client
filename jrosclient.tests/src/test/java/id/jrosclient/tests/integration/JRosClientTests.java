@@ -56,7 +56,7 @@ public class JRosClientTests {
     @BeforeEach
     public void setup() throws MalformedURLException {
         // restore logging
-        XLogger.load("logging.properties");
+        XLogger.load("logging-debug.properties");
         client = new JRosClient(URL);
     }
 
@@ -110,6 +110,49 @@ public class JRosClientTests {
         Assertions.assertEquals(data, future.get());
     }
 
+    /**
+     * Test that publisher delivers messages which are in its queue before
+     * it is being closed.
+     */
+    @Test
+    public void test_publisher_on_close() throws Exception {
+        var future = new CompletableFuture<Void>();
+        String topic = "testTopic2";
+        String data = "hello";
+        int[] c = new int[1];
+        int totalNumOfMessages = 10;
+        try (var publisherClient = new JRosClient(URL);
+                var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);) {
+            publisherClient.publish(publisher);
+
+            client.subscribe(new TopicSubscriber<>(StringMessage.class, topic) {
+                @Override
+                public void onNext(StringMessage item) {
+                    System.out.println(item);
+                    Assertions.assertEquals(data, item.data);
+                    c[0]++;
+                    if (c[0] == totalNumOfMessages) {
+                        getSubscription().cancel();
+                        future.complete(null);
+                    } else {
+                        // delay requesting next message to make
+                        // them accumulate on publisher
+                        XThread.sleep(100);
+                        request(1);
+                    }
+                }
+            });
+
+            // wait so that subscriber get time to register with ROS
+            XThread.sleep(1000);
+            for (int i = 0 ; i < totalNumOfMessages; i++) {
+                publisher.submit(new StringMessage().withData(data));
+            }
+        }
+        future.get();
+        Assertions.assertEquals(totalNumOfMessages, c[0]);
+    }
+    
     @Test
     public void test_unpublish() throws Exception {
         var topic = "/testTopic3";

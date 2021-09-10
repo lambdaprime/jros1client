@@ -26,6 +26,8 @@ import java.util.concurrent.SubmissionPublisher;
 import id.jrosclient.impl.Utils;
 import id.jrosmessages.Message;
 import id.xfunction.XJson;
+import id.xfunction.lang.XThread;
+import id.xfunction.logging.XLogger;
 
 /**
  * <p>Topic publisher which is based on Java class {@link java.util.concurrent.SubmissionPublisher}.</p>
@@ -45,6 +47,7 @@ import id.xfunction.XJson;
 public class TopicSubmissionPublisher<M extends Message> extends SubmissionPublisher<M> 
     implements TopicPublisher<M>
 {
+    private static final XLogger LOGGER = XLogger.getLogger(TopicSubmissionPublisher.class);
     private static final Utils utils = new Utils();
 
     private Class<M> messageClass;
@@ -65,6 +68,18 @@ public class TopicSubmissionPublisher<M extends Message> extends SubmissionPubli
     
     public String getTopic() {
         return topic;
+    }
+    
+    @Override
+    public void close() {
+        LOGGER.entering("close");
+        while (estimateMaximumLag() > 0) {
+            LOGGER.fine("Some messages are still waiting to be delivered, sleeping...");
+            XThread.sleep(100);
+        }
+        LOGGER.fine("There is no more messages waiting to be delivered, closing the publisher");
+        super.close();
+        LOGGER.exiting("close");
     }
     
     @Override

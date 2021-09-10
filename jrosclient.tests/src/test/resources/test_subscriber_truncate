@@ -19,5 +19,7 @@ FINE: Message packet: { ...}
 *
 FINE: Submitting received message to subscriber
 *
+FINE: Some messages are still waiting to be delivered, sleeping...
+*
 FINE: Unregistered publisher response: { "statusCode": "SUCCESS", "statusMessage": "Unregistered [jrosclient] as provider of [/testTopic2]", "subscriberApis": "1" }
 *
