@@ -85,6 +85,7 @@ public class JRosClientAppTests {
         var client = new JRosClient(URL);
         client.publish(publisher);
         ExecutorService executor = Executors.newSingleThreadExecutor();
+        // publish message to the topic every second
         executor.submit(() -> {
             while (!executor.isShutdown()) {
                 publisher.submit(new StringMessage().withData("Hello ROS"));

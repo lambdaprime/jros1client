@@ -3,13 +3,17 @@ FINE: Current subscribers: { "statusCode": "SUCCESS", "statusMessage": "Register
 *
 FINE: incoming connection
 *
-FINE: spawned looper
+FINE: spawned new looper, now waiting for another connection...
 *
 FINE: Requesting next message for jrosclient
 *
 FINE: Published new message: { ...}
 *
 FINE: 09...f
+*
+FINE: Sending message response
+*
+FINE: Message sent
 *
 FINE: Message packet: { ...}
 *
