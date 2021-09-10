@@ -98,6 +98,9 @@ public class TcpRosServer implements MessageService, AutoCloseable {
         isStarted = false;
     }
 
+    /**
+     * Implementation of MessageService which process the incoming requests.
+     */
     @Override
     public CompletableFuture<MessageResponse> process(MessageRequest request) {
         LOGGER.entering("process");
@@ -142,7 +145,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
      */
     private Optional<TopicPublisherSubscriber> registerSubscriber(MessageRequest request) {
         var message = request.getMessage().orElseThrow(() ->
-        new XRE("Incoming request has no message"));
+            new XRE("Incoming request has no message"));
         var dis = new DataInputStream(new ByteBufferInputStream(message));
         var headerReader = new ConnectionHeaderReader(dis);
         var header = Unchecked.get(headerReader::read);
@@ -172,7 +175,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
             return Optional.empty();
         }
         
-        var subscriber = new TopicPublisherSubscriber(callerId, topic, utils) {
+        var subscriber = new TopicPublisherSubscriber(callerId, topic, publisher.getMessageClass(), utils) {
             @Override
             public void onError(Throwable throwable) {
                 LOGGER.log(Level.WARNING, "Failed to deliver message to ROS subscriber {0} due to: {1}",

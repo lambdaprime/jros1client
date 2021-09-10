@@ -44,6 +44,7 @@ import id.jrosclient.TopicSubscriber;
 import id.jrosmessages.std_msgs.Int32Message;
 import id.jrosmessages.std_msgs.StringMessage;
 import id.xfunction.ResourceUtils;
+import id.xfunction.lang.XThread;
 import id.xfunction.logging.XLogger;
 import id.xfunction.text.WildcardMatcher;
 
@@ -65,7 +66,7 @@ public class JRosClientTests {
     }
 
     @Test
-    public void test_publish_single() throws Exception {
+    public void test_publish() throws Exception {
         var future = new CompletableFuture<String>();
         String topic = "testTopic2";
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);
@@ -86,6 +87,29 @@ public class JRosClientTests {
         Assertions.assertEquals(data, future.get());
     }
     
+    @Test
+    public void test_publish_single_message() throws Exception {
+        var future = new CompletableFuture<String>();
+        String topic = "testTopic2";
+        var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);
+        String data = "hello";
+        client.publish(publisher);
+        client.subscribe(new TopicSubscriber<>(StringMessage.class, topic) {
+            @Override
+            public void onNext(StringMessage item) {
+                System.out.println(item);
+                getSubscription().cancel();
+                future.complete(item.data);
+            }
+        });
+        // wait so that subscriber get time to register with ROS
+        XThread.sleep(1000);
+        publisher.submit(new StringMessage().withData(data));
+        future.get();
+        client.unpublish(topic);
+        Assertions.assertEquals(data, future.get());
+    }
+
     @Test
     public void test_unpublish() throws Exception {
         var topic = "/testTopic3";
@@ -168,7 +192,7 @@ public class JRosClientTests {
         var config = new JRosClientConfiguration();
         config.setMaxMessageLoggingLength(6);
         client = new JRosClient(URL, config);
-        test_publish_single();
+        test_publish();
         var actual = Files.readString(Paths.get("/tmp/jrosclient-test.log"));
         System.out.println(actual);
         Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("test_subscriber_truncate"))
