@@ -1,6 +1,3 @@
-// Requires gradle 5.4
-// gradle clean test
-
 plugins {
     id 'java'
 }
@@ -17,7 +14,8 @@ dependencies {
     testImplementation project(':jrosclient.samples')
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
     testImplementation('org.junit.jupiter:junit-jupiter-params:5.4.2')
-    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+    testRuntimeOnly('org.junit.platform:junit-platform-commons:1.7.0')
 }
 
 sourceCompatibility = '11'
@@ -29,20 +27,12 @@ task myTest(type: Copy) {
     into "$buildDir"
 }
 
-compileTestJava {
-    doFirst {
-        options.compilerArgs = [
-            '--module-path', classpath.asPath,
-        ]
-        classpath = files()
-    }
+java {
+    modularity.inferModulePath = true
 }
 
 test {
     useJUnitPlatform()
-    filter {
-        exclude '**/module-info.class'
-    }
 }
 
 task testSamples(type: Exec) {
@@ -50,4 +40,6 @@ task testSamples(type: Exec) {
     commandLine "java", "-classpath"
 }
 
-test.dependsOn myTest
+myTest.dependsOn project(':jrosclient').createRelease
+compileTestJava.dependsOn myTest
+jar.dependsOn myTest
