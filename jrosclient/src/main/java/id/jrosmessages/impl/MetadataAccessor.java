@@ -21,8 +21,11 @@
  */
 package id.jrosmessages.impl;
 
+import java.util.Optional;
+
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
+import id.xfunction.lang.XRE;
 
 /**
  * Allows to access message metadata based on their class object.
@@ -30,11 +33,15 @@ import id.jrosmessages.MessageMetadata;
 public class MetadataAccessor {
     
     public String getMd5(Class<? extends Message> messageClass) {
-        return messageClass.getAnnotation(MessageMetadata.class).md5sum();
+        return Optional.ofNullable(messageClass.getAnnotation(MessageMetadata.class))
+                .map(MessageMetadata::md5sum)
+                .orElseThrow(() -> new XRE("Metadata is missing for %s", messageClass));
     }
     
     public String getType(Class<? extends Message> messageClass) {
-        return messageClass.getAnnotation(MessageMetadata.class).type();
+        return Optional.ofNullable(messageClass.getAnnotation(MessageMetadata.class))
+                .map(MessageMetadata::type)
+                .orElseThrow(() -> new XRE("Metadata is missing for %s", messageClass));
     }
 
 }
