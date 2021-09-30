@@ -21,7 +21,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/jrosclient/libs/xfunction-13.0.jar">
+	<classpathentry kind="lib" path="/jrosclient/libs/xfunction-15.0-SNAPSHOT.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
