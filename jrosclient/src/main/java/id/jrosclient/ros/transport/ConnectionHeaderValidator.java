@@ -52,8 +52,8 @@ public class ConnectionHeaderValidator {
         
         var messageMd5 = metadataAccessor.getMd5(messageClass);
         if (!messageMd5.equals(md5sum)) {
-            throw new XRuntimeException("Message type missmatch %s != %s",
-                    messageType, type);
+            throw new XRuntimeException("Message md5 sum missmatch %s != %s",
+                    messageMd5, md5sum);
         }
         return true;
     }
