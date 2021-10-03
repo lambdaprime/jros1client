@@ -35,7 +35,7 @@ public class ConnectionHeaderValidator {
 
     public boolean validate(Class<? extends Message> messageClass, ConnectionHeader header) {
         if (header.getType().isEmpty()) {
-            throw new XRuntimeException("Type is empty");
+            throw new XRuntimeException("Message %s type is empty", messageClass.getSimpleName());
         }
         var type = header.getType().get();
         
@@ -46,14 +46,14 @@ public class ConnectionHeaderValidator {
         }
         
         if (header.getMd5sum().isEmpty()) {
-            throw new XRuntimeException("MD5 sum is empty");
+            throw new XRuntimeException("Message %s MD5 sum is empty", messageClass.getSimpleName());
         }
         var md5sum = header.getMd5sum().get();
         
         var messageMd5 = metadataAccessor.getMd5(messageClass);
         if (!messageMd5.equals(md5sum)) {
-            throw new XRuntimeException("Message md5 sum missmatch %s != %s",
-                    messageMd5, md5sum);
+            throw new XRuntimeException("Message %s md5 sum missmatch %s != %s",
+                    messageClass.getSimpleName(), messageMd5, md5sum);
         }
         return true;
     }
