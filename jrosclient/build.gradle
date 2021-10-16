@@ -28,6 +28,14 @@ java {
     modularity.inferModulePath = true
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs += ["src/main/gen"]
+        }
+    }
+}
+
 javadoc {
     exclude 'id/jrosclient/app/**'
     options.noTimestamp = true;
@@ -35,6 +43,7 @@ javadoc {
     options.noTree = true;
     options.noIndex = true;
     options.noNavBar = true;
+    options.addStringOption('Xdoclint:none', '-quiet')
 }
 
 def packageDir = "$buildDir/package/${projectName}"
