@@ -95,7 +95,7 @@ public class JRosClientAppTests {
         });
 
         String actual, expected;
-        var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo -n 1 testTopic2 std_msgs/String",
+        var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo -n 1 testTopic2 id.jrosmessages.std_msgs.StringMessage",
                 URL);
         for (int i = 0; i < 3; i++) {
             actual = runOk(args)
@@ -112,7 +112,7 @@ public class JRosClientAppTests {
     }
 
     private void test_echo() {
-        var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo -n 5 testTopic std_msgs/String",
+        var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo -n 5 testTopic id.jrosmessages.std_msgs.StringMessage",
                 URL);
         var out = runOk(args);
         Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("echo")).matches(out));
@@ -131,7 +131,7 @@ public class JRosClientAppTests {
     }
 
     private void test_debug() {
-        var args = String.format("--masterUrl %s --nodePort 1234 --debug rostopic echo -n 1 testTopic std_msgs/String",
+        var args = String.format("--masterUrl %s --nodePort 1234 --debug rostopic echo -n 1 testTopic id.jrosmessages.std_msgs.StringMessage",
                 URL);
         var out = runOk(args);
         Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("debug")).matches(out));
@@ -145,7 +145,7 @@ public class JRosClientAppTests {
     }
     
     private void test_truncate() {
-        var args = String.format("--masterUrl %s --debug --truncate 6 rostopic echo -n 1 testTopic std_msgs/String",
+        var args = String.format("--masterUrl %s --debug --truncate 6 rostopic echo -n 1 testTopic id.jrosmessages.std_msgs.StringMessage",
                 URL);
         var out = runOk(args);
         Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("truncate")).matches(out));
