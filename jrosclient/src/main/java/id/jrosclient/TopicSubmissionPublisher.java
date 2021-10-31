@@ -87,4 +87,9 @@ public class TopicSubmissionPublisher<M extends Message> extends SubmissionPubli
         return XJson.asString("topic", topic);
     }
 
+    @Override
+    public void onPublishError(Throwable exception) {
+        LOGGER.severe("Error delivering message to the subscriber: {0}", exception);
+        exception.printStackTrace();
+    }
 }

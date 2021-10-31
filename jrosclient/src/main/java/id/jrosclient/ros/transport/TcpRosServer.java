@@ -181,6 +181,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
                 LOGGER.log(Level.WARNING, "Failed to deliver message to ROS subscriber {0} due to: {1}",
                         new Object[] {callerId, throwable.getMessage()});
                 subscribers.remove(request.getConnectionId());
+                publisher.onPublishError(throwable);
                 super.onError(throwable);
             }
         };

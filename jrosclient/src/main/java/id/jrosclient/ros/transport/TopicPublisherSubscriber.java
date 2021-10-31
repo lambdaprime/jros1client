@@ -31,6 +31,7 @@ import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 
 import id.ICE.MessageResponse;
+import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosclient.impl.TextUtils;
 import id.jrosclient.ros.transport.io.MessagePacketWriter;
 import id.jrosmessages.Message;
@@ -42,11 +43,11 @@ import id.xfunction.lang.XRE;
 import id.xfunction.logging.XLogger;
 
 /**
- * Each instance serves a single ROS client which subscribed to some
- * particular topic.
+ * Each instance serves a single remote ROS client which is subscribed to some
+ * particular topic published by current instance of jrosclient.
  * 
- * This class is subscribed to jrosclient publishers ${link TopicSubmissionPublisher}
- * which are created by users to publish messages to certain ROS topic.
+ * This class is subscribed to jrosclient publishers {@link TopicSubmissionPublisher}
+ * which are created by users to publish messages to certain ROS topics.
  */
 public class TopicPublisherSubscriber implements Subscriber<Message> {
 
