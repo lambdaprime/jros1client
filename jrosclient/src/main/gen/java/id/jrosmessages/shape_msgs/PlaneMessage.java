@@ -76,7 +76,7 @@ public class PlaneMessage implements Message {
    @Override
    public String toString() {
        return XJson.asString(
-           "coef", Arrays.toString(coef)
+           "coef", coef
        );
    }
    

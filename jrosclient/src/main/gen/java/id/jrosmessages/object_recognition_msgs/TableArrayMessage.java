@@ -83,7 +83,7 @@ public class TableArrayMessage implements Message {
    public String toString() {
        return XJson.asString(
            "header", header,
-           "tables", Arrays.toString(tables)
+           "tables", tables
        );
    }
    

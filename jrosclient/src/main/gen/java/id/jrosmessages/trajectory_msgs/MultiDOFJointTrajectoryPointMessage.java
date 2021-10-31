@@ -24,17 +24,16 @@
 
 package id.jrosmessages.trajectory_msgs;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
-import id.kineticstreamer.annotations.Streamed;
-import id.xfunction.XJson;
-
 import id.jrosmessages.geometry_msgs.TransformMessage;
 import id.jrosmessages.geometry_msgs.TwistMessage;
 import id.jrosmessages.primitives.Duration;
-import java.util.Arrays;
+import id.kineticstreamer.annotations.Streamed;
+import id.xfunction.XJson;
 
 /**
  * Definition for trajectory_msgs/MultiDOFJointTrajectoryPoint
@@ -111,9 +110,9 @@ public class MultiDOFJointTrajectoryPointMessage implements Message {
    @Override
    public String toString() {
        return XJson.asString(
-           "transforms", Arrays.toString(transforms),
-           "velocities", Arrays.toString(velocities),
-           "accelerations", Arrays.toString(accelerations),
+           "transforms", transforms,
+           "velocities", velocities,
+           "accelerations", accelerations,
            "time_from_start", time_from_start
        );
    }

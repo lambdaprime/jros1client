@@ -24,16 +24,15 @@
 
 package id.jrosmessages.trajectory_msgs;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
-import id.kineticstreamer.annotations.Streamed;
-import id.xfunction.XJson;
-
 import id.jrosmessages.std_msgs.HeaderMessage;
 import id.jrosmessages.std_msgs.StringMessage;
-import java.util.Arrays;
+import id.kineticstreamer.annotations.Streamed;
+import id.xfunction.XJson;
 
 /**
  * Definition for trajectory_msgs/MultiDOFJointTrajectory
@@ -101,8 +100,8 @@ public class MultiDOFJointTrajectoryMessage implements Message {
    public String toString() {
        return XJson.asString(
            "header", header,
-           "joint_names", Arrays.toString(joint_names),
-           "points", Arrays.toString(points)
+           "joint_names", joint_names,
+           "points", points
        );
    }
    

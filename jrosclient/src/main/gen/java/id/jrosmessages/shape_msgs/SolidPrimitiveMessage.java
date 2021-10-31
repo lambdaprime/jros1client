@@ -141,7 +141,7 @@ public class SolidPrimitiveMessage implements Message {
    public String toString() {
        return XJson.asString(
            "type", type,
-           "dimensions", Arrays.toString(dimensions)
+           "dimensions", dimensions
        );
    }
    

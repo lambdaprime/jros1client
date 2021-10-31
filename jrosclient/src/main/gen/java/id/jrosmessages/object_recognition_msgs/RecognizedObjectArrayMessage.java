@@ -24,16 +24,14 @@
 
 package id.jrosmessages.object_recognition_msgs;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
+import id.jrosmessages.std_msgs.HeaderMessage;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
-
-import id.jrosmessages.object_recognition_msgs.RecognizedObjectMessage;
-import id.jrosmessages.std_msgs.HeaderMessage;
-import java.util.Arrays;
 
 /**
  * Definition for object_recognition_msgs/RecognizedObjectArray
@@ -102,8 +100,8 @@ public class RecognizedObjectArrayMessage implements Message {
    public String toString() {
        return XJson.asString(
            "header", header,
-           "objects", Arrays.toString(objects),
-           "cooccurrence", Arrays.toString(cooccurrence)
+           "objects", objects,
+           "cooccurrence", cooccurrence
        );
    }
    

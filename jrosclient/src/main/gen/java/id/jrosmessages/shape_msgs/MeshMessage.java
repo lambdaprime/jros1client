@@ -24,15 +24,14 @@
 
 package id.jrosmessages.shape_msgs;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
+import id.jrosmessages.geometry_msgs.PointMessage;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
-
-import id.jrosmessages.geometry_msgs.PointMessage;
-import java.util.Arrays;
 
 /**
  * Definition for shape_msgs/Mesh
@@ -87,8 +86,8 @@ public class MeshMessage implements Message {
    @Override
    public String toString() {
        return XJson.asString(
-           "triangles", Arrays.toString(triangles),
-           "vertices", Arrays.toString(vertices)
+           "triangles", triangles,
+           "vertices", vertices
        );
    }
    

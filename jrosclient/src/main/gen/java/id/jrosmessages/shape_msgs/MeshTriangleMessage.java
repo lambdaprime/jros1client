@@ -72,7 +72,7 @@ public class MeshTriangleMessage implements Message {
    @Override
    public String toString() {
        return XJson.asString(
-           "vertex_indices", Arrays.toString(vertex_indices)
+           "vertex_indices", vertex_indices
        );
    }
    

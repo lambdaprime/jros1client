@@ -29,10 +29,9 @@ import java.util.Objects;
 
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
+import id.jrosmessages.primitives.Duration;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
-
-import id.jrosmessages.primitives.Duration;
 
 /**
  * Definition for trajectory_msgs/JointTrajectoryPoint
@@ -113,10 +112,10 @@ public class JointTrajectoryPointMessage implements Message {
    @Override
    public String toString() {
        return XJson.asString(
-           "positions", Arrays.toString(positions),
-           "velocities", Arrays.toString(velocities),
-           "accelerations", Arrays.toString(accelerations),
-           "effort", Arrays.toString(effort),
+           "positions", positions,
+           "velocities", velocities,
+           "accelerations", accelerations,
+           "effort", effort,
            "time_from_start", time_from_start
        );
    }

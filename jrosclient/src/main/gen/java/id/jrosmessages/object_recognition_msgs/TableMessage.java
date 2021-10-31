@@ -105,7 +105,7 @@ public class TableMessage implements Message {
        return XJson.asString(
            "header", header,
            "pose", pose,
-           "convex_hull", Arrays.toString(convex_hull)
+           "convex_hull", convex_hull
        );
    }
    

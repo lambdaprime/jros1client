@@ -165,9 +165,9 @@ public class RecognizedObjectMessage implements Message {
            "header", header,
            "type", type,
            "confidence", confidence,
-           "point_clouds", Arrays.toString(point_clouds),
+           "point_clouds", point_clouds,
            "bounding_mesh", bounding_mesh,
-           "bounding_contours", Arrays.toString(bounding_contours),
+           "bounding_contours", bounding_contours,
            "pose", pose
        );
    }

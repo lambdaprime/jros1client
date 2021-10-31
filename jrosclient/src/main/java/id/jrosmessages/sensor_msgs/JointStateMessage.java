@@ -117,10 +117,10 @@ public class JointStateMessage implements Message {
     public String toString() {
         return XJson.asString(
                 "header", header,
-                "name", Arrays.toString(name),
-                "position", Arrays.toString(position),
-                "velocity", Arrays.toString(velocity),
-                "effort", Arrays.toString(effort));
+                "name", name,
+                "position", position,
+                "velocity", velocity,
+                "effort", effort);
     }
 
     @Override

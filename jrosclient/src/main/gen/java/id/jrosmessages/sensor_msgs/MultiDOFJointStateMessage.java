@@ -24,19 +24,18 @@
 
 package id.jrosmessages.sensor_msgs;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
-import id.kineticstreamer.annotations.Streamed;
-import id.xfunction.XJson;
-
 import id.jrosmessages.geometry_msgs.TransformMessage;
 import id.jrosmessages.geometry_msgs.TwistMessage;
 import id.jrosmessages.geometry_msgs.WrenchMessage;
 import id.jrosmessages.std_msgs.HeaderMessage;
 import id.jrosmessages.std_msgs.StringMessage;
-import java.util.Arrays;
+import id.kineticstreamer.annotations.Streamed;
+import id.xfunction.XJson;
 
 /**
  * Definition for sensor_msgs/MultiDOFJointState
@@ -134,10 +133,10 @@ public class MultiDOFJointStateMessage implements Message {
    public String toString() {
        return XJson.asString(
            "header", header,
-           "joint_names", Arrays.toString(joint_names),
-           "transforms", Arrays.toString(transforms),
-           "twist", Arrays.toString(twist),
-           "wrench", Arrays.toString(wrench)
+           "joint_names", joint_names,
+           "transforms", transforms,
+           "twist", twist,
+           "wrench", wrench
        );
    }
    
