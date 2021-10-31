@@ -107,4 +107,12 @@ public class RosDataOutput implements OutputKineticStream {
             writeDouble(item);
         }
     }
+
+    @Override
+    public void writeBooleanArray(boolean[] array) throws Exception {
+        writeLen(array.length);
+        for (var item: array) {
+            writeBoolean(item);
+        }
+    }
 }

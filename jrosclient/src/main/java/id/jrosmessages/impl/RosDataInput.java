@@ -138,4 +138,15 @@ public class RosDataInput implements InputKineticStream {
         LOGGER.exiting("readDoubleArray");
         return array;
     }
+
+    @Override
+    public boolean[] readBooleanArray() throws Exception {
+        LOGGER.entering("readBooleanArray");
+        var array = new boolean[readLen()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = readBool();
+        }
+        LOGGER.exiting("readBooleanArray");
+        return array;
+    }
 }
