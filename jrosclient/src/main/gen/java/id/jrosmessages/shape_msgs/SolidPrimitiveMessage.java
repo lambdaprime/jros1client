@@ -111,7 +111,8 @@ public class SolidPrimitiveMessage implements Message {
    public double[] dimensions = new double[0];
    
    public SolidPrimitiveMessage withShapeType(ShapeType type) {
-       this.type = (byte) type.ordinal();
+       // ROS enumeration starts from 1
+       this.type = (byte) (type.ordinal() + 1);
        return this;
    }
    
