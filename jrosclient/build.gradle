@@ -96,7 +96,7 @@ apply plugin: 'maven-publish'
 publishing {
     publications {
         maven(MavenPublication) {
-            artifactId = 'id.jrosclient'
+            artifactId = 'jrosclient'
             group = "io.github.lambdaprime"
             version = "${version}"
             artifact jar.archiveFile
