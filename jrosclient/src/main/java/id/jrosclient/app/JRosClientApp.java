@@ -55,7 +55,7 @@ public class JRosClientApp {
     }
     
     private static void usage() {
-        readResourceAsStream("README.md")
+        readResourceAsStream("jrosclient-README.md")
             .forEach(System.out::println);
         System.exit(1);
     }

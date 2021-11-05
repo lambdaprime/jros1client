@@ -122,12 +122,12 @@ public class JRosClientAppTests {
         var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo testTopic",
                 URL);
         var out = runFail(args);
-        Assertions.assertEquals(resourceUtils.readResource("README.md") + "\n\n", out);
+        Assertions.assertEquals(resourceUtils.readResource("jrosclient-README.md") + "\n\n", out);
     }
     
     private void test_no_args() throws Exception {
         var out = runFail("");
-        Assertions.assertEquals(resourceUtils.readResource("README.md") + "\n\n", out);
+        Assertions.assertEquals(resourceUtils.readResource("jrosclient-README.md") + "\n\n", out);
     }
 
     private void test_debug() {
