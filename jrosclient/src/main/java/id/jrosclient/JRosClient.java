@@ -55,6 +55,7 @@ public class JRosClient implements AutoCloseable {
     private static final Logger LOGGER = XLogger.getLogger(JRosClient.class);
     private static final ObjectsFactory objectsFactory = new ObjectsFactory();
     private static final Utils utils = new Utils();
+    private static final String DEFAULT_ROS_MASTER_URL = "http://localhost:11311";
 
     private String masterUrl;
     private NodeServer nodeServer;
@@ -66,10 +67,27 @@ public class JRosClient implements AutoCloseable {
     private TextUtils textUtils;
 
     /**
+     * Default ctor which creates a client to ROS master running locally using
+     * URL "http://localhost:11311"
+     */
+    public JRosClient() {
+        this(DEFAULT_ROS_MASTER_URL);
+    }
+
+    /**
      * @param masterUrl master node URL
      */
     public JRosClient(String masterUrl) {
         this(masterUrl, objectsFactory.createConfig());
+    }
+    
+    /**
+     * Ctor which creates a client to ROS master running locally using
+     * URL {@link JRosClientConfiguration#DEFAULT_ROS_MASTER_URL} with given client
+     * configuration
+     */
+    public JRosClient(JRosClientConfiguration config) {
+        this(DEFAULT_ROS_MASTER_URL, config);
     }
 
     public JRosClient(String masterUrl, JRosClientConfiguration config) {

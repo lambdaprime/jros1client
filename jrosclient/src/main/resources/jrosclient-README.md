@@ -11,7 +11,7 @@ Documentation is available here <http://portal2.atwebpages.com/jrosclient/jroscl
 # Usage
 
 ```bash
-jrosclient <--masterUrl MASTER_URL> [--nodePort NODE_PORT] [--truncate MAX_LENGTH] [--debug] <COMMAND> [args ...]
+jrosclient [--masterUrl MASTER_URL] [--nodePort NODE_PORT] [--truncate MAX_LENGTH] [--debug] <COMMAND> [args ...]
 ```
 
 Where:

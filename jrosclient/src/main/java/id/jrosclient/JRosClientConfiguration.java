@@ -22,7 +22,7 @@
 package id.jrosclient;
 
 /**
- * Configuration parameters
+ * Configuration parameters of JRosClient
  */
 public class JRosClientConfiguration {
 

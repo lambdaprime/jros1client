@@ -66,7 +66,7 @@ public class JRosClientAppTests {
     
     @Test
     public void test() throws Exception {
-        test_no_args();
+        test_wrong_args();
         test_echo();
         test_echo_missing_args();
         test_debug();
@@ -116,6 +116,9 @@ public class JRosClientAppTests {
                 URL);
         var out = runOk(args);
         Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("echo")).matches(out));
+        args = String.format("rostopic echo -n 5 testTopic id.jrosmessages.std_msgs.StringMessage");
+        out = runOk(args);
+        Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("echo")).matches(out));
     }
 
     private void test_echo_missing_args() {
@@ -125,8 +128,10 @@ public class JRosClientAppTests {
         Assertions.assertEquals(resourceUtils.readResource("jrosclient-README.md") + "\n\n", out);
     }
     
-    private void test_no_args() throws Exception {
+    private void test_wrong_args() throws Exception {
         var out = runFail("");
+        Assertions.assertEquals(resourceUtils.readResource("jrosclient-README.md") + "\n\n", out);
+        out = runFail("rostopic");
         Assertions.assertEquals(resourceUtils.readResource("jrosclient-README.md") + "\n\n", out);
     }
 

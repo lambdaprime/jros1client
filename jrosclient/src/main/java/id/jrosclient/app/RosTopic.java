@@ -24,6 +24,7 @@ package id.jrosclient.app;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import id.jrosclient.JRosClient;
@@ -41,22 +42,19 @@ import id.xfunction.lang.XRE;
 public class RosTopic {
 
     private static final String CALLER_ID = "jrosclient-rostopic";
-    private String masterUrl;
+    private Optional<String> masterUrl;
     private JRosClientConfiguration config;
     private TextUtils utils;
     
-    public RosTopic(String masterUrl, JRosClientConfiguration config) {
+    public RosTopic(Optional<String> masterUrl, JRosClientConfiguration config) {
         this.masterUrl = masterUrl;
         this.config = config;
         utils = new ObjectsFactory().createTextUtils(config);
     }
 
     public void execute(List<String> positionalArgs) {
-        Unchecked.run(() -> executeInternal(positionalArgs));
-    }
-
-    public void executeInternal(List<String> args) throws ArgumentParsingException {
-        var rest = new LinkedList<>(args);
+        var rest = new LinkedList<>(positionalArgs);
+        if (rest.isEmpty()) throw new ArgumentParsingException();
         var cmd = rest.removeFirst();
         switch (cmd) {
         case "echo":
@@ -70,7 +68,7 @@ public class RosTopic {
     }
 
     private void list() throws Exception {
-        try (JRosClient client = new JRosClient(masterUrl)) {
+        try (JRosClient client = masterUrl.map(JRosClient::new).orElse(new JRosClient())) {
             var systemState = client.getMasterApi().getSystemState(CALLER_ID);
             if (systemState.statusCode != StatusCode.SUCCESS) {
                 throw new XRE("Failed to get system status: %s", systemState.statusMessage);
@@ -87,7 +85,8 @@ public class RosTopic {
         );
         new SmartArgs(handlers, positionalArgs::add).parse(rest.toArray(new String[0]));
         if (positionalArgs.size() < 2) throw new ArgumentParsingException();
-        JRosClient client = new JRosClient(masterUrl, config);
+        JRosClient client = masterUrl.map(url -> new JRosClient(url, config))
+                .orElse(new JRosClient(config));
         var topic = positionalArgs.removeFirst();
         var topicType = positionalArgs.removeFirst();
         Class<Message> clazz = (Class<Message>) getClass().getClassLoader().loadClass(topicType);
