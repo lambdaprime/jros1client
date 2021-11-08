@@ -47,6 +47,7 @@ import id.xfunction.logging.XLogger;
 
 /**
  * Allows to communicate with other ROS nodes.
+ * Used by JRosClient subscribers (not publishers).
  * Handles only one subscriber.
  */
 public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> implements AutoCloseable {
