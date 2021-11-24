@@ -30,10 +30,10 @@
 module jrosclient {
     requires xmlrpc.client;
     requires xmlrpc.server;
+    requires xmlrpc.common;
     requires id.xfunction;  
     requires id.kineticstreamer;
     requires id.ICE;
-    requires xmlrpc.common;
     requires java.logging;
     
     exports id.jrosclient;
