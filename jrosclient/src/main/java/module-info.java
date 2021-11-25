@@ -51,6 +51,7 @@ module jrosclient {
     exports id.jrosmessages.shape_msgs;
     exports id.jrosmessages.object_recognition_msgs;
     exports id.jrosmessages.octomap_msgs;
+    exports id.jrosmessages.tf2_msgs;
 
     exports id.jrosclient.impl to jrosclient.tests;
     exports id.jrosclient.ros to jrosclient.tests;
