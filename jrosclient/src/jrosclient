@@ -35,4 +35,4 @@ else
     CLASSPATH="${JROSCLIENT_PATH}/libs/*:${CLASSPATH}"
 fi
 
-java ${JAVA_ARGS} -Xnoclassgc -noverify -cp "${CLASSPATH}" id.jrosclient.app.JRosClientApp "$@"
+java ${JAVA_ARGS} -Xnoclassgc -noverify -p "${CLASSPATH}" id.jrosclient.app.JRosClientApp "$@"
