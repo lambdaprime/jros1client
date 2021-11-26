@@ -79,7 +79,7 @@ public class ConnectionHeader {
      * 
      * Optional by the publisher/subscriber.
      */
-    public Optional<Boolean> latching = Optional.of(false);
+    public Optional<String> latching = Optional.empty();
 
     /**
      * Required to be set by the subscriber.
@@ -111,8 +111,8 @@ public class ConnectionHeader {
         return this;
     }
 
-    public ConnectionHeader withLatching(String value) {
-        this.latching = Optional.of(Integer.parseInt(value) == 1);
+    public ConnectionHeader withLatching(boolean value) {
+        this.latching = Optional.of(value? "1": "0");
         return this;
     }
     
@@ -123,7 +123,7 @@ public class ConnectionHeader {
         case TYPE: withType(value); break;
         case MESSAGE_DEFINITION: withMessageDefinition(value); break;
         case MD5_SUM: withMd5Sum(value); break;
-        case LATCHING: withLatching(value); break;
+        case LATCHING: withLatching(Integer.parseInt(value) == 1); break;
         default:
             LOGGER.warning("Received unknown Connection Header field: {0} = {1} ", key, value);
         }
@@ -145,7 +145,7 @@ public class ConnectionHeader {
         return topic;
     }
     
-    public Optional<Boolean> getLatching() {
+    public Optional<String> getLatching() {
         return latching;
     }
     
@@ -157,7 +157,7 @@ public class ConnectionHeader {
             TYPE, type.orElse("empty"),
             MESSAGE_DEFINITION, messageDefinition.orElse("empty"),
             MD5_SUM, md5sum.orElse("empty"),
-            LATCHING, latching.get());
+            LATCHING, latching.orElse("empty"));
     }
 
     @Override

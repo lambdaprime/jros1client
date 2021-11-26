@@ -64,16 +64,6 @@ public class JRosClientAppTests {
     void cleanup() throws IOException {
     }
     
-    @Test
-    public void test() throws Exception {
-        test_wrong_args();
-        test_echo();
-        test_echo_missing_args();
-        test_debug();
-        test_list();
-        test_truncate();
-    }
-
     /**
      * Test that client can reconnect successfully in case their connection
      * was abruptly closed.
@@ -111,7 +101,8 @@ public class JRosClientAppTests {
         client.close();
     }
 
-    private void test_echo() {
+    @Test
+    public void test_echo() {
         var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo -n 5 testTopic id.jrosmessages.std_msgs.StringMessage",
                 URL);
         var out = runOk(args);
@@ -121,35 +112,40 @@ public class JRosClientAppTests {
         Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("echo")).matches(out));
     }
 
-    private void test_echo_missing_args() {
+    @Test
+    public void test_echo_missing_args() {
         var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo testTopic",
                 URL);
         var out = runFail(args);
         Assertions.assertEquals(resourceUtils.readResource("jrosclient-README.md") + "\n\n", out);
     }
     
-    private void test_wrong_args() throws Exception {
+    @Test
+    public void test_wrong_args() throws Exception {
         var out = runFail("");
         Assertions.assertEquals(resourceUtils.readResource("jrosclient-README.md") + "\n\n", out);
         out = runFail("rostopic");
         Assertions.assertEquals(resourceUtils.readResource("jrosclient-README.md") + "\n\n", out);
     }
 
-    private void test_debug() {
+    @Test
+    public void test_debug() {
         var args = String.format("--masterUrl %s --nodePort 1234 --debug rostopic echo -n 1 testTopic id.jrosmessages.std_msgs.StringMessage",
                 URL);
         var out = runOk(args);
         Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("debug")).matches(out));
     }
 
-    private void test_list() {
+    @Test
+    public void test_list() {
         var args = String.format("--masterUrl %s --nodePort 1234 rostopic list",
                 URL);
         var out = runOk(args);
         Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("list")).matches(out));
     }
     
-    private void test_truncate() {
+    @Test
+    public void test_truncate() {
         var args = String.format("--masterUrl %s --debug --truncate 6 rostopic echo -n 1 testTopic id.jrosmessages.std_msgs.StringMessage",
                 URL);
         var out = runOk(args);

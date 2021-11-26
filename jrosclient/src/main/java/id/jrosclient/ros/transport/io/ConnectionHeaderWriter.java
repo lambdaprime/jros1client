@@ -62,6 +62,10 @@ public class ConnectionHeaderWriter {
         if (len > 0)
             totalLen += len + 4;
         
+        len = len(LATCHING, header.latching);
+        if (len > 0)
+            totalLen += len + 4;
+
         if (totalLen == 0) return;
         utils.writeLen(out, totalLen);        
         
@@ -70,6 +74,7 @@ public class ConnectionHeaderWriter {
         writeField(TYPE, header.type);
         writeField(MESSAGE_DEFINITION, header.messageDefinition);
         writeField(MD5_SUM, header.md5sum);
+        writeField(LATCHING, header.latching);
     }
     
     private void writeField(String field, Optional<String> value) throws IOException {
