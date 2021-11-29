@@ -56,7 +56,7 @@ public class JRosClientTests {
     @BeforeEach
     public void setup() throws MalformedURLException {
         // restore logging
-        XLogger.load("logging-debug.properties");
+        XLogger.load("jrosclient-debug.properties");
         client = new JRosClient(URL);
     }
 

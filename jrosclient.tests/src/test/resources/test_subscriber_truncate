@@ -3,8 +3,6 @@ FINE: Current subscribers: { "statusCode": "SUCCESS", "statusMessage": "Register
 *
 FINE: incoming connection
 *
-FINE: spawned new looper, now waiting for another connection...
-*
 FINE: Requesting next message for jrosclient
 *
 FINE: This is a new connection - creating handshake packet first
