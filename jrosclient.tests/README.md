@@ -3,13 +3,13 @@ Tests for jrosclient library.
 For integration tests to succeed make sure to run following:
 
 ```bash
-% roscore
+roscore
 ```
 
 Create testTopic:
 
 ```bash
-% rostopic pub -r 10 testTopic std_msgs/String "hello there"
+rostopic pub -r 10 testTopic std_msgs/String "hello there"
 ```
 
 # Useful commands

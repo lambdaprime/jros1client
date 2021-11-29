@@ -1,6 +1,17 @@
-// Requires gradle 7.2
-// gradle clean build
-// gradle publishToMavenLocal
+/*************************************************
+Requires gradle 7.2
+
+gradle clean build
+
+gradle publishToMavenLocal \
+ -Ppublish=true \
+ -Psigning.secretKeyRingFile=XXX \
+ -Psigning.password=XXX \
+ -Psigning.keyId=XXX \
+ -PossrhUsername=XXX \
+ -PossrhPassword=XXX
+
+**************************************************/
 
 allprojects {
     repositories {
