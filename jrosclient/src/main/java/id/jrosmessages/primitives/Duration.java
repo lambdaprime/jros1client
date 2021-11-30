@@ -43,6 +43,10 @@ public class Duration {
     public Duration() {
 
     }
+
+    public Duration(int sec) {
+        this(sec, 0);
+    }
     
     public Duration(int sec, int nsec) {
         this.sec = sec;
