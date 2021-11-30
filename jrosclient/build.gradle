@@ -25,14 +25,14 @@ dependencies {
     implementation 'org.apache.xmlrpc:xmlrpc-server:3.1.3'
     implementation 'io.github.lambdaprime:id.xfunction:14.0'
     implementation 'io.github.lambdaprime:ICE:1.0'
-    implementation 'io.github.lambdaprime:kineticstreamer:2.0'
+    implementation 'io.github.lambdaprime:kineticstreamer:3.0'
 
     // transitively export following dependency to tests project
     apiElements 'org.apache.xmlrpc:xmlrpc-client:3.1.3'
     apiElements 'org.apache.xmlrpc:xmlrpc-server:3.1.3'
     apiElements 'io.github.lambdaprime:id.xfunction:14.0'
     apiElements 'io.github.lambdaprime:ICE:1.0'
-    apiElements 'io.github.lambdaprime:kineticstreamer:2.0'
+    apiElements 'io.github.lambdaprime:kineticstreamer:3.0'
 }
 
 sourceCompatibility = '11'
@@ -88,13 +88,6 @@ task createRelease(type: Zip) {
     destinationDirectory = file("$projectDir/release")
     from file("$packageDir/..")
 }
-/*
-import org.apache.tools.ant.filters.ReplaceTokens
-task updateVersion(type:Copy) {
-    from "${project.rootDir}/README.md"
-    into releaseDir
-    filter(ReplaceTokens, tokens: [version: rootProject.version])
-}*/
 
 task copyLibs(type: Copy) {
     from configurations.runtimeClasspath
@@ -123,6 +116,18 @@ task cleanRelease(type: Delete) {
 createRelease.dependsOn createPackage, javadoc
 assemble.dependsOn createRelease
 clean.dependsOn cleanRelease
+
+task updateVersion() {
+    if (version.contains("SNAPSHOT")) return;
+    println "Updating version to " + version
+    new id.xfunction.text.Substitutor()
+        .withRegexpSupport()
+        .substitute(java.nio.file.Paths.get("${project.rootDir}/README.md"), Map.of(
+            "io.github.lambdaprime:jrosclient:[0-9.]+", "io.github.lambdaprime:jrosclient:" + version
+        ));
+}
+
+createPackage.dependsOn updateVersion
 
 if (project.hasProperty('publish')) {
 
