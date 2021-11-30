@@ -194,10 +194,11 @@ if (project.hasProperty('publish')) {
     }    
   }
 
-  apply plugin: 'signing'
+  if (project.hasProperty('signing.secretKeyRingFile')) {
+    apply plugin: 'signing'
 
-  signing {
-    sign publishing.publications.mavenJava
+    signing {
+      sign publishing.publications.mavenJava
+    }
   }
-
 }
