@@ -42,6 +42,10 @@ public class PointMessage implements Message {
         // required for kineticstreamer
     }
     
+    public PointMessage(Vector3Message vector) {
+        this(vector.x, vector.y, vector.z);
+    }
+    
     public PointMessage(double x, double y, double z) {
         this.x = x;
         this.y = y;
