@@ -74,7 +74,7 @@ public class PointMessage implements Message {
     public String toString() {
         return XJson.asString("x", x,
                 "y", y,
-                "z", z).toString();
+                "z", z);
     }
     
     @Override

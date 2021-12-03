@@ -66,7 +66,7 @@ public class QuaternionMessage implements Message {
         return XJson.asString("x", x,
                 "y", y,
                 "z", z,
-                "w", w).toString();
+                "w", w);
     }
 
     @Override

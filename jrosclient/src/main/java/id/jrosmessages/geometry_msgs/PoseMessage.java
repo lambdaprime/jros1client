@@ -57,7 +57,7 @@ public class PoseMessage implements Message {
     @Override
     public String toString() {
         return XJson.asString("position", position,
-                "orientation", orientation).toString();
+                "orientation", orientation);
     }
 
     @Override
