@@ -24,8 +24,11 @@ package id.jrosclient;
 import java.util.concurrent.Flow;
 import java.util.concurrent.Flow.Subscription;
 
+import id.jrosclient.impl.JRosClientSubscription;
 import id.jrosclient.impl.Utils;
 import id.jrosmessages.Message;
+import id.xfunction.XAsserts;
+import id.xfunction.logging.XLogger;
 
 /**
  * <p>Subscriber receives messages for the topic it is
@@ -50,8 +53,12 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
     private Class<M> messageClass;
     private Subscription subscription;
     private String topic;
+    private int initNumOfMessages = 1;
     
     /**
+     * Creates subscriber for a topic which when first subscribed will request 1
+     * message.
+     * 
      * @param messageClass class of the messages in this topic
      * @param topic Name of the topic which messages current subscriber wants to receive.
      * Topic name which should start from '/'
@@ -61,10 +68,20 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
         this.topic = utils.formatTopicName(topic);
     }
 
+    /**
+     * Allows to set how many messages to request once this subscriber will
+     * be first subscribed to some topic. Default number is one.
+     */
+    public TopicSubscriber<M> withInitialRequest(int numOfMessages) {
+        initNumOfMessages = numOfMessages;
+        return this;
+    }
+
     @Override
     public void onSubscribe(Subscription subscription) {
-        this.subscription = subscription;
-        subscription.request(1);
+        XAsserts.assertNull(this.subscription, "Already subscribed");
+        this.subscription = new JRosClientSubscription(subscription);
+        this.subscription.request(initNumOfMessages);
     }
 
     /**
