@@ -26,7 +26,6 @@ import java.util.concurrent.Flow.Subscription;
 
 import id.jrosclient.impl.Utils;
 import id.jrosmessages.Message;
-import id.xfunction.logging.XLogger;
 
 /**
  * <p>Subscriber receives messages for the topic it is
@@ -46,7 +45,6 @@ import id.xfunction.logging.XLogger;
  */
 public abstract class TopicSubscriber<M extends Message> implements Flow.Subscriber<M> {
 
-    private static final XLogger LOGGER = XLogger.getLogger(TopicSubscriber.class);
     private static final Utils utils = new Utils();
 
     private Class<M> messageClass;
@@ -105,23 +103,5 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
      */
     public String getTopic() {
         return topic;
-    }
-    
-    /**
-     * Request next n new messages available for the current topic
-     * 
-     * @param n number of messages to request
-     */
-    public void request(int n) {
-        subscription.request(n);
-    }
-
-    /**
-     * Unsubscribe from the topic
-     */
-    public void unsubscribe() {
-        LOGGER.entering("unsubscribe");
-        subscription.cancel();
-        LOGGER.exiting("unsubscribe");
     }
 }

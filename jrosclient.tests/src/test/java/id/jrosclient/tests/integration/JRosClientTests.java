@@ -68,7 +68,7 @@ public class JRosClientTests {
     @Test
     public void test_publish() throws Exception {
         var future = new CompletableFuture<String>();
-        String topic = "testTopic2";
+        String topic = "testTopic1";
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);
         String data = "hello";
         client.publish(publisher);
@@ -90,7 +90,7 @@ public class JRosClientTests {
     @Test
     public void test_publish_single_message() throws Exception {
         var future = new CompletableFuture<String>();
-        String topic = "testTopic2";
+        String topic = "testTopic1";
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);
         String data = "hello";
         client.publish(publisher);
@@ -117,12 +117,12 @@ public class JRosClientTests {
     @Test
     public void test_publisher_on_close() throws Exception {
         var future = new CompletableFuture<Void>();
-        String topic = "testTopic2";
+        String topic = "testTopic1";
         String data = "hello";
         int[] c = new int[1];
         int totalNumOfMessages = 10;
         try (var publisherClient = new JRosClient(URL);
-                var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);) {
+                var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic)) {
             publisherClient.publish(publisher);
 
             client.subscribe(new TopicSubscriber<>(StringMessage.class, topic) {
@@ -138,7 +138,7 @@ public class JRosClientTests {
                         // delay requesting next message to make
                         // them accumulate on publisher
                         XThread.sleep(100);
-                        request(1);
+                        getSubscription().request(1);
                     }
                 }
             });
@@ -167,7 +167,7 @@ public class JRosClientTests {
     @Test
     public void test_publish_order() throws Exception {
         var future = new CompletableFuture<List<Integer>>();
-        String topic = "/testTopic2";
+        String topic = "/testTopic1";
         var publisher = new TopicSubmissionPublisher<>(Int32Message.class, topic);
         client.publish(publisher);
         client.subscribe(new TopicSubscriber<>(Int32Message.class, topic) {
@@ -180,7 +180,7 @@ public class JRosClientTests {
                     getSubscription().cancel();
                     future.complete(data);
                 } else {
-                    request(1);
+                    getSubscription().request(1);
                 }
             }
         });
@@ -205,7 +205,7 @@ public class JRosClientTests {
     @Test
     public void test_publisher_crash() throws Exception {
         var future = new CompletableFuture<List<Integer>>();
-        String topic = "/testTopic2";
+        String topic = "/testTopic1";
         var publisher = new TopicSubmissionPublisher<>(Int32Message.class, topic);
         client.publish(publisher);
         client.subscribe(new TopicSubscriber<>(Int32Message.class, topic) {
@@ -244,12 +244,12 @@ public class JRosClientTests {
 
     @Test
     public void test_cannot_connect() throws Exception {
-        var topic = "/testTopic3";
+        var topic = "/testTopic1";
         var objectsFactory = new TestObjectsFactory();
         Exception exception = null;
         try (var myclient = new JRosClient("http://localhost:12/", objectsFactory.createConfig(),
                 objectsFactory);
-                var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);) {
+                var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic)) {
             exception = assertThrows(Exception.class, () -> myclient.publish(publisher));
         } catch (Exception e) {
             System.out.println(e);

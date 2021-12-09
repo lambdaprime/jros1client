@@ -38,7 +38,7 @@ public class SubscriberApp {
             public void onNext(StringMessage item) {
                 System.out.println(item);
                 // request next message
-                request(1);
+                getSubscription().request(1);
             }
         });
     }

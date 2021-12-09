@@ -102,7 +102,7 @@ public class RosTopic {
                     Unchecked.run(() -> client.close());
                     return;
                 }
-                request(1);
+                getSubscription().request(1);
             }
         };
         client.subscribe(subscriber);
