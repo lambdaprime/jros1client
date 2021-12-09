@@ -32,8 +32,10 @@ import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.SubmissionPublisher;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import id.jrosclient.impl.Settings;
 import id.jrosclient.impl.TextUtils;
 import id.jrosclient.ros.transport.io.ConnectionHeaderWriter;
 import id.jrosclient.ros.transport.io.MessagePacketReader;
@@ -46,9 +48,15 @@ import id.xfunction.concurrent.SameThreadExecutorService;
 import id.xfunction.logging.XLogger;
 
 /**
- * Allows to communicate with other ROS nodes.
- * Used by JRosClient subscribers (not publishers).
- * Handles only one subscriber.
+ * This client establishes TCPROS connection with publishing ROS node and
+ * listens for new messages.
+ * 
+ * <p>Every new message it receives from such node it publishes to its own
+ * JRosClient subscriber which is subscribed to the ROS topic.
+ * 
+ * <p>This client can serve only one JRosClient subscriber.
+ *   
+ * <p>This client is not used by JRosClient publishers.
  */
 public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> implements AutoCloseable {
 
@@ -118,6 +126,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
     }
 
     private void run(ConnectionHeader header) throws Exception {
+        LOGGER.log(Level.FINE, "Connection header: {0}", utils.toString(header));
         writer.write(header);
         dos.flush();
         MessagePacket response = reader.read();
@@ -144,6 +153,15 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
             LOGGER.severe(e.getMessage());
         }
         executorService.shutdown();
+        try {
+            if (!executorService.awaitTermination(Settings.getInstance().getAwaitTcpRosClientInSecs(),
+                    TimeUnit.SECONDS)) {
+                LOGGER.log(Level.FINE, "Forcefully terminating executor");
+                executorService.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            LOGGER.severe(e.getMessage());
+        }
         super.close();
         LOGGER.exiting("close");
     }
