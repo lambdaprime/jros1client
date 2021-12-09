@@ -4,6 +4,14 @@ plugins {
 
 apply plugin : 'eclipse'
 
+eclipse.classpath.file {
+    // because we disable inferModulePath later we intruct eclipse plugin
+    // to put everything to module path
+    whenMerged {
+        entries.findAll { it.kind == 'lib' }.each { it.entryAttributes['module'] = 'true' }
+    }
+}
+
 // Excluding transient dependencies which are not used
 configurations {
     implementation {

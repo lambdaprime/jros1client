@@ -20,6 +20,8 @@ Documentation is available here <http://portal2.atwebpages.com/jrosclient>
 
 # Development
 
+Building **jrosclient** module locally and making changes to it (this is optional and not intended for **jrosclient** users).
+
 ## With Eclipse
 
 - Build eclipse projects:
@@ -29,8 +31,6 @@ gradle eclipse
 ```
 
 - Import them into Eclipse
-- Open `Project Properties` -> `Libraries`
-- Move all dependencies from `Classpath` to `Modulepath`
 
 # Contributors
 
