@@ -21,19 +21,25 @@
  */
 package id.jrosclient;
 
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Configuration parameters of JRosClient
  */
 public class JRosClientConfiguration {
 
-    public static final int DEFAULT_TCP_ROS_SERVER_PORT = 1235;
-    public static final int DEFAULT_NODE_SERVER_PORT = 1234;
+    public static final int START_TCP_ROS_SERVER_PORT = 1235;
+    public static final int START_NODE_SERVER_PORT = 1234;
     public static final String HOST_NAME = "localhost";
 
-    private int tcpRosServerPort = DEFAULT_TCP_ROS_SERVER_PORT;
-    private int nodeServerPort = DEFAULT_NODE_SERVER_PORT;
+    private static final AtomicInteger nextTcpRosServerPort = new AtomicInteger(START_TCP_ROS_SERVER_PORT);
+    private static final AtomicInteger nextNodeServerPort = new AtomicInteger(START_NODE_SERVER_PORT);
+
+    private int tcpRosServerPort = nextTcpRosServerPort.addAndGet(2);
+    private int nodeServerPort = nextNodeServerPort.addAndGet(2);
     private String hostName = HOST_NAME;
-    private String callerId = "jrosclient";
+    private String callerId = "jrosclient-" + UUID.randomUUID();
     private int maxMessageLoggingLength = -1;
 
     /**
@@ -41,7 +47,7 @@ public class JRosClientConfiguration {
      * <p>TCPROS is a transport layer responsible for publishing messages.</p>
      * <p>This is a port to which other ROS nodes connect
      * once they subscribe to any topic published through JRosClient.</p>
-     * <p>Default value is {@link DEFAULT_TCP_ROS_SERVER_PORT}</p>
+     * <p>Default value is {@link DEFAULT_TCP_ROS_SERVER_PORT} COMPILE SHOULD FAIL</p>
      */
     public int getTcpRosServerPort() {
         return tcpRosServerPort;
@@ -78,7 +84,11 @@ public class JRosClientConfiguration {
     public void setHostName(String hostName) {
         this.hostName = hostName;
     }
-    
+
+    /**
+     * Each instance of JRosClient acts as a separate ROS node and
+     * has a unique calledId which it reports to other ROS nodes.
+     */
     public String getCallerId() {
         return callerId;
     }
@@ -103,5 +113,9 @@ public class JRosClientConfiguration {
     
     public String getNodeApiUrl() {
         return String.format("http://%s:%d", getHostName(), getNodeServerPort());
+    }
+
+    public void setCallerId(String callerId) {
+        this.callerId = callerId;
     }
 }

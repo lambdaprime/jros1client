@@ -1,9 +1,9 @@
 *
-FINE: Current subscribers: { "statusCode": "SUCCESS", "statusMessage": "Registered [jrosclient] as publisher of [/testTopic1]", "subscriberApis": ["http://*:1234"] }
+FINE: Current subscribers: { "statusCode": "SUCCESS", "statusMessage": "Registered [jrosclient-*] as publisher of [/testTopic1]", "subscriberApis": [*] }
 *
 FINE: incoming connection
 *
-FINE: Requesting next message for jrosclient
+FINE: Requesting next message for jrosclient-*
 *
 FINE: This is a new connection - creating handshake packet first
 *
@@ -19,5 +19,5 @@ FINE: Submitting received message to subscriber
 *
 FINE: Some messages are still waiting to be delivered, sleeping...
 *
-FINE: Unregistered publisher response: { "statusCode": "SUCCESS", "statusMessage": "Unregistered [jrosclient] as provider of [/testTopic1]", "subscriberApis": "1" }
+FINE: Unregistered publisher response: { "statusCode": "SUCCESS", "statusMessage": "Unregistered [jrosclient-*] as provider of [/testTopic1]", "subscriberApis": "1" }
 *
