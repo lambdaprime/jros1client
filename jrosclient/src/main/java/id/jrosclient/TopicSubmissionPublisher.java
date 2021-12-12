@@ -47,8 +47,9 @@ import id.xfunction.logging.XLogger;
 public class TopicSubmissionPublisher<M extends Message> extends SubmissionPublisher<M> 
     implements TopicPublisher<M>
 {
-    private static final XLogger LOGGER = XLogger.getLogger(TopicSubmissionPublisher.class);
     private static final Utils utils = new Utils();
+
+    private final XLogger LOGGER = XLogger.getLogger(TopicSubmissionPublisher.class.getName() + "@" + hashCode());
 
     private Class<M> messageClass;
     private String topic;

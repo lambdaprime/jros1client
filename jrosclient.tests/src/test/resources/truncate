@@ -1,8 +1,5 @@
 { ...}
-* id.jrosclient.JRosClient subscribe
-FINE: Publishers: { "statusCode": "SUCCESS", "statusMessage": "Subscribed to [/testTopic]", "publishers": [*] }
-* id.jrosclient.JRosClient subscribe
-FINE: Protocol configuration: { "statusCode": "SUCCESS", "statusMessage": "*", "name": "TCPROS", "host": "*", "port": * }
-* id.jrosclient.ros.transport.TcpRosClient run
-FINE: Message packet: { ...}
+* [FINE   ] id.jrosclient.JRosClient@* - Publishers: { "statusCode": "SUCCESS", "statusMessage": "Subscribed to [/testTopic]", "publishers": [*] }
+* [FINE   ] id.jrosclient.JRosClient@* - Protocol configuration: { "statusCode": "SUCCESS", "statusMessage": "*", "name": "TCPROS", "host": "*", "port": * }
+* [FINE   ] id.jrosclient.ros.transport.TcpRosClient@* - Message packet: { ...}
 *

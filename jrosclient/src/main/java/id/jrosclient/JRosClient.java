@@ -52,10 +52,11 @@ import id.xfunction.logging.XLogger;
  */
 public class JRosClient implements AutoCloseable {
 
-    private static final Logger LOGGER = XLogger.getLogger(JRosClient.class);
     private static final ObjectsFactory objectsFactory = new ObjectsFactory();
     private static final Utils utils = new Utils();
     private static final String DEFAULT_ROS_MASTER_URL = "http://localhost:11311";
+
+    private final Logger LOGGER = XLogger.getLogger(JRosClient.class.getName() + "@" + hashCode());
 
     private String masterUrl;
     private NodeServer nodeServer;

@@ -1,7 +1,4 @@
-* id.jrosclient.JRosClient subscribe
-FINE: Publishers: { "statusCode": "SUCCESS", "statusMessage": "Subscribed to [/testTopic]", "publishers": [*] }
-* id.jrosclient.JRosClient subscribe
-FINE: Protocol configuration: { "statusCode": "SUCCESS", "statusMessage": "*", "name": "TCPROS", "host": "*", "port": * }
-* id.jrosclient.ros.transport.TcpRosClient run
-FINE: Message packet: { header: { "callerid": "/rostopic_*", "topic": "/testTopic", "type": "std_msgs/String", "message_definition": "string data", "md5sum": "992ce8a1687cec8c8bd883ec73ca41d1", "latching": "0" }, body: [0b, 00, 00, 00, 68, 65, 6c, 6c, 6f, 20, 74, 68, 65, 72, 65]}
+* [FINE   ] id.jrosclient.JRosClient@* - Publishers: { "statusCode": "SUCCESS", "statusMessage": "Subscribed to [/testTopic]", "publishers": [*] }
+* [FINE   ] id.jrosclient.JRosClient@* - Protocol configuration: { "statusCode": "SUCCESS", "statusMessage": "*", "name": "TCPROS", "host": "*", "port": * }
+* [FINE   ] id.jrosclient.ros.transport.TcpRosClient@* - Message packet: { header: { "callerid": "/rostopic_*", "topic": "/testTopic", "type": "std_msgs/String", "message_definition": "string data", "md5sum": "992ce8a1687cec8c8bd883ec73ca41d1", "latching": "0" }, body: [0b, 00, 00, 00, 68, 65, 6c, 6c, 6f, 20, 74, 68, 65, 72, 65]}
 *

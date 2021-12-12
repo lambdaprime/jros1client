@@ -51,7 +51,7 @@ import id.xfunction.logging.XLogger;
  */
 public class TopicPublisherSubscriber implements Subscriber<Message> {
 
-    private static final XLogger LOGGER = XLogger.getLogger(TcpRosServer.class);
+    private final XLogger LOGGER = XLogger.getLogger(TopicPublisherSubscriber.class.getName() + "@" + hashCode());
     private TextUtils utils;
     private MetadataAccessor metadataAccessor = new MetadataAccessor();
     private MessageTransformer transformer = new MessageTransformer();

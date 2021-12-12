@@ -60,7 +60,7 @@ import id.xfunction.logging.XLogger;
  */
 public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> implements AutoCloseable {
 
-    private static final XLogger LOGGER = XLogger.getLogger(TcpRosClient.class);
+    private final XLogger LOGGER = XLogger.getLogger(TcpRosClient.class.getName() + "@" + hashCode());
     private TextUtils utils;
     
     private String callerId;
