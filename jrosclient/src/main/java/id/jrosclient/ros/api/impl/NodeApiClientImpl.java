@@ -22,13 +22,16 @@
 package id.jrosclient.ros.api.impl;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import id.jrosclient.impl.RosRpcClient;
 import id.jrosclient.ros.api.NodeApi;
 import id.jrosclient.ros.entities.Protocol;
 import id.jrosclient.ros.entities.transformers.Transformers;
+import id.jrosclient.ros.responses.IntResponse;
 import id.jrosclient.ros.responses.ProtocolParamsResponse;
 import id.jrosclient.ros.responses.transformers.ProtocolParamsTransformer;
+import id.xfunction.logging.XLogger;
 
 /**
  * Client implementation of ROS Node API which allows to communicate
@@ -37,6 +40,7 @@ import id.jrosclient.ros.responses.transformers.ProtocolParamsTransformer;
  */
 public class NodeApiClientImpl implements NodeApi {
 
+    private static final Logger LOGGER = XLogger.getLogger(NodeApiClientImpl.class);
     private RosRpcClient client;
     private ProtocolParamsTransformer protocolParamsParser = new ProtocolParamsTransformer();
     private Transformers transformers = new Transformers();
@@ -53,6 +57,12 @@ public class NodeApiClientImpl implements NodeApi {
         Object[] params = new Object[]{callerId, topic, array};
         return protocolParamsParser.parse(
                 client.execute("requestTopic", params));
+    }
+
+    @Override
+    public IntResponse publisherUpdate(String callerId, String topic, List<String> publishers) {
+        LOGGER.severe("Operation publisherUpdate is not supported, ignoring...");
+        return new IntResponse("ignore");
     }
 
 }

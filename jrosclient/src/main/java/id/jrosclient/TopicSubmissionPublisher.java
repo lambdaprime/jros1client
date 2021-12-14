@@ -49,7 +49,7 @@ public class TopicSubmissionPublisher<M extends Message> extends SubmissionPubli
 {
     private static final Utils utils = new Utils();
 
-    private final XLogger LOGGER = XLogger.getLogger(TopicSubmissionPublisher.class.getName() + "@" + hashCode());
+    private final XLogger LOGGER = XLogger.getLogger(this);
 
     private Class<M> messageClass;
     private String topic;
@@ -91,6 +91,5 @@ public class TopicSubmissionPublisher<M extends Message> extends SubmissionPubli
     @Override
     public void onPublishError(Throwable exception) {
         LOGGER.severe("Error delivering message to the subscriber: {0}", exception);
-        exception.printStackTrace();
     }
 }

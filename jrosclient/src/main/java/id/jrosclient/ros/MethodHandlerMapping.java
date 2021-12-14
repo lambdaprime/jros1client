@@ -31,6 +31,7 @@ import org.apache.xmlrpc.XmlRpcRequest;
 import org.apache.xmlrpc.server.XmlRpcHandlerMapping;
 import org.apache.xmlrpc.server.XmlRpcNoSuchHandlerException;
 
+import id.xfunction.lang.XRE;
 import id.xfunction.logging.XLogger;
 
 /**
@@ -52,8 +53,7 @@ final class MethodHandlerMapping implements XmlRpcHandlerMapping {
             try {
                 return caller.call(methodName, args);
             } catch (NoSuchMethodException e) {
-                LOGGER.severe("Operation " + methodName + " is not supported, ignoring...");
-                return null;
+                throw new XRE("Operation " + methodName + " is not supported, ignoring...");
             } catch (Throwable e) {
                 e.printStackTrace();
                 return null;

@@ -33,4 +33,10 @@ public class IntTransformer implements ResponseTransformer {
         return ss;
     }
     
+    public RawResponse transform(IntResponse response) {
+        var raw = new RawResponse(new Object[3]);
+        ResponseTransformer.populate(raw, response);
+        raw.list().set(2, response.value);
+        return raw;
+    }
 }

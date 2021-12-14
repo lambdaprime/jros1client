@@ -51,7 +51,7 @@ import id.xfunction.logging.XLogger;
  */
 public class TopicPublisherSubscriber implements Subscriber<Message> {
 
-    private final XLogger LOGGER = XLogger.getLogger(TopicPublisherSubscriber.class.getName() + "@" + hashCode());
+    private final XLogger LOGGER = XLogger.getLogger(this);
     private TextUtils utils;
     private MetadataAccessor metadataAccessor = new MetadataAccessor();
     private MessageTransformer transformer = new MessageTransformer();
@@ -128,14 +128,14 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     @Override
     public void onError(Throwable throwable) {
         LOGGER.entering("onError");
-        LOGGER.severe(throwable.getMessage());
-        subscriptionFuture.complete(null);
+        LOGGER.severe("Error: {0}", throwable.getMessage());
         try {
             subscriptionFuture.get().cancel();
         } catch (InterruptedException | ExecutionException e) {
             throwable.addSuppressed(e);
         }
         isCompleted = true;
+        // tell ICE to close connection
         future.complete(null);
         LOGGER.exiting("onError");
     }

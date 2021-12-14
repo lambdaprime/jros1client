@@ -27,6 +27,7 @@ import java.util.function.Predicate;
 import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.ros.api.NodeApi;
 import id.jrosclient.ros.entities.Protocol;
+import id.jrosclient.ros.responses.IntResponse;
 import id.jrosclient.ros.responses.ProtocolParamsResponse;
 import id.jrosclient.ros.responses.Response.StatusCode;
 import id.xfunction.lang.XRE;
@@ -51,7 +52,7 @@ public class NodeApiServerImpl implements NodeApi {
     public ProtocolParamsResponse requestTopic(String callerId, String topic,
             List<Protocol> protocols) 
     {
-        LOGGER.entering(LOGGER.getName(), "requestTopic", protocols);
+        LOGGER.entering("requestTopic", protocols);
         boolean hasTcpRos = protocols.stream()
                 .map(Protocol::getProtocolName)
                 .anyMatch(Predicate.isEqual(Protocol.TCPROS.protocolName));
@@ -59,11 +60,20 @@ public class NodeApiServerImpl implements NodeApi {
                 callerId);
         var response = new ProtocolParamsResponse();
         response.withStatusCode(StatusCode.SUCCESS);
-        response.withStatusMessage("ready on ubuntu:38245");
+        response.withStatusMessage("ready");
         response.withProtocol(Protocol.TCPROS);
         response.withPort(config.getTcpRosServerPort());
         response.withHost(config.getHostName());
         LOGGER.exiting("requestTopic", response);
+        return response;
+    }
+
+    @Override
+    public IntResponse publisherUpdate(String callerId, String topic, List<String> publishers) {
+        LOGGER.warning("Operation publisherUpdate is not supported, ignoring...");
+        var response = new IntResponse("ignore");
+        response.withStatusCode(StatusCode.SUCCESS);
+        response.withStatusMessage("ready");
         return response;
     }
 

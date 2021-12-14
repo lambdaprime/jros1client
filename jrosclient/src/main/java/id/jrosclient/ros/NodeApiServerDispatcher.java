@@ -28,6 +28,7 @@ import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.ros.api.NodeApi;
 import id.jrosclient.ros.api.impl.NodeApiServerImpl;
 import id.jrosclient.ros.entities.transformers.Transformers;
+import id.jrosclient.ros.responses.transformers.IntTransformer;
 import id.jrosclient.ros.responses.transformers.ProtocolParamsTransformer;
 
 /**
@@ -37,6 +38,7 @@ import id.jrosclient.ros.responses.transformers.ProtocolParamsTransformer;
 public class NodeApiServerDispatcher {
 
     private ProtocolParamsTransformer protocolParamsParser = new ProtocolParamsTransformer();
+    private IntTransformer intTransformer = new IntTransformer();
     private Transformers transformers = new Transformers();
     private NodeApi nodeApi;
 
@@ -52,4 +54,12 @@ public class NodeApiServerDispatcher {
                 .getObject();
     }
 
+    public Object publisherUpdate(String callerId, String topic, Object[] publishers) {
+        var pubs = Arrays.stream(publishers)
+                .map(Object::toString)
+                .collect(Collectors.toList());
+        return intTransformer.transform(nodeApi.publisherUpdate(callerId, topic, pubs))
+                .getObject();
+    }
+    
 }
