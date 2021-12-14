@@ -31,7 +31,7 @@ public class SubscriberApp {
     public static void main(String[] args) throws Exception {
         // specify URL of the master node
         var client = new JRosClient("http://localhost:11311/");
-        String topicName = "/helloRos";
+        var topicName = "/helloRos";
         // register a new subscriber
         client.subscribe(new TopicSubscriber<>(StringMessage.class, topicName) {
             @Override
@@ -41,6 +41,10 @@ public class SubscriberApp {
                 getSubscription().request(1);
             }
         });
+
+        // usually we need to close client once we are done
+        // but here we keep it open so that subscriber will keep
+        // printing messages indefinitely
     }
 }
 

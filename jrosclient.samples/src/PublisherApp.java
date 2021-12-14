@@ -40,6 +40,10 @@ public class PublisherApp {
             System.out.println("Published");
             Thread.sleep(1000);
         }
+
+        // usually we need to close client once we are done
+        // but here we keep it open so that subscriber will keep
+        // printing messages indefinitely
     }
 }
 
