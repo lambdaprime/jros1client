@@ -23,8 +23,11 @@ package id.jrosclient.ros.transport;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Flow.Subscriber;
@@ -44,10 +47,10 @@ import id.xfunction.io.ByteBufferInputStream;
 import id.xfunction.lang.XRE;
 import id.xfunction.logging.XLogger;
 
-/*
+/**
  * Allows to communicate with other ROS nodes.
  * 
- * Relies on PublishersManager for list of available publishers.
+ * Relies on {@link PublishersManager} for list of available publishers.
  * - When new connection comes in it searches for publisher
  * in PublishersManager
  * - Each time existing client sends a request it checks if
@@ -63,12 +66,21 @@ public class TcpRosServer implements MessageService, AutoCloseable {
     private ConnectionHeaderValidator headerValidator = new ConnectionHeaderValidator(
             metadataAccessor);
     private PublishersManager publishersManager;
-    // connection id to subscriber serving it
+    
+    /**
+     * Connection id to subscriber serving it
+     */
     private Map<Integer, TopicPublisherSubscriber> subscribers = new ConcurrentHashMap<>();
+    
+    /**
+     * Connections which are no longer served by publishers and should be closed
+     */
+    private Set<Integer> closedConnections = new HashSet<>();
     
     private TextUtils utils;
     private boolean isStarted;
     
+    @SuppressWarnings("resource")
     public TcpRosServer(PublishersManager publishersManager, JRosClientConfiguration config,
             TextUtils utils) {
         this.publishersManager = publishersManager;
@@ -101,16 +113,27 @@ public class TcpRosServer implements MessageService, AutoCloseable {
     /**
      * Implementation of MessageService which process the incoming requests.
      */
+    @SuppressWarnings("exports")
     @Override
     public CompletableFuture<MessageResponse> process(MessageRequest request) {
-        LOGGER.entering("process");
         var connId = request.getConnectionId();
+        LOGGER.entering("process", connId);
+        
+        if (closedConnections.remove(connId)) {
+            LOGGER.info("Closing connection as there is no more publishers serving it...");
+            return CompletableFuture.completedFuture(null);
+        }
         
         var subscriber = subscribers.get(connId);
 
         // if there is no subscriber for that connection, we try to create one
         if (subscriber == null) {
-            var subscriberOpt = registerSubscriber(request);
+            var message = request.getMessage().orElse(null);
+            if (message == null) {
+                LOGGER.info("Received registration request with no message, closing the connection...");
+                return CompletableFuture.completedFuture(null);                
+            }
+            var subscriberOpt = registerSubscriber(connId, message);
             if (subscriberOpt.isEmpty()) {
                 return CompletableFuture.completedFuture(null);
             }
@@ -143,9 +166,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
      * If such publisher exist - create a subscriber for it and return this subscriber.
      * If not - return empty value.
      */
-    private Optional<TopicPublisherSubscriber> registerSubscriber(MessageRequest request) {
-        var message = request.getMessage().orElseThrow(() ->
-            new XRE("Incoming request has no message"));
+    private Optional<TopicPublisherSubscriber> registerSubscriber(int connId, ByteBuffer message) {
         var dis = new DataInputStream(new ByteBufferInputStream(message));
         var headerReader = new ConnectionHeaderReader(dis);
         var header = Unchecked.get(headerReader::read);
@@ -178,10 +199,12 @@ public class TcpRosServer implements MessageService, AutoCloseable {
         var subscriber = new TopicPublisherSubscriber(callerId, topic, publisher.getMessageClass(), utils) {
             @Override
             public void onError(Throwable throwable) {
-                LOGGER.log(Level.WARNING, "Failed to deliver message to ROS subscriber {0} due to: {1}",
-                        new Object[] {callerId, throwable.getMessage()});
-                subscribers.remove(request.getConnectionId());
+                LOGGER.warning("Publisher of topic {0} for caller {1} throwed error {2}: {3}",
+                        topic, callerId, throwable.getClass(), throwable.getMessage());
+                
+                subscribers.remove(connId);
                 publisher.onPublishError(throwable);
+                closedConnections.add(connId);
                 super.onError(throwable);
             }
         };

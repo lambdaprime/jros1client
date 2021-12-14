@@ -108,6 +108,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
             try {
                 run(ch);
             } catch (Exception e) {
+                LOGGER.log(Level.FINE, "Subscriber failed: {0}", e.getMessage());
                 sendOnError(e);
             } finally {
                 executorService.shutdown();
@@ -147,6 +148,15 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
     @Override
     public void close() {
         LOGGER.entering("close");
+        
+        // trying gracefully to close the client
+        // first we need to issue onComplete to all subscribers
+        super.close();
+        
+        // now we close the connection
+        // we always need to do it after completing subscribers
+        // otherwise some of them may still be reading from the socket
+        // and report onError later
         try {
             channel.close();
         } catch (IOException e) {
@@ -162,7 +172,6 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
         } catch (InterruptedException e) {
             LOGGER.severe(e.getMessage());
         }
-        super.close();
         LOGGER.exiting("close");
     }
 }

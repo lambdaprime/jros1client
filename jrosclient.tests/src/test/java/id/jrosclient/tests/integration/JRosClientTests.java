@@ -24,12 +24,13 @@ package id.jrosclient.tests.integration;
 import static id.jrosclient.tests.integration.TestConstants.URL;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.io.EOFException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import org.junit.jupiter.api.AfterEach;
@@ -56,7 +57,7 @@ public class JRosClientTests {
     @BeforeEach
     public void setup() throws MalformedURLException {
         // restore logging
-        XLogger.load("jrosclient-debug.properties");
+        XLogger.load("logging-test.properties");
         client = new JRosClient(URL);
     }
 
@@ -204,25 +205,25 @@ public class JRosClientTests {
      */
     @Test
     public void test_publisher_crash() throws Exception {
-        var future = new CompletableFuture<List<Integer>>();
+        var future = new CompletableFuture<Void>();
         String topic = "/testTopic1";
         var publisher = new TopicSubmissionPublisher<>(Int32Message.class, topic);
         client.publish(publisher);
         client.subscribe(new TopicSubscriber<>(Int32Message.class, topic) {
-            List<Integer> data = new ArrayList<>();
             @Override
             public void onNext(Int32Message item) {
                 System.out.println(item);
             }
             public void onError(Throwable throwable) {
-                Assertions.assertTrue(throwable instanceof EOFException);
-                future.complete(data);
+                System.out.println("onError occured: " + throwable);
+                future.complete(null);
             }
         });
         var msg = new Int32Message().withData(1);
         publisher.submit(msg);
         publisher.closeExceptionally(new Exception());
-        future.join();
+        future.get();
+        System.out.println("Awake");
         client.unpublish(topic);
     }
     
@@ -231,12 +232,11 @@ public class JRosClientTests {
      */
     @Test
     public void test_log_truncation() throws Exception {
-        XLogger.load("logging-test.properties");
         var config = new JRosClientConfiguration();
         config.setMaxMessageLoggingLength(6);
         client = new JRosClient(URL, config);
         test_publish();
-        var actual = Files.readString(Paths.get("/tmp/jrosclient-test.log"));
+        var actual = Files.readString(Paths.get(TestConstants.LOG_FILE));
         System.out.println(actual);
         Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("test_subscriber_truncate"))
                 .matches(actual));
@@ -258,4 +258,44 @@ public class JRosClientTests {
         Assertions.assertEquals(true, objectsFactory.nodeServer.isClosed());
         Assertions.assertEquals(true, objectsFactory.tcpRosServer.isClosed());
     }
+
+    @Test
+    public void test_multiple_publishers() throws Exception {
+        var future = new CompletableFuture<Void>();
+        String topic = "/testTopic1";
+        var publisher = new TopicSubmissionPublisher<>(Int32Message.class, topic);
+        client.publish(publisher);
+        
+        var config = new JRosClientConfiguration();
+        try (var myClient = new JRosClient(config);
+            var myPublisher = new TopicSubmissionPublisher<>(Int32Message.class, topic))
+        {
+            myClient.publish(myPublisher);
+            client.subscribe(new TopicSubscriber<>(Int32Message.class, topic) {
+                Set<Integer> data = new HashSet<>();
+                @Override
+                public void onNext(Int32Message item) {
+                    System.out.println(item);
+                    data.add(item.data);
+                    if (data.size() == 2) {
+                        // we saw both publishers
+                        getSubscription().cancel();
+                        future.complete(null);
+                        System.out.println("stopping");
+                    } else {
+                        getSubscription().request(1);
+                    }
+                }
+            });
+            while (!future.isDone()) {
+                var msg1 = new Int32Message().withData(1);
+                var msg2 = new Int32Message().withData(2);
+                publisher.submit(msg1);
+                myPublisher.submit(msg2);
+            }
+            myClient.unpublish(topic);
+        }
+        client.unpublish(topic);
+    }
+
 }

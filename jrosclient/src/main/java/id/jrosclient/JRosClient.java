@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import id.jrosclient.impl.MergeProcessor;
 import id.jrosclient.impl.ObjectsFactory;
 import id.jrosclient.impl.RosRpcClient;
 import id.jrosclient.impl.TextUtils;
@@ -49,6 +50,9 @@ import id.xfunction.logging.XLogger;
 
 /**
  * Main class of the library which allows to interact with ROS.
+ * 
+ * <p>Each instance of JRosClient acts as a separate ROS node and listens
+ * to its own ports.
  */
 public class JRosClient implements AutoCloseable {
 
@@ -56,7 +60,7 @@ public class JRosClient implements AutoCloseable {
     private static final Utils utils = new Utils();
     private static final String DEFAULT_ROS_MASTER_URL = "http://localhost:11311";
 
-    private final Logger LOGGER = XLogger.getLogger(JRosClient.class.getName() + "@" + hashCode());
+    private final Logger LOGGER = XLogger.getLogger(this);
 
     private String masterUrl;
     private NodeServer nodeServer;
@@ -145,13 +149,25 @@ public class JRosClient implements AutoCloseable {
         if (publishers.value.isEmpty()) {
             throw new XRE("No publishers for topic %s found", topic);
         }
-        var nodeApi = getNodeApi(publishers.value.get(0));
-        var protocol = nodeApi.requestTopic(callerId, topic, List.of(Protocol.TCPROS));
-        LOGGER.log(Level.FINE, "Protocol configuration: {0}", protocol);
-        var nodeClient = new TcpRosClient<M>(callerId, topic, protocol.host, protocol.port, clazz, textUtils);
-        nodeClient.subscribe(subscriber);
-        nodeClient.connect();
-        clients.add(nodeClient);
+        
+        // closed once subscriber cancels subscription
+        @SuppressWarnings("resource")
+        var processor = new MergeProcessor<M>();
+        processor.subscribe(subscriber);
+        for (var publisher: publishers.value/*.stream().collect(Collectors.toSet())*/) {
+            try {
+                LOGGER.log(Level.FINE, "Registering with publisher: {0}", publisher);
+                var nodeApi = getNodeApi(publisher);
+                var protocol = nodeApi.requestTopic(callerId, topic, List.of(Protocol.TCPROS));
+                LOGGER.log(Level.FINE, "Protocol configuration: {0}", protocol);
+                var nodeClient = new TcpRosClient<M>(callerId, topic, protocol.host, protocol.port, clazz, textUtils);
+                nodeClient.subscribe(processor.newSubscriber());
+                nodeClient.connect();
+                clients.add(nodeClient);
+            } catch (Exception e) {
+                LOGGER.log(Level.FINE, "Failed to register with publisher: {0}", e.getMessage());
+            }
+        }
     }
 
     /**
