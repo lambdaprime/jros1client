@@ -36,17 +36,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import id.jrosclient.JRosClient;
 import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosmessages.std_msgs.StringMessage;
+import id.xfunction.AssertRunCommand;
 import id.xfunction.ResourceUtils;
-import id.xfunction.lang.XExec;
 import id.xfunction.lang.XThread;
-import id.xfunction.text.WildcardMatcher;
 
 public class JRosClientAppTests {
 
@@ -84,16 +82,24 @@ public class JRosClientAppTests {
             }
         });
 
-        String actual, expected;
-        var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo -n 1 testTopic2 id.jrosmessages.std_msgs.StringMessage",
-                URL);
         for (int i = 0; i < 3; i++) {
-            actual = runOk(args)
-                    .replace("\n", "");
-            expected = new StringMessage()
+            var expected = new StringMessage()
                     .withData("Hello ROS")
                     .toString();
-            Assertions.assertEquals(expected, actual);
+        	new AssertRunCommand(JROSCLIENT_PATH,
+        			"--masterUrl",
+        			URL,
+        			"--nodePort",
+        			"1234",
+        			"rostopic",
+        			"echo",
+        			"-n",
+        			"1",
+        			"testTopic2",
+        			"id.jrosmessages.std_msgs.StringMessage")
+    	    	.withOutput(expected + "\n\n")
+    	    	.withReturnCode(0)
+    	    	.run();
         }
 
         client.unpublish(topicName);
@@ -103,75 +109,115 @@ public class JRosClientAppTests {
 
     @Test
     public void test_echo() {
-        var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo -n 5 testTopic id.jrosmessages.std_msgs.StringMessage",
-                URL);
-        var out = runOk(args);
-        Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("echo")).matches(out));
-        args = String.format("rostopic echo -n 5 testTopic id.jrosmessages.std_msgs.StringMessage");
-        out = runOk(args);
-        Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("echo")).matches(out));
+    	new AssertRunCommand(JROSCLIENT_PATH,
+    			"--masterUrl",
+    			URL,
+    			"--nodePort",
+    			"1234",
+    			"rostopic",
+    			"echo",
+    			"-n",
+    			"5",
+    			"testTopic",
+    			"id.jrosmessages.std_msgs.StringMessage")
+	    	.withOutputFromResource("echo")
+	    	.withWildcardMatching()
+	    	.withReturnCode(0)
+	    	.run();
+
+    	new AssertRunCommand(JROSCLIENT_PATH,
+    			"rostopic",
+    			"echo",
+    			"-n",
+    			"5",
+    			"testTopic",
+    			"id.jrosmessages.std_msgs.StringMessage")
+	    	.withOutputFromResource("echo")
+	    	.withWildcardMatching()
+	    	.withReturnCode(0)
+	    	.run();
     }
 
     @Test
     public void test_echo_missing_args() {
-        var args = String.format("--masterUrl %s --nodePort 1234 rostopic echo testTopic",
-                URL);
-        var out = runFail(args);
-        Assertions.assertEquals(resourceUtils.readResource("jrosclient-README.md") + "\n\n", out);
+    	new AssertRunCommand(JROSCLIENT_PATH,
+    			"--masterUrl",
+    			URL,
+    			"--nodePort",
+    			"1234",
+    			"rostopic",
+    			"echo",
+    			"testTopic")
+	    	.withOutput(resourceUtils.readResource("jrosclient-README.md") + "\n\n")
+	    	.withReturnCode(1)
+	    	.run();
     }
     
     @Test
     public void test_wrong_args() throws Exception {
-        var out = runFail("");
-        Assertions.assertEquals(resourceUtils.readResource("jrosclient-README.md") + "\n\n", out);
-        out = runFail("rostopic");
-        Assertions.assertEquals(resourceUtils.readResource("jrosclient-README.md") + "\n\n", out);
+    	new AssertRunCommand(JROSCLIENT_PATH)
+    		.withOutput(resourceUtils.readResource("jrosclient-README.md") + "\n\n")
+	    	.withReturnCode(1)
+	    	.run();
+    	new AssertRunCommand(JROSCLIENT_PATH,
+    			"rostopic")
+    		.withOutput(resourceUtils.readResource("jrosclient-README.md") + "\n\n")
+	    	.withReturnCode(1)
+	    	.run();
     }
 
     @Test
     public void test_debug() {
-        var args = String.format("--masterUrl %s --nodePort 1234 --debug rostopic echo -n 1 testTopic id.jrosmessages.std_msgs.StringMessage",
-                URL);
-        var out = runOk(args);
-        Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("debug")).matches(out));
+        new AssertRunCommand(JROSCLIENT_PATH,
+	       		 "--masterUrl",
+	       		 URL,
+	       		 "--nodePort",
+	       		 "1234",
+	       		 "--debug",
+	       		 "rostopic",
+	       		 "echo",
+	       		 "-n",
+	       		 "1",
+	       		 "testTopic",
+	       		 "id.jrosmessages.std_msgs.StringMessage")
+	       	.withOutputFromResource("debug")
+	       	.withWildcardMatching()
+	       	.withReturnCode(0)
+	       	.run();
     }
 
     @Test
     public void test_list() {
-        var args = String.format("--masterUrl %s --nodePort 1234 rostopic list",
-                URL);
-        var out = runOk(args);
-        Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("list")).matches(out));
+        new AssertRunCommand(JROSCLIENT_PATH,
+	       		 "--masterUrl",
+	       		 URL,
+	       		 "--nodePort",
+	       		 "1234",
+	       		 "rostopic",
+	       		 "list")
+	       	.withOutputFromResource("list")
+	       	.withWildcardMatching()
+	       	.withReturnCode(0)
+	       	.run();
     }
     
     @Test
     public void test_truncate() {
-        var args = String.format("--masterUrl %s --debug --truncate 6 rostopic echo -n 1 testTopic id.jrosmessages.std_msgs.StringMessage",
-                URL);
-        var out = runOk(args);
-        Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("truncate")).matches(out));
+        new AssertRunCommand(JROSCLIENT_PATH,
+        		 "--masterUrl",
+        		 URL,
+        		 "--debug",
+        		 "--truncate",
+        		 "6",
+        		 "rostopic",
+        		 "echo",
+        		 "-n",
+        		 "1",
+        		 "testTopic",
+        		 "id.jrosmessages.std_msgs.StringMessage")
+        	.withOutputFromResource("truncate")
+        	.withWildcardMatching()
+        	.withReturnCode(0)
+        	.run();
     }
-    
-    private String runFail(String fmt, Object...args) {
-        return run(1, fmt, args);
-    }
-
-    private String runOk(String fmt, Object...args) {
-        return run(0, fmt, args);
-    }
-    
-    private String run(int expectedCode, String fmt, Object...args) {
-        var proc = new XExec(JROSCLIENT_PATH + " " + String.format(fmt, args))
-                .run();
-        proc.flush(false);
-        var code = proc.await();
-        var out = proc.stdoutAsString() + "\n" + proc.stderrAsString() + "\n";
-        System.out.println("Output:");
-        System.out.println(">>>");
-        System.out.print(out);
-        System.out.println("<<<");
-        Assertions.assertEquals(expectedCode, code);
-        return out;
-    }
-    
 }
