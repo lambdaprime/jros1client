@@ -23,9 +23,12 @@ package id.jrosclient.impl;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 import java.util.concurrent.SubmissionPublisher;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import id.xfunction.logging.XLogger;
@@ -52,19 +55,29 @@ import id.xfunction.logging.XLogger;
  *
  */
 public class MergeProcessor<T> extends SubmissionPublisher<T> {
-    private static final XLogger LOGGER = XLogger.getLogger(MergeProcessor.class);
-
-    private AtomicInteger numOfActiveSubscriptions = new AtomicInteger();
+	private AtomicInteger numOfActiveSubscriptions = new AtomicInteger();
     private List<Throwable> failed = new CopyOnWriteArrayList<>();
+    
+    public MergeProcessor() {
+    	// By default SubmissionPublisher is using commonPool which has some limited
+    	// number of threads and can be quickly depleted.
+    	// Example: if MergeProcessor subscribed to
+    	// many publishers they can fill up MergeProcessor queue very quickly and if that
+    	// happens they may block awaiting for a new space be available. In case there is
+    	// no more free threads left for MergeProcessor it will never be able to remove
+    	// items from its queue and will stall.
+    	// To prevent this we use separate pool for MergeProcessor itself.
+    	super(Executors.newCachedThreadPool(), 32);
+	}
     
     public Subscriber<T> newSubscriber() {
         return new Subscriber<T>() {
+        	private final XLogger LOGGER = XLogger.getLogger(this);
             private Subscription subscription;
-            private int id = hashCode();
 
             @Override
             public void onSubscribe(Subscription subscription) {
-                LOGGER.entering("onSubscribe", id);
+                LOGGER.entering("onSubscribe");
                 this.subscription = subscription;
                 numOfActiveSubscriptions.incrementAndGet();
                 this.subscription.request(1);
@@ -72,7 +85,7 @@ public class MergeProcessor<T> extends SubmissionPublisher<T> {
 
             @Override
             public void onNext(T item) {
-                LOGGER.entering("onNext", id);
+                LOGGER.entering("onNext");
                 if (noSubscribers()) return;
                 submit(item);
                 subscription.request(1);
@@ -80,7 +93,7 @@ public class MergeProcessor<T> extends SubmissionPublisher<T> {
 
             @Override
             public void onError(Throwable throwable) {
-                LOGGER.entering("onError", id);
+                LOGGER.entering("onError");
                 if (noSubscribers()) return;
                 failed.add(throwable);
                 if (numOfActiveSubscriptions.decrementAndGet() == 0) {
@@ -90,7 +103,7 @@ public class MergeProcessor<T> extends SubmissionPublisher<T> {
 
             @Override
             public void onComplete() {
-                LOGGER.entering("onComplete", id);
+                LOGGER.entering("onComplete");
                 if (noSubscribers()) return;
                 if (numOfActiveSubscriptions.decrementAndGet() == 0) {
                     if (failed.isEmpty()) {
@@ -102,8 +115,9 @@ public class MergeProcessor<T> extends SubmissionPublisher<T> {
             }
             
             private boolean noSubscribers() {
+            	if (!isClosed()) return false;
                 if (getNumberOfSubscribers() != 0) return false;
-                LOGGER.fine("{0}: no more subscribers, canceling subscription and closing processor", id);
+                LOGGER.fine("No more subscribers, canceling subscription and closing processor");
                 subscription.cancel();
                 close();
                 return true;
@@ -122,4 +136,16 @@ public class MergeProcessor<T> extends SubmissionPublisher<T> {
         return exception;
     }
 
+    @Override
+    public void close() {
+    	super.close();
+    	var executor = (ExecutorService) getExecutor();
+    	executor.shutdown();
+    	try {
+			executor.awaitTermination(Integer.parseInt(System.getProperty("awaitMergeProcessorInSecs",
+			        "5")), TimeUnit.SECONDS);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
 }

@@ -37,7 +37,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import id.jrosclient.impl.MergeProcessor;
 
 public class MergeProcessorTest {
-
+    
     @ParameterizedTest
     @CsvSource({
         "1, 10, false",
@@ -56,6 +56,7 @@ public class MergeProcessorTest {
         IntStream.range(0, numOfPublishers)
             .forEach(i -> runPublishLoop(executor, i, proc));
         future.get();
+        System.out.println("awake");
         executor.shutdown();
         boolean ret = executor.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
         assertEquals(true, ret);
@@ -83,4 +84,5 @@ public class MergeProcessorTest {
             System.out.println("Closed publisher of item " + item);
         });        
     }
+
 }

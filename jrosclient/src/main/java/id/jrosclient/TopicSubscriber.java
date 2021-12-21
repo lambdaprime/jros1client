@@ -28,7 +28,6 @@ import id.jrosclient.impl.JRosClientSubscription;
 import id.jrosclient.impl.Utils;
 import id.jrosmessages.Message;
 import id.xfunction.XAsserts;
-import id.xfunction.logging.XLogger;
 
 /**
  * <p>Subscriber receives messages for the topic it is

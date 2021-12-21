@@ -89,7 +89,8 @@ public class RosTopic {
                 .orElse(new JRosClient(config));
         var topic = positionalArgs.removeFirst();
         var topicType = positionalArgs.removeFirst();
-        Class<Message> clazz = (Class<Message>) getClass().getClassLoader().loadClass(topicType);
+        @SuppressWarnings("unchecked")
+		Class<Message> clazz = (Class<Message>) getClass().getClassLoader().loadClass(topicType);
         if (clazz == null)
             throw new XRE("Type %s is not found", topicType);
         var subscriber = new TopicSubscriber<Message>(clazz, topic) {

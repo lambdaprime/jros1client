@@ -60,7 +60,8 @@ public class JRosClientApp {
         System.exit(1);
     }
 
-    private static <T> T withArg(Optional<T> arg) {
+    @SuppressWarnings("unused")
+	private static <T> T withArg(Optional<T> arg) {
         if (arg.isEmpty()) {
             usage();
         }

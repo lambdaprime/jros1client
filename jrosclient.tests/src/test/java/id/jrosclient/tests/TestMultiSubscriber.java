@@ -9,15 +9,17 @@ import java.util.concurrent.Flow.Subscription;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import id.xfunction.logging.XLogger;
+
 /**
  * Subscriber which can be subscribed to multiple publishers and test that
  * each of them publishes certain number of items. 
  */
 public class TestMultiSubscriber implements Subscriber<Integer> {
-    
+	private static final XLogger LOGGER = XLogger.getLogger(TestMultiSubscriber.class);
     private Map<Integer, Integer> counters;
-    private int onErrorCounter;
-    private int onCompleteCounter;
+    private volatile int onErrorCounter;
+    private volatile int onCompleteCounter;
     private Subscription subscription;
     private boolean hasKeepRequesting;
     private CompletableFuture<Void> future;
@@ -29,8 +31,8 @@ public class TestMultiSubscriber implements Subscriber<Integer> {
     public TestMultiSubscriber(int numOfPublishers, int numOfItems) {
         counters = IntStream.range(0, numOfPublishers)
                 .boxed()
-                .collect(Collectors.toMap(identity(), k -> numOfItems));
-        System.out.println("Counters " + counters);
+                .collect(Collectors.toConcurrentMap(identity(), k -> numOfItems));
+        LOGGER.info("Counters " + counters);
     }
     
     /**
@@ -54,36 +56,42 @@ public class TestMultiSubscriber implements Subscriber<Integer> {
 
     @Override
     public void onSubscribe(Subscription subscription) {
+    	LOGGER.entering("onSubscribe");
         this.subscription = subscription;
         subscription.request(1);
     }
 
     @Override
     public void onNext(Integer item) {
-        var c = counters.getOrDefault(item, 0);
-        if (c == 0) {
-            counters.remove(item);
-            if (counters.isEmpty()) {
-                future.complete(null);
-                if (!hasKeepRequesting) {
-                    System.out.println("Terminating subscriber");
-                    subscription.cancel();
-                    return;
-                }
-            }
-        } else {
-            counters.put(item, c - 1);
-        }
-        subscription.request(1);
+    	LOGGER.entering("onNext", item.toString());
+    	var c = counters.getOrDefault(item, 0);
+    	if (c == 0) {
+    		counters.remove(item);
+    		if (counters.isEmpty()) {
+    			future.complete(null);
+    			if (!hasKeepRequesting) {
+    				LOGGER.fine("Terminating subscriber");
+    				subscription.cancel();
+    				LOGGER.exiting("onNext");
+    				return;
+    			}
+    		}
+    	} else {
+    		counters.put(item, c - 1);
+    	}
+    	subscription.request(1);
+        LOGGER.exiting("onNext");
     }
 
     @Override
     public void onError(Throwable throwable) {
+    	LOGGER.entering("onError", throwable);
         onErrorCounter++;
     }
 
     @Override
     public void onComplete() {
+    	LOGGER.entering("onComplete");
         onCompleteCounter++;
     }
 
