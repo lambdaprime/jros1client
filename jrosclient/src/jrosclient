@@ -21,6 +21,8 @@
 # - lambdaprime <intid@protonmail.com>
 #
 
+#set -xe
+
 JROSCLIENT_PATH=$(readlink -f "$0")
 JROSCLIENT_PATH=$(dirname "$JROSCLIENT_PATH")
 
@@ -30,9 +32,9 @@ JROSCLIENT_PATH=$(dirname "$JROSCLIENT_PATH")
 # and not through JAVA_ARGS
 
 if [ -z "${CLASSPATH}" ]; then
-    CLASSPATH="${JROSCLIENT_PATH}/libs/*"
+    CLASSPATH="${JROSCLIENT_PATH}/libs"
 else
-    CLASSPATH="${JROSCLIENT_PATH}/libs/*:${CLASSPATH}"
+    CLASSPATH="${JROSCLIENT_PATH}/libs:${CLASSPATH}"
 fi
 
-java ${JAVA_ARGS} -Xnoclassgc -noverify -p "${CLASSPATH}" id.jrosclient.app.JRosClientApp "$@"
+java ${JAVA_ARGS} -Xnoclassgc -noverify -p "${CLASSPATH}" -m jrosclient/id.jrosclient.app.JRosClientApp "$@"

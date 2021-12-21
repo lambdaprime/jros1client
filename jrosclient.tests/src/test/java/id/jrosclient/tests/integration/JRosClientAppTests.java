@@ -32,6 +32,7 @@ import static id.jrosclient.tests.integration.TestConstants.URL;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -219,5 +220,21 @@ public class JRosClientAppTests {
         	.withWildcardMatching()
         	.withReturnCode(0)
         	.run();
+    }
+    
+    @Test
+    public void test_classpath() {
+        new AssertRunCommand(JROSCLIENT_PATH,
+	       		 "--masterUrl",
+	       		 URL,
+	       		 "--nodePort",
+	       		 "1234",
+	       		 "rostopic",
+	       		 "list")
+	       	.withOutputFromResource("list")
+	       	.withWildcardMatching()
+	       	.withReturnCode(0)
+	       	.withEnvironmentVariables(Map.of("CLASSPATH", "tmp/l.jar"))
+	       	.run();
     }
 }
