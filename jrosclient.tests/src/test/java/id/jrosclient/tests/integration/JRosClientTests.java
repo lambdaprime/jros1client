@@ -35,6 +35,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -54,10 +55,13 @@ public class JRosClientTests {
     private static final ResourceUtils resourceUtils = new ResourceUtils();
     private static JRosClient client;
 
+    @BeforeAll
+    public static void setupAll() {
+        XLogger.load("logging-test.properties");
+    }
+
     @BeforeEach
     public void setup() throws MalformedURLException {
-        // restore logging
-        XLogger.load("logging-test.properties");
         client = new JRosClient(URL);
     }
 
@@ -254,7 +258,7 @@ public class JRosClientTests {
         } catch (Exception e) {
             System.out.println(e);
         }
-        Assertions.assertEquals("Failed to read server's response: Connection refused (Connection refused)", exception.getCause().getMessage());
+        Assertions.assertEquals(true, exception.getCause().getMessage().startsWith("Failed to read server's response: Connection refused"));
         Assertions.assertEquals(true, objectsFactory.nodeServer.isClosed());
         Assertions.assertEquals(true, objectsFactory.tcpRosServer.isClosed());
     }
