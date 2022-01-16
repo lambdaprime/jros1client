@@ -47,7 +47,7 @@ public class JRosClientConfiguration {
      * <p>TCPROS is a transport layer responsible for publishing messages.</p>
      * <p>This is a port to which other ROS nodes connect
      * once they subscribe to any topic published through JRosClient.</p>
-     * <p>Default value is {@link DEFAULT_TCP_ROS_SERVER_PORT} COMPILE SHOULD FAIL</p>
+     * <p>JRosClient by default tries to use any available port starting from {@link START_TCP_ROS_SERVER_PORT}
      */
     public int getTcpRosServerPort() {
         return tcpRosServerPort;
@@ -61,7 +61,7 @@ public class JRosClientConfiguration {
      * <p>Port for running Node server (XMLRPC server).</p>
      * <p>This server is used to negotiate connections with other ROS nodes and
      * communicate with the Master.</p> 
-     * <p>Default value is {@link DEFAULT_NODE_SERVER_PORT}</p>
+     * <p>JRosClient by default tries to use any available port starting from {@link START_NODE_SERVER_PORT}
      */
     public int getNodeServerPort() {
         return nodeServerPort;

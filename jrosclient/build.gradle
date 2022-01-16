@@ -1,3 +1,13 @@
+// include xfunction for updateVersion
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "io.github.lambdaprime:id.xfunction:14.0"
+    }
+}
+
 plugins {
     id 'java'
 }
@@ -31,15 +41,15 @@ configurations {
 dependencies {
     implementation 'org.apache.xmlrpc:xmlrpc-client:3.1.3'
     implementation 'org.apache.xmlrpc:xmlrpc-server:3.1.3'
-    implementation 'io.github.lambdaprime:id.xfunction:14.0'
-    implementation 'io.github.lambdaprime:ICE:1.0'
+    implementation 'io.github.lambdaprime:id.xfunction:15.0'
+    implementation 'io.github.lambdaprime:ICE:2.0'
     implementation 'io.github.lambdaprime:kineticstreamer:3.0'
 
     // transitively export following dependency to tests project
     apiElements 'org.apache.xmlrpc:xmlrpc-client:3.1.3'
     apiElements 'org.apache.xmlrpc:xmlrpc-server:3.1.3'
-    apiElements 'io.github.lambdaprime:id.xfunction:14.0'
-    apiElements 'io.github.lambdaprime:ICE:1.0'
+    apiElements 'io.github.lambdaprime:id.xfunction:15.0'
+    apiElements 'io.github.lambdaprime:ICE:2.0'
     apiElements 'io.github.lambdaprime:kineticstreamer:3.0'
 }
 
@@ -86,7 +96,8 @@ javadoc {
     options.noTree = true;
     options.noIndex = true;
     options.noNavBar = true;
-    options.addStringOption('Xdoclint:none', '-quiet')
+    // ignore missing @return, @param etc
+    options.addBooleanOption('Xdoclint:all,-missing', true)
 }
 
 def packageDir = "$buildDir/package/${projectName}"
@@ -125,19 +136,19 @@ createRelease.dependsOn createPackage, javadoc
 assemble.dependsOn createRelease
 clean.dependsOn cleanRelease
 
-task updateVersion() {
-    if (version.contains("SNAPSHOT")) return;
-    println "Updating version to " + version
-    new id.xfunction.text.Substitutor()
-        .withRegexpSupport()
-        .substitute(java.nio.file.Paths.get("${project.rootDir}/README.md"), Map.of(
-            "io.github.lambdaprime:jrosclient:[0-9.]+", "io.github.lambdaprime:jrosclient:" + version
-        ));
-}
-
-createPackage.dependsOn updateVersion
-
 if (project.hasProperty('publish')) {
+
+  // update version only during publishing
+  task updateVersion() {
+      if (version.contains("SNAPSHOT")) return;
+      println "Updating version to " + version
+      new id.xfunction.text.Substitutor()
+          .withRegexpSupport()
+          .substitute(java.nio.file.Paths.get("${project.rootDir}/README.md"), Map.of(
+              "io.github.lambdaprime:jrosclient:[0-9.]+", "io.github.lambdaprime:jrosclient:" + version
+          ));
+  }
+  createPackage.dependsOn updateVersion
 
   // Initially it was taken from https://central.sonatype.org/publish/publish-gradle/
   // but since Gradle removed this plugin https://docs.gradle.org/7.0/userguide/upgrading_version_6.html#removal_of_the_legacy_maven_plugin

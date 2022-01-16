@@ -58,7 +58,9 @@ public class JRosClient implements AutoCloseable {
 
     private static final ObjectsFactory objectsFactory = new ObjectsFactory();
     private static final Utils utils = new Utils();
-    private static final String DEFAULT_ROS_MASTER_URL = "http://localhost:11311";
+    
+    // visible for javadoc
+    public static final String DEFAULT_ROS_MASTER_URL = "http://localhost:11311";
 
     private final Logger LOGGER = XLogger.getLogger(this);
 
@@ -72,8 +74,8 @@ public class JRosClient implements AutoCloseable {
     private TextUtils textUtils;
 
     /**
-     * Default ctor which creates a client to ROS master running locally using
-     * URL "http://localhost:11311"
+     * Default constructor which creates a client to ROS master running locally using
+     * URL {@link #DEFAULT_ROS_MASTER_URL}
      */
     public JRosClient() {
         this(DEFAULT_ROS_MASTER_URL);
@@ -87,8 +89,8 @@ public class JRosClient implements AutoCloseable {
     }
     
     /**
-     * Ctor which creates a client to ROS master running locally using
-     * URL {@link JRosClientConfiguration#DEFAULT_ROS_MASTER_URL} with given client
+     * Constructor which creates a client to ROS master running locally using
+     * URL {@link #DEFAULT_ROS_MASTER_URL} with given client
      * configuration
      */
     public JRosClient(JRosClientConfiguration config) {
@@ -134,7 +136,6 @@ public class JRosClient implements AutoCloseable {
      * @param subscriber provides information about the topic to subscribe
      * for. Once subscribed it will be notified for
      * any new message which gets published with given topic.
-     * @throws Exception
      */
     public <M extends Message> void subscribe(TopicSubscriber<M> subscriber) 
             throws Exception
@@ -176,7 +177,6 @@ public class JRosClient implements AutoCloseable {
      * @param publisher provides information about new topic. Once topic
      * created publisher is used to emit messages which will be sent
      * to topic subscribers
-     * @throws Exception
      */
     public <M extends Message> void publish(TopicPublisher<M> publisher) 
             throws Exception

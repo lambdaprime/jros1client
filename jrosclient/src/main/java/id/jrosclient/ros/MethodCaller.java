@@ -46,7 +46,6 @@ public class MethodCaller {
 
     /**
      * @param object object which methods will be called
-     * @throws Exception
      */
     public MethodCaller(Object object) throws Exception {
         this.object = object;

@@ -45,7 +45,6 @@ public interface NodeApi {
      * @param callerId ROS caller ID
      * @param topic Topic name
      * @param protocols List of desired protocols for communication in order of preference.
-     * @return
      */
     ProtocolParamsResponse requestTopic(String callerId, String topic, List<Protocol> protocols);
 

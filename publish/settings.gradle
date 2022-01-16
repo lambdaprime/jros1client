@@ -1,0 +1,4 @@
+// list of subprojects to publish to Sonatype repo
+
+include 'jrosclient'
+project(':jrosclient').projectDir = new File(rootDir, '../jrosclient')

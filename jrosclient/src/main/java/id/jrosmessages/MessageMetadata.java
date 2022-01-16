@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
  * 
  * <p>That is why there is no common Message interface with all metadata
  * methods. Doing so we would couple both and so to see metadata for any
- * message we would have to create a Message object first.<p>
+ * message we would have to create a Message object first.</p>
  * 
  * <p>Using this annotation on other hand allows to keep all Message metadata in its
  * class object and access it right from there and avoid unnecessary
@@ -54,7 +54,6 @@ public @interface MessageMetadata {
      * you can calculate it using rosmsg command:</p>
      * 
      * <pre>rosmsg md5 std_msgs/String</pre>
-     * 
      */
     String md5sum();
 }

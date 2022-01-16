@@ -1,5 +1,9 @@
 **jrosclient** - Java module which allows to interact with ROS (Robotic Operation System).
 
+# Requirements
+
+Java 11+
+
 # Download
 
 [Release versions](https://github.com/lambdaprime/jrosclient/releases)
@@ -16,21 +20,9 @@ dependencies {
 
 # Documentation
 
-Documentation is available here <http://portal2.atwebpages.com/jrosclient>
+[Documentation](http://portal2.atwebpages.com/jrosclient)
 
-# Development
-
-Building **jrosclient** module locally and making changes to it (this is optional and not intended for **jrosclient** users).
-
-## With Eclipse
-
-- Build eclipse projects:
-
-``` bash
-gradle eclipse
-```
-
-- Import them into Eclipse
+[Development](DEVELOPMENT.md)
 
 # Contributors
 

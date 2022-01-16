@@ -42,14 +42,14 @@ import id.xfunction.logging.XLogger;
  * it receives to its own subscriber. It supports only one subscriber at a time.
  * 
  * <p>This processor stops only when there is no more active publishers
- * (all of them either issued {@link #onComplete()} or {@link #onError(Throwable)})
+ * (all of them either issued {@link Subscriber#onComplete()} or {@link Subscriber#onError(Throwable)})
  * and it:
  * 
  * <ul>
- * <li>issues {@link #onComplete()} only when all publishers
- * to which this processor subscribed issued {@link #onComplete()}.
- * <li>if at least one of the publishers issued {@link #onError(Throwable)} then this
- * processor will issue {@link #onError(Throwable)} instead of {@link #onComplete()}
+ * <li>issues {@link Subscriber#onComplete()} only when all publishers
+ * to which this processor subscribed issued {@link Subscriber#onComplete()}.
+ * <li>if at least one of the publishers issued {@link Subscriber#onError(Throwable)} then this
+ * processor will issue {@link Subscriber#onError(Throwable)} instead of {@link Subscriber#onComplete()}
  * with all the exceptions suppressed inside
  * </ul>
  *
