@@ -14,7 +14,7 @@ Gradle:
 
 ```
 dependencies {
-    implementation 'io.github.lambdaprime:jrosclient:3.0'
+    implementation 'io.github.lambdaprime:jrosclient:4.0'
 }
 ```
 
