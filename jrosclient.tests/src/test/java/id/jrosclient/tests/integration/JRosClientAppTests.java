@@ -29,12 +29,16 @@
 package id.jrosclient.tests.integration;
 
 import static id.jrosclient.tests.integration.TestConstants.URL;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +49,7 @@ import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosmessages.std_msgs.StringMessage;
 import id.xfunction.AssertRunCommand;
 import id.xfunction.ResourceUtils;
+import id.xfunction.lang.XExec;
 import id.xfunction.lang.XThread;
 
 public class JRosClientAppTests {
@@ -137,6 +142,26 @@ public class JRosClientAppTests {
 	    	.withWildcardMatching()
 	    	.withReturnCode(0)
 	    	.run();
+    }
+
+    @Test
+    public void test_echo_infinity() throws Exception {
+    	var proc = new XExec(JROSCLIENT_PATH,
+    			"rostopic",
+    			"echo",
+    			"testTopic",
+    			"id.jrosmessages.std_msgs.StringMessage").run();
+    	var future = new CompletableFuture<Void>();
+    	proc.forwardStderr();
+    	var out = new ArrayList<String>();
+    	proc.forwardStdout(line -> {
+    		out.add(line);
+    		if (out.size() == 5) future.complete(null);
+    	});
+    	future.get();
+    	proc.process().destroyForcibly();
+    	assertEquals(resourceUtils.readResource("echo").trim(),
+    			out.stream().collect(Collectors.joining("\n")));
     }
 
     @Test
