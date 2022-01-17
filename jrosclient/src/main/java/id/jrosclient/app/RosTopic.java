@@ -93,20 +93,31 @@ public class RosTopic {
 		Class<Message> clazz = (Class<Message>) getClass().getClassLoader().loadClass(topicType);
         if (clazz == null)
             throw new XRE("Type %s is not found", topicType);
-        var subscriber = new TopicSubscriber<Message>(clazz, topic) {
-            @Override
-            public void onNext(Message message) {
-                System.out.println(utils.toString(message));
-                count[0]--;
-                if (count[0] == 0) { 
-                    getSubscription().cancel();
-                    Unchecked.run(() -> client.close());
-                    return;
-                }
-            }
-        };
-        client.subscribe(subscriber
-                .withInitialRequest(count[0]));
+        TopicSubscriber<Message> subscriber = null;
+        if (count[0] > 0) {
+        	subscriber = new TopicSubscriber<Message>(clazz, topic) {
+	        	@Override
+	        	public void onNext(Message message) {
+	        		System.out.println(utils.toString(message));
+	        		count[0]--;
+	        		if (count[0] == 0) { 
+	        			getSubscription().cancel();
+	        			Unchecked.run(() -> client.close());
+	        			return;
+	        		}
+	        	}
+        	};
+        	subscriber.withInitialRequest(count[0]);
+        } else {
+        	subscriber = new TopicSubscriber<Message>(clazz, topic) {
+	        	@Override
+	        	public void onNext(Message message) {
+	        		System.out.println(utils.toString(message));
+	        		getSubscription().request(1);
+	        	}
+	    	};
+        }
+        client.subscribe(subscriber);
     }
     
 }
