@@ -21,18 +21,15 @@
  */
 package id.jrosclient.ros;
 
-import java.util.logging.Logger;
+import id.xfunction.lang.XRE;
+import id.xfunction.lang.invoke.MethodCaller;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcHandler;
 import org.apache.xmlrpc.XmlRpcRequest;
 import org.apache.xmlrpc.server.XmlRpcHandlerMapping;
 import org.apache.xmlrpc.server.XmlRpcNoSuchHandlerException;
-
-import id.xfunction.lang.XRE;
-import id.xfunction.logging.XLogger;
 
 /**
  * Receives an XmlRpcRequest, extracts method name and arguments from it and
@@ -40,7 +37,6 @@ import id.xfunction.logging.XLogger;
  */
 final class MethodHandlerMapping implements XmlRpcHandlerMapping {
 
-    private static final Logger LOGGER = XLogger.getLogger(NodeServer.class);
     private MethodCaller caller;
     private XmlRpcHandler handler = new XmlRpcHandler() {
         @Override

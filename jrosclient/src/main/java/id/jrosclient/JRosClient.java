@@ -21,14 +21,6 @@
  */
 package id.jrosclient;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import id.jrosclient.impl.MergeProcessor;
 import id.jrosclient.impl.ObjectsFactory;
 import id.jrosclient.impl.RosRpcClient;
 import id.jrosclient.impl.TextUtils;
@@ -44,9 +36,16 @@ import id.jrosclient.ros.transport.TcpRosClient;
 import id.jrosclient.ros.transport.TcpRosServer;
 import id.jrosmessages.Message;
 import id.jrosmessages.impl.MetadataAccessor;
+import id.xfunction.concurrent.flow.MergeProcessor;
 import id.xfunction.function.Unchecked;
 import id.xfunction.lang.XRE;
 import id.xfunction.logging.XLogger;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Main class of the library which allows to interact with ROS.
