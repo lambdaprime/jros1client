@@ -64,7 +64,7 @@ public class MessagePacketWriterTests {
                 .collect(Collectors.joining(", "));
         var body = "hello ros".getBytes();
         hexString += ", " + XByte.toHexPairs(Integer.reverseBytes(body.length))
-            .replace(" ", ", ");
+                .replace(" ", ", ");
         hexString += ", " + XByte.toHexPairs(body).replace(" ", ", ");
         var packet = new MessagePacket(headerSample.getHeader(), body);
         return List.of(packet, hexString);

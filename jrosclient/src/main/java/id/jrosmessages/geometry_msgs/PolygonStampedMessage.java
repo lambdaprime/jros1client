@@ -32,16 +32,14 @@ import id.xfunction.XJson;
 /**
  * Definition for geometry_msgs/PolygonStamped
  */
-@MessageMetadata(
-    type = PolygonStampedMessage.NAME,
-    md5sum = "c6be8f7dc3bee7fe9e8d296070f53340")
+@MessageMetadata(type = PolygonStampedMessage.NAME, md5sum = "c6be8f7dc3bee7fe9e8d296070f53340")
 public class PolygonStampedMessage implements Message {
 
     static final String NAME = "geometry_msgs/PolygonStamped";
 
     @Streamed
     public HeaderMessage header = new HeaderMessage();
-    
+
     @Streamed
     public PolygonMessage polygon = new PolygonMessage();
 
@@ -60,12 +58,12 @@ public class PolygonStampedMessage implements Message {
         return XJson.asString("header", header,
                 "polygon", polygon);
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(header, polygon);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         PolygonStampedMessage other = (PolygonStampedMessage) obj;

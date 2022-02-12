@@ -31,21 +31,19 @@ import id.xfunction.XJson;
 /**
  * Definition for visualization_msgs/MarkerArray
  */
-@MessageMetadata(
-    type = MarkerArrayMessage.NAME,
-    md5sum = "d155b9ce5188fbaf89745847fd5882d7")
+@MessageMetadata(type = MarkerArrayMessage.NAME, md5sum = "d155b9ce5188fbaf89745847fd5882d7")
 public class MarkerArrayMessage implements Message {
 
     static final String NAME = "visualization_msgs/MarkerArray";
 
     @Streamed
     public MarkerMessage[] markers = new MarkerMessage[0];
-    
+
     public MarkerArrayMessage withMarkers(MarkerMessage... markers) {
         this.markers = markers;
         return this;
     }
-    
+
     @Override
     public String toString() {
         return XJson.asString(

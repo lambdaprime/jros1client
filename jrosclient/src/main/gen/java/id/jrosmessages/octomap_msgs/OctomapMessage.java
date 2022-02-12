@@ -37,100 +37,95 @@ import id.xfunction.XJson;
 /**
  * Definition for octomap_msgs/Octomap
  */
-@MessageMetadata(
-    type = OctomapMessage.NAME,
-    md5sum = "32f3044beff16cd691446b68085d739b")
+@MessageMetadata(type = OctomapMessage.NAME, md5sum = "32f3044beff16cd691446b68085d739b")
 public class OctomapMessage implements Message {
-   
-   static final String NAME = "octomap_msgs/Octomap";
 
-   /**
-    * A 3D map in binary format, as Octree
-    */
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   /**
-    * Flag to denote a binary (only free/occupied) or full occupancy octree (.bt/.ot file)
-    */
-   @Streamed
-   public boolean binary;
-   
-   /**
-    * Class id of the contained octree
-    */
-   @Streamed
-   public StringMessage id = new StringMessage();
-   
-   /**
-    * Resolution (in m) of the smallest octree nodes
-    */
-   @Streamed
-   public double resolution;
-   
-   /**
-    * binary serialization of octree, use conversions.h to read and write octrees
-    */
-   @Streamed
-   public byte[] data = new byte[0];
-   
-   public OctomapMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public OctomapMessage withBinary(boolean binary) {
-       this.binary = binary;
-       return this;
-   }
-   
-   public OctomapMessage withId(StringMessage id) {
-       this.id = id;
-       return this;
-   }
-   
-   public OctomapMessage withResolution(double resolution) {
-       this.resolution = resolution;
-       return this;
-   }
-   
-   public OctomapMessage withData(byte... data) {
-       this.data = data;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           binary,
-           id,
-           resolution,
-           Arrays.hashCode(data)
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (OctomapMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           binary == other.binary &&
-           Objects.equals(id, other.id) &&
-           resolution == other.resolution &&
-           Arrays.equals(data, other.data)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "binary", binary,
-           "id", id,
-           "resolution", resolution,
-           "data", data
-       );
-   }
-   
+    static final String NAME = "octomap_msgs/Octomap";
+
+    /**
+     * A 3D map in binary format, as Octree
+     */
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    /**
+     * Flag to denote a binary (only free/occupied) or full occupancy octree
+     * (.bt/.ot file)
+     */
+    @Streamed
+    public boolean binary;
+
+    /**
+     * Class id of the contained octree
+     */
+    @Streamed
+    public StringMessage id = new StringMessage();
+
+    /**
+     * Resolution (in m) of the smallest octree nodes
+     */
+    @Streamed
+    public double resolution;
+
+    /**
+     * binary serialization of octree, use conversions.h to read and write octrees
+     */
+    @Streamed
+    public byte[] data = new byte[0];
+
+    public OctomapMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public OctomapMessage withBinary(boolean binary) {
+        this.binary = binary;
+        return this;
+    }
+
+    public OctomapMessage withId(StringMessage id) {
+        this.id = id;
+        return this;
+    }
+
+    public OctomapMessage withResolution(double resolution) {
+        this.resolution = resolution;
+        return this;
+    }
+
+    public OctomapMessage withData(byte... data) {
+        this.data = data;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                binary,
+                id,
+                resolution,
+                Arrays.hashCode(data));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (OctomapMessage) obj;
+        return Objects.equals(header, other.header) &&
+                binary == other.binary &&
+                Objects.equals(id, other.id) &&
+                resolution == other.resolution &&
+                Arrays.equals(data, other.data);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "binary", binary,
+                "id", id,
+                "resolution", resolution,
+                "data", data);
+    }
+
 }

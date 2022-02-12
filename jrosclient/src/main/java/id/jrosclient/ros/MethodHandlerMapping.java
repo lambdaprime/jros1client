@@ -35,9 +35,8 @@ import id.xfunction.lang.XRE;
 import id.xfunction.logging.XLogger;
 
 /**
- * Receives an XmlRpcRequest, extracts method name and arguments
- * from it and then calls this method on a HANDLER object using
- * {@link MethodCaller}
+ * Receives an XmlRpcRequest, extracts method name and arguments from it and
+ * then calls this method on a HANDLER object using {@link MethodCaller}
  */
 final class MethodHandlerMapping implements XmlRpcHandlerMapping {
 
@@ -60,16 +59,15 @@ final class MethodHandlerMapping implements XmlRpcHandlerMapping {
             }
         }
     };
-    
+
     public MethodHandlerMapping(Object handler) throws Exception {
         caller = new MethodCaller(handler);
     }
 
     @Override
     public XmlRpcHandler getHandler(String arg0)
-            throws XmlRpcNoSuchHandlerException, XmlRpcException 
-    {
+            throws XmlRpcNoSuchHandlerException, XmlRpcException {
         return handler;
     }
-    
+
 }

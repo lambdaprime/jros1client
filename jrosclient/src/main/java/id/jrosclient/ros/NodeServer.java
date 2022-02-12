@@ -32,8 +32,10 @@ import id.xfunction.function.Unchecked;
 import id.xfunction.logging.XLogger;
 
 /**
- * <p>XMLRPC server which is used to negotiate connections with
- * other ROS nodes and communicate with the Master.</p>
+ * <p>
+ * XMLRPC server which is used to negotiate connections with other ROS nodes and
+ * communicate with the Master.
+ * </p>
  */
 public class NodeServer implements AutoCloseable {
 
@@ -49,7 +51,8 @@ public class NodeServer implements AutoCloseable {
     }
 
     public void start() {
-        if (!server.isEmpty()) return;
+        if (!server.isEmpty())
+            return;
         var s = new WebServer(config.getNodeServerPort());
         Unchecked.run(() -> startInternal(s));
         Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -60,13 +63,12 @@ public class NodeServer implements AutoCloseable {
         });
         server = Optional.of(s);
     }
-    
+
     private void startInternal(WebServer s) throws Exception {
         LOGGER.fine("Starting...");
         XmlRpcServer xmlRpcServer = s.getXmlRpcServer();
         xmlRpcServer.setHandlerMapping(new MethodHandlerMapping(new NodeApiServerDispatcher(config)));
-        XmlRpcServerConfigImpl serverConfig =
-            (XmlRpcServerConfigImpl) xmlRpcServer.getConfig();
+        XmlRpcServerConfigImpl serverConfig = (XmlRpcServerConfigImpl) xmlRpcServer.getConfig();
         serverConfig.setEnabledForExtensions(false);
         serverConfig.setContentLengthOptional(false);
         Unchecked.run(s::start);
@@ -80,7 +82,7 @@ public class NodeServer implements AutoCloseable {
         isClosed = true;
         LOGGER.exiting(CLASS_NAME, "close");
     }
-    
+
     public boolean isClosed() {
         return isClosed;
     }

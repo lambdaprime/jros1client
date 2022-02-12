@@ -36,52 +36,46 @@ import id.jrosmessages.std_msgs.HeaderMessage;
 /**
  * Definition for geometry_msgs/InertiaStamped
  */
-@MessageMetadata(
-    type = InertiaStampedMessage.NAME,
-    md5sum = "f316819d435fac009022ead4726153cc")
+@MessageMetadata(type = InertiaStampedMessage.NAME, md5sum = "f316819d435fac009022ead4726153cc")
 public class InertiaStampedMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/InertiaStamped";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   @Streamed
-   public InertiaMessage inertia = new InertiaMessage();
-   
-   public InertiaStampedMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public InertiaStampedMessage withInertia(InertiaMessage inertia) {
-       this.inertia = inertia;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           inertia
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (InertiaStampedMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(inertia, other.inertia)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "inertia", inertia
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/InertiaStamped";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    @Streamed
+    public InertiaMessage inertia = new InertiaMessage();
+
+    public InertiaStampedMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public InertiaStampedMessage withInertia(InertiaMessage inertia) {
+        this.inertia = inertia;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                inertia);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (InertiaStampedMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(inertia, other.inertia);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "inertia", inertia);
+    }
+
 }

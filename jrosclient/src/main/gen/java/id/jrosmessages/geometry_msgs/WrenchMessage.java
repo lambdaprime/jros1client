@@ -24,7 +24,6 @@
 
 package id.jrosmessages.geometry_msgs;
 
-
 import java.util.Objects;
 
 import id.jrosmessages.Message;
@@ -33,56 +32,49 @@ import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * Definition for geometry_msgs/Wrench
- * This represents force in free space, separated into
- * # its linear and angular parts.
+ * Definition for geometry_msgs/Wrench This represents force in free space,
+ * separated into # its linear and angular parts.
  */
-@MessageMetadata(
-    type = WrenchMessage.NAME,
-    md5sum = "2aae87faaa553ae28e07e684016d765c")
+@MessageMetadata(type = WrenchMessage.NAME, md5sum = "2aae87faaa553ae28e07e684016d765c")
 public class WrenchMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/Wrench";
 
-   @Streamed
-   public Vector3Message force = new Vector3Message();
-   
-   @Streamed
-   public Vector3Message torque = new Vector3Message();
-   
-   public WrenchMessage withForce(Vector3Message force) {
-       this.force = force;
-       return this;
-   }
-   
-   public WrenchMessage withTorque(Vector3Message torque) {
-       this.torque = torque;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           force,
-           torque
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (WrenchMessage) obj;
-       return
-           Objects.equals(force, other.force) &&
-           Objects.equals(torque, other.torque)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "force", force,
-           "torque", torque
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/Wrench";
+
+    @Streamed
+    public Vector3Message force = new Vector3Message();
+
+    @Streamed
+    public Vector3Message torque = new Vector3Message();
+
+    public WrenchMessage withForce(Vector3Message force) {
+        this.force = force;
+        return this;
+    }
+
+    public WrenchMessage withTorque(Vector3Message torque) {
+        this.torque = torque;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                force,
+                torque);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (WrenchMessage) obj;
+        return Objects.equals(force, other.force) &&
+                Objects.equals(torque, other.torque);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "force", force,
+                "torque", torque);
+    }
+
 }

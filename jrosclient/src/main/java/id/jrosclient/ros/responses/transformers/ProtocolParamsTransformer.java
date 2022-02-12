@@ -35,11 +35,11 @@ public class ProtocolParamsTransformer implements ResponseTransformer {
         ss.port = protocolParams.get(2).integer();
         return ss;
     }
-    
+
     public RawResponse transform(ProtocolParamsResponse response) {
         var raw = new RawResponse(new Object[3]);
         ResponseTransformer.populate(raw, response);
-        raw.list().set(2, new Object[]{response.name, response.host, response.port});
+        raw.list().set(2, new Object[] { response.name, response.host, response.port });
         return raw;
     }
 }

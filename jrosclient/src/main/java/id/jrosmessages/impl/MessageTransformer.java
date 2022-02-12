@@ -37,8 +37,9 @@ public class MessageTransformer {
 
     /**
      * Deserialize message from byte stream
-     * @param <M> type of the message
-     * @param data byte array with the message
+     * 
+     * @param <M>   type of the message
+     * @param data  byte array with the message
      * @param clazz message class
      */
     public <M extends Message> M transform(byte[] data, Class<M> clazz) {
@@ -54,6 +55,7 @@ public class MessageTransformer {
 
     /**
      * Serialize message to byte stream
+     * 
      * @param message message to serialize
      */
     public byte[] transform(Message message) {

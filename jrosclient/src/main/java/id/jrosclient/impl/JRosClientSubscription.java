@@ -30,16 +30,16 @@ public class JRosClientSubscription implements Subscription {
     private static final XLogger LOGGER = XLogger.getLogger(JRosClientSubscription.class);
 
     private Subscription subscription;
-    
+
     public JRosClientSubscription(Subscription subscription) {
         this.subscription = subscription;
     }
-    
+
     @Override
     public void request(long n) {
         LOGGER.entering("request", n);
         subscription.request(n);
-        LOGGER.exiting("request");        
+        LOGGER.exiting("request");
     }
 
     @Override

@@ -34,130 +34,121 @@ import id.xfunction.XJson;
 /**
  * Definition for geometry_msgs/Inertia
  */
-@MessageMetadata(
-    type = InertiaMessage.NAME,
-    md5sum = "f9eac69d7f8aaf44853616a958d7477f")
+@MessageMetadata(type = InertiaMessage.NAME, md5sum = "f9eac69d7f8aaf44853616a958d7477f")
 public class InertiaMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/Inertia";
 
-   /**
-    * Mass [kg]
-    */
-   @Streamed
-   public double m;
-   
-   /**
-    * Center of mass [m]
-    */
-   @Streamed
-   public Vector3Message com = new Vector3Message();
-   
-   /**
-    * Inertia Tensor [kg-m^2]
-    *     | ixx ixy ixz |
-    * I = | ixy iyy iyz |
-    *     | ixz iyz izz |
-    */
-   @Streamed
-   public double ixx;
-   
-   @Streamed
-   public double ixy;
-   
-   @Streamed
-   public double ixz;
-   
-   @Streamed
-   public double iyy;
-   
-   @Streamed
-   public double iyz;
-   
-   @Streamed
-   public double izz;
-   
-   public InertiaMessage withM(double m) {
-       this.m = m;
-       return this;
-   }
-   
-   public InertiaMessage withCom(Vector3Message com) {
-       this.com = com;
-       return this;
-   }
-   
-   public InertiaMessage withIxx(double ixx) {
-       this.ixx = ixx;
-       return this;
-   }
-   
-   public InertiaMessage withIxy(double ixy) {
-       this.ixy = ixy;
-       return this;
-   }
-   
-   public InertiaMessage withIxz(double ixz) {
-       this.ixz = ixz;
-       return this;
-   }
-   
-   public InertiaMessage withIyy(double iyy) {
-       this.iyy = iyy;
-       return this;
-   }
-   
-   public InertiaMessage withIyz(double iyz) {
-       this.iyz = iyz;
-       return this;
-   }
-   
-   public InertiaMessage withIzz(double izz) {
-       this.izz = izz;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           m,
-           com,
-           ixx,
-           ixy,
-           ixz,
-           iyy,
-           iyz,
-           izz
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (InertiaMessage) obj;
-       return
-           m == other.m &&
-           Objects.equals(com, other.com) &&
-           ixx == other.ixx &&
-           ixy == other.ixy &&
-           ixz == other.ixz &&
-           iyy == other.iyy &&
-           iyz == other.iyz &&
-           izz == other.izz
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "m", m,
-           "com", com,
-           "ixx", ixx,
-           "ixy", ixy,
-           "ixz", ixz,
-           "iyy", iyy,
-           "iyz", iyz,
-           "izz", izz
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/Inertia";
+
+    /**
+     * Mass [kg]
+     */
+    @Streamed
+    public double m;
+
+    /**
+     * Center of mass [m]
+     */
+    @Streamed
+    public Vector3Message com = new Vector3Message();
+
+    /**
+     * Inertia Tensor [kg-m^2] | ixx ixy ixz | I = | ixy iyy iyz | | ixz iyz izz |
+     */
+    @Streamed
+    public double ixx;
+
+    @Streamed
+    public double ixy;
+
+    @Streamed
+    public double ixz;
+
+    @Streamed
+    public double iyy;
+
+    @Streamed
+    public double iyz;
+
+    @Streamed
+    public double izz;
+
+    public InertiaMessage withM(double m) {
+        this.m = m;
+        return this;
+    }
+
+    public InertiaMessage withCom(Vector3Message com) {
+        this.com = com;
+        return this;
+    }
+
+    public InertiaMessage withIxx(double ixx) {
+        this.ixx = ixx;
+        return this;
+    }
+
+    public InertiaMessage withIxy(double ixy) {
+        this.ixy = ixy;
+        return this;
+    }
+
+    public InertiaMessage withIxz(double ixz) {
+        this.ixz = ixz;
+        return this;
+    }
+
+    public InertiaMessage withIyy(double iyy) {
+        this.iyy = iyy;
+        return this;
+    }
+
+    public InertiaMessage withIyz(double iyz) {
+        this.iyz = iyz;
+        return this;
+    }
+
+    public InertiaMessage withIzz(double izz) {
+        this.izz = izz;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                m,
+                com,
+                ixx,
+                ixy,
+                ixz,
+                iyy,
+                iyz,
+                izz);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (InertiaMessage) obj;
+        return m == other.m &&
+                Objects.equals(com, other.com) &&
+                ixx == other.ixx &&
+                ixy == other.ixy &&
+                ixz == other.ixz &&
+                iyy == other.iyy &&
+                iyz == other.iyz &&
+                izz == other.izz;
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "m", m,
+                "com", com,
+                "ixx", ixx,
+                "ixy", ixy,
+                "ixz", ixz,
+                "iyy", iyy,
+                "iyz", iyz,
+                "izz", izz);
+    }
+
 }

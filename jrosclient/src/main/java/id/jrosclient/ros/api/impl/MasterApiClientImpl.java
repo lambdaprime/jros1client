@@ -51,27 +51,26 @@ public class MasterApiClientImpl implements MasterApi {
 
     @Override
     public SystemStateResponse getSystemState(String callerId) {
-        Object[] params = new Object[]{callerId};
+        Object[] params = new Object[] { callerId };
         return systemStateParser.parse(client.execute("getSystemState", params));
     }
 
     @Override
     public StringResponse getUri(String callerId) {
-        Object[] params = new Object[]{callerId};
+        Object[] params = new Object[] { callerId };
         return stringParser.parse("masterURI", client.execute("getUri", params));
     }
 
-    //@Override
+    // @Override
     public StringResponse lookupService(String callerId, String service) {
-        Object[] params = new Object[]{callerId, service};
+        Object[] params = new Object[] { callerId, service };
         return stringParser.parse("serviceUrl", client.execute("lookupService", params));
     }
 
     @Override
     public ListResponse<String> registerPublisher(String callerId, String topic,
-            String topicType, String callerApi) 
-    {
-        Object[] params = new Object[]{callerId, topic, topicType, callerApi};
+            String topicType, String callerApi) {
+        Object[] params = new Object[] { callerId, topic, topicType, callerApi };
         return stringListParser.parseString("subscriberApis",
                 client.execute("registerPublisher", params));
     }
@@ -79,14 +78,14 @@ public class MasterApiClientImpl implements MasterApi {
     @Override
     public ListResponse<String> registerSubscriber(String callerId, String topic, String topicType,
             String callerApi) {
-        Object[] params = new Object[]{callerId, topic, topicType, callerApi};
+        Object[] params = new Object[] { callerId, topic, topicType, callerApi };
         return stringListParser.parseString("publishers",
                 client.execute("registerSubscriber", params));
     }
 
     @Override
     public IntResponse unregisterPublisher(String callerId, String topic, String callerApi) {
-        Object[] params = new Object[]{callerId, topic, callerApi};
+        Object[] params = new Object[] { callerId, topic, callerApi };
         return intParser.parse("subscriberApis",
                 client.execute("unregisterPublisher", params));
     }

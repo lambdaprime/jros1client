@@ -31,9 +31,7 @@ import id.xfunction.XJson;
 /**
  * Definition for geometry_msgs/Point
  */
-@MessageMetadata(
-    type = PointMessage.NAME,
-    md5sum = "4a842b65f413084dc2b10fb484ea7f17")
+@MessageMetadata(type = PointMessage.NAME, md5sum = "4a842b65f413084dc2b10fb484ea7f17")
 public class PointMessage implements Message {
 
     static final String NAME = "geometry_msgs/Point";
@@ -41,11 +39,11 @@ public class PointMessage implements Message {
     public PointMessage() {
         // required for kineticstreamer
     }
-    
+
     public PointMessage(Vector3Message vector) {
         this(vector.x, vector.y, vector.z);
     }
-    
+
     public PointMessage(double x, double y, double z) {
         this.x = x;
         this.y = y;
@@ -76,12 +74,12 @@ public class PointMessage implements Message {
                 "y", y,
                 "z", z);
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(x, y, z);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         PointMessage other = (PointMessage) obj;

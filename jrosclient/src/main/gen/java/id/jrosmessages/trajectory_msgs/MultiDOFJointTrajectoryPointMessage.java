@@ -38,83 +38,77 @@ import id.xfunction.XJson;
 /**
  * Definition for trajectory_msgs/MultiDOFJointTrajectoryPoint
  */
-@MessageMetadata(
-    type = MultiDOFJointTrajectoryPointMessage.NAME,
-    md5sum = "5f4362816258cb631113d0b515ba1c14")
+@MessageMetadata(type = MultiDOFJointTrajectoryPointMessage.NAME, md5sum = "5f4362816258cb631113d0b515ba1c14")
 public class MultiDOFJointTrajectoryPointMessage implements Message {
-   
-   static final String NAME = "trajectory_msgs/MultiDOFJointTrajectoryPoint";
 
-   /**
-    * Each multi-dof joint can specify a transform (up to 6 DOF)
-    */
-   @Streamed
-   public TransformMessage[] transforms = new TransformMessage[0];
-   
-   /**
-    * There can be a velocity specified for the origin of the joint
-    */
-   @Streamed
-   public TwistMessage[] velocities = new TwistMessage[0];
-   
-   /**
-    * There can be an acceleration specified for the origin of the joint
-    */
-   @Streamed
-   public TwistMessage[] accelerations = new TwistMessage[0];
-   
-   @Streamed
-   public Duration time_from_start = new Duration();
-   
-   public MultiDOFJointTrajectoryPointMessage withTransforms(TransformMessage... transforms) {
-       this.transforms = transforms;
-       return this;
-   }
-   
-   public MultiDOFJointTrajectoryPointMessage withVelocities(TwistMessage... velocities) {
-       this.velocities = velocities;
-       return this;
-   }
-   
-   public MultiDOFJointTrajectoryPointMessage withAccelerations(TwistMessage... accelerations) {
-       this.accelerations = accelerations;
-       return this;
-   }
-   
-   public MultiDOFJointTrajectoryPointMessage withTimeFromStart(Duration time_from_start) {
-       this.time_from_start = time_from_start;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           Arrays.hashCode(transforms),
-           Arrays.hashCode(velocities),
-           Arrays.hashCode(accelerations),
-           time_from_start
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (MultiDOFJointTrajectoryPointMessage) obj;
-       return
-           Arrays.equals(transforms, other.transforms) &&
-           Arrays.equals(velocities, other.velocities) &&
-           Arrays.equals(accelerations, other.accelerations) &&
-           Objects.equals(time_from_start, other.time_from_start)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "transforms", transforms,
-           "velocities", velocities,
-           "accelerations", accelerations,
-           "time_from_start", time_from_start
-       );
-   }
-   
+    static final String NAME = "trajectory_msgs/MultiDOFJointTrajectoryPoint";
+
+    /**
+     * Each multi-dof joint can specify a transform (up to 6 DOF)
+     */
+    @Streamed
+    public TransformMessage[] transforms = new TransformMessage[0];
+
+    /**
+     * There can be a velocity specified for the origin of the joint
+     */
+    @Streamed
+    public TwistMessage[] velocities = new TwistMessage[0];
+
+    /**
+     * There can be an acceleration specified for the origin of the joint
+     */
+    @Streamed
+    public TwistMessage[] accelerations = new TwistMessage[0];
+
+    @Streamed
+    public Duration time_from_start = new Duration();
+
+    public MultiDOFJointTrajectoryPointMessage withTransforms(TransformMessage... transforms) {
+        this.transforms = transforms;
+        return this;
+    }
+
+    public MultiDOFJointTrajectoryPointMessage withVelocities(TwistMessage... velocities) {
+        this.velocities = velocities;
+        return this;
+    }
+
+    public MultiDOFJointTrajectoryPointMessage withAccelerations(TwistMessage... accelerations) {
+        this.accelerations = accelerations;
+        return this;
+    }
+
+    public MultiDOFJointTrajectoryPointMessage withTimeFromStart(Duration time_from_start) {
+        this.time_from_start = time_from_start;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                Arrays.hashCode(transforms),
+                Arrays.hashCode(velocities),
+                Arrays.hashCode(accelerations),
+                time_from_start);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (MultiDOFJointTrajectoryPointMessage) obj;
+        return Arrays.equals(transforms, other.transforms) &&
+                Arrays.equals(velocities, other.velocities) &&
+                Arrays.equals(accelerations, other.accelerations) &&
+                Objects.equals(time_from_start, other.time_from_start);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "transforms", transforms,
+                "velocities", velocities,
+                "accelerations", accelerations,
+                "time_from_start", time_from_start);
+    }
+
 }

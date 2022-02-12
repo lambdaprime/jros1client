@@ -26,9 +26,9 @@ import id.jrosmessages.impl.MetadataAccessor;
 import id.xfunction.lang.XRuntimeException;
 
 public class ConnectionHeaderValidator {
-    
+
     private MetadataAccessor metadataAccessor;
-    
+
     public ConnectionHeaderValidator(MetadataAccessor metadataAccessor) {
         this.metadataAccessor = metadataAccessor;
     }
@@ -38,18 +38,18 @@ public class ConnectionHeaderValidator {
             throw new XRuntimeException("Message %s type is empty", messageClass.getSimpleName());
         }
         var type = header.getType().get();
-        
-        var messageType = metadataAccessor.getType(messageClass);        
+
+        var messageType = metadataAccessor.getType(messageClass);
         if (!messageType.equals(type)) {
             throw new XRuntimeException("Message type missmatch %s != %s",
                     messageType, type);
         }
-        
+
         if (header.getMd5sum().isEmpty()) {
             throw new XRuntimeException("Message %s MD5 sum is empty", messageClass.getSimpleName());
         }
         var md5sum = header.getMd5sum().get();
-        
+
         var messageMd5 = metadataAccessor.getMd5(messageClass);
         if (!messageMd5.equals(md5sum)) {
             throw new XRuntimeException("Message %s md5 sum missmatch %s != %s",

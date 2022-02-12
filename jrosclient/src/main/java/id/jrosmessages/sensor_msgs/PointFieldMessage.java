@@ -31,16 +31,14 @@ import id.xfunction.XJson;
 /**
  * Definition for sensor_msgs/PointField
  */
-@MessageMetadata(
-    type = PointFieldMessage.NAME,
-    md5sum = "268eacb2962780ceac86cbd17e328150")
+@MessageMetadata(type = PointFieldMessage.NAME, md5sum = "268eacb2962780ceac86cbd17e328150")
 public class PointFieldMessage implements Message {
 
     static final String NAME = "sensor_msgs/PointField";
 
     /**
-     * This message holds the description of one point entry in the
-     * PointCloud2 message format.
+     * This message holds the description of one point entry in the PointCloud2
+     * message format.
      */
     public enum DataType {
         INT8,
@@ -52,56 +50,59 @@ public class PointFieldMessage implements Message {
         FLOAT32,
         FLOAT64
     }
-    
+
     /**
      * Name of field: x, y, z, rgb, rgba, etc.
-     * @see <a href="http://docs.ros.org/hydro/api/pcl/html/point__types_8hpp.html">Point type names</a>
+     * 
+     * @see <a href=
+     *      "http://docs.ros.org/hydro/api/pcl/html/point__types_8hpp.html">Point
+     *      type names</a>
      */
     @Streamed
     public String name;
-    
+
     /**
      * Offset from start of point struct
      */
     @Streamed
     public int offset;
-    
+
     /**
      * Data type
      */
     @Streamed
     public byte datatype;
-    
+
     /**
      * How many elements in the field
      */
     @Streamed
     public int count;
-    
+
     public PointFieldMessage() {
-        
+
     }
-    
+
     public PointFieldMessage withName(String name) {
         this.name = name;
         return this;
     }
-    
+
     public PointFieldMessage withOffset(int offset) {
         this.offset = offset;
         return this;
     }
-    
+
     public PointFieldMessage withCount(int count) {
         this.count = count;
         return this;
     }
-    
+
     public PointFieldMessage withDataType(DataType datatype) {
         this.datatype = (byte) datatype.ordinal();
         return this;
     }
-    
+
     @Override
     public String toString() {
         return XJson.asString(

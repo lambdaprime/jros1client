@@ -31,7 +31,7 @@ public class MessagePacketWriter {
     private DataOutput out;
     private ConnectionHeaderWriter headerWriter;
     private Utils utils = new Utils();
-    
+
     public MessagePacketWriter(DataOutput output) {
         this.out = output;
         headerWriter = new ConnectionHeaderWriter(output);
@@ -40,7 +40,8 @@ public class MessagePacketWriter {
     public void write(MessagePacket packet) throws IOException {
         headerWriter.write(packet.getHeader());
         var body = packet.getBody();
-        if (body == null) return;
+        if (body == null)
+            return;
         utils.writeLen(out, body.length);
         out.write(body);
     }

@@ -28,8 +28,8 @@ import id.jrosmessages.geometry_msgs.TransformMessage;
 /**
  * Message objects transformers.
  * 
- * <p>For performance reasons they avoid copying data and copy
- * references instead.
+ * <p>
+ * For performance reasons they avoid copying data and copy references instead.
  */
 public class JRosMessagesTransformer {
 

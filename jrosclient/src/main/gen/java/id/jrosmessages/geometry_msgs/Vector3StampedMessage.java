@@ -34,55 +34,49 @@ import id.xfunction.XJson;
 import id.jrosmessages.std_msgs.HeaderMessage;
 
 /**
- * Definition for geometry_msgs/Vector3Stamped
- * This represents a Vector3 with reference coordinate frame and timestamp
+ * Definition for geometry_msgs/Vector3Stamped This represents a Vector3 with
+ * reference coordinate frame and timestamp
  */
-@MessageMetadata(
-    type = Vector3StampedMessage.NAME,
-    md5sum = "25a0f208694a205ef85c426c089ebf78")
+@MessageMetadata(type = Vector3StampedMessage.NAME, md5sum = "25a0f208694a205ef85c426c089ebf78")
 public class Vector3StampedMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/Vector3Stamped";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   @Streamed
-   public Vector3Message vector = new Vector3Message();
-   
-   public Vector3StampedMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public Vector3StampedMessage withVector(Vector3Message vector) {
-       this.vector = vector;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           vector
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (Vector3StampedMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(vector, other.vector)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "vector", vector
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/Vector3Stamped";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    @Streamed
+    public Vector3Message vector = new Vector3Message();
+
+    public Vector3StampedMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public Vector3StampedMessage withVector(Vector3Message vector) {
+        this.vector = vector;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                vector);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (Vector3StampedMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(vector, other.vector);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "vector", vector);
+    }
+
 }

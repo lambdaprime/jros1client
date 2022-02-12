@@ -31,16 +31,14 @@ import id.xfunction.XJson;
 /**
  * Definition for geometry_msgs/Pose
  */
-@MessageMetadata(
-    type = PoseMessage.NAME,
-    md5sum = "e45d45a5a1ce597b249e23fb30fc871f")
+@MessageMetadata(type = PoseMessage.NAME, md5sum = "e45d45a5a1ce597b249e23fb30fc871f")
 public class PoseMessage implements Message {
 
     static final String NAME = "geometry_msgs/Pose";
-    
+
     @Streamed
     public PointMessage position = new PointMessage();
-    
+
     @Streamed
     public QuaternionMessage orientation = new QuaternionMessage();
 

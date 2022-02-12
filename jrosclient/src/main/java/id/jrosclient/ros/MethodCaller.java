@@ -33,11 +33,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>Allows to call methods of an object by name dynamically at a
- * runtime.</p>
- * <p>Calls are done thru MethodHandle and not reflection which supposed
- * to be faster.</p>
- * <p>Overloaded methods are not supported.</p>
+ * <p>
+ * Allows to call methods of an object by name dynamically at a runtime.
+ * </p>
+ * <p>
+ * Calls are done thru MethodHandle and not reflection which supposed to be
+ * faster.
+ * </p>
+ * <p>
+ * Overloaded methods are not supported.
+ * </p>
  */
 public class MethodCaller {
 
@@ -51,26 +56,30 @@ public class MethodCaller {
         this.object = object;
         Class<?> clazz = object.getClass();
         Method[] methods = clazz.getMethods();
-        for (var m: methods) {
-            if (!Modifier.isPublic(m.getModifiers())) continue;
-            if (Modifier.isNative(m.getModifiers())) continue;
-            if (Modifier.isStatic(m.getModifiers())) continue;
+        for (var m : methods) {
+            if (!Modifier.isPublic(m.getModifiers()))
+                continue;
+            if (Modifier.isNative(m.getModifiers()))
+                continue;
+            if (Modifier.isStatic(m.getModifiers()))
+                continue;
             var mt = MethodType.methodType(m.getReturnType(), m.getParameterTypes());
             var mh = MethodHandles.lookup().findVirtual(clazz, m.getName(), mt);
             this.methods.put(m.getName(), mh);
         }
     }
-    
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public Object call(String methodName, List args) throws Throwable, NoSuchMethodException {
         var mh = methods.get(methodName);
-        if (mh == null) throw new NoSuchMethodException(methodName);
+        if (mh == null)
+            throw new NoSuchMethodException(methodName);
         List list = new ArrayList<>();
         list.add(object);
         list.addAll(args);
         return mh.invokeWithArguments(list);
     }
-    
+
     public Object call(String methodName) throws Throwable, NoSuchMethodException {
         return call(methodName, Collections.emptyList());
     }

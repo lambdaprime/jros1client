@@ -34,45 +34,49 @@ import java.util.concurrent.atomic.AtomicInteger;
 import id.xfunction.logging.XLogger;
 
 /**
- * Merge multiple subscriptions for different publishers
- * into one.
+ * Merge multiple subscriptions for different publishers into one.
  * 
- * <p>This processor can be subscribed to many publishers. It will
- * manage all the subscriptions from them and will deliver all messages
- * it receives to its own subscriber. It supports only one subscriber at a time.
+ * <p>
+ * This processor can be subscribed to many publishers. It will manage all the
+ * subscriptions from them and will deliver all messages it receives to its own
+ * subscriber. It supports only one subscriber at a time.
  * 
- * <p>This processor stops only when there is no more active publishers
- * (all of them either issued {@link Subscriber#onComplete()} or {@link Subscriber#onError(Throwable)})
- * and it:
+ * <p>
+ * This processor stops only when there is no more active publishers (all of
+ * them either issued {@link Subscriber#onComplete()} or
+ * {@link Subscriber#onError(Throwable)}) and it:
  * 
  * <ul>
- * <li>issues {@link Subscriber#onComplete()} only when all publishers
- * to which this processor subscribed issued {@link Subscriber#onComplete()}.
- * <li>if at least one of the publishers issued {@link Subscriber#onError(Throwable)} then this
- * processor will issue {@link Subscriber#onError(Throwable)} instead of {@link Subscriber#onComplete()}
- * with all the exceptions suppressed inside
+ * <li>issues {@link Subscriber#onComplete()} only when all publishers to which
+ * this processor subscribed issued {@link Subscriber#onComplete()}.
+ * <li>if at least one of the publishers issued
+ * {@link Subscriber#onError(Throwable)} then this processor will issue
+ * {@link Subscriber#onError(Throwable)} instead of
+ * {@link Subscriber#onComplete()} with all the exceptions suppressed inside
  * </ul>
  *
  */
 public class MergeProcessor<T> extends SubmissionPublisher<T> {
-	private AtomicInteger numOfActiveSubscriptions = new AtomicInteger();
+    private AtomicInteger numOfActiveSubscriptions = new AtomicInteger();
     private List<Throwable> failed = new CopyOnWriteArrayList<>();
-    
+
     public MergeProcessor() {
-    	// By default SubmissionPublisher is using commonPool which has some limited
-    	// number of threads and can be quickly depleted.
-    	// Example: if MergeProcessor subscribed to
-    	// many publishers they can fill up MergeProcessor queue very quickly and if that
-    	// happens they may block awaiting for a new space be available. In case there is
-    	// no more free threads left for MergeProcessor it will never be able to remove
-    	// items from its queue and will stall.
-    	// To prevent this we use separate pool for MergeProcessor itself.
-    	super(Executors.newCachedThreadPool(), 32);
-	}
-    
+        // By default SubmissionPublisher is using commonPool which has some limited
+        // number of threads and can be quickly depleted.
+        // Example: if MergeProcessor subscribed to
+        // many publishers they can fill up MergeProcessor queue very quickly and if
+        // that
+        // happens they may block awaiting for a new space be available. In case there
+        // is
+        // no more free threads left for MergeProcessor it will never be able to remove
+        // items from its queue and will stall.
+        // To prevent this we use separate pool for MergeProcessor itself.
+        super(Executors.newCachedThreadPool(), 32);
+    }
+
     public Subscriber<T> newSubscriber() {
         return new Subscriber<T>() {
-        	private final XLogger LOGGER = XLogger.getLogger(this);
+            private final XLogger LOGGER = XLogger.getLogger(this);
             private Subscription subscription;
 
             @Override
@@ -86,7 +90,8 @@ public class MergeProcessor<T> extends SubmissionPublisher<T> {
             @Override
             public void onNext(T item) {
                 LOGGER.entering("onNext");
-                if (noSubscribers()) return;
+                if (noSubscribers())
+                    return;
                 submit(item);
                 subscription.request(1);
             }
@@ -94,7 +99,8 @@ public class MergeProcessor<T> extends SubmissionPublisher<T> {
             @Override
             public void onError(Throwable throwable) {
                 LOGGER.entering("onError");
-                if (noSubscribers()) return;
+                if (noSubscribers())
+                    return;
                 failed.add(throwable);
                 if (numOfActiveSubscriptions.decrementAndGet() == 0) {
                     closeExceptionally(aggregateExceptions());
@@ -104,7 +110,8 @@ public class MergeProcessor<T> extends SubmissionPublisher<T> {
             @Override
             public void onComplete() {
                 LOGGER.entering("onComplete");
-                if (noSubscribers()) return;
+                if (noSubscribers())
+                    return;
                 if (numOfActiveSubscriptions.decrementAndGet() == 0) {
                     if (failed.isEmpty()) {
                         close();
@@ -113,10 +120,12 @@ public class MergeProcessor<T> extends SubmissionPublisher<T> {
                     }
                 }
             }
-            
+
             private boolean noSubscribers() {
-            	if (!isClosed()) return false;
-                if (getNumberOfSubscribers() != 0) return false;
+                if (!isClosed())
+                    return false;
+                if (getNumberOfSubscribers() != 0)
+                    return false;
                 LOGGER.fine("No more subscribers, canceling subscription and closing processor");
                 subscription.cancel();
                 close();
@@ -129,7 +138,7 @@ public class MergeProcessor<T> extends SubmissionPublisher<T> {
     public int getNumOfActiveSubscriptions() {
         return numOfActiveSubscriptions.get();
     }
-    
+
     private Exception aggregateExceptions() {
         var exception = new Exception("Some of the publishers terminated with errors (see suppressed exceptions)");
         failed.forEach(exception::addSuppressed);
@@ -138,14 +147,14 @@ public class MergeProcessor<T> extends SubmissionPublisher<T> {
 
     @Override
     public void close() {
-    	super.close();
-    	var executor = (ExecutorService) getExecutor();
-    	executor.shutdown();
-    	try {
-			executor.awaitTermination(Integer.parseInt(System.getProperty("awaitMergeProcessorInSecs",
-			        "5")), TimeUnit.SECONDS);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        super.close();
+        var executor = (ExecutorService) getExecutor();
+        executor.shutdown();
+        try {
+            executor.awaitTermination(Integer.parseInt(System.getProperty("awaitMergeProcessorInSecs",
+                    "5")), TimeUnit.SECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

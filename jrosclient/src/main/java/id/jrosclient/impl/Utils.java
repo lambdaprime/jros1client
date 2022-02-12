@@ -24,7 +24,8 @@ package id.jrosclient.impl;
 public class Utils {
 
     public String formatTopicName(String name) {
-        if (!name.startsWith("/")) name = "/" + name;
+        if (!name.startsWith("/"))
+            name = "/" + name;
         return name;
     }
 }

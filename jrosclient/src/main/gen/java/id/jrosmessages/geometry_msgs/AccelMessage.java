@@ -24,7 +24,6 @@
 
 package id.jrosmessages.geometry_msgs;
 
-
 import java.util.Objects;
 
 import id.jrosmessages.Message;
@@ -33,55 +32,49 @@ import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * Definition for geometry_msgs/Accel
- * This expresses acceleration in free space broken into its linear and angular parts.
+ * Definition for geometry_msgs/Accel This expresses acceleration in free space
+ * broken into its linear and angular parts.
  */
-@MessageMetadata(
-    type = AccelMessage.NAME,
-    md5sum = "e7128c50122d225a806b2f9ad84736b1")
+@MessageMetadata(type = AccelMessage.NAME, md5sum = "e7128c50122d225a806b2f9ad84736b1")
 public class AccelMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/Accel";
 
-   @Streamed
-   public Vector3Message linear = new Vector3Message();
-   
-   @Streamed
-   public Vector3Message angular = new Vector3Message();
-   
-   public AccelMessage withLinear(Vector3Message linear) {
-       this.linear = linear;
-       return this;
-   }
-   
-   public AccelMessage withAngular(Vector3Message angular) {
-       this.angular = angular;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           linear,
-           angular
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (AccelMessage) obj;
-       return
-           Objects.equals(linear, other.linear) &&
-           Objects.equals(angular, other.angular)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "linear", linear,
-           "angular", angular
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/Accel";
+
+    @Streamed
+    public Vector3Message linear = new Vector3Message();
+
+    @Streamed
+    public Vector3Message angular = new Vector3Message();
+
+    public AccelMessage withLinear(Vector3Message linear) {
+        this.linear = linear;
+        return this;
+    }
+
+    public AccelMessage withAngular(Vector3Message angular) {
+        this.angular = angular;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                linear,
+                angular);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (AccelMessage) obj;
+        return Objects.equals(linear, other.linear) &&
+                Objects.equals(angular, other.angular);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "linear", linear,
+                "angular", angular);
+    }
+
 }

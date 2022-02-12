@@ -34,55 +34,49 @@ import id.xfunction.XJson;
 import id.jrosmessages.std_msgs.HeaderMessage;
 
 /**
- * Definition for geometry_msgs/PointStamped
- * This represents a Point with reference coordinate frame and timestamp
+ * Definition for geometry_msgs/PointStamped This represents a Point with
+ * reference coordinate frame and timestamp
  */
-@MessageMetadata(
-    type = PointStampedMessage.NAME,
-    md5sum = "e948b3cf3f45aaeaedb063e8b966cf1f")
+@MessageMetadata(type = PointStampedMessage.NAME, md5sum = "e948b3cf3f45aaeaedb063e8b966cf1f")
 public class PointStampedMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/PointStamped";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   @Streamed
-   public PointMessage point = new PointMessage();
-   
-   public PointStampedMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public PointStampedMessage withPoint(PointMessage point) {
-       this.point = point;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           point
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (PointStampedMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(point, other.point)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "point", point
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/PointStamped";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    @Streamed
+    public PointMessage point = new PointMessage();
+
+    public PointStampedMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public PointStampedMessage withPoint(PointMessage point) {
+        this.point = point;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                point);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (PointStampedMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(point, other.point);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "point", point);
+    }
+
 }

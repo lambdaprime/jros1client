@@ -38,7 +38,7 @@ import id.jrosclient.tests.TestUtils;
 import static id.jrosclient.tests.integration.TestConstants.URL;
 
 public class SubscriberTests {
-    
+
     private static JRosClient client;
 
     @BeforeAll

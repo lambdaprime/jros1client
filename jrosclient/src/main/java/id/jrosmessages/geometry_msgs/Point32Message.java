@@ -31,9 +31,7 @@ import id.xfunction.XJson;
 /**
  * Definition for geometry_msgs/Point32
  */
-@MessageMetadata(
-    type = Point32Message.NAME,
-    md5sum = "cc153912f1453b708d221682bc23d9ac")
+@MessageMetadata(type = Point32Message.NAME, md5sum = "cc153912f1453b708d221682bc23d9ac")
 public class Point32Message implements Message {
 
     static final String NAME = "geometry_msgs/Point32";
@@ -71,12 +69,12 @@ public class Point32Message implements Message {
                 "y", y,
                 "z", z);
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(x, y, z);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         Point32Message other = (Point32Message) obj;

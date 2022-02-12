@@ -38,7 +38,7 @@ public class RosDataOutput implements OutputKineticStream {
     public void writeLen(int len) throws IOException {
         out.writeInt(Integer.reverseBytes(len));
     }
-    
+
     @Override
     public void writeString(String str) throws IOException {
         writeLen(str.length());
@@ -72,7 +72,7 @@ public class RosDataOutput implements OutputKineticStream {
     @Override
     public void writeArray(Object[] array) throws Exception {
         writeLen(array.length);
-        for (var item: array) {
+        for (var item : array) {
             new KineticStreamWriter(this).write(item);
         }
     }
@@ -95,15 +95,15 @@ public class RosDataOutput implements OutputKineticStream {
     @Override
     public void writeByteArray(byte[] array) throws Exception {
         writeLen(array.length);
-        for (var item: array) {
+        for (var item : array) {
             out.writeByte(item);
         }
     }
-    
+
     @Override
     public void writeDoubleArray(double[] array) throws Exception {
         writeLen(array.length);
-        for (var item: array) {
+        for (var item : array) {
             writeDouble(item);
         }
     }
@@ -111,7 +111,7 @@ public class RosDataOutput implements OutputKineticStream {
     @Override
     public void writeBooleanArray(boolean[] array) throws Exception {
         writeLen(array.length);
-        for (var item: array) {
+        for (var item : array) {
             writeBoolean(item);
         }
     }

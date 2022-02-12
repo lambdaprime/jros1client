@@ -34,14 +34,14 @@ import id.xfunction.lang.XRE;
 import id.xfunction.logging.XLogger;
 
 /**
- * Server implementation of ROS Node API which allows to communicate
- * with remote ROS nodes.
+ * Server implementation of ROS Node API which allows to communicate with remote
+ * ROS nodes.
  *
  */
 public class NodeApiServerImpl implements NodeApi {
 
     private static final XLogger LOGGER = XLogger.getLogger(NodeApiServerImpl.class);
-    
+
     private JRosClientConfiguration config;
 
     public NodeApiServerImpl(JRosClientConfiguration config) {
@@ -50,14 +50,14 @@ public class NodeApiServerImpl implements NodeApi {
 
     @Override
     public ProtocolParamsResponse requestTopic(String callerId, String topic,
-            List<Protocol> protocols) 
-    {
+            List<Protocol> protocols) {
         LOGGER.entering("requestTopic", protocols);
         boolean hasTcpRos = protocols.stream()
                 .map(Protocol::getProtocolName)
                 .anyMatch(Predicate.isEqual(Protocol.TCPROS.protocolName));
-        if (!hasTcpRos) throw new XRE("Subscriber %s requested non TCPROS protocol",
-                callerId);
+        if (!hasTcpRos)
+            throw new XRE("Subscriber %s requested non TCPROS protocol",
+                    callerId);
         var response = new ProtocolParamsResponse();
         response.withStatusCode(StatusCode.SUCCESS);
         response.withStatusMessage("ready");

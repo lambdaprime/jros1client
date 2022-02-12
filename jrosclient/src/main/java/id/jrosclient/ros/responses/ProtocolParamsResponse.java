@@ -34,12 +34,12 @@ public class ProtocolParamsResponse extends Response {
         this.name = protocol.protocolName;
         return this;
     }
-    
+
     public ProtocolParamsResponse withHost(String host) {
         this.host = host;
         return this;
     }
-    
+
     public ProtocolParamsResponse withPort(int port) {
         this.port = port;
         return this;

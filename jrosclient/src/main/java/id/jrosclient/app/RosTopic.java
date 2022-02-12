@@ -45,7 +45,7 @@ public class RosTopic {
     private Optional<String> masterUrl;
     private JRosClientConfiguration config;
     private TextUtils utils;
-    
+
     public RosTopic(Optional<String> masterUrl, JRosClientConfiguration config) {
         this.masterUrl = masterUrl;
         this.config = config;
@@ -54,7 +54,8 @@ public class RosTopic {
 
     public void execute(List<String> positionalArgs) {
         var rest = new LinkedList<>(positionalArgs);
-        if (rest.isEmpty()) throw new ArgumentParsingException();
+        if (rest.isEmpty())
+            throw new ArgumentParsingException();
         var cmd = rest.removeFirst();
         switch (cmd) {
         case "echo":
@@ -63,7 +64,8 @@ public class RosTopic {
         case "list":
             Unchecked.run(() -> list());
             break;
-        default: throw new ArgumentParsingException();
+        default:
+            throw new ArgumentParsingException();
         }
     }
 
@@ -81,43 +83,45 @@ public class RosTopic {
         LinkedList<String> positionalArgs = new LinkedList<>();
         int[] count = new int[1];
         Map<String, Consumer<String>> handlers = Map.of(
-                "-n", n -> { count[0] = Integer.parseInt(n); }
-        );
+                "-n", n -> {
+                    count[0] = Integer.parseInt(n);
+                });
         new SmartArgs(handlers, positionalArgs::add).parse(rest.toArray(new String[0]));
-        if (positionalArgs.size() < 2) throw new ArgumentParsingException();
+        if (positionalArgs.size() < 2)
+            throw new ArgumentParsingException();
         JRosClient client = masterUrl.map(url -> new JRosClient(url, config))
                 .orElse(new JRosClient(config));
         var topic = positionalArgs.removeFirst();
         var topicType = positionalArgs.removeFirst();
         @SuppressWarnings("unchecked")
-		Class<Message> clazz = (Class<Message>) getClass().getClassLoader().loadClass(topicType);
+        Class<Message> clazz = (Class<Message>) getClass().getClassLoader().loadClass(topicType);
         if (clazz == null)
             throw new XRE("Type %s is not found", topicType);
         TopicSubscriber<Message> subscriber = null;
         if (count[0] > 0) {
-        	subscriber = new TopicSubscriber<Message>(clazz, topic) {
-	        	@Override
-	        	public void onNext(Message message) {
-	        		System.out.println(utils.toString(message));
-	        		count[0]--;
-	        		if (count[0] == 0) { 
-	        			getSubscription().cancel();
-	        			Unchecked.run(() -> client.close());
-	        			return;
-	        		}
-	        	}
-        	};
-        	subscriber.withInitialRequest(count[0]);
+            subscriber = new TopicSubscriber<Message>(clazz, topic) {
+                @Override
+                public void onNext(Message message) {
+                    System.out.println(utils.toString(message));
+                    count[0]--;
+                    if (count[0] == 0) {
+                        getSubscription().cancel();
+                        Unchecked.run(() -> client.close());
+                        return;
+                    }
+                }
+            };
+            subscriber.withInitialRequest(count[0]);
         } else {
-        	subscriber = new TopicSubscriber<Message>(clazz, topic) {
-	        	@Override
-	        	public void onNext(Message message) {
-	        		System.out.println(utils.toString(message));
-	        		getSubscription().request(1);
-	        	}
-	    	};
+            subscriber = new TopicSubscriber<Message>(clazz, topic) {
+                @Override
+                public void onNext(Message message) {
+                    System.out.println(utils.toString(message));
+                    getSubscription().request(1);
+                }
+            };
         }
         client.subscribe(subscriber);
     }
-    
+
 }

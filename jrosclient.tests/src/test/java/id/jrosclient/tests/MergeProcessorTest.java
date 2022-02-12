@@ -37,24 +37,26 @@ import org.junit.jupiter.params.provider.CsvSource;
 import id.jrosclient.impl.MergeProcessor;
 
 public class MergeProcessorTest {
-    
+
     @ParameterizedTest
     @CsvSource({
-        "1, 10, false",
-        "1, 10, true",
-        "2, 10, false",
-        "60, 500, false"
+            "1, 10, false",
+            "1, 10, true",
+            "2, 10, false",
+            "60, 500, false"
     })
-    public void test(int numOfPublishers, int numOfItems, boolean keepRequesting) throws InterruptedException, ExecutionException {
+    public void test(int numOfPublishers, int numOfItems, boolean keepRequesting)
+            throws InterruptedException, ExecutionException {
         var future = new CompletableFuture<Void>();
         var proc = new MergeProcessor<Integer>();
         var subscriber = new TestMultiSubscriber(numOfPublishers, numOfItems)
                 .withFuture(future);
-        if (keepRequesting) subscriber.withKeepRequesting();
+        if (keepRequesting)
+            subscriber.withKeepRequesting();
         proc.subscribe(subscriber);
         var executor = Executors.newCachedThreadPool();
         IntStream.range(0, numOfPublishers)
-            .forEach(i -> runPublishLoop(executor, i, proc));
+                .forEach(i -> runPublishLoop(executor, i, proc));
         future.get();
         System.out.println("awake");
         executor.shutdown();
@@ -62,11 +64,13 @@ public class MergeProcessorTest {
         assertEquals(true, ret);
         assertEquals(0, subscriber.getOnErrorCounter());
         if (keepRequesting) {
-            while (subscriber.getOnCompleteCounter() != 1);
+            while (subscriber.getOnCompleteCounter() != 1)
+                ;
         } else {
             assertEquals(0, subscriber.getOnCompleteCounter());
         }
-        while (!proc.isClosed());
+        while (!proc.isClosed())
+            ;
     }
 
     /**
@@ -77,12 +81,12 @@ public class MergeProcessorTest {
             try (var publisher = new SubmissionPublisher<Integer>()) {
                 publisher.subscribe(proc.newSubscriber());
                 while (!executor.isShutdown()) {
-                    //System.out.println("Submitting to publisher item " + item);
+                    // System.out.println("Submitting to publisher item " + item);
                     publisher.submit(item);
                 }
             }
             System.out.println("Closed publisher of item " + item);
-        });        
+        });
     }
 
 }

@@ -34,55 +34,49 @@ import id.xfunction.XJson;
 import id.jrosmessages.std_msgs.HeaderMessage;
 
 /**
- * Definition for geometry_msgs/WrenchStamped
- * A wrench with reference coordinate frame and timestamp
+ * Definition for geometry_msgs/WrenchStamped A wrench with reference coordinate
+ * frame and timestamp
  */
-@MessageMetadata(
-    type = WrenchStampedMessage.NAME,
-    md5sum = "150502b356390fb151385ef7647f633e")
+@MessageMetadata(type = WrenchStampedMessage.NAME, md5sum = "150502b356390fb151385ef7647f633e")
 public class WrenchStampedMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/WrenchStamped";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   @Streamed
-   public WrenchMessage wrench = new WrenchMessage();
-   
-   public WrenchStampedMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public WrenchStampedMessage withWrench(WrenchMessage wrench) {
-       this.wrench = wrench;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           wrench
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (WrenchStampedMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(wrench, other.wrench)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "wrench", wrench
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/WrenchStamped";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    @Streamed
+    public WrenchMessage wrench = new WrenchMessage();
+
+    public WrenchStampedMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public WrenchStampedMessage withWrench(WrenchMessage wrench) {
+        this.wrench = wrench;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                wrench);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (WrenchStampedMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(wrench, other.wrench);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "wrench", wrench);
+    }
+
 }

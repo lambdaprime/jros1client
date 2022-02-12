@@ -51,14 +51,15 @@ import id.xfunction.logging.XLogger;
 /**
  * Main class of the library which allows to interact with ROS.
  * 
- * <p>Each instance of JRosClient acts as a separate ROS node and listens
- * to its own ports.
+ * <p>
+ * Each instance of JRosClient acts as a separate ROS node and listens to its
+ * own ports.
  */
 public class JRosClient implements AutoCloseable {
 
     private static final ObjectsFactory objectsFactory = new ObjectsFactory();
     private static final Utils utils = new Utils();
-    
+
     // visible for javadoc
     public static final String DEFAULT_ROS_MASTER_URL = "http://localhost:11311";
 
@@ -74,8 +75,8 @@ public class JRosClient implements AutoCloseable {
     private TextUtils textUtils;
 
     /**
-     * Default constructor which creates a client to ROS master running locally using
-     * URL {@link #DEFAULT_ROS_MASTER_URL}
+     * Default constructor which creates a client to ROS master running locally
+     * using URL {@link #DEFAULT_ROS_MASTER_URL}
      */
     public JRosClient() {
         this(DEFAULT_ROS_MASTER_URL);
@@ -87,11 +88,10 @@ public class JRosClient implements AutoCloseable {
     public JRosClient(String masterUrl) {
         this(masterUrl, objectsFactory.createConfig());
     }
-    
+
     /**
-     * Constructor which creates a client to ROS master running locally using
-     * URL {@link #DEFAULT_ROS_MASTER_URL} with given client
-     * configuration
+     * Constructor which creates a client to ROS master running locally using URL
+     * {@link #DEFAULT_ROS_MASTER_URL} with given client configuration
      */
     public JRosClient(JRosClientConfiguration config) {
         this(DEFAULT_ROS_MASTER_URL, config);
@@ -121,8 +121,9 @@ public class JRosClient implements AutoCloseable {
     }
 
     /**
-     * Return Node API of the foreign node. It allows to
-     * interact with other ROS nodes directly.
+     * Return Node API of the foreign node. It allows to interact with other ROS
+     * nodes directly.
+     * 
      * @param nodeUrl URL of the foreign node to connect
      */
     public NodeApi getNodeApi(String nodeUrl) {
@@ -132,14 +133,14 @@ public class JRosClient implements AutoCloseable {
 
     /**
      * Subscribe to ROS topic
-     * @param <M> type of messages in the topic
-     * @param subscriber provides information about the topic to subscribe
-     * for. Once subscribed it will be notified for
-     * any new message which gets published with given topic.
+     * 
+     * @param <M>        type of messages in the topic
+     * @param subscriber provides information about the topic to subscribe for. Once
+     *                   subscribed it will be notified for any new message which
+     *                   gets published with given topic.
      */
-    public <M extends Message> void subscribe(TopicSubscriber<M> subscriber) 
-            throws Exception
-    {
+    public <M extends Message> void subscribe(TopicSubscriber<M> subscriber)
+            throws Exception {
         String topic = subscriber.getTopic();
         var clazz = subscriber.getMessageClass();
         var topicType = metadataAccessor.getType(clazz);
@@ -150,12 +151,12 @@ public class JRosClient implements AutoCloseable {
         if (publishers.value.isEmpty()) {
             throw new XRE("No publishers for topic %s found", topic);
         }
-        
+
         // closed once subscriber cancels subscription
         @SuppressWarnings("resource")
         var processor = new MergeProcessor<M>();
         processor.subscribe(subscriber);
-        for (var publisher: publishers.value/*.stream().collect(Collectors.toSet())*/) {
+        for (var publisher : publishers.value/* .stream().collect(Collectors.toSet()) */) {
             try {
                 LOGGER.log(Level.FINE, "Registering with publisher: {0}", publisher);
                 var nodeApi = getNodeApi(publisher);
@@ -173,14 +174,14 @@ public class JRosClient implements AutoCloseable {
 
     /**
      * Create a new topic and start publishing messages for it.
-     * @param <M> type of messages in the topic
-     * @param publisher provides information about new topic. Once topic
-     * created publisher is used to emit messages which will be sent
-     * to topic subscribers
+     * 
+     * @param <M>       type of messages in the topic
+     * @param publisher provides information about new topic. Once topic created
+     *                  publisher is used to emit messages which will be sent to
+     *                  topic subscribers
      */
-    public <M extends Message> void publish(TopicPublisher<M> publisher) 
-            throws Exception
-    {
+    public <M extends Message> void publish(TopicPublisher<M> publisher)
+            throws Exception {
         var topic = publisher.getTopic();
         var clazz = publisher.getMessageClass();
         var topicType = metadataAccessor.getType(clazz);
@@ -193,13 +194,13 @@ public class JRosClient implements AutoCloseable {
     }
 
     /**
-     * Unregister publisher in Master node and stop publisher from emitting
-     * new messages
+     * Unregister publisher in Master node and stop publisher from emitting new
+     * messages
+     * 
      * @param topic name of the topic used by the publisher
      */
-    public void unpublish(String topic) 
-            throws IOException
-    {
+    public void unpublish(String topic)
+            throws IOException {
         var publisherOpt = publishersManager.getPublisher(utils.formatTopicName(topic));
         if (publisherOpt.isEmpty()) {
             LOGGER.log(Level.FINE, "There is no publishers for topic {0}, nothing to unpublish",
@@ -216,7 +217,7 @@ public class JRosClient implements AutoCloseable {
             publishersManager.remove(topic);
         }
     }
-    
+
     /**
      * Check if there is any publisher available for the given topic
      */
@@ -226,15 +227,15 @@ public class JRosClient implements AutoCloseable {
     }
 
     /**
-     * Release the resources, stop TCPROS server and node server  
+     * Release the resources, stop TCPROS server and node server
      */
     @Override
     public void close() throws IOException {
         try {
             var exception = new RuntimeException();
             publishersManager.getPublishers().stream()
-                .map(TopicPublisher::getTopic)
-                .forEach(Unchecked.wrapAccept(this::unpublish, exception));
+                    .map(TopicPublisher::getTopic)
+                    .forEach(Unchecked.wrapAccept(this::unpublish, exception));
             if (exception.getSuppressed().length != 0)
                 throw exception;
         } finally {

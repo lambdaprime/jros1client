@@ -49,7 +49,7 @@ public class ConnectionHeaderReader {
         }
         var ch = new ConnectionHeader();
         map.entrySet().stream()
-            .forEach(e -> ch.add(e.getKey(), e.getValue()));
+                .forEach(e -> ch.add(e.getKey(), e.getValue()));
         return ch;
     }
 

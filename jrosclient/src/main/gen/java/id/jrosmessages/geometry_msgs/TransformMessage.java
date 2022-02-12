@@ -24,7 +24,6 @@
 
 package id.jrosmessages.geometry_msgs;
 
-
 import java.util.Objects;
 
 import id.jrosmessages.Message;
@@ -33,55 +32,49 @@ import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * Definition for geometry_msgs/Transform
- * This represents the transform between two coordinate frames in free space.
+ * Definition for geometry_msgs/Transform This represents the transform between
+ * two coordinate frames in free space.
  */
-@MessageMetadata(
-    type = TransformMessage.NAME,
-    md5sum = "756be060b1c8cf0e64a10ba16909d887")
+@MessageMetadata(type = TransformMessage.NAME, md5sum = "756be060b1c8cf0e64a10ba16909d887")
 public class TransformMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/Transform";
 
-   @Streamed
-   public Vector3Message translation = new Vector3Message();
-   
-   @Streamed
-   public QuaternionMessage rotation = new QuaternionMessage();
-   
-   public TransformMessage withTranslation(Vector3Message translation) {
-       this.translation = translation;
-       return this;
-   }
-   
-   public TransformMessage withRotation(QuaternionMessage rotation) {
-       this.rotation = rotation;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           translation,
-           rotation
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (TransformMessage) obj;
-       return
-           Objects.equals(translation, other.translation) &&
-           Objects.equals(rotation, other.rotation)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "translation", translation,
-           "rotation", rotation
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/Transform";
+
+    @Streamed
+    public Vector3Message translation = new Vector3Message();
+
+    @Streamed
+    public QuaternionMessage rotation = new QuaternionMessage();
+
+    public TransformMessage withTranslation(Vector3Message translation) {
+        this.translation = translation;
+        return this;
+    }
+
+    public TransformMessage withRotation(QuaternionMessage rotation) {
+        this.rotation = rotation;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                translation,
+                rotation);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (TransformMessage) obj;
+        return Objects.equals(translation, other.translation) &&
+                Objects.equals(rotation, other.rotation);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "translation", translation,
+                "rotation", rotation);
+    }
+
 }

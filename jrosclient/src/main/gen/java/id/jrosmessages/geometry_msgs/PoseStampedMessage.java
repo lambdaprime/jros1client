@@ -34,55 +34,49 @@ import id.xfunction.XJson;
 import id.jrosmessages.std_msgs.HeaderMessage;
 
 /**
- * Definition for geometry_msgs/PoseStamped
- * A Pose with reference coordinate frame and timestamp
+ * Definition for geometry_msgs/PoseStamped A Pose with reference coordinate
+ * frame and timestamp
  */
-@MessageMetadata(
-    type = PoseStampedMessage.NAME,
-    md5sum = "43f3760283d49766c9fdd69c4461f732")
+@MessageMetadata(type = PoseStampedMessage.NAME, md5sum = "43f3760283d49766c9fdd69c4461f732")
 public class PoseStampedMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/PoseStamped";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   @Streamed
-   public PoseMessage pose = new PoseMessage();
-   
-   public PoseStampedMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public PoseStampedMessage withPose(PoseMessage pose) {
-       this.pose = pose;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           pose
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (PoseStampedMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(pose, other.pose)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "pose", pose
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/PoseStamped";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    @Streamed
+    public PoseMessage pose = new PoseMessage();
+
+    public PoseStampedMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public PoseStampedMessage withPose(PoseMessage pose) {
+        this.pose = pose;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                pose);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (PoseStampedMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(pose, other.pose);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "pose", pose);
+    }
+
 }

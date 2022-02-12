@@ -30,7 +30,7 @@ import id.xfunction.text.WildcardMatcher;
 public class TestUtils {
 
     private static final ResourceUtils resourceUtils = new ResourceUtils();
-    
+
     public static void compare(String out, String file) {
         var str = resourceUtils.readResource(file);
         assertEquals(str, out);

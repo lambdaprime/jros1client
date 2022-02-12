@@ -24,7 +24,6 @@
 
 package id.jrosmessages.shape_msgs;
 
-
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -36,44 +35,38 @@ import id.xfunction.XJson;
 /**
  * Definition for shape_msgs/MeshTriangle
  */
-@MessageMetadata(
-    type = MeshTriangleMessage.NAME,
-    md5sum = "9f61477ed8ee061cb6d71555c375ad8f")
+@MessageMetadata(type = MeshTriangleMessage.NAME, md5sum = "9f61477ed8ee061cb6d71555c375ad8f")
 public class MeshTriangleMessage implements Message {
-   
-   static final String NAME = "shape_msgs/MeshTriangle";
 
-   /**
-    * Definition of a triangle's vertices
-    */
-   @Streamed
-   public int[] vertex_indices = new int[0];
-   
-   public MeshTriangleMessage withVertexIndices(int... vertex_indices) {
-       this.vertex_indices = vertex_indices;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           Arrays.hashCode(vertex_indices)
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (MeshTriangleMessage) obj;
-       return
-           Arrays.equals(vertex_indices, other.vertex_indices)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "vertex_indices", vertex_indices
-       );
-   }
-   
+    static final String NAME = "shape_msgs/MeshTriangle";
+
+    /**
+     * Definition of a triangle's vertices
+     */
+    @Streamed
+    public int[] vertex_indices = new int[0];
+
+    public MeshTriangleMessage withVertexIndices(int... vertex_indices) {
+        this.vertex_indices = vertex_indices;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                Arrays.hashCode(vertex_indices));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (MeshTriangleMessage) obj;
+        return Arrays.equals(vertex_indices, other.vertex_indices);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "vertex_indices", vertex_indices);
+    }
+
 }

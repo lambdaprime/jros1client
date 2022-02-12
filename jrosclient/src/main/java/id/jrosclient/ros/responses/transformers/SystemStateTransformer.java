@@ -42,13 +42,13 @@ public class SystemStateTransformer implements ResponseTransformer {
         SystemStateResponse ss = new SystemStateResponse();
         ResponseTransformer.populate(ss, response);
         RawResponse systemState = response.get(2);
-        for (RawResponse publisher: systemState.get(0)) {
+        for (RawResponse publisher : systemState.get(0)) {
             ss.publishers.add(publisherTransformer.transform(publisher.getObject()));
         }
-        for (RawResponse subscriber: systemState.get(1)) {
+        for (RawResponse subscriber : systemState.get(1)) {
             ss.subscribers.add(subscriberTransformer.transform(subscriber.getObject()));
         }
         return ss;
     }
-    
+
 }

@@ -33,9 +33,7 @@ import id.xfunction.XJson;
 /**
  * Definition for sensor_msgs/PointCloud2
  */
-@MessageMetadata(
-    type = PointCloud2Message.NAME,
-    md5sum = "1158d486dd51d683ce2f1be655c3c181")
+@MessageMetadata(type = PointCloud2Message.NAME, md5sum = "1158d486dd51d683ce2f1be655c3c181")
 public class PointCloud2Message implements Message {
 
     static final String NAME = "sensor_msgs/PointCloud2";
@@ -47,15 +45,15 @@ public class PointCloud2Message implements Message {
     public HeaderMessage header = new HeaderMessage();
 
     /**
-     * 2D structure of the point cloud. If the cloud is unordered, height is
-     * 1 and width is the length of the point cloud (row_step / point_step).
+     * 2D structure of the point cloud. If the cloud is unordered, height is 1 and
+     * width is the length of the point cloud (row_step / point_step).
      */
     @Streamed
     public int height;
-    
+
     @Streamed
     public int width;
-    
+
     /**
      * Describes the channels and their layout in the binary data blob.
      */
@@ -67,79 +65,79 @@ public class PointCloud2Message implements Message {
      */
     @Streamed
     public boolean is_bigendian;
-    
+
     /**
      * Length of a point in bytes
      */
     @Streamed
     public int point_step;
-    
+
     /**
      * Length of a row in bytes
      */
     @Streamed
     public int row_step;
-    
+
     /**
      * Actual point data, size is (row_step*height)
      */
     @Streamed
     public byte[] data = new byte[0];
-    
+
     /**
      * True if there are no invalid points
      */
     @Streamed
     public boolean is_dense;
-    
+
     public PointCloud2Message() {
     }
-    
+
     public PointCloud2Message withHeader(HeaderMessage header) {
         this.header = header;
         return this;
     }
-    
+
     public PointCloud2Message withData(byte[] data) {
         this.data = data;
         return this;
     }
-    
+
     public PointCloud2Message withFields(PointFieldMessage... fields) {
         this.fields = fields;
         return this;
     }
-    
+
     public PointCloud2Message withHeight(int height) {
         this.height = height;
         return this;
     }
-    
+
     public PointCloud2Message withWidth(int width) {
         this.width = width;
         return this;
     }
-    
+
     public PointCloud2Message withIsBigendian(boolean is_bigendian) {
         this.is_bigendian = is_bigendian;
         return this;
     }
-    
+
     public PointCloud2Message withIsDense(boolean is_dense) {
         this.is_dense = is_dense;
         return this;
     }
-    
+
     public PointCloud2Message withPointStep(int step) {
         this.point_step = step;
         return this;
     }
-    
+
     public PointCloud2Message withRowStep(int step) {
         this.row_step = step;
         return this;
     }
-    
+
     @Override
     public String toString() {
         return XJson.asString(

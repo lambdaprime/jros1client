@@ -36,73 +36,70 @@ import id.xfunction.XJson;
 /**
  * Definition for object_recognition_msgs/RecognizedObjectArray
  */
-@MessageMetadata(
-    type = RecognizedObjectArrayMessage.NAME,
-    md5sum = "5746f6dbdd0d9dca075766fb7c6dd65c")
+@MessageMetadata(type = RecognizedObjectArrayMessage.NAME, md5sum = "5746f6dbdd0d9dca075766fb7c6dd65c")
 public class RecognizedObjectArrayMessage implements Message {
-   
-   static final String NAME = "object_recognition_msgs/RecognizedObjectArray";
 
-   /**
-    * #################################################### HEADER ###########################################################
-    */
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   /**
-    * This message type describes a potential scene configuration: a set of objects that can explain the scene
-    */
-   @Streamed
-   public RecognizedObjectMessage[] objects = new RecognizedObjectMessage[0];
-   
-   /**
-    * #################################################### SEARCH ###########################################################
-    * The co-occurrence matrix between the recognized objects
-    */
-   @Streamed
-   public float[] cooccurrence = new float[0];
-   
-   public RecognizedObjectArrayMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public RecognizedObjectArrayMessage withObjects(RecognizedObjectMessage... objects) {
-       this.objects = objects;
-       return this;
-   }
-   
-   public RecognizedObjectArrayMessage withCooccurrence(float... cooccurrence) {
-       this.cooccurrence = cooccurrence;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           Arrays.hashCode(objects),
-           Arrays.hashCode(cooccurrence)
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (RecognizedObjectArrayMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Arrays.equals(objects, other.objects) &&
-           Arrays.equals(cooccurrence, other.cooccurrence)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "objects", objects,
-           "cooccurrence", cooccurrence
-       );
-   }
-   
+    static final String NAME = "object_recognition_msgs/RecognizedObjectArray";
+
+    /**
+     * #################################################### HEADER
+     * ###########################################################
+     */
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    /**
+     * This message type describes a potential scene configuration: a set of objects
+     * that can explain the scene
+     */
+    @Streamed
+    public RecognizedObjectMessage[] objects = new RecognizedObjectMessage[0];
+
+    /**
+     * #################################################### SEARCH
+     * ########################################################### The co-occurrence
+     * matrix between the recognized objects
+     */
+    @Streamed
+    public float[] cooccurrence = new float[0];
+
+    public RecognizedObjectArrayMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public RecognizedObjectArrayMessage withObjects(RecognizedObjectMessage... objects) {
+        this.objects = objects;
+        return this;
+    }
+
+    public RecognizedObjectArrayMessage withCooccurrence(float... cooccurrence) {
+        this.cooccurrence = cooccurrence;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                Arrays.hashCode(objects),
+                Arrays.hashCode(cooccurrence));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (RecognizedObjectArrayMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Arrays.equals(objects, other.objects) &&
+                Arrays.equals(cooccurrence, other.cooccurrence);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "objects", objects,
+                "cooccurrence", cooccurrence);
+    }
+
 }

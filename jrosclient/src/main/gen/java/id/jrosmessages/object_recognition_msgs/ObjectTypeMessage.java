@@ -35,78 +35,66 @@ import id.jrosmessages.std_msgs.StringMessage;
 
 /**
  * Definition for object_recognition_msgs/ObjectType
- * ################################################# OBJECT ID #########################################################
+ * ################################################# OBJECT ID
+ * #########################################################
  */
-@MessageMetadata(
-    type = ObjectTypeMessage.NAME,
-    md5sum = "151f84dab2823da86faa6732e8c5231b")
+@MessageMetadata(type = ObjectTypeMessage.NAME, md5sum = "151f84dab2823da86faa6732e8c5231b")
 public class ObjectTypeMessage implements Message {
-   
-   static final String NAME = "object_recognition_msgs/ObjectType";
 
-   /**
-    * Contains information about the type of a found object. Those two sets of parameters together uniquely define an
-    * object
-    * The key of the found object: the unique identifier in the given db
-    */
-   @Streamed
-   public StringMessage key = new StringMessage();
-   
-   /**
-    * The db parameters stored as a JSON/compressed YAML string. An object id does not make sense without the corresponding
-    * database. E.g., in object_recognition, it can look like: "{'type':'CouchDB', 'root':'http://localhost'}"
-    * There is no conventional format for those parameters and it's nice to keep that flexibility.
-    * The object_recognition_core as a generic DB type that can read those fields
-    * Current examples:
-    * For CouchDB:
-    * type: 'CouchDB'
-    * root: 'http://localhost:5984'
-    * collection: 'object_recognition'
-    * For SQL household database:
-    * type: 'SqlHousehold'
-    * host: 'wgs36'
-    * port: 5432
-    * user: 'willow'
-    * password: 'willow'
-    * name: 'household_objects'
-    * module: 'tabletop'
-    */
-   @Streamed
-   public StringMessage db = new StringMessage();
-   
-   public ObjectTypeMessage withKey(StringMessage key) {
-       this.key = key;
-       return this;
-   }
-   
-   public ObjectTypeMessage withDb(StringMessage db) {
-       this.db = db;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           key,
-           db
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (ObjectTypeMessage) obj;
-       return
-           Objects.equals(key, other.key) &&
-           Objects.equals(db, other.db)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "key", key,
-           "db", db
-       );
-   }
-   
+    static final String NAME = "object_recognition_msgs/ObjectType";
+
+    /**
+     * Contains information about the type of a found object. Those two sets of
+     * parameters together uniquely define an object The key of the found object:
+     * the unique identifier in the given db
+     */
+    @Streamed
+    public StringMessage key = new StringMessage();
+
+    /**
+     * The db parameters stored as a JSON/compressed YAML string. An object id does
+     * not make sense without the corresponding database. E.g., in
+     * object_recognition, it can look like: "{'type':'CouchDB',
+     * 'root':'http://localhost'}" There is no conventional format for those
+     * parameters and it's nice to keep that flexibility. The
+     * object_recognition_core as a generic DB type that can read those fields
+     * Current examples: For CouchDB: type: 'CouchDB' root: 'http://localhost:5984'
+     * collection: 'object_recognition' For SQL household database: type:
+     * 'SqlHousehold' host: 'wgs36' port: 5432 user: 'willow' password: 'willow'
+     * name: 'household_objects' module: 'tabletop'
+     */
+    @Streamed
+    public StringMessage db = new StringMessage();
+
+    public ObjectTypeMessage withKey(StringMessage key) {
+        this.key = key;
+        return this;
+    }
+
+    public ObjectTypeMessage withDb(StringMessage db) {
+        this.db = db;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                key,
+                db);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (ObjectTypeMessage) obj;
+        return Objects.equals(key, other.key) &&
+                Objects.equals(db, other.db);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "key", key,
+                "db", db);
+    }
+
 }

@@ -35,74 +35,65 @@ import id.jrosmessages.std_msgs.HeaderMessage;
 import id.jrosmessages.std_msgs.StringMessage;
 
 /**
- * Definition for geometry_msgs/TransformStamped
- * This expresses a transform from coordinate frame header.frame_id
- * # to the coordinate frame child_frame_id
- * #
- * # This message is mostly used by the
- * # <a href="http://wiki.ros.org/tf">tf</a> package.
- * # See its documentation for more information.
+ * Definition for geometry_msgs/TransformStamped This expresses a transform from
+ * coordinate frame header.frame_id # to the coordinate frame child_frame_id # #
+ * This message is mostly used by the # <a href="http://wiki.ros.org/tf">tf</a>
+ * package. # See its documentation for more information.
  */
-@MessageMetadata(
-    type = TransformStampedMessage.NAME,
-    md5sum = "c788bacd82271109656949f89891ee39")
+@MessageMetadata(type = TransformStampedMessage.NAME, md5sum = "c788bacd82271109656949f89891ee39")
 public class TransformStampedMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/TransformStamped";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   /**
-    * the frame id of the child frame
-    */
-   @Streamed
-   public StringMessage child_frame_id = new StringMessage();
-   
-   @Streamed
-   public TransformMessage transform = new TransformMessage();
-   
-   public TransformStampedMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public TransformStampedMessage withChildFrameId(StringMessage child_frame_id) {
-       this.child_frame_id = child_frame_id;
-       return this;
-   }
-   
-   public TransformStampedMessage withTransform(TransformMessage transform) {
-       this.transform = transform;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           child_frame_id,
-           transform
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (TransformStampedMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(child_frame_id, other.child_frame_id) &&
-           Objects.equals(transform, other.transform)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "child_frame_id", child_frame_id,
-           "transform", transform
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/TransformStamped";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    /**
+     * the frame id of the child frame
+     */
+    @Streamed
+    public StringMessage child_frame_id = new StringMessage();
+
+    @Streamed
+    public TransformMessage transform = new TransformMessage();
+
+    public TransformStampedMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public TransformStampedMessage withChildFrameId(StringMessage child_frame_id) {
+        this.child_frame_id = child_frame_id;
+        return this;
+    }
+
+    public TransformStampedMessage withTransform(TransformMessage transform) {
+        this.transform = transform;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                child_frame_id,
+                transform);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (TransformStampedMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(child_frame_id, other.child_frame_id) &&
+                Objects.equals(transform, other.transform);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "child_frame_id", child_frame_id,
+                "transform", transform);
+    }
+
 }

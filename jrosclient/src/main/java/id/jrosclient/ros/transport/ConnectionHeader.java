@@ -27,12 +27,13 @@ import id.xfunction.XJson;
 import id.xfunction.logging.XLogger;
 
 /**
- * <a href="http://wiki.ros.org/ROS/Connection%20Header">http://wiki.ros.org/ROS/Connection%20Header</a>
+ * <a href=
+ * "http://wiki.ros.org/ROS/Connection%20Header">http://wiki.ros.org/ROS/Connection%20Header</a>
  */
 public class ConnectionHeader {
 
     private static final XLogger LOGGER = XLogger.getLogger(ConnectionHeader.class);
-    
+
     public static final String CALLER_ID = "callerid";
     public static final String TOPIC = "topic";
     public static final String TYPE = "type";
@@ -43,39 +44,36 @@ public class ConnectionHeader {
     /**
      * Name of node sending data.
      * 
-     * Required to be set by the subscriber.
-     * It is recommended to set it by publisher as well for debugging purposes.
+     * Required to be set by the subscriber. It is recommended to set it by
+     * publisher as well for debugging purposes.
      */
     public Optional<String> callerId = Optional.empty();
-    
+
     /**
      * Name of the topic the subscriber is connecting to
      * 
      * Required to be set by the subscriber.
      */
     public Optional<String> topic = Optional.empty();
-    
+
     /**
      * Message type.
      * 
-     * Required to be set by the subscriber.
-     * Required to be set by the publisher.
+     * Required to be set by the subscriber. Required to be set by the publisher.
      */
     public Optional<String> type = Optional.empty();
-    
+
     /**
      * Md5sum of the message type
      * 
-     * Required to be set by the subscriber.
-     * Required to be set by the publisher.
+     * Required to be set by the subscriber. Required to be set by the publisher.
      */
     public Optional<String> md5sum = Optional.empty();
 
     /**
-     * Enables "latching" on a connection. When a connection is
-     * latched, the last message published is saved and automatically
-     * sent to any future subscribers that connect. This is useful for
-     * slow-changing to static data like a map.
+     * Enables "latching" on a connection. When a connection is latched, the last
+     * message published is saved and automatically sent to any future subscribers
+     * that connect. This is useful for slow-changing to static data like a map.
      * 
      * Optional by the publisher/subscriber.
      */
@@ -112,18 +110,30 @@ public class ConnectionHeader {
     }
 
     public ConnectionHeader withLatching(boolean value) {
-        this.latching = Optional.of(value? "1": "0");
+        this.latching = Optional.of(value ? "1" : "0");
         return this;
     }
-    
+
     public void add(String key, String value) {
         switch (key) {
-        case CALLER_ID: withCallerId(value); break;
-        case TOPIC: withTopic(value); break;
-        case TYPE: withType(value); break;
-        case MESSAGE_DEFINITION: withMessageDefinition(value); break;
-        case MD5_SUM: withMd5Sum(value); break;
-        case LATCHING: withLatching(Integer.parseInt(value) == 1); break;
+        case CALLER_ID:
+            withCallerId(value);
+            break;
+        case TOPIC:
+            withTopic(value);
+            break;
+        case TYPE:
+            withType(value);
+            break;
+        case MESSAGE_DEFINITION:
+            withMessageDefinition(value);
+            break;
+        case MD5_SUM:
+            withMd5Sum(value);
+            break;
+        case LATCHING:
+            withLatching(Integer.parseInt(value) == 1);
+            break;
         default:
             LOGGER.warning("Received unknown Connection Header field: {0} = {1} ", key, value);
         }
@@ -132,32 +142,32 @@ public class ConnectionHeader {
     public Optional<String> getMd5sum() {
         return md5sum;
     }
-    
+
     public Optional<String> getType() {
         return type;
     }
-    
+
     public Optional<String> getCallerId() {
         return callerId;
     }
-    
+
     public Optional<String> getTopic() {
         return topic;
     }
-    
+
     public Optional<String> getLatching() {
         return latching;
     }
-    
+
     @Override
     public String toString() {
         return XJson.asString(
-            CALLER_ID, callerId.orElse("empty"),
-            TOPIC, topic.orElse("empty"),
-            TYPE, type.orElse("empty"),
-            MESSAGE_DEFINITION, messageDefinition.orElse("empty"),
-            MD5_SUM, md5sum.orElse("empty"),
-            LATCHING, latching.orElse("empty"));
+                CALLER_ID, callerId.orElse("empty"),
+                TOPIC, topic.orElse("empty"),
+                TYPE, type.orElse("empty"),
+                MESSAGE_DEFINITION, messageDefinition.orElse("empty"),
+                MD5_SUM, md5sum.orElse("empty"),
+                LATCHING, latching.orElse("empty"));
     }
 
     @Override

@@ -34,7 +34,7 @@ public class Subscriber implements Entity {
         this.topic = topic;
         this.topicSubscriber = topicPublisher;
     }
-    
+
     @Override
     public String toString() {
         return XJson.asString("topic", topic,

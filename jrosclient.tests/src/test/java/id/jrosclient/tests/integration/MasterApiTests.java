@@ -35,7 +35,7 @@ import id.jrosclient.JRosClient;
 import id.jrosclient.JRosClientConfiguration;
 
 public class MasterApiTests {
-    
+
     private static JRosClient client;
 
     @BeforeAll

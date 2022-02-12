@@ -43,10 +43,12 @@ import id.xfunction.lang.XRE;
 import id.xfunction.logging.XLogger;
 
 /**
- * This class subscribes to {@link TopicPublisher} (hence name is TopicPublisherSubscriber)
- * which are created by users to publish messages to certain ROS topics.
+ * This class subscribes to {@link TopicPublisher} (hence name is
+ * TopicPublisherSubscriber) which are created by users to publish messages to
+ * certain ROS topics.
  * 
- * <p>Each instance serves a single remote ROS client which is subscribed to some
+ * <p>
+ * Each instance serves a single remote ROS client which is subscribed to some
  * particular topic published by current instance of jrosclient.
  */
 public class TopicPublisherSubscriber implements Subscriber<Message> {
@@ -56,12 +58,12 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     private MetadataAccessor metadataAccessor = new MetadataAccessor();
     private MessageTransformer transformer = new MessageTransformer();
     private CompletableFuture<MessageResponse> future = CompletableFuture.completedFuture(null);
-    
+
     /**
-     * Since onSubscribe is called async (by SubmissionPublisher) it may happen that it
-     * will be called after next message will be requested by request().
-     * To make sure that we will not lose the request() call we will block it until
-     * we will not subscribe.
+     * Since onSubscribe is called async (by SubmissionPublisher) it may happen that
+     * it will be called after next message will be requested by request(). To make
+     * sure that we will not lose the request() call we will block it until we will
+     * not subscribe.
      */
     private CompletableFuture<Subscription> subscriptionFuture = new CompletableFuture<Subscription>();
     private boolean isConnectionEstablished;
@@ -77,7 +79,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         this.messageClass = messageClass;
         this.utils = utils;
     }
-    
+
     @Override
     public void onSubscribe(Subscription subscription) {
         subscriptionFuture.complete(subscription);
@@ -124,7 +126,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         }
         return future;
     }
-    
+
     @Override
     public void onError(Throwable throwable) {
         LOGGER.entering("onError");
@@ -146,11 +148,11 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         isCompleted = true;
         LOGGER.exiting("onComplete");
     }
-    
+
     public boolean isCompleted() {
         return isCompleted;
     }
-    
+
     public String getTopic() {
         return topic;
     }
@@ -182,7 +184,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     private MessagePacket createHandshakeMessagePacket() {
         var ch = new ConnectionHeader();
         ch.withType(metadataAccessor.getType(messageClass))
-            .withMd5Sum(metadataAccessor.getMd5(messageClass));
+                .withMd5Sum(metadataAccessor.getMd5(messageClass));
         return new MessagePacket(ch, null);
     }
 

@@ -31,13 +31,13 @@ import id.xfunction.lang.XRE;
  * Allows to access message metadata based on their class object.
  */
 public class MetadataAccessor {
-    
+
     public String getMd5(Class<? extends Message> messageClass) {
         return Optional.ofNullable(messageClass.getAnnotation(MessageMetadata.class))
                 .map(MessageMetadata::md5sum)
                 .orElseThrow(() -> new XRE("Metadata is missing for %s", messageClass));
     }
-    
+
     public String getType(Class<? extends Message> messageClass) {
         return Optional.ofNullable(messageClass.getAnnotation(MessageMetadata.class))
                 .map(MessageMetadata::type)

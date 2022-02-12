@@ -24,7 +24,6 @@
 
 package id.jrosmessages.shape_msgs;
 
-
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -34,50 +33,41 @@ import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * Definition for shape_msgs/Plane
- * Representation of a plane, using the plane equation ax + by + cz + d = 0
+ * Definition for shape_msgs/Plane Representation of a plane, using the plane
+ * equation ax + by + cz + d = 0
  */
-@MessageMetadata(
-    type = PlaneMessage.NAME,
-    md5sum = "fc4d6d85ce294ff40862d9c7e9556367")
+@MessageMetadata(type = PlaneMessage.NAME, md5sum = "fc4d6d85ce294ff40862d9c7e9556367")
 public class PlaneMessage implements Message {
-   
-   static final String NAME = "shape_msgs/Plane";
 
-   /**
-    * a := coef[0]
-    * b := coef[1]
-    * c := coef[2]
-    * d := coef[3]
-    */
-   @Streamed
-   public double[] coef = new double[0];
-   
-   public PlaneMessage withCoef(double... coef) {
-       this.coef = coef;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           Arrays.hashCode(coef)
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (PlaneMessage) obj;
-       return
-           Arrays.equals(coef, other.coef)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "coef", coef
-       );
-   }
-   
+    static final String NAME = "shape_msgs/Plane";
+
+    /**
+     * a := coef[0] b := coef[1] c := coef[2] d := coef[3]
+     */
+    @Streamed
+    public double[] coef = new double[0];
+
+    public PlaneMessage withCoef(double... coef) {
+        this.coef = coef;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                Arrays.hashCode(coef));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (PlaneMessage) obj;
+        return Arrays.equals(coef, other.coef);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "coef", coef);
+    }
+
 }

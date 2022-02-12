@@ -39,9 +39,7 @@ import id.xfunction.XJson;
 /**
  * Definition for visualization_msgs/Marker
  */
-@MessageMetadata(
-    type = MarkerMessage.NAME,
-    md5sum = "4048c9de2a16f4ae8e0538085ebf1b97")
+@MessageMetadata(type = MarkerMessage.NAME, md5sum = "4048c9de2a16f4ae8e0538085ebf1b97")
 public class MarkerMessage implements Message {
 
     static final String NAME = "visualization_msgs/Marker";
@@ -60,7 +58,7 @@ public class MarkerMessage implements Message {
         MESH_RESOURCE,
         TRIANGLE_LIST
     }
-    
+
     public enum Action {
         ADD,
         MODIFY,
@@ -75,15 +73,15 @@ public class MarkerMessage implements Message {
     public HeaderMessage header = new HeaderMessage();
 
     /**
-     * Namespace to place this object in... used in conjunction
-     * with id to create a unique name for the object
+     * Namespace to place this object in... used in conjunction with id to create a
+     * unique name for the object
      */
     @Streamed
     public StringMessage ns = new StringMessage();
-    
+
     /**
-     * Object ID useful in conjunction with the namespace
-     * for manipulating and deleting the object later
+     * Object ID useful in conjunction with the namespace for manipulating and
+     * deleting the object later
      */
     @Streamed
     public int id;
@@ -93,14 +91,14 @@ public class MarkerMessage implements Message {
      */
     @Streamed
     public int type;
-    
+
     /**
-     * 0 add/modify an object, 1 (deprecated), 2 deletes an
-     * object, 3 deletes all objects
+     * 0 add/modify an object, 1 (deprecated), 2 deletes an object, 3 deletes all
+     * objects
      */
     @Streamed
     public int action;
-    
+
     /**
      * Pose of the object
      */
@@ -120,29 +118,30 @@ public class MarkerMessage implements Message {
     public ColorRGBAMessage color = new ColorRGBAMessage();
 
     /**
-     * How long the object should last before being automatically deleted. 
-     * 0 means forever
+     * How long the object should last before being automatically deleted. 0 means
+     * forever
      */
     @Streamed
     public Duration lifetime = new Duration();
 
     /**
-     * If this marker should be frame-locked, i.e. retransformed into its
-     * frame every timestep
+     * If this marker should be frame-locked, i.e. retransformed into its frame
+     * every timestep
      */
     @Streamed
     public boolean frame_locked;
-    
+
     /**
-     * Only used if the type specified has some use for them (eg. POINTS, LINE_STRIP, ...)
+     * Only used if the type specified has some use for them (eg. POINTS,
+     * LINE_STRIP, ...)
      */
     @Streamed
     public PointMessage[] points = new PointMessage[0];
 
     /**
-     * Only used if the type specified has some use for them (eg. POINTS, LINE_STRIP, ...)
-     * number of colors must either be 0 or equal to the number of points
-     * NOTE: alpha is not yet used
+     * Only used if the type specified has some use for them (eg. POINTS,
+     * LINE_STRIP, ...) number of colors must either be 0 or equal to the number of
+     * points NOTE: alpha is not yet used
      */
     @Streamed
     public ColorRGBAMessage[] colors = new ColorRGBAMessage[0];
@@ -152,65 +151,65 @@ public class MarkerMessage implements Message {
      */
     @Streamed
     public StringMessage text = new StringMessage();
-    
+
     /**
      * Only used for MESH_RESOURCE markers
      */
     @Streamed
     public StringMessage mesh_resource = new StringMessage();
-    
+
     /**
-     * If this marker should be frame-locked, i.e. retransformed into its
-     * frame every timestep
+     * If this marker should be frame-locked, i.e. retransformed into its frame
+     * every timestep
      */
     @Streamed
     public boolean mesh_use_embedded_materials;
-    
+
     public MarkerMessage withHeader(HeaderMessage header) {
         this.header = header;
         return this;
     }
-    
+
     public MarkerMessage withNs(StringMessage ns) {
         this.ns = ns;
         return this;
     }
-    
+
     public MarkerMessage withId(int id) {
         this.id = id;
         return this;
     }
-    
+
     public MarkerMessage withType(Type type) {
         this.type = type.ordinal();
         return this;
     }
-    
+
     public MarkerMessage withAction(Action action) {
         this.action = action.ordinal();
         return this;
     }
-    
+
     public MarkerMessage withPose(PoseMessage pose) {
         this.pose = pose;
         return this;
     }
-    
+
     public MarkerMessage withScale(Vector3Message scale) {
         this.scale = scale;
         return this;
     }
-    
+
     public MarkerMessage withColor(ColorRGBAMessage color) {
         this.color = color;
         return this;
     }
-    
+
     public MarkerMessage withLifetime(Duration lifetime) {
         this.lifetime = lifetime;
         return this;
     }
-    
+
     public MarkerMessage withFrameLocked(boolean frame_locked) {
         this.frame_locked = frame_locked;
         return this;
@@ -220,7 +219,7 @@ public class MarkerMessage implements Message {
         this.text = text;
         return this;
     }
-    
+
     @Override
     public String toString() {
         return XJson.asString(

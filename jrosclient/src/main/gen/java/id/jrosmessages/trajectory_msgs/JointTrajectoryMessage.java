@@ -37,63 +37,57 @@ import id.xfunction.XJson;
 /**
  * Definition for trajectory_msgs/JointTrajectory
  */
-@MessageMetadata(
-    type = JointTrajectoryMessage.NAME,
-    md5sum = "6b718af7f0350f5032ea5cc522f1b1bd")
+@MessageMetadata(type = JointTrajectoryMessage.NAME, md5sum = "6b718af7f0350f5032ea5cc522f1b1bd")
 public class JointTrajectoryMessage implements Message {
-   
-   static final String NAME = "trajectory_msgs/JointTrajectory";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   @Streamed
-   public StringMessage[] joint_names = new StringMessage[0];
-   
-   @Streamed
-   public JointTrajectoryPointMessage[] points = new JointTrajectoryPointMessage[0];
-   
-   public JointTrajectoryMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public JointTrajectoryMessage withJointNames(StringMessage... joint_names) {
-       this.joint_names = joint_names;
-       return this;
-   }
-   
-   public JointTrajectoryMessage withPoints(JointTrajectoryPointMessage... points) {
-       this.points = points;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           Arrays.hashCode(joint_names),
-           Arrays.hashCode(points)
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (JointTrajectoryMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Arrays.equals(joint_names, other.joint_names) &&
-           Arrays.equals(points, other.points)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "joint_names", joint_names,
-           "points", points
-       );
-   }
-   
+    static final String NAME = "trajectory_msgs/JointTrajectory";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    @Streamed
+    public StringMessage[] joint_names = new StringMessage[0];
+
+    @Streamed
+    public JointTrajectoryPointMessage[] points = new JointTrajectoryPointMessage[0];
+
+    public JointTrajectoryMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public JointTrajectoryMessage withJointNames(StringMessage... joint_names) {
+        this.joint_names = joint_names;
+        return this;
+    }
+
+    public JointTrajectoryMessage withPoints(JointTrajectoryPointMessage... points) {
+        this.points = points;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                Arrays.hashCode(joint_names),
+                Arrays.hashCode(points));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (JointTrajectoryMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Arrays.equals(joint_names, other.joint_names) &&
+                Arrays.equals(points, other.points);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "joint_names", joint_names,
+                "points", points);
+    }
+
 }

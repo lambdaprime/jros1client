@@ -48,8 +48,8 @@ public class NodeApiServerDispatcher {
 
     public Object requestTopic(String callerId, String topic, Object[] protocols) {
         var protos = Arrays.stream(protocols)
-            .map(transformers.protocolTransformer::transform)
-            .collect(Collectors.toList());
+                .map(transformers.protocolTransformer::transform)
+                .collect(Collectors.toList());
         return protocolParamsParser.transform(nodeApi.requestTopic(callerId, topic, protos))
                 .getObject();
     }
@@ -61,5 +61,5 @@ public class NodeApiServerDispatcher {
         return intTransformer.transform(nodeApi.publisherUpdate(callerId, topic, pubs))
                 .getObject();
     }
-    
+
 }

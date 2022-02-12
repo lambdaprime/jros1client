@@ -24,7 +24,6 @@
 
 package id.jrosmessages.geometry_msgs;
 
-
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -34,61 +33,54 @@ import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * Definition for geometry_msgs/AccelWithCovariance
- * This expresses acceleration in free space with uncertainty.
+ * Definition for geometry_msgs/AccelWithCovariance This expresses acceleration
+ * in free space with uncertainty.
  */
-@MessageMetadata(
-    type = AccelWithCovarianceMessage.NAME,
-    md5sum = "c48b3713c98db26549cd6f7fa86d1e4d")
+@MessageMetadata(type = AccelWithCovarianceMessage.NAME, md5sum = "c48b3713c98db26549cd6f7fa86d1e4d")
 public class AccelWithCovarianceMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/AccelWithCovariance";
 
-   @Streamed
-   public AccelMessage accel = new AccelMessage();
-   
-   /**
-    * Row-major representation of the 6x6 covariance matrix
-    * The orientation parameters use a fixed-axis representation.
-    * In order, the parameters are:
-    * (x, y, z, rotation about X axis, rotation about Y axis, rotation about Z axis)
-    */
-   @Streamed
-   public double[] covariance = new double[0];
-   
-   public AccelWithCovarianceMessage withAccel(AccelMessage accel) {
-       this.accel = accel;
-       return this;
-   }
-   
-   public AccelWithCovarianceMessage withCovariance(double... covariance) {
-       this.covariance = covariance;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           accel,
-           Arrays.hashCode(covariance)
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (AccelWithCovarianceMessage) obj;
-       return
-           Objects.equals(accel, other.accel) &&
-           Arrays.equals(covariance, other.covariance)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "accel", accel,
-           "covariance", Arrays.toString(covariance)
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/AccelWithCovariance";
+
+    @Streamed
+    public AccelMessage accel = new AccelMessage();
+
+    /**
+     * Row-major representation of the 6x6 covariance matrix The orientation
+     * parameters use a fixed-axis representation. In order, the parameters are: (x,
+     * y, z, rotation about X axis, rotation about Y axis, rotation about Z axis)
+     */
+    @Streamed
+    public double[] covariance = new double[0];
+
+    public AccelWithCovarianceMessage withAccel(AccelMessage accel) {
+        this.accel = accel;
+        return this;
+    }
+
+    public AccelWithCovarianceMessage withCovariance(double... covariance) {
+        this.covariance = covariance;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                accel,
+                Arrays.hashCode(covariance));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (AccelWithCovarianceMessage) obj;
+        return Objects.equals(accel, other.accel) &&
+                Arrays.equals(covariance, other.covariance);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "accel", accel,
+                "covariance", Arrays.toString(covariance));
+    }
+
 }

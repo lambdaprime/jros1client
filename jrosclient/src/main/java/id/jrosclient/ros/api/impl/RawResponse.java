@@ -32,29 +32,30 @@ public class RawResponse implements Iterable<RawResponse> {
     public RawResponse(Object obj) {
         this.obj = obj;
     }
-    
+
     public <T> List<T> list() {
-        T[] a = (T[])obj;
+        T[] a = (T[]) obj;
         return Arrays.asList(a);
     }
 
     public RawResponse get(int i) {
-        return new RawResponse(((Object[])obj)[i]);
+        return new RawResponse(((Object[]) obj)[i]);
     }
 
     public String string() {
-        return (String)obj;
+        return (String) obj;
     }
 
     public int integer() {
-        return (Integer)obj;
+        return (Integer) obj;
     }
 
     @Override
     public Iterator<RawResponse> iterator() {
-        Object[] a = (Object[])obj;
+        Object[] a = (Object[]) obj;
         return new Iterator<RawResponse>() {
             int i = 0;
+
             @Override
             public boolean hasNext() {
                 return i < a.length;

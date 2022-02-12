@@ -36,55 +36,49 @@ import id.xfunction.XJson;
 /**
  * Definition for object_recognition_msgs/TableArray
  */
-@MessageMetadata(
-    type = TableArrayMessage.NAME,
-    md5sum = "cb3563a52bcb782c2c0d28e3e9a3dc50")
+@MessageMetadata(type = TableArrayMessage.NAME, md5sum = "cb3563a52bcb782c2c0d28e3e9a3dc50")
 public class TableArrayMessage implements Message {
-   
-   static final String NAME = "object_recognition_msgs/TableArray";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   /**
-    * Just an array of tables
-    */
-   @Streamed
-   public TableMessage[] tables = new TableMessage[0];
-   
-   public TableArrayMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public TableArrayMessage withTables(TableMessage... tables) {
-       this.tables = tables;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           Arrays.hashCode(tables)
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (TableArrayMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Arrays.equals(tables, other.tables)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "tables", tables
-       );
-   }
-   
+    static final String NAME = "object_recognition_msgs/TableArray";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    /**
+     * Just an array of tables
+     */
+    @Streamed
+    public TableMessage[] tables = new TableMessage[0];
+
+    public TableArrayMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public TableArrayMessage withTables(TableMessage... tables) {
+        this.tables = tables;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                Arrays.hashCode(tables));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (TableArrayMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Arrays.equals(tables, other.tables);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "tables", tables);
+    }
+
 }

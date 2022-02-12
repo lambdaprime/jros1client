@@ -32,7 +32,7 @@ public class IntTransformer implements ResponseTransformer {
         ss.value = response.get(2).integer();
         return ss;
     }
-    
+
     public RawResponse transform(IntResponse response) {
         var raw = new RawResponse(new Object[3]);
         ResponseTransformer.populate(raw, response);

@@ -47,7 +47,7 @@ public class MessagePacket {
     public byte[] getBody() {
         return body;
     }
-    
+
     @Override
     public String toString() {
         var out = new XOutputStream();

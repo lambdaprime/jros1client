@@ -34,7 +34,7 @@ public class ConnectionHeaderScanner implements MessageScanner {
 
     private static final XLogger LOGGER = XLogger.getLogger(ConnectionHeaderScanner.class);
     private Utils utils = new Utils();
-    
+
     @Override
     public int scan(ByteBuffer buffer) {
         LOGGER.entering("scan");
@@ -45,14 +45,16 @@ public class ConnectionHeaderScanner implements MessageScanner {
 
     private int scanInternal(ByteBuffer buffer) {
         try {
-            if (buffer.limit() < 4) return -1;
+            if (buffer.limit() < 4)
+                return -1;
             var dis = new DataInputStream(new ByteBufferInputStream(buffer));
             var len = utils.readLen(dis) + 4;
-            if (buffer.limit() < len) return -1;
+            if (buffer.limit() < len)
+                return -1;
             return len;
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }        
+        }
     }
 
 }

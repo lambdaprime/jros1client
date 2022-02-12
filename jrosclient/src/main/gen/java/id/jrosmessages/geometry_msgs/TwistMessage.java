@@ -24,7 +24,6 @@
 
 package id.jrosmessages.geometry_msgs;
 
-
 import java.util.Objects;
 
 import id.jrosmessages.Message;
@@ -33,55 +32,49 @@ import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * Definition for geometry_msgs/Twist
- * This expresses velocity in free space broken into its linear and angular parts.
+ * Definition for geometry_msgs/Twist This expresses velocity in free space
+ * broken into its linear and angular parts.
  */
-@MessageMetadata(
-    type = TwistMessage.NAME,
-    md5sum = "7b067cfe31b410bffd4e416af2c10eb0")
+@MessageMetadata(type = TwistMessage.NAME, md5sum = "7b067cfe31b410bffd4e416af2c10eb0")
 public class TwistMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/Twist";
 
-   @Streamed
-   public Vector3Message linear = new Vector3Message();
-   
-   @Streamed
-   public Vector3Message angular = new Vector3Message();
-   
-   public TwistMessage withLinear(Vector3Message linear) {
-       this.linear = linear;
-       return this;
-   }
-   
-   public TwistMessage withAngular(Vector3Message angular) {
-       this.angular = angular;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           linear,
-           angular
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (TwistMessage) obj;
-       return
-           Objects.equals(linear, other.linear) &&
-           Objects.equals(angular, other.angular)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "linear", linear,
-           "angular", angular
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/Twist";
+
+    @Streamed
+    public Vector3Message linear = new Vector3Message();
+
+    @Streamed
+    public Vector3Message angular = new Vector3Message();
+
+    public TwistMessage withLinear(Vector3Message linear) {
+        this.linear = linear;
+        return this;
+    }
+
+    public TwistMessage withAngular(Vector3Message angular) {
+        this.angular = angular;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                linear,
+                angular);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (TwistMessage) obj;
+        return Objects.equals(linear, other.linear) &&
+                Objects.equals(angular, other.angular);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "linear", linear,
+                "angular", angular);
+    }
+
 }

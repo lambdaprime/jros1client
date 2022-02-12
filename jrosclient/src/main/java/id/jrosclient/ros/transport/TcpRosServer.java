@@ -50,36 +50,34 @@ import id.xfunction.logging.XLogger;
 /**
  * Allows to communicate with other ROS nodes.
  * 
- * Relies on {@link PublishersManager} for list of available publishers.
- * - When new connection comes in it searches for publisher
- * in PublishersManager
- * - Each time existing client sends a request it checks if
- * publisher is closed or not (present in PublishersManager) and
- * if not then it closes the connection.
+ * Relies on {@link PublishersManager} for list of available publishers. - When
+ * new connection comes in it searches for publisher in PublishersManager - Each
+ * time existing client sends a request it checks if publisher is closed or not
+ * (present in PublishersManager) and if not then it closes the connection.
  */
 public class TcpRosServer implements MessageService, AutoCloseable {
 
     private static final XLogger LOGGER = XLogger.getLogger(TcpRosServer.class);
-    
+
     private MetadataAccessor metadataAccessor = new MetadataAccessor();
     private MessageServer server;
     private ConnectionHeaderValidator headerValidator = new ConnectionHeaderValidator(
             metadataAccessor);
     private PublishersManager publishersManager;
-    
+
     /**
      * Connection id to subscriber serving it
      */
     private Map<Integer, TopicPublisherSubscriber> subscribers = new ConcurrentHashMap<>();
-    
+
     /**
      * Connections which are no longer served by publishers and should be closed
      */
     private Set<Integer> closedConnections = new HashSet<>();
-    
+
     private TextUtils utils;
     private boolean isStarted;
-    
+
     @SuppressWarnings("resource")
     public TcpRosServer(PublishersManager publishersManager, JRosClientConfiguration config,
             TextUtils utils) {
@@ -88,9 +86,10 @@ public class TcpRosServer implements MessageService, AutoCloseable {
                 .withPort(config.getTcpRosServerPort());
         this.utils = utils;
     }
-    
+
     public void start() throws IOException {
-        if (isStarted) return;
+        if (isStarted)
+            return;
         LOGGER.fine("Starting...");
         isStarted = true;
         server.run();
@@ -104,7 +103,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
         }
         LOGGER.fine("Stopping...");
         subscribers.values()
-            .forEach(Subscriber::onComplete);
+                .forEach(Subscriber::onComplete);
         subscribers.clear();
         Unchecked.run(() -> server.close());
         isStarted = false;
@@ -118,12 +117,12 @@ public class TcpRosServer implements MessageService, AutoCloseable {
     public CompletableFuture<MessageResponse> process(MessageRequest request) {
         var connId = request.getConnectionId();
         LOGGER.entering("process", connId);
-        
+
         if (closedConnections.remove(connId)) {
             LOGGER.info("Closing connection as there is no more publishers serving it...");
             return CompletableFuture.completedFuture(null);
         }
-        
+
         var subscriber = subscribers.get(connId);
 
         // if there is no subscriber for that connection, we try to create one
@@ -131,7 +130,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
             var message = request.getMessage().orElse(null);
             if (message == null) {
                 LOGGER.info("Received registration request with no message, closing the connection...");
-                return CompletableFuture.completedFuture(null);                
+                return CompletableFuture.completedFuture(null);
             }
             var subscriberOpt = registerSubscriber(connId, message);
             if (subscriberOpt.isEmpty()) {
@@ -151,26 +150,26 @@ public class TcpRosServer implements MessageService, AutoCloseable {
         }
 
         XAsserts.assertTrue(!subscriber.isCompleted());
-        
+
         var callerId = subscriber.getCallerId();
         LOGGER.log(Level.FINE, "Requesting next message for {0}", callerId);
 
         var future = subscriber.request();
-        
+
         LOGGER.exiting("process", future);
         return future;
     }
 
     /**
-     * Find publisher for the topic for which this request is for.
-     * If such publisher exist - create a subscriber for it and return this subscriber.
-     * If not - return empty value.
+     * Find publisher for the topic for which this request is for. If such publisher
+     * exist - create a subscriber for it and return this subscriber. If not -
+     * return empty value.
      */
     private Optional<TopicPublisherSubscriber> registerSubscriber(int connId, ByteBuffer message) {
         var dis = new DataInputStream(new ByteBufferInputStream(message));
         var headerReader = new ConnectionHeaderReader(dis);
         var header = Unchecked.get(headerReader::read);
-        
+
         LOGGER.log(Level.FINE, "Incoming connection from {0}", header.getCallerId());
         if (header.getCallerId().isEmpty()) {
             LOGGER.log(Level.FINE, "Caller id is empty, closing...");
@@ -180,10 +179,10 @@ public class TcpRosServer implements MessageService, AutoCloseable {
             LOGGER.log(Level.FINE, "Topic is empty, closing...");
             return Optional.empty();
         }
-        
+
         var callerId = header.getCallerId().get();
         var topic = header.getTopic().get();
-        
+
         var publisherOpt = publishersManager.getPublisher(topic);
         if (publisherOpt.isEmpty()) {
             LOGGER.log(Level.FINE, "No publishers found for topic {0}, closing...", topic);
@@ -195,13 +194,13 @@ public class TcpRosServer implements MessageService, AutoCloseable {
             LOGGER.log(Level.FINE, "Requested message validation error, closing...");
             return Optional.empty();
         }
-        
+
         var subscriber = new TopicPublisherSubscriber(callerId, topic, publisher.getMessageClass(), utils) {
             @Override
             public void onError(Throwable throwable) {
                 LOGGER.warning("Publisher of topic {0} for caller {1} throwed error {2}: {3}",
                         topic, callerId, throwable.getClass(), throwable.getMessage());
-                
+
                 subscribers.remove(connId);
                 publisher.onPublishError(throwable);
                 closedConnections.add(connId);
@@ -209,7 +208,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
             }
         };
         publisher.subscribe(subscriber);
-        
+
         LOGGER.log(Level.FINE, "Received connection header {0}", header);
         return Optional.of(subscriber);
     }

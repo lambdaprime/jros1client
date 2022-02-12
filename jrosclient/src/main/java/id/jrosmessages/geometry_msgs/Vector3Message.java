@@ -31,25 +31,23 @@ import id.xfunction.XJson;
 /**
  * Definition for geometry_msgs/Vector3
  */
-@MessageMetadata(
-    type = Vector3Message.NAME,
-    md5sum = "4a842b65f413084dc2b10fb484ea7f17")
+@MessageMetadata(type = Vector3Message.NAME, md5sum = "4a842b65f413084dc2b10fb484ea7f17")
 public class Vector3Message implements Message {
 
     static final String NAME = "geometry_msgs/Vector3";
-    
+
     @Streamed
     public double x, y, z;
 
     public Vector3Message() {
     }
-    
+
     public Vector3Message(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
-    
+
     public Vector3Message withX(double x) {
         this.x = x;
         return this;
@@ -71,12 +69,12 @@ public class Vector3Message implements Message {
                 "y", y,
                 "z", z);
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(x, y, z);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         Vector3Message other = (Vector3Message) obj;

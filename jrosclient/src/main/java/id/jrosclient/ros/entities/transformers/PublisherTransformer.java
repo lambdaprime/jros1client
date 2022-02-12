@@ -27,8 +27,8 @@ class PublisherTransformer implements Transformer<Publisher> {
 
     public Publisher transform(Object obj) {
         Object[] a = (Object[]) obj;
-        return new Publisher((String)a[0],
-                Transformer.list((Object[])a[1]));
+        return new Publisher((String) a[0],
+                Transformer.list((Object[]) a[1]));
     }
 
     @Override

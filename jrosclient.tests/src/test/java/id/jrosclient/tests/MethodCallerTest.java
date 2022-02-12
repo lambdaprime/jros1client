@@ -35,10 +35,9 @@ public class MethodCallerTest {
     @Test
     public void test_no_method() throws Exception {
         var caller = new MethodCaller("hello world");
-        Assertions.assertThrows(NoSuchMethodException.class, () -> 
-            caller.call("sadf"));
+        Assertions.assertThrows(NoSuchMethodException.class, () -> caller.call("sadf"));
     }
-    
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Test
     public void test_happy() throws Throwable {
@@ -47,7 +46,7 @@ public class MethodCallerTest {
         var caller = new MethodCaller(list);
         assertEquals("[hello]", caller.call("toString"));
     }
-    
+
     @Test
     public void test_void() throws Throwable {
         var caller = new MethodCaller("hello  ");

@@ -34,55 +34,49 @@ import id.xfunction.XJson;
 import id.jrosmessages.std_msgs.HeaderMessage;
 
 /**
- * Definition for geometry_msgs/AccelWithCovarianceStamped
- * This represents an estimated accel with reference coordinate frame and timestamp.
+ * Definition for geometry_msgs/AccelWithCovarianceStamped This represents an
+ * estimated accel with reference coordinate frame and timestamp.
  */
-@MessageMetadata(
-    type = AccelWithCovarianceStampedMessage.NAME,
-    md5sum = "cf7b852cab243d76000e69f42f2700f6")
+@MessageMetadata(type = AccelWithCovarianceStampedMessage.NAME, md5sum = "cf7b852cab243d76000e69f42f2700f6")
 public class AccelWithCovarianceStampedMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/AccelWithCovarianceStamped";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   @Streamed
-   public AccelWithCovarianceMessage accel = new AccelWithCovarianceMessage();
-   
-   public AccelWithCovarianceStampedMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public AccelWithCovarianceStampedMessage withAccel(AccelWithCovarianceMessage accel) {
-       this.accel = accel;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           accel
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (AccelWithCovarianceStampedMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(accel, other.accel)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "accel", accel
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/AccelWithCovarianceStamped";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    @Streamed
+    public AccelWithCovarianceMessage accel = new AccelWithCovarianceMessage();
+
+    public AccelWithCovarianceStampedMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public AccelWithCovarianceStampedMessage withAccel(AccelWithCovarianceMessage accel) {
+        this.accel = accel;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                accel);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (AccelWithCovarianceStampedMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(accel, other.accel);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "accel", accel);
+    }
+
 }

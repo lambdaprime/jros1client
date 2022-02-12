@@ -30,7 +30,7 @@ public class Utils {
     public int readLen(DataInput in) throws IOException {
         return Integer.reverseBytes(in.readInt());
     }
-    
+
     public void writeLen(DataOutput out, int len) throws IOException {
         out.writeInt(Integer.reverseBytes(len));
     }

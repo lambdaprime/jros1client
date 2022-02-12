@@ -30,18 +30,25 @@ import id.jrosmessages.Message;
 import id.xfunction.XAsserts;
 
 /**
- * <p>Subscriber receives messages for the topic it is
- * subscribed for and passes them to the onNext method.</p>
+ * <p>
+ * Subscriber receives messages for the topic it is subscribed for and passes
+ * them to the onNext method.
+ * </p>
  * 
- * <p>This class simplifies implementation of new subscribers since it
- * provides default implementations for most methods except onNext.
- * The onNext method needs to be implemented for each subscriber
- * separately.</p>
+ * <p>
+ * This class simplifies implementation of new subscribers since it provides
+ * default implementations for most methods except onNext. The onNext method
+ * needs to be implemented for each subscriber separately.
+ * </p>
  * 
- * <p>Before subscriber can start to receive messages it needs
- * to be subscribed for the topic.</p>
+ * <p>
+ * Before subscriber can start to receive messages it needs to be subscribed for
+ * the topic.
+ * </p>
  * 
- * <p>See <a href="{@docRoot}/../index.html">Module documentation</a> for examples.</p>
+ * <p>
+ * See <a href="{@docRoot}/../index.html">Module documentation</a> for examples.
+ * </p>
  * 
  * @param <M> type of messages in the topic
  */
@@ -53,14 +60,14 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
     private Subscription subscription;
     private String topic;
     private int initNumOfMessages = 1;
-    
+
     /**
      * Creates subscriber for a topic which when first subscribed will request 1
      * message.
      * 
      * @param messageClass class of the messages in this topic
-     * @param topic Name of the topic which messages current subscriber wants to receive.
-     * Topic name which should start from '/'
+     * @param topic        Name of the topic which messages current subscriber wants
+     *                     to receive. Topic name which should start from '/'
      */
     public TopicSubscriber(Class<M> messageClass, String topic) {
         this.messageClass = messageClass;
@@ -68,8 +75,8 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
     }
 
     /**
-     * Allows to set how many messages to request once this subscriber will
-     * be first subscribed to some topic. Default number is one.
+     * Allows to set how many messages to request once this subscriber will be first
+     * subscribed to some topic. Default number is one.
      */
     public TopicSubscriber<M> withInitialRequest(int numOfMessages) {
         initNumOfMessages = numOfMessages;
@@ -84,7 +91,9 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
     }
 
     /**
-     * <p>Common throwable types:</p>
+     * <p>
+     * Common throwable types:
+     * </p>
      * 
      * <ul>
      * <li>EOFException - publisher unexpectedly closed the connection</li>
@@ -100,7 +109,7 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
      */
     @Override
     public void onComplete() {
-        
+
     }
 
     /**
@@ -113,7 +122,7 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
     public Subscription getSubscription() {
         return subscription;
     }
-    
+
     /**
      * Name of the topic of this subscriber
      */

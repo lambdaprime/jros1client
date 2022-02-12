@@ -33,7 +33,7 @@ public class ListTransformer implements ResponseTransformer {
         if (ss.statusCode == StatusCode.ERROR) {
             return ss;
         }
-        for (RawResponse r: response.get(2)) {
+        for (RawResponse r : response.get(2)) {
             ss.value.add(r.string());
         }
         return ss;

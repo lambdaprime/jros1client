@@ -47,12 +47,12 @@ public class MessagePacketReader {
     public ConnectionHeader readHeader() throws IOException {
         return headerReader.read();
     }
-    
+
     public byte[] readBody() throws IOException {
         byte[] b = readBody(utils.readLen(in));
         return b;
     }
-    
+
     private byte[] readBody(int bodyLen) throws IOException {
         byte[] buf = new byte[bodyLen];
         in.readFully(buf);

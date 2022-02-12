@@ -34,55 +34,49 @@ import id.xfunction.XJson;
 import id.jrosmessages.std_msgs.HeaderMessage;
 
 /**
- * Definition for geometry_msgs/PoseWithCovarianceStamped
- * This expresses an estimated pose with a reference coordinate frame and timestamp
+ * Definition for geometry_msgs/PoseWithCovarianceStamped This expresses an
+ * estimated pose with a reference coordinate frame and timestamp
  */
-@MessageMetadata(
-    type = PoseWithCovarianceStampedMessage.NAME,
-    md5sum = "729039794eaab042b403222dbf81e197")
+@MessageMetadata(type = PoseWithCovarianceStampedMessage.NAME, md5sum = "729039794eaab042b403222dbf81e197")
 public class PoseWithCovarianceStampedMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/PoseWithCovarianceStamped";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   @Streamed
-   public PoseWithCovarianceMessage pose = new PoseWithCovarianceMessage();
-   
-   public PoseWithCovarianceStampedMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public PoseWithCovarianceStampedMessage withPose(PoseWithCovarianceMessage pose) {
-       this.pose = pose;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           pose
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (PoseWithCovarianceStampedMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(pose, other.pose)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "pose", pose
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/PoseWithCovarianceStamped";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    @Streamed
+    public PoseWithCovarianceMessage pose = new PoseWithCovarianceMessage();
+
+    public PoseWithCovarianceStampedMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public PoseWithCovarianceStampedMessage withPose(PoseWithCovarianceMessage pose) {
+        this.pose = pose;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                pose);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (PoseWithCovarianceStampedMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(pose, other.pose);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "pose", pose);
+    }
+
 }

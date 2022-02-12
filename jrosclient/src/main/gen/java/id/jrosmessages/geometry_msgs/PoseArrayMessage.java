@@ -35,55 +35,49 @@ import id.jrosmessages.std_msgs.HeaderMessage;
 import java.util.Arrays;
 
 /**
- * Definition for geometry_msgs/PoseArray
- * An array of poses with a header for global reference.
+ * Definition for geometry_msgs/PoseArray An array of poses with a header for
+ * global reference.
  */
-@MessageMetadata(
-    type = PoseArrayMessage.NAME,
-    md5sum = "5f3f794301c7af61b3beab5b9997bb64")
+@MessageMetadata(type = PoseArrayMessage.NAME, md5sum = "5f3f794301c7af61b3beab5b9997bb64")
 public class PoseArrayMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/PoseArray";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   @Streamed
-   public PoseMessage[] poses = new PoseMessage[0];
-   
-   public PoseArrayMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public PoseArrayMessage withPoses(PoseMessage... poses) {
-       this.poses = poses;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           Arrays.hashCode(poses)
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (PoseArrayMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Arrays.equals(poses, other.poses)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "poses", Arrays.toString(poses)
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/PoseArray";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    @Streamed
+    public PoseMessage[] poses = new PoseMessage[0];
+
+    public PoseArrayMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public PoseArrayMessage withPoses(PoseMessage... poses) {
+        this.poses = poses;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                Arrays.hashCode(poses));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (PoseArrayMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Arrays.equals(poses, other.poses);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "poses", Arrays.toString(poses));
+    }
+
 }

@@ -63,10 +63,10 @@ public class ConnectionHeaderReaderTests {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(bos);
         resourceUtils.readResourceAsStream(resource)
-            .map(l -> Arrays.asList(l.split(" ")))
-            .flatMap(List::stream)
-            .map(Unchecked.wrapApply(Curry.curryApply2nd(Integer::parseInt, 16)))
-            .forEach(Unchecked.wrapAccept(dos::writeByte));
+                .map(l -> Arrays.asList(l.split(" ")))
+                .flatMap(List::stream)
+                .map(Unchecked.wrapApply(Curry.curryApply2nd(Integer::parseInt, 16)))
+                .forEach(Unchecked.wrapAccept(dos::writeByte));
         return bos.toByteArray();
     }
 

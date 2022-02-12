@@ -35,13 +35,13 @@ public class PublishersManager implements AutoCloseable {
 
     // topic name to its publisher
     private Map<String, TopicPublisher<?>> publishers = new HashMap<>();
-    
+
     public <M extends Message> void add(TopicPublisher<M> publisher) {
         if (publishers.containsKey(publisher.getTopic()))
             throw new XRE("Publisher for topic %s already exist", publisher.getTopic());
         publishers.put(publisher.getTopic(), publisher);
     }
-    
+
     public Optional<TopicPublisher<?>> getPublisher(String topic) {
         return Optional.ofNullable(publishers.get(topic));
     }
@@ -49,7 +49,7 @@ public class PublishersManager implements AutoCloseable {
     public void remove(String topic) {
         publishers.remove(topic);
     }
-    
+
     public List<TopicPublisher<?>> getPublishers() {
         return List.copyOf(publishers.values());
     }

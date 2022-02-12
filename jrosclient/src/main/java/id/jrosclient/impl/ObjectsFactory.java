@@ -44,12 +44,13 @@ public class ObjectsFactory {
     public static ObjectsFactory getInstance() {
         return instance;
     }
-    
+
     public static void setInstance(ObjectsFactory objectsFactory) {
         instance = objectsFactory;
     }
 
-    public TcpRosServer createTcpRosServer(PublishersManager publishersManager, JRosClientConfiguration config, TextUtils textUtils) {
+    public TcpRosServer createTcpRosServer(PublishersManager publishersManager, JRosClientConfiguration config,
+            TextUtils textUtils) {
         return new TcpRosServer(publishersManager, config, textUtils);
     }
 

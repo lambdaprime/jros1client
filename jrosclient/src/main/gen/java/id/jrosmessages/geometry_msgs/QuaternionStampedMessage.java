@@ -34,55 +34,49 @@ import id.xfunction.XJson;
 import id.jrosmessages.std_msgs.HeaderMessage;
 
 /**
- * Definition for geometry_msgs/QuaternionStamped
- * This represents an orientation with reference coordinate frame and timestamp.
+ * Definition for geometry_msgs/QuaternionStamped This represents an orientation
+ * with reference coordinate frame and timestamp.
  */
-@MessageMetadata(
-    type = QuaternionStampedMessage.NAME,
-    md5sum = "4a5c00199247da86fc3d583bf5af5ca6")
+@MessageMetadata(type = QuaternionStampedMessage.NAME, md5sum = "4a5c00199247da86fc3d583bf5af5ca6")
 public class QuaternionStampedMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/QuaternionStamped";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   @Streamed
-   public QuaternionMessage quaternion = new QuaternionMessage();
-   
-   public QuaternionStampedMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public QuaternionStampedMessage withQuaternion(QuaternionMessage quaternion) {
-       this.quaternion = quaternion;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           quaternion
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (QuaternionStampedMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(quaternion, other.quaternion)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "quaternion", quaternion
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/QuaternionStamped";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    @Streamed
+    public QuaternionMessage quaternion = new QuaternionMessage();
+
+    public QuaternionStampedMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public QuaternionStampedMessage withQuaternion(QuaternionMessage quaternion) {
+        this.quaternion = quaternion;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                quaternion);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (QuaternionStampedMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(quaternion, other.quaternion);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "quaternion", quaternion);
+    }
+
 }

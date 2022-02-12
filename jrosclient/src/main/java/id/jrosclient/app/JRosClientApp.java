@@ -39,10 +39,15 @@ public class JRosClientApp {
     private static Optional<String> masterUrl = Optional.empty();
     private static JRosClientConfiguration config = new JRosClientConfiguration();
     private static Map<String, Consumer<String>> handlers = Map.of(
-        "--masterUrl", url -> { masterUrl = Optional.of(url); },
-        "--nodePort", port -> { config.setNodeServerPort(Integer.parseInt(port));},
-        "--truncate", maxLength -> { config.setMaxMessageLoggingLength(Integer.parseInt(maxLength));}
-    );
+            "--masterUrl", url -> {
+                masterUrl = Optional.of(url);
+            },
+            "--nodePort", port -> {
+                config.setNodeServerPort(Integer.parseInt(port));
+            },
+            "--truncate", maxLength -> {
+                config.setMaxMessageLoggingLength(Integer.parseInt(maxLength));
+            });
     private static LinkedList<String> positionalArgs = new LinkedList<>();
 
     public static Stream<String> readResourceAsStream(String file) {
@@ -53,21 +58,21 @@ public class JRosClientApp {
             throw new RuntimeException(e);
         }
     }
-    
+
     private static void usage() {
         readResourceAsStream("jrosclient-README.md")
-            .forEach(System.out::println);
+                .forEach(System.out::println);
         System.exit(1);
     }
 
     @SuppressWarnings("unused")
-	private static <T> T withArg(Optional<T> arg) {
+    private static <T> T withArg(Optional<T> arg) {
         if (arg.isEmpty()) {
             usage();
         }
         return arg.get();
     }
-    
+
     public static void main(String[] args) {
         try {
             new SmartArgs(handlers, positionalArgs::add).parse(args);
@@ -79,19 +84,22 @@ public class JRosClientApp {
     }
 
     private static void run() {
-        if (positionalArgs.isEmpty()) throw new ArgumentParsingException();
+        if (positionalArgs.isEmpty())
+            throw new ArgumentParsingException();
         var cmd = positionalArgs.removeFirst();
         switch (cmd) {
-        case "rostopic" : new RosTopic(masterUrl, config)
-            .execute(positionalArgs); 
+        case "rostopic":
+            new RosTopic(masterUrl, config)
+                    .execute(positionalArgs);
             break;
-        case "--debug" : {
+        case "--debug": {
             enableDebug();
             run();
             break;
         }
-        default: throw new ArgumentParsingException();
-        }        
+        default:
+            throw new ArgumentParsingException();
+        }
     }
 
     private static void enableDebug() {

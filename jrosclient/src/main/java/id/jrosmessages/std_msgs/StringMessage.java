@@ -31,19 +31,17 @@ import id.xfunction.XJson;
 /**
  * Definition for std_msgs/String
  */
-@MessageMetadata(
-    type = "std_msgs/String",
-    md5sum = "992ce8a1687cec8c8bd883ec73ca41d1")
+@MessageMetadata(type = "std_msgs/String", md5sum = "992ce8a1687cec8c8bd883ec73ca41d1")
 public class StringMessage implements Message {
-    
+
     @Streamed
     public String data = "";
-    
+
     // for kineticstreamer
     public StringMessage() {
 
     }
-    
+
     public StringMessage(String data) {
         this.data = data;
     }
@@ -52,17 +50,17 @@ public class StringMessage implements Message {
         this.data = data;
         return this;
     }
-    
+
     @Override
     public String toString() {
         return XJson.asString("data", data).toString();
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hashCode(data);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         StringMessage other = (StringMessage) obj;

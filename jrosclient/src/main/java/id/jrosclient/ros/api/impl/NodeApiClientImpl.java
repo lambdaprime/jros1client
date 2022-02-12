@@ -34,8 +34,8 @@ import id.jrosclient.ros.responses.transformers.ProtocolParamsTransformer;
 import id.xfunction.logging.XLogger;
 
 /**
- * Client implementation of ROS Node API which allows to communicate
- * with remote ROS nodes.
+ * Client implementation of ROS Node API which allows to communicate with remote
+ * ROS nodes.
  *
  */
 public class NodeApiClientImpl implements NodeApi {
@@ -52,9 +52,9 @@ public class NodeApiClientImpl implements NodeApi {
     @Override
     public ProtocolParamsResponse requestTopic(String callerId, String topic, List<Protocol> protocols) {
         var array = protocols.stream()
-            .map(transformers.protocolTransformer::transform)
-            .toArray();
-        Object[] params = new Object[]{callerId, topic, array};
+                .map(transformers.protocolTransformer::transform)
+                .toArray();
+        Object[] params = new Object[] { callerId, topic, array };
         return protocolParamsParser.parse(
                 client.execute("requestTopic", params));
     }

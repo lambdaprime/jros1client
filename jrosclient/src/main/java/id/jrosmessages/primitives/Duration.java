@@ -33,7 +33,7 @@ public class Duration {
      */
     @Streamed
     public int sec;
-    
+
     /**
      * Nanoseconds since this.sec
      */
@@ -47,7 +47,7 @@ public class Duration {
     public Duration(int sec) {
         this(sec, 0);
     }
-    
+
     public Duration(int sec, int nsec) {
         this.sec = sec;
         this.nsec = nsec;
@@ -58,12 +58,12 @@ public class Duration {
         return XJson.asString("sec", sec,
                 "nsec", nsec).toString();
     }
-    
+
     @Override
     public int hashCode() {
         return sec + nsec;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         Duration other = (Duration) obj;

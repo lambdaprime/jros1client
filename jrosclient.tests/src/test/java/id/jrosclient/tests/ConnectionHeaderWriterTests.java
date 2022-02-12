@@ -42,7 +42,7 @@ import id.xfunction.io.XOutputStream;
 public class ConnectionHeaderWriterTests {
 
     private static final ResourceUtils resourceUtils = new ResourceUtils();
-    
+
     private static Stream<ConnectionHeaderSample> headerSamples() {
         return Stream.of(ConnectionHeaderSamples.HEADER);
     }
@@ -54,9 +54,9 @@ public class ConnectionHeaderWriterTests {
         var dos = new DataOutputStream(collector);
         new ConnectionHeaderWriter(dos).write(sample.getHeader());
         var expected = resourceUtils.readResourceAsStream(sample.getResource())
-            .map(l -> Arrays.asList(l.split(" ")))
-            .flatMap(List::stream)
-            .collect(Collectors.joining(", "));
+                .map(l -> Arrays.asList(l.split(" ")))
+                .flatMap(List::stream)
+                .collect(Collectors.joining(", "));
         assertEquals(expected, collector.asHexString());
     }
 

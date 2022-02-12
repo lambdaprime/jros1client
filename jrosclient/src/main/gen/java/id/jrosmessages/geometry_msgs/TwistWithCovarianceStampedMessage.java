@@ -34,55 +34,49 @@ import id.xfunction.XJson;
 import id.jrosmessages.std_msgs.HeaderMessage;
 
 /**
- * Definition for geometry_msgs/TwistWithCovarianceStamped
- * This represents an estimated twist with reference coordinate frame and timestamp.
+ * Definition for geometry_msgs/TwistWithCovarianceStamped This represents an
+ * estimated twist with reference coordinate frame and timestamp.
  */
-@MessageMetadata(
-    type = TwistWithCovarianceStampedMessage.NAME,
-    md5sum = "f59b87b044187f26ef66329003c3d275")
+@MessageMetadata(type = TwistWithCovarianceStampedMessage.NAME, md5sum = "f59b87b044187f26ef66329003c3d275")
 public class TwistWithCovarianceStampedMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/TwistWithCovarianceStamped";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   @Streamed
-   public TwistWithCovarianceMessage twist = new TwistWithCovarianceMessage();
-   
-   public TwistWithCovarianceStampedMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public TwistWithCovarianceStampedMessage withTwist(TwistWithCovarianceMessage twist) {
-       this.twist = twist;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           twist
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (TwistWithCovarianceStampedMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(twist, other.twist)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "twist", twist
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/TwistWithCovarianceStamped";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    @Streamed
+    public TwistWithCovarianceMessage twist = new TwistWithCovarianceMessage();
+
+    public TwistWithCovarianceStampedMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public TwistWithCovarianceStampedMessage withTwist(TwistWithCovarianceMessage twist) {
+        this.twist = twist;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                twist);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (TwistWithCovarianceStampedMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(twist, other.twist);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "twist", twist);
+    }
+
 }

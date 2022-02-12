@@ -91,7 +91,7 @@ public class JRosClientTests {
         client.unpublish(topic);
         Assertions.assertEquals(data, future.get());
     }
-    
+
     @Test
     public void test_publish_single_message() throws Exception {
         var future = new CompletableFuture<String>();
@@ -116,8 +116,8 @@ public class JRosClientTests {
     }
 
     /**
-     * Test that publisher delivers messages which are in its queue before
-     * it is being closed.
+     * Test that publisher delivers messages which are in its queue before it is
+     * being closed.
      */
     @Test
     public void test_publisher_on_close() throws Exception {
@@ -150,14 +150,14 @@ public class JRosClientTests {
 
             // wait so that subscriber get time to register with ROS
             XThread.sleep(1000);
-            for (int i = 0 ; i < totalNumOfMessages; i++) {
+            for (int i = 0; i < totalNumOfMessages; i++) {
                 publisher.submit(new StringMessage().withData(data));
             }
         }
         future.get();
         Assertions.assertEquals(totalNumOfMessages, c[0]);
     }
-    
+
     @Test
     public void test_unpublish() throws Exception {
         var topic = "/testTopic3";
@@ -177,6 +177,7 @@ public class JRosClientTests {
         client.publish(publisher);
         client.subscribe(new TopicSubscriber<>(Int32Message.class, topic) {
             List<Integer> data = new ArrayList<>();
+
             @Override
             public void onNext(Int32Message item) {
                 System.out.println(item);
@@ -202,7 +203,7 @@ public class JRosClientTests {
             Assertions.assertEquals(start + i, received.get(i));
         }
     }
-    
+
     /**
      * Test that when publisher unexpectedly closes connection, subscriber notified
      * about this through onError
@@ -218,6 +219,7 @@ public class JRosClientTests {
             public void onNext(Int32Message item) {
                 System.out.println(item);
             }
+
             public void onError(Throwable throwable) {
                 System.out.println("onError occured: " + throwable);
                 future.complete(null);
@@ -230,7 +232,7 @@ public class JRosClientTests {
         System.out.println("Awake");
         client.unpublish(topic);
     }
-    
+
     /**
      * Test that message truncation is working
      */
@@ -258,7 +260,8 @@ public class JRosClientTests {
         } catch (Exception e) {
             System.out.println(e);
         }
-        Assertions.assertEquals(true, exception.getCause().getMessage().startsWith("Failed to read server's response: Connection refused"));
+        Assertions.assertEquals(true,
+                exception.getCause().getMessage().startsWith("Failed to read server's response: Connection refused"));
         Assertions.assertEquals(true, objectsFactory.nodeServer.isClosed());
         Assertions.assertEquals(true, objectsFactory.tcpRosServer.isClosed());
     }
@@ -269,14 +272,14 @@ public class JRosClientTests {
         String topic = "/testTopic1";
         var publisher = new TopicSubmissionPublisher<>(Int32Message.class, topic);
         client.publish(publisher);
-        
+
         var config = new JRosClientConfiguration();
         try (var myClient = new JRosClient(config);
-            var myPublisher = new TopicSubmissionPublisher<>(Int32Message.class, topic))
-        {
+                var myPublisher = new TopicSubmissionPublisher<>(Int32Message.class, topic)) {
             myClient.publish(myPublisher);
             client.subscribe(new TopicSubscriber<>(Int32Message.class, topic) {
                 Set<Integer> data = new HashSet<>();
+
                 @Override
                 public void onNext(Int32Message item) {
                     System.out.println(item);

@@ -33,7 +33,7 @@ import id.xfunction.logging.XLogger;
 public class RosDataInput implements InputKineticStream {
 
     private static final XLogger LOGGER = XLogger.getLogger(ConnectionHeader.class);
-    
+
     private DataInput in;
 
     public RosDataInput(DataInput in) {
@@ -91,7 +91,7 @@ public class RosDataInput implements InputKineticStream {
     @Override
     public Object[] readArray(Class<?> type) throws Exception {
         LOGGER.entering("readArray");
-        var array = (Object[])Array.newInstance(type, readLen());
+        var array = (Object[]) Array.newInstance(type, readLen());
         for (int i = 0; i < array.length; i++) {
             array[i] = new KineticStreamReader(this).read(type);
         }
@@ -127,7 +127,7 @@ public class RosDataInput implements InputKineticStream {
     public int[] readIntArray() throws Exception {
         throw new RuntimeException("Not supported");
     }
-    
+
     @Override
     public double[] readDoubleArray() throws Exception {
         LOGGER.entering("readDoubleArray");

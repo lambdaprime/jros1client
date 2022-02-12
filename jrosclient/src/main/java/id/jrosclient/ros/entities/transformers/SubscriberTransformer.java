@@ -27,8 +27,8 @@ class SubscriberTransformer implements Transformer<Subscriber> {
 
     public Subscriber transform(Object obj) {
         Object[] a = (Object[]) obj;
-        return new Subscriber((String)a[0],
-                Transformer.list((Object[])a[1]));
+        return new Subscriber((String) a[0],
+                Transformer.list((Object[]) a[1]));
     }
 
     @Override

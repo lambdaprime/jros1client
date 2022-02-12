@@ -51,18 +51,21 @@ import id.xfunction.logging.XLogger;
  * This client establishes TCPROS connection with publishing ROS node and
  * listens for new messages.
  * 
- * <p>Every new message it receives from such node it publishes to its own
+ * <p>
+ * Every new message it receives from such node it publishes to its own
  * JRosClient subscriber which is subscribed to the ROS topic.
  * 
- * <p>This client can serve only one JRosClient subscriber.
- *   
- * <p>This client is not used by JRosClient publishers.
+ * <p>
+ * This client can serve only one JRosClient subscriber.
+ * 
+ * <p>
+ * This client is not used by JRosClient publishers.
  */
 public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> implements AutoCloseable {
 
     private final XLogger LOGGER = XLogger.getLogger(this);
     private TextUtils utils;
-    
+
     private String callerId;
     private String topic;
     private String host;
@@ -87,7 +90,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
                 new NamedThreadFactory("tcp-ros-client-" + topic.replace("/", "")));
         this.utils = utils;
     }
-    
+
     public void connect() throws IOException {
         XAsserts.assertTrue(channel == null, "Already connected");
         channel = SocketChannel.open(new InetSocketAddress(host, port));
@@ -99,10 +102,10 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
         MetadataAccessor metadataAccessor = new MetadataAccessor();
         String messageDefinition = "string data";
         var ch = new ConnectionHeader()
-                .withTopic(topic.startsWith("/")? topic: "/" + topic)
+                .withTopic(topic.startsWith("/") ? topic : "/" + topic)
                 .withCallerId(callerId)
                 .withType(metadataAccessor.getType(messageClass))
-                .withMessageDefinition(messageDefinition )
+                .withMessageDefinition(messageDefinition)
                 .withMd5Sum(metadataAccessor.getMd5(messageClass));
         executorService.execute(() -> {
             try {
@@ -148,11 +151,11 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
     @Override
     public void close() {
         LOGGER.entering("close");
-        
+
         // trying gracefully to close the client
         // first we need to issue onComplete to all subscribers
         super.close();
-        
+
         // now we close the connection
         // we always need to do it after completing subscribers
         // otherwise some of them may still be reading from the socket

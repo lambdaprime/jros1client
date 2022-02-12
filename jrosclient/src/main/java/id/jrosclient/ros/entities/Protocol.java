@@ -39,7 +39,7 @@ public class Protocol implements Entity {
     public String getProtocolName() {
         return protocolName;
     }
-    
+
     @Override
     public String toString() {
         return XJson.asString("name", protocolName);

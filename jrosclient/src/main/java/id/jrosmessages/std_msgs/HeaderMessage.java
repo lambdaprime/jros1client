@@ -32,25 +32,23 @@ import id.xfunction.XJson;
 /**
  * Definition for std_msgs/Header
  */
-@MessageMetadata(
-    type = "std_msgs/Header",
-    md5sum = "2176decaecbce78abc3b96ef049fabed")
+@MessageMetadata(type = "std_msgs/Header", md5sum = "2176decaecbce78abc3b96ef049fabed")
 public class HeaderMessage implements Message {
-    
+
     @Streamed
     public int seq;
-    
+
     @Streamed
     public Time stamp = new Time();
-    
+
     @Streamed
     public String frame_id = "";
-    
+
     public HeaderMessage withSeq(int seq) {
         this.seq = seq;
         return this;
     }
-    
+
     public HeaderMessage withStamp(Time stamp) {
         this.stamp = stamp;
         return this;
@@ -67,12 +65,12 @@ public class HeaderMessage implements Message {
                 "stamp", stamp,
                 "frame_id", frame_id).toString();
     }
-    
+
     @Override
     public int hashCode() {
         return seq + Objects.hash(stamp, frame_id);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         HeaderMessage other = (HeaderMessage) obj;

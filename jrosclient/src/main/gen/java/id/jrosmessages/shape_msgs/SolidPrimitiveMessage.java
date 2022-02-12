@@ -24,7 +24,6 @@
 
 package id.jrosmessages.shape_msgs;
 
-
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -34,116 +33,108 @@ import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * Definition for shape_msgs/SolidPrimitive
- * Define box, sphere, cylinder, cone
+ * Definition for shape_msgs/SolidPrimitive Define box, sphere, cylinder, cone
  * All shapes are defined to have their bounding boxes centered around 0,0,0.
  */
-@MessageMetadata(
-    type = SolidPrimitiveMessage.NAME,
-    md5sum = "9121085a5b5bb159b33cd1739087e356")
+@MessageMetadata(type = SolidPrimitiveMessage.NAME, md5sum = "9121085a5b5bb159b33cd1739087e356")
 public class SolidPrimitiveMessage implements Message {
-   
-   static final String NAME = "shape_msgs/SolidPrimitive";
 
-   public enum ShapeType {
-       BOX,
-       SPHERE,
-       CYLINDER,
-       CONE
-   }
-   
-   public enum BoxDimensionType {
-      /**
-       * The meaning of the shape dimensions: each constant defines the index in the 'dimensions' array
-       * For the BOX type, the X, Y, and Z dimensions are the length of the corresponding
-       * sides of the box.
-       */
-      BOX_X,
-      
-      BOX_Y,
-      
-      BOX_Z,
-      
-   }
-   
-   public enum SphereDimensionType {
-      /**
-       * For the SPHERE type, only one component is used, and it gives the radius of
-       * the sphere.
-       */
-      SPHERE_RADIUS,
-      
-   }
-   
-   public enum CylinderDimensionType {
-      /**
-       * For the CYLINDER and CONE types, the center line is oriented along
-       * the Z axis.  Therefore the CYLINDER_HEIGHT (CONE_HEIGHT) component
-       * of dimensions gives the height of the cylinder (cone).  The
-       * CYLINDER_RADIUS (CONE_RADIUS) component of dimensions gives the
-       * radius of the base of the cylinder (cone).  Cone and cylinder
-       * primitives are defined to be circular. The tip of the cone is
-       * pointing up, along +Z axis.
-       */
-      CYLINDER_HEIGHT,
-      
-      CYLINDER_RADIUS,
-      
-   }
-   
-   public enum ConeDimensionType {
-      CONE_HEIGHT,
-      
-      CONE_RADIUS,
-      
-   }
-      
-   /**
-    * The type of the shape
-    */
-   @Streamed
-   public byte type;
-   
-   /**
-    * The dimensions of the shape
-    */
-   @Streamed
-   public double[] dimensions = new double[0];
-   
-   public SolidPrimitiveMessage withShapeType(ShapeType type) {
-       // ROS enumeration starts from 1
-       this.type = (byte) (type.ordinal() + 1);
-       return this;
-   }
-   
-   public SolidPrimitiveMessage withDimensions(double... dimensions) {
-       this.dimensions = dimensions;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           type,
-           Arrays.hashCode(dimensions)
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (SolidPrimitiveMessage) obj;
-       return
-           type == other.type &&
-           Arrays.equals(dimensions, other.dimensions)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "type", type,
-           "dimensions", dimensions
-       );
-   }
-   
+    static final String NAME = "shape_msgs/SolidPrimitive";
+
+    public enum ShapeType {
+        BOX,
+        SPHERE,
+        CYLINDER,
+        CONE
+    }
+
+    public enum BoxDimensionType {
+        /**
+         * The meaning of the shape dimensions: each constant defines the index in the
+         * 'dimensions' array For the BOX type, the X, Y, and Z dimensions are the
+         * length of the corresponding sides of the box.
+         */
+        BOX_X,
+
+        BOX_Y,
+
+        BOX_Z,
+
+    }
+
+    public enum SphereDimensionType {
+        /**
+         * For the SPHERE type, only one component is used, and it gives the radius of
+         * the sphere.
+         */
+        SPHERE_RADIUS,
+
+    }
+
+    public enum CylinderDimensionType {
+        /**
+         * For the CYLINDER and CONE types, the center line is oriented along the Z
+         * axis. Therefore the CYLINDER_HEIGHT (CONE_HEIGHT) component of dimensions
+         * gives the height of the cylinder (cone). The CYLINDER_RADIUS (CONE_RADIUS)
+         * component of dimensions gives the radius of the base of the cylinder (cone).
+         * Cone and cylinder primitives are defined to be circular. The tip of the cone
+         * is pointing up, along +Z axis.
+         */
+        CYLINDER_HEIGHT,
+
+        CYLINDER_RADIUS,
+
+    }
+
+    public enum ConeDimensionType {
+        CONE_HEIGHT,
+
+        CONE_RADIUS,
+
+    }
+
+    /**
+     * The type of the shape
+     */
+    @Streamed
+    public byte type;
+
+    /**
+     * The dimensions of the shape
+     */
+    @Streamed
+    public double[] dimensions = new double[0];
+
+    public SolidPrimitiveMessage withShapeType(ShapeType type) {
+        // ROS enumeration starts from 1
+        this.type = (byte) (type.ordinal() + 1);
+        return this;
+    }
+
+    public SolidPrimitiveMessage withDimensions(double... dimensions) {
+        this.dimensions = dimensions;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                type,
+                Arrays.hashCode(dimensions));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (SolidPrimitiveMessage) obj;
+        return type == other.type &&
+                Arrays.equals(dimensions, other.dimensions);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "type", type,
+                "dimensions", dimensions);
+    }
+
 }

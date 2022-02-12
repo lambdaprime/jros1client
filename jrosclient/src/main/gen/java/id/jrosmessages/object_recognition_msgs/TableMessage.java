@@ -36,77 +36,71 @@ import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * Definition for object_recognition_msgs/Table
- * Informs that a planar table has been detected at a given location
+ * Definition for object_recognition_msgs/Table Informs that a planar table has
+ * been detected at a given location
  */
-@MessageMetadata(
-    type = TableMessage.NAME,
-    md5sum = "304994c1900801400e8500e36e22a08c")
+@MessageMetadata(type = TableMessage.NAME, md5sum = "304994c1900801400e8500e36e22a08c")
 public class TableMessage implements Message {
-   
-   static final String NAME = "object_recognition_msgs/Table";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   /**
-    * The pose gives you the transform that take you to the coordinate system
-    * of the table, with the origin somewhere in the table plane and the
-    * z axis normal to the plane
-    */
-   @Streamed
-   public PoseMessage pose = new PoseMessage();
-   
-   /**
-    * There is no guarantee that the table does NOT extend further than the
-    * convex hull; this is just as far as we've observed it.
-    * The origin of the table coordinate system is inside the convex hull
-    * Set of points forming the convex hull of the table
-    */
-   @Streamed
-   public PointMessage[] convex_hull = new PointMessage[0];
-   
-   public TableMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public TableMessage withPose(PoseMessage pose) {
-       this.pose = pose;
-       return this;
-   }
-   
-   public TableMessage withConvexHull(PointMessage... convex_hull) {
-       this.convex_hull = convex_hull;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           pose,
-           Arrays.hashCode(convex_hull)
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (TableMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(pose, other.pose) &&
-           Arrays.equals(convex_hull, other.convex_hull)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "pose", pose,
-           "convex_hull", convex_hull
-       );
-   }
-   
+    static final String NAME = "object_recognition_msgs/Table";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    /**
+     * The pose gives you the transform that take you to the coordinate system of
+     * the table, with the origin somewhere in the table plane and the z axis normal
+     * to the plane
+     */
+    @Streamed
+    public PoseMessage pose = new PoseMessage();
+
+    /**
+     * There is no guarantee that the table does NOT extend further than the convex
+     * hull; this is just as far as we've observed it. The origin of the table
+     * coordinate system is inside the convex hull Set of points forming the convex
+     * hull of the table
+     */
+    @Streamed
+    public PointMessage[] convex_hull = new PointMessage[0];
+
+    public TableMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public TableMessage withPose(PoseMessage pose) {
+        this.pose = pose;
+        return this;
+    }
+
+    public TableMessage withConvexHull(PointMessage... convex_hull) {
+        this.convex_hull = convex_hull;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                pose,
+                Arrays.hashCode(convex_hull));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (TableMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(pose, other.pose) &&
+                Arrays.equals(convex_hull, other.convex_hull);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "pose", pose,
+                "convex_hull", convex_hull);
+    }
+
 }

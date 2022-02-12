@@ -32,7 +32,7 @@ public class Settings {
     public Settings() {
         update(System.getProperties());
     }
-    
+
     public static Settings getInstance() {
         return instance;
     }
@@ -40,7 +40,7 @@ public class Settings {
     public int getAwaitTcpRosClientInSecs() {
         return awaitTcpRosClientInSecs;
     }
-    
+
     @Override
     public String toString() {
         var buf = new StringBuilder();
@@ -52,5 +52,5 @@ public class Settings {
         awaitTcpRosClientInSecs = Integer.parseInt(properties.getProperty("awaitTcpRosClientInSecs",
                 "5"));
     }
-    
+
 }

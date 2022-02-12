@@ -34,61 +34,54 @@ import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * Definition for shape_msgs/Mesh
- * Definition of a mesh
+ * Definition for shape_msgs/Mesh Definition of a mesh
  */
-@MessageMetadata(
-    type = MeshMessage.NAME,
-    md5sum = "de320644698bf336f8f37512079d2586")
+@MessageMetadata(type = MeshMessage.NAME, md5sum = "de320644698bf336f8f37512079d2586")
 public class MeshMessage implements Message {
-   
-   static final String NAME = "shape_msgs/Mesh";
 
-   /**
-    * list of triangles; the index values refer to positions in vertices[]
-    */
-   @Streamed
-   public MeshTriangleMessage[] triangles = new MeshTriangleMessage[0];
-   
-   /**
-    * the actual vertices that make up the mesh
-    */
-   @Streamed
-   public PointMessage[] vertices = new PointMessage[0];
-   
-   public MeshMessage withTriangles(MeshTriangleMessage... triangles) {
-       this.triangles = triangles;
-       return this;
-   }
-   
-   public MeshMessage withVertices(PointMessage... vertices) {
-       this.vertices = vertices;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           Arrays.hashCode(triangles),
-           Arrays.hashCode(vertices)
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (MeshMessage) obj;
-       return
-           Arrays.equals(triangles, other.triangles) &&
-           Arrays.equals(vertices, other.vertices)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "triangles", triangles,
-           "vertices", vertices
-       );
-   }
-   
+    static final String NAME = "shape_msgs/Mesh";
+
+    /**
+     * list of triangles; the index values refer to positions in vertices[]
+     */
+    @Streamed
+    public MeshTriangleMessage[] triangles = new MeshTriangleMessage[0];
+
+    /**
+     * the actual vertices that make up the mesh
+     */
+    @Streamed
+    public PointMessage[] vertices = new PointMessage[0];
+
+    public MeshMessage withTriangles(MeshTriangleMessage... triangles) {
+        this.triangles = triangles;
+        return this;
+    }
+
+    public MeshMessage withVertices(PointMessage... vertices) {
+        this.vertices = vertices;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                Arrays.hashCode(triangles),
+                Arrays.hashCode(vertices));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (MeshMessage) obj;
+        return Arrays.equals(triangles, other.triangles) &&
+                Arrays.equals(vertices, other.vertices);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "triangles", triangles,
+                "vertices", vertices);
+    }
+
 }

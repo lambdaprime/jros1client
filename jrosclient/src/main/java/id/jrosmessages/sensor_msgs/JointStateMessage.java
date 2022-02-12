@@ -31,30 +31,35 @@ import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.XJson;
 
 /**
- * <p>Definition for sensor_msgs/JointState</p>
+ * <p>
+ * Definition for sensor_msgs/JointState
+ * </p>
  * 
- * <p>This is a message that holds data to describe the state of a set of torque
- * controlled joints.</p>
+ * <p>
+ * This is a message that holds data to describe the state of a set of torque
+ * controlled joints.
+ * </p>
  * 
- * <p>This message consists of a multiple arrays, one for each part of the joint state. 
- * The goal is to make each of the fields optional. When e.g. your joints have no
- * effort associated with them, you can leave the effort array empty.</p>
+ * <p>
+ * This message consists of a multiple arrays, one for each part of the joint
+ * state. The goal is to make each of the fields optional. When e.g. your joints
+ * have no effort associated with them, you can leave the effort array empty.
+ * </p>
  *
- * <p>All arrays in this message should have the same size, or be empty.
- * This is the only way to uniquely associate the joint name with the correct
- * states.</p>
+ * <p>
+ * All arrays in this message should have the same size, or be empty. This is
+ * the only way to uniquely associate the joint name with the correct states.
+ * </p>
  * 
  */
-@MessageMetadata(
-    type = JointStateMessage.NAME,
-    md5sum = "3066dcd76a6cfaef579bd0f34173e9fd")
+@MessageMetadata(type = JointStateMessage.NAME, md5sum = "3066dcd76a6cfaef579bd0f34173e9fd")
 public class JointStateMessage implements Message {
 
     static final String NAME = "sensor_msgs/JointState";
 
     /**
-     * The header specifies the time at which the joint states were recorded.
-     * All the joint states in one message have to be recorded at the same time.
+     * The header specifies the time at which the joint states were recorded. All
+     * the joint states in one message have to be recorded at the same time.
      */
     @Streamed
     public HeaderMessage header = new HeaderMessage();
@@ -64,55 +69,54 @@ public class JointStateMessage implements Message {
      */
     @Streamed
     public String[] name = new String[0];
-    
+
     /**
      * The position of the joint (rad or m)
      */
     @Streamed
     public double[] position = new double[0];
-    
+
     /**
      * The velocity of the joint (rad/s or m/s)
      */
     @Streamed
     public double[] velocity = new double[0];
-    
+
     /**
-     * The effort that is applied in the joint (Nm or N).
-     * When e.g. your joints have no effort associated with them, you
-     * can leave the effort array empty. 
+     * The effort that is applied in the joint (Nm or N). When e.g. your joints have
+     * no effort associated with them, you can leave the effort array empty.
      */
     @Streamed
     public double[] effort = new double[0];
-    
+
     public JointStateMessage() {
     }
-    
+
     public JointStateMessage withHeader(HeaderMessage header) {
         this.header = header;
         return this;
     }
-    
+
     public JointStateMessage withNames(String... name) {
         this.name = name;
         return this;
     }
-    
+
     public JointStateMessage withPositions(double... position) {
         this.position = position;
         return this;
     }
-    
+
     public JointStateMessage withVelocities(double... velocity) {
         this.velocity = velocity;
         return this;
     }
-    
+
     public JointStateMessage withEfforts(double... effort) {
         this.effort = effort;
         return this;
     }
-    
+
     @Override
     public String toString() {
         return XJson.asString(

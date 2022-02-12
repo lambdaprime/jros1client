@@ -33,7 +33,7 @@ public class Time {
      */
     @Streamed
     public int sec;
-    
+
     /**
      * Nanoseconds since this.sec (unsigned)
      */
@@ -43,7 +43,7 @@ public class Time {
     public Time() {
 
     }
-    
+
     public Time(int sec, int nsec) {
         this.sec = sec;
         this.nsec = nsec;
@@ -54,12 +54,12 @@ public class Time {
         return XJson.asString("sec", Integer.toUnsignedString(sec),
                 "nsec", Integer.toUnsignedString(nsec)).toString();
     }
-    
+
     @Override
     public int hashCode() {
         return sec + nsec;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         Time other = (Time) obj;

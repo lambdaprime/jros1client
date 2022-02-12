@@ -32,9 +32,7 @@ import id.xfunction.XJson;
 /**
  * Definition for geometry_msgs/Polygon
  */
-@MessageMetadata(
-    type = PolygonMessage.NAME,
-    md5sum = "cd60a26494a087f577976f0329fa120e")
+@MessageMetadata(type = PolygonMessage.NAME, md5sum = "cd60a26494a087f577976f0329fa120e")
 public class PolygonMessage implements Message {
 
     static final String NAME = "geometry_msgs/Polygon";
@@ -51,12 +49,12 @@ public class PolygonMessage implements Message {
     public String toString() {
         return XJson.asString("points", Arrays.toString(points));
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(points);
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         PolygonMessage other = (PolygonMessage) obj;

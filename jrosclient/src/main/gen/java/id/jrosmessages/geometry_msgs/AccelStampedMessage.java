@@ -34,55 +34,49 @@ import id.xfunction.XJson;
 import id.jrosmessages.std_msgs.HeaderMessage;
 
 /**
- * Definition for geometry_msgs/AccelStamped
- * An accel with reference coordinate frame and timestamp
+ * Definition for geometry_msgs/AccelStamped An accel with reference coordinate
+ * frame and timestamp
  */
-@MessageMetadata(
-    type = AccelStampedMessage.NAME,
-    md5sum = "b50c8c69ae37bb74d3cffd798577ca70")
+@MessageMetadata(type = AccelStampedMessage.NAME, md5sum = "b50c8c69ae37bb74d3cffd798577ca70")
 public class AccelStampedMessage implements Message {
-   
-   static final String NAME = "geometry_msgs/AccelStamped";
 
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   @Streamed
-   public AccelMessage accel = new AccelMessage();
-   
-   public AccelStampedMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public AccelStampedMessage withAccel(AccelMessage accel) {
-       this.accel = accel;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           accel
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (AccelStampedMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(accel, other.accel)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "accel", accel
-       );
-   }
-   
+    static final String NAME = "geometry_msgs/AccelStamped";
+
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    @Streamed
+    public AccelMessage accel = new AccelMessage();
+
+    public AccelStampedMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public AccelStampedMessage withAccel(AccelMessage accel) {
+        this.accel = accel;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                accel);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (AccelStampedMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(accel, other.accel);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "accel", accel);
+    }
+
 }

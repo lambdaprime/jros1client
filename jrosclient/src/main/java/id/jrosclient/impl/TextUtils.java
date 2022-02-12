@@ -30,15 +30,15 @@ import id.xfunction.text.Ellipsizer;
 public class TextUtils {
 
     private Optional<Ellipsizer> ellipsizerOpt = Optional.empty();
-    
+
     public TextUtils withEllipsize(int maxLength) {
         ellipsizerOpt = Optional.of(new Ellipsizer(maxLength));
         return this;
     }
 
     /**
-     * Converts array to string and truncates it in the
-     * middle if it is longer than maximum allowed value
+     * Converts array to string and truncates it in the middle if it is longer than
+     * maximum allowed value
      */
     public String toString(Object obj) {
         var str = Objects.toString(obj);
@@ -46,7 +46,7 @@ public class TextUtils {
                 .map(e -> e.ellipsizeMiddle(str))
                 .orElse(str);
     }
-    
+
     public String toString(Object[] a) {
         return toString(Arrays.toString(a));
     }

@@ -32,5 +32,5 @@ public class StringTransformer implements ResponseTransformer {
         ss.value = response.get(2).string();
         return ss;
     }
-    
+
 }

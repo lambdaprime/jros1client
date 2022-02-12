@@ -31,13 +31,11 @@ import id.xfunction.XJson;
 /**
  * Definition for geometry_msgs/Quaternion
  */
-@MessageMetadata(
-    type = QuaternionMessage.NAME,
-    md5sum = "a779879fadf0160734f906b8c19c7004")
+@MessageMetadata(type = QuaternionMessage.NAME, md5sum = "a779879fadf0160734f906b8c19c7004")
 public class QuaternionMessage implements Message {
 
     static final String NAME = "geometry_msgs/Quaternion";
-    
+
     @Streamed
     public double x, y, z, w;
 
@@ -60,7 +58,7 @@ public class QuaternionMessage implements Message {
         this.w = w;
         return this;
     }
-    
+
     @Override
     public String toString() {
         return XJson.asString("x", x,

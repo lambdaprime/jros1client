@@ -36,72 +36,66 @@ import id.xfunction.XJson;
 /**
  * Definition for octomap_msgs/OctomapWithPose
  */
-@MessageMetadata(
-    type = OctomapWithPoseMessage.NAME,
-    md5sum = "2be6b076e8442bde71254392e50395ab")
+@MessageMetadata(type = OctomapWithPoseMessage.NAME, md5sum = "2be6b076e8442bde71254392e50395ab")
 public class OctomapWithPoseMessage implements Message {
-   
-   static final String NAME = "octomap_msgs/OctomapWithPose";
 
-   /**
-    * A 3D map in binary format, as Octree
-    */
-   @Streamed
-   public HeaderMessage header = new HeaderMessage();
-   
-   /**
-    * The pose of the octree with respect to the header frame
-    */
-   @Streamed
-   public PoseMessage origin = new PoseMessage();
-   
-   /**
-    * The actual octree msg
-    */
-   @Streamed
-   public OctomapMessage octomap = new OctomapMessage();
-   
-   public OctomapWithPoseMessage withHeader(HeaderMessage header) {
-       this.header = header;
-       return this;
-   }
-   
-   public OctomapWithPoseMessage withOrigin(PoseMessage origin) {
-       this.origin = origin;
-       return this;
-   }
-   
-   public OctomapWithPoseMessage withOctomap(OctomapMessage octomap) {
-       this.octomap = octomap;
-       return this;
-   }
-   
-   @Override
-   public int hashCode() {
-       return Objects.hash(
-           header,
-           origin,
-           octomap
-       );
-   }
-   
-   @Override
-   public boolean equals(Object obj) {
-       var other = (OctomapWithPoseMessage) obj;
-       return
-           Objects.equals(header, other.header) &&
-           Objects.equals(origin, other.origin) &&
-           Objects.equals(octomap, other.octomap)
-       ;
-   }
-   
-   @Override
-   public String toString() {
-       return XJson.asString(
-           "header", header,
-           "origin", origin,
-           "octomap", octomap
-       );
-   }
-   
+    static final String NAME = "octomap_msgs/OctomapWithPose";
+
+    /**
+     * A 3D map in binary format, as Octree
+     */
+    @Streamed
+    public HeaderMessage header = new HeaderMessage();
+
+    /**
+     * The pose of the octree with respect to the header frame
+     */
+    @Streamed
+    public PoseMessage origin = new PoseMessage();
+
+    /**
+     * The actual octree msg
+     */
+    @Streamed
+    public OctomapMessage octomap = new OctomapMessage();
+
+    public OctomapWithPoseMessage withHeader(HeaderMessage header) {
+        this.header = header;
+        return this;
+    }
+
+    public OctomapWithPoseMessage withOrigin(PoseMessage origin) {
+        this.origin = origin;
+        return this;
+    }
+
+    public OctomapWithPoseMessage withOctomap(OctomapMessage octomap) {
+        this.octomap = octomap;
+        return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+                header,
+                origin,
+                octomap);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        var other = (OctomapWithPoseMessage) obj;
+        return Objects.equals(header, other.header) &&
+                Objects.equals(origin, other.origin) &&
+                Objects.equals(octomap, other.octomap);
+    }
+
+    @Override
+    public String toString() {
+        return XJson.asString(
+                "header", header,
+                "origin", origin,
+                "octomap", octomap);
+    }
+
 }
