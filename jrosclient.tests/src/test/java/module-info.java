@@ -27,6 +27,4 @@ open module jrosclient.tests {
     requires org.junit.platform.commons;
 
     exports id.jrosclient.tests;
-
-    exports id.jrosmessages.tests;
 }

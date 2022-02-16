@@ -21,6 +21,17 @@
  */
 package id.jrosclient.ros.transport;
 
+import id.ICE.MessageResponse;
+import id.jrosclient.TopicPublisher;
+import id.jrosclient.impl.TextUtils;
+import id.jrosclient.ros.transport.io.MessagePacketWriter;
+import id.jrosmessages.Message;
+import id.jrosmessages.MetadataAccessor;
+import id.jrosmessages.SerializationUtils;
+import id.xfunction.XAsserts;
+import id.xfunction.io.XOutputStream;
+import id.xfunction.lang.XRE;
+import id.xfunction.logging.XLogger;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -29,18 +40,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
-
-import id.ICE.MessageResponse;
-import id.jrosclient.TopicPublisher;
-import id.jrosclient.impl.TextUtils;
-import id.jrosclient.ros.transport.io.MessagePacketWriter;
-import id.jrosmessages.Message;
-import id.jrosmessages.impl.MessageTransformer;
-import id.jrosmessages.impl.MetadataAccessor;
-import id.xfunction.XAsserts;
-import id.xfunction.io.XOutputStream;
-import id.xfunction.lang.XRE;
-import id.xfunction.logging.XLogger;
 
 /**
  * This class subscribes to {@link TopicPublisher} (hence name is
@@ -56,7 +55,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     private final XLogger LOGGER = XLogger.getLogger(this);
     private TextUtils utils;
     private MetadataAccessor metadataAccessor = new MetadataAccessor();
-    private MessageTransformer transformer = new MessageTransformer();
+    private SerializationUtils serializationUtils = new SerializationUtils();
     private CompletableFuture<MessageResponse> future = CompletableFuture.completedFuture(null);
 
     /**
@@ -190,7 +189,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
 
     private MessagePacket createMessagePacket(Message message) {
         var ch = new ConnectionHeader();
-        byte[] body = transformer.transform(message);
+        byte[] body = serializationUtils.write(message);
         return new MessagePacket(ch, body);
     }
 }

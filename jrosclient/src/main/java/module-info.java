@@ -37,27 +37,16 @@ module jrosclient {
     requires id.kineticstreamer;
     requires id.ICE;
     requires java.logging;
+    requires transitive jrosmessages;
 
     exports id.jrosclient;
     exports id.jrosclient.ros.api;
     exports id.jrosclient.ros.entities;
     exports id.jrosclient.ros.responses;
 
-    exports id.jrosmessages;
-    exports id.jrosmessages.primitives;
-    exports id.jrosmessages.std_msgs;
-    exports id.jrosmessages.geometry_msgs;
-    exports id.jrosmessages.visualization_msgs;
-    exports id.jrosmessages.sensor_msgs;
-    exports id.jrosmessages.trajectory_msgs;
-    exports id.jrosmessages.shape_msgs;
-    exports id.jrosmessages.object_recognition_msgs;
-    exports id.jrosmessages.octomap_msgs;
-
     exports id.jrosclient.impl to jrosclient.tests;
     exports id.jrosclient.ros to jrosclient.tests;
     exports id.jrosclient.ros.transport to jrosclient.tests;
     exports id.jrosclient.ros.transport.io to jrosclient.tests;
-    exports id.jrosmessages.impl to jrosclient.tests;
 
 }

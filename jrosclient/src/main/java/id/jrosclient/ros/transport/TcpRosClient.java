@@ -21,6 +21,17 @@
  */
 package id.jrosclient.ros.transport;
 
+import id.jrosclient.impl.Settings;
+import id.jrosclient.impl.TextUtils;
+import id.jrosclient.ros.transport.io.ConnectionHeaderWriter;
+import id.jrosclient.ros.transport.io.MessagePacketReader;
+import id.jrosmessages.Message;
+import id.jrosmessages.MetadataAccessor;
+import id.jrosmessages.SerializationUtils;
+import id.xfunction.XAsserts;
+import id.xfunction.concurrent.NamedThreadFactory;
+import id.xfunction.concurrent.SameThreadExecutorService;
+import id.xfunction.logging.XLogger;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -34,18 +45,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-
-import id.jrosclient.impl.Settings;
-import id.jrosclient.impl.TextUtils;
-import id.jrosclient.ros.transport.io.ConnectionHeaderWriter;
-import id.jrosclient.ros.transport.io.MessagePacketReader;
-import id.jrosmessages.Message;
-import id.jrosmessages.impl.MessageTransformer;
-import id.jrosmessages.impl.MetadataAccessor;
-import id.xfunction.XAsserts;
-import id.xfunction.concurrent.NamedThreadFactory;
-import id.xfunction.concurrent.SameThreadExecutorService;
-import id.xfunction.logging.XLogger;
 
 /**
  * This client establishes TCPROS connection with publishing ROS node and
@@ -137,7 +136,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
         LOGGER.log(Level.FINE, "Message packet: {0}", utils.toString(response));
         byte[] body = response.getBody();
         while (!executorService.isShutdown() && hasSubscribers()) {
-            var msg = new MessageTransformer().transform(body, messageClass);
+            var msg = new SerializationUtils().read(body, messageClass);
             LOGGER.log(Level.FINE, "Submitting received message to subscriber");
             submit(msg);
             LOGGER.log(Level.FINE, "Requesting next message");

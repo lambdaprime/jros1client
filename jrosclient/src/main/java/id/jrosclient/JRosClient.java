@@ -35,7 +35,7 @@ import id.jrosclient.ros.transport.PublishersManager;
 import id.jrosclient.ros.transport.TcpRosClient;
 import id.jrosclient.ros.transport.TcpRosServer;
 import id.jrosmessages.Message;
-import id.jrosmessages.impl.MetadataAccessor;
+import id.jrosmessages.MetadataAccessor;
 import id.xfunction.concurrent.flow.MergeProcessor;
 import id.xfunction.function.Unchecked;
 import id.xfunction.lang.XRE;

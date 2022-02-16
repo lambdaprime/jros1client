@@ -22,7 +22,7 @@
 package id.jrosclient.ros.transport;
 
 import id.jrosmessages.Message;
-import id.jrosmessages.impl.MetadataAccessor;
+import id.jrosmessages.MetadataAccessor;
 import id.xfunction.lang.XRuntimeException;
 
 public class ConnectionHeaderValidator {
