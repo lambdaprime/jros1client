@@ -1,4 +1,4 @@
-**jrosclient** - Java module which allows to interact with ROS (Robotic Operation System).
+**jrosclient** - Java module which allows to interact with ROS (Robot Operating System).
 
 # Requirements
 

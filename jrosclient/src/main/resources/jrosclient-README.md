@@ -1,4 +1,4 @@
-**jrosclient** - command-line application which allows to interact with ROS (Robotic Operation System).
+**jrosclient** - command-line application which allows to interact with ROS (Robot Operating System).
 
 # Download
 

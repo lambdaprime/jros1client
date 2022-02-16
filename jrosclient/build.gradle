@@ -181,7 +181,7 @@ if (project.hasProperty('publish')) {
         from components.java
         pom {
           name = 'jrosclient'
-          description = 'Java module to interact with ROS (Robotic Operation System)'
+          description = 'Java module to interact with ROS (Robot Operating System)'
           url = 'http://portal2.atwebpages.com/jrosclient'
 
           licenses {

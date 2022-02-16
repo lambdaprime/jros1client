@@ -20,7 +20,7 @@
  */
 /**
  * <p>
- * Java module which allows to interact with ROS (Robotic Operation System).
+ * Java module which allows to interact with ROS (Robot Operating System).
  * </p>
  * 
  * @see <a href=
