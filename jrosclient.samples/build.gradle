@@ -16,8 +16,8 @@ dependencies {
     implementation project(':jrosclient')
 }
 
-sourceCompatibility = '11'
-targetCompatibility = '11'
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 sourceSets {
     main {

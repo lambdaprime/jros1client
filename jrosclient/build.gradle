@@ -55,8 +55,8 @@ dependencies {
     apiElements 'io.github.lambdaprime:kineticstreamer:3.0'
 }
 
-sourceCompatibility = '11'
-targetCompatibility = '11'
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 java {
     // disable Gradle modularity support since it is not working properly
@@ -93,11 +93,11 @@ javadoc {
     options.modulePath = classpath.getFiles().stream()
         .collect(java.util.stream.Collectors.toList())
     exclude 'id/jrosclient/app/**'
-    options.noTimestamp = true;
-    options.noQualifiers = ["all"];
-    options.noTree = true;
-    options.noIndex = true;
-    options.noNavBar = true;
+    options.noTimestamp = true
+    options.noQualifiers = ["all"]
+    options.noTree = true
+    options.noIndex = true
+    options.noNavBar = true
     // ignore missing @return, @param etc
     options.addBooleanOption('Xdoclint:all,-missing', true)
 }

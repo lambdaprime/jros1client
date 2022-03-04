@@ -21,8 +21,8 @@ dependencies {
     testRuntimeOnly('org.junit.platform:junit-platform-commons:1.7.0')
 }
 
-sourceCompatibility = '11'
-targetCompatibility = '11'
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 // Gradle has no UnZip task so we reuse Copy for that
 task myTest(type: Copy) {
