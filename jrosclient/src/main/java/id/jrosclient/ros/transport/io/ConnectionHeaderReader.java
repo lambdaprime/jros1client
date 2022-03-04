@@ -15,20 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.transport.io;
 
+import id.jrosclient.ros.transport.ConnectionHeader;
 import java.io.DataInput;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import id.jrosclient.ros.transport.ConnectionHeader;
-
+/** @author lambdaprime intid@protonmail.com */
 public class ConnectionHeaderReader {
 
     private DataInput in;
@@ -48,8 +44,7 @@ public class ConnectionHeaderReader {
             len -= 4 + fieldLen;
         }
         var ch = new ConnectionHeader();
-        map.entrySet().stream()
-                .forEach(e -> ch.add(e.getKey(), e.getValue()));
+        map.entrySet().stream().forEach(e -> ch.add(e.getKey(), e.getValue()));
         return ch;
     }
 
@@ -59,5 +54,4 @@ public class ConnectionHeaderReader {
         var a = new String(buf).split("=");
         return Map.entry(a[0], a[1]);
     }
-
 }

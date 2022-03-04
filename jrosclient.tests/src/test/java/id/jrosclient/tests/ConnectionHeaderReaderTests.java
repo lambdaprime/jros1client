@@ -15,24 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
-
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.io.ConnectionHeaderReader;
@@ -40,7 +25,17 @@ import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
 import id.xfunction.ResourceUtils;
 import id.xfunction.function.Curry;
 import id.xfunction.function.Unchecked;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+/** @author lambdaprime intid@protonmail.com */
 public class ConnectionHeaderReaderTests {
 
     private static final ResourceUtils resourceUtils = new ResourceUtils();
@@ -62,12 +57,12 @@ public class ConnectionHeaderReaderTests {
     private byte[] readByteCodes(String resource) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         DataOutputStream dos = new DataOutputStream(bos);
-        resourceUtils.readResourceAsStream(resource)
+        resourceUtils
+                .readResourceAsStream(resource)
                 .map(l -> Arrays.asList(l.split(" ")))
                 .flatMap(List::stream)
                 .map(Unchecked.wrapApply(Curry.curryApply2nd(Integer::parseInt, 16)))
                 .forEach(Unchecked.wrapAccept(dos::writeByte));
         return bos.toByteArray();
     }
-
 }

@@ -15,18 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.impl;
 
+import id.xfunction.text.Ellipsizer;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
-import id.xfunction.text.Ellipsizer;
-
+/** @author lambdaprime intid@protonmail.com */
 public class TextUtils {
 
     private Optional<Ellipsizer> ellipsizerOpt = Optional.empty();
@@ -37,14 +33,12 @@ public class TextUtils {
     }
 
     /**
-     * Converts array to string and truncates it in the middle if it is longer than
-     * maximum allowed value
+     * Converts array to string and truncates it in the middle if it is longer than maximum allowed
+     * value
      */
     public String toString(Object obj) {
         var str = Objects.toString(obj);
-        return ellipsizerOpt
-                .map(e -> e.ellipsizeMiddle(str))
-                .orElse(str);
+        return ellipsizerOpt.map(e -> e.ellipsizeMiddle(str)).orElse(str);
     }
 
     public String toString(Object[] a) {

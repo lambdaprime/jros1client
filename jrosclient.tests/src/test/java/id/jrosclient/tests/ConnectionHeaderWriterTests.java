@@ -15,30 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.DataOutputStream;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.io.ConnectionHeaderWriter;
 import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
 import id.xfunction.ResourceUtils;
 import id.xfunction.io.XOutputStream;
+import java.io.DataOutputStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+/** @author lambdaprime intid@protonmail.com */
 public class ConnectionHeaderWriterTests {
 
     private static final ResourceUtils resourceUtils = new ResourceUtils();
@@ -53,10 +48,12 @@ public class ConnectionHeaderWriterTests {
         var collector = new XOutputStream();
         var dos = new DataOutputStream(collector);
         new ConnectionHeaderWriter(dos).write(sample.getHeader());
-        var expected = resourceUtils.readResourceAsStream(sample.getResource())
-                .map(l -> Arrays.asList(l.split(" ")))
-                .flatMap(List::stream)
-                .collect(Collectors.joining(", "));
+        var expected =
+                resourceUtils
+                        .readResourceAsStream(sample.getResource())
+                        .map(l -> Arrays.asList(l.split(" ")))
+                        .flatMap(List::stream)
+                        .collect(Collectors.joining(", "));
         assertEquals(expected, collector.asHexString());
     }
 

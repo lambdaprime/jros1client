@@ -15,16 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.api.impl;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+/** @author lambdaprime intid@protonmail.com */
 public class RawResponse implements Iterable<RawResponse> {
 
     private Object obj;

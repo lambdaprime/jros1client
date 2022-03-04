@@ -15,29 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.tests.integration;
 
 import static id.jrosclient.tests.integration.TestConstants.URL;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import id.jrosclient.JRosClient;
 import id.jrosclient.JRosClientConfiguration;
@@ -49,6 +30,19 @@ import id.xfunction.ResourceUtils;
 import id.xfunction.lang.XThread;
 import id.xfunction.logging.XLogger;
 import id.xfunction.text.WildcardMatcher;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class JRosClientTests {
 
@@ -77,14 +71,15 @@ public class JRosClientTests {
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);
         String data = "hello";
         client.publish(publisher);
-        client.subscribe(new TopicSubscriber<>(StringMessage.class, topic) {
-            @Override
-            public void onNext(StringMessage item) {
-                System.out.println(item);
-                getSubscription().cancel();
-                future.complete(item.data);
-            }
-        });
+        client.subscribe(
+                new TopicSubscriber<>(StringMessage.class, topic) {
+                    @Override
+                    public void onNext(StringMessage item) {
+                        System.out.println(item);
+                        getSubscription().cancel();
+                        future.complete(item.data);
+                    }
+                });
         while (!future.isDone()) {
             publisher.submit(new StringMessage().withData(data));
         }
@@ -99,14 +94,15 @@ public class JRosClientTests {
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);
         String data = "hello";
         client.publish(publisher);
-        client.subscribe(new TopicSubscriber<>(StringMessage.class, topic) {
-            @Override
-            public void onNext(StringMessage item) {
-                System.out.println(item);
-                getSubscription().cancel();
-                future.complete(item.data);
-            }
-        });
+        client.subscribe(
+                new TopicSubscriber<>(StringMessage.class, topic) {
+                    @Override
+                    public void onNext(StringMessage item) {
+                        System.out.println(item);
+                        getSubscription().cancel();
+                        future.complete(item.data);
+                    }
+                });
         // wait so that subscriber get time to register with ROS
         XThread.sleep(1000);
         publisher.submit(new StringMessage().withData(data));
@@ -115,10 +111,7 @@ public class JRosClientTests {
         Assertions.assertEquals(data, future.get());
     }
 
-    /**
-     * Test that publisher delivers messages which are in its queue before it is
-     * being closed.
-     */
+    /** Test that publisher delivers messages which are in its queue before it is being closed. */
     @Test
     public void test_publisher_on_close() throws Exception {
         var future = new CompletableFuture<Void>();
@@ -130,23 +123,24 @@ public class JRosClientTests {
                 var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic)) {
             publisherClient.publish(publisher);
 
-            client.subscribe(new TopicSubscriber<>(StringMessage.class, topic) {
-                @Override
-                public void onNext(StringMessage item) {
-                    System.out.println(item);
-                    Assertions.assertEquals(data, item.data);
-                    c[0]++;
-                    if (c[0] == totalNumOfMessages) {
-                        getSubscription().cancel();
-                        future.complete(null);
-                    } else {
-                        // delay requesting next message to make
-                        // them accumulate on publisher
-                        XThread.sleep(100);
-                        getSubscription().request(1);
-                    }
-                }
-            });
+            client.subscribe(
+                    new TopicSubscriber<>(StringMessage.class, topic) {
+                        @Override
+                        public void onNext(StringMessage item) {
+                            System.out.println(item);
+                            Assertions.assertEquals(data, item.data);
+                            c[0]++;
+                            if (c[0] == totalNumOfMessages) {
+                                getSubscription().cancel();
+                                future.complete(null);
+                            } else {
+                                // delay requesting next message to make
+                                // them accumulate on publisher
+                                XThread.sleep(100);
+                                getSubscription().request(1);
+                            }
+                        }
+                    });
 
             // wait so that subscriber get time to register with ROS
             XThread.sleep(1000);
@@ -175,21 +169,22 @@ public class JRosClientTests {
         String topic = "/testTopic1";
         var publisher = new TopicSubmissionPublisher<>(Int32Message.class, topic);
         client.publish(publisher);
-        client.subscribe(new TopicSubscriber<>(Int32Message.class, topic) {
-            List<Integer> data = new ArrayList<>();
+        client.subscribe(
+                new TopicSubscriber<>(Int32Message.class, topic) {
+                    List<Integer> data = new ArrayList<>();
 
-            @Override
-            public void onNext(Int32Message item) {
-                System.out.println(item);
-                data.add(item.data);
-                if (data.size() == 50) {
-                    getSubscription().cancel();
-                    future.complete(data);
-                } else {
-                    getSubscription().request(1);
-                }
-            }
-        });
+                    @Override
+                    public void onNext(Int32Message item) {
+                        System.out.println(item);
+                        data.add(item.data);
+                        if (data.size() == 50) {
+                            getSubscription().cancel();
+                            future.complete(data);
+                        } else {
+                            getSubscription().request(1);
+                        }
+                    }
+                });
         int c = 0;
         while (!future.isDone()) {
             var msg = new Int32Message().withData(c++);
@@ -205,8 +200,8 @@ public class JRosClientTests {
     }
 
     /**
-     * Test that when publisher unexpectedly closes connection, subscriber notified
-     * about this through onError
+     * Test that when publisher unexpectedly closes connection, subscriber notified about this
+     * through onError
      */
     @Test
     public void test_publisher_crash() throws Exception {
@@ -214,17 +209,18 @@ public class JRosClientTests {
         String topic = "/testTopic1";
         var publisher = new TopicSubmissionPublisher<>(Int32Message.class, topic);
         client.publish(publisher);
-        client.subscribe(new TopicSubscriber<>(Int32Message.class, topic) {
-            @Override
-            public void onNext(Int32Message item) {
-                System.out.println(item);
-            }
+        client.subscribe(
+                new TopicSubscriber<>(Int32Message.class, topic) {
+                    @Override
+                    public void onNext(Int32Message item) {
+                        System.out.println(item);
+                    }
 
-            public void onError(Throwable throwable) {
-                System.out.println("onError occured: " + throwable);
-                future.complete(null);
-            }
-        });
+                    public void onError(Throwable throwable) {
+                        System.out.println("onError occured: " + throwable);
+                        future.complete(null);
+                    }
+                });
         var msg = new Int32Message().withData(1);
         publisher.submit(msg);
         publisher.closeExceptionally(new Exception());
@@ -233,9 +229,7 @@ public class JRosClientTests {
         client.unpublish(topic);
     }
 
-    /**
-     * Test that message truncation is working
-     */
+    /** Test that message truncation is working */
     @Test
     public void test_log_truncation() throws Exception {
         var config = new JRosClientConfiguration();
@@ -244,8 +238,9 @@ public class JRosClientTests {
         test_publish();
         var actual = Files.readString(Paths.get(TestConstants.LOG_FILE));
         System.out.println(actual);
-        Assertions.assertTrue(new WildcardMatcher(resourceUtils.readResource("test_subscriber_truncate"))
-                .matches(actual));
+        Assertions.assertTrue(
+                new WildcardMatcher(resourceUtils.readResource("test_subscriber_truncate"))
+                        .matches(actual));
     }
 
     @Test
@@ -253,15 +248,22 @@ public class JRosClientTests {
         var topic = "/testTopic1";
         var objectsFactory = new TestObjectsFactory();
         Exception exception = null;
-        try (var myclient = new JRosClient("http://localhost:12/", objectsFactory.createConfig(),
-                objectsFactory);
+        try (var myclient =
+                        new JRosClient(
+                                "http://localhost:12/",
+                                objectsFactory.createConfig(),
+                                objectsFactory);
                 var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic)) {
             exception = assertThrows(Exception.class, () -> myclient.publish(publisher));
         } catch (Exception e) {
             System.out.println(e);
         }
-        Assertions.assertEquals(true,
-                exception.getCause().getMessage().startsWith("Failed to read server's response: Connection refused"));
+        Assertions.assertEquals(
+                true,
+                exception
+                        .getCause()
+                        .getMessage()
+                        .startsWith("Failed to read server's response: Connection refused"));
         Assertions.assertEquals(true, objectsFactory.nodeServer.isClosed());
         Assertions.assertEquals(true, objectsFactory.tcpRosServer.isClosed());
     }
@@ -277,23 +279,24 @@ public class JRosClientTests {
         try (var myClient = new JRosClient(config);
                 var myPublisher = new TopicSubmissionPublisher<>(Int32Message.class, topic)) {
             myClient.publish(myPublisher);
-            client.subscribe(new TopicSubscriber<>(Int32Message.class, topic) {
-                Set<Integer> data = new HashSet<>();
+            client.subscribe(
+                    new TopicSubscriber<>(Int32Message.class, topic) {
+                        Set<Integer> data = new HashSet<>();
 
-                @Override
-                public void onNext(Int32Message item) {
-                    System.out.println(item);
-                    data.add(item.data);
-                    if (data.size() == 2) {
-                        // we saw both publishers
-                        getSubscription().cancel();
-                        future.complete(null);
-                        System.out.println("stopping");
-                    } else {
-                        getSubscription().request(1);
-                    }
-                }
-            });
+                        @Override
+                        public void onNext(Int32Message item) {
+                            System.out.println(item);
+                            data.add(item.data);
+                            if (data.size() == 2) {
+                                // we saw both publishers
+                                getSubscription().cancel();
+                                future.complete(null);
+                                System.out.println("stopping");
+                            } else {
+                                getSubscription().request(1);
+                            }
+                        }
+                    });
             while (!future.isDone()) {
                 var msg1 = new Int32Message().withData(1);
                 var msg2 = new Int32Message().withData(2);
@@ -304,5 +307,4 @@ public class JRosClientTests {
         }
         client.unpublish(topic);
     }
-
 }

@@ -15,10 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.tests.integration;
 
 import static id.jrosclient.tests.TestUtils.compareWithTemplate;
@@ -26,14 +22,13 @@ import static id.jrosclient.tests.integration.TestConstants.CALLER_ID;
 import static id.jrosclient.tests.integration.TestConstants.TOPIC;
 import static id.jrosclient.tests.integration.TestConstants.URL;
 
+import id.jrosclient.JRosClient;
+import id.jrosclient.JRosClientConfiguration;
 import java.net.MalformedURLException;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import id.jrosclient.JRosClient;
-import id.jrosclient.JRosClientConfiguration;
-
+/** @author lambdaprime intid@protonmail.com */
 public class MasterApiTests {
 
     private static JRosClient client;
@@ -59,10 +54,11 @@ public class MasterApiTests {
     @Test
     public void test_registerSubscriber() {
         var config = new JRosClientConfiguration();
-        var publishers = client.getMasterApi().registerSubscriber(CALLER_ID, TOPIC, "std_msgs/String",
-                config.getNodeApiUrl());
+        var publishers =
+                client.getMasterApi()
+                        .registerSubscriber(
+                                CALLER_ID, TOPIC, "std_msgs/String", config.getNodeApiUrl());
         System.out.println(publishers);
         compareWithTemplate(publishers.toString(), "test_registerSubscriber1");
     }
-
 }

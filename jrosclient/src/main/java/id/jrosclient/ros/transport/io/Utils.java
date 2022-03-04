@@ -15,16 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.transport.io;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+/** @author lambdaprime intid@protonmail.com */
 public class Utils {
 
     public int readLen(DataInput in) throws IOException {

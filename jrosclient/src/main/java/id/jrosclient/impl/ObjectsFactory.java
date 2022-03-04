@@ -15,10 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.impl;
 
 import id.jrosclient.JRosClientConfiguration;
@@ -26,9 +22,7 @@ import id.jrosclient.ros.NodeServer;
 import id.jrosclient.ros.transport.PublishersManager;
 import id.jrosclient.ros.transport.TcpRosServer;
 
-/**
- * This factory is a single point for managing all dependencies.
- */
+/** This factory is a single point for managing all dependencies. */
 public class ObjectsFactory {
 
     private static ObjectsFactory instance = new ObjectsFactory();
@@ -49,7 +43,9 @@ public class ObjectsFactory {
         instance = objectsFactory;
     }
 
-    public TcpRosServer createTcpRosServer(PublishersManager publishersManager, JRosClientConfiguration config,
+    public TcpRosServer createTcpRosServer(
+            PublishersManager publishersManager,
+            JRosClientConfiguration config,
             TextUtils textUtils) {
         return new TcpRosServer(publishersManager, config, textUtils);
     }

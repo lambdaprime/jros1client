@@ -15,17 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.transport.io;
 
+import id.jrosclient.ros.transport.MessagePacket;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import id.jrosclient.ros.transport.MessagePacket;
-
+/** @author lambdaprime intid@protonmail.com */
 public class MessagePacketWriter {
 
     private DataOutput out;
@@ -40,10 +36,8 @@ public class MessagePacketWriter {
     public void write(MessagePacket packet) throws IOException {
         headerWriter.write(packet.getHeader());
         var body = packet.getBody();
-        if (body == null)
-            return;
+        if (body == null) return;
         utils.writeLen(out, body.length);
         out.write(body);
     }
-
 }

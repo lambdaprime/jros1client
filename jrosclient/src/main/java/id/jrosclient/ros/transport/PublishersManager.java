@@ -15,21 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.transport;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+/** @author lambdaprime intid@protonmail.com */
 import id.jrosclient.TopicPublisher;
 import id.jrosmessages.Message;
 import id.xfunction.function.Unchecked;
 import id.xfunction.lang.XRE;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class PublishersManager implements AutoCloseable {
 

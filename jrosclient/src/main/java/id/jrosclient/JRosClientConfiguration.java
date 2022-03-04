@@ -15,10 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient;
 
 import java.util.UUID;
@@ -26,6 +22,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Configuration parameters of JRosClient
+ *
+ * @author lambdaprime intid@protonmail.com
  */
 public class JRosClientConfiguration {
 
@@ -33,8 +31,10 @@ public class JRosClientConfiguration {
     public static final int START_NODE_SERVER_PORT = 1234;
     public static final String HOST_NAME = "localhost";
 
-    private static final AtomicInteger nextTcpRosServerPort = new AtomicInteger(START_TCP_ROS_SERVER_PORT);
-    private static final AtomicInteger nextNodeServerPort = new AtomicInteger(START_NODE_SERVER_PORT);
+    private static final AtomicInteger nextTcpRosServerPort =
+            new AtomicInteger(START_TCP_ROS_SERVER_PORT);
+    private static final AtomicInteger nextNodeServerPort =
+            new AtomicInteger(START_NODE_SERVER_PORT);
 
     private int tcpRosServerPort = nextTcpRosServerPort.addAndGet(2);
     private int nodeServerPort = nextNodeServerPort.addAndGet(2);
@@ -43,19 +43,15 @@ public class JRosClientConfiguration {
     private int maxMessageLoggingLength = -1;
 
     /**
-     * <p>
      * Port for TCPROS.
-     * </p>
-     * <p>
-     * TCPROS is a transport layer responsible for publishing messages.
-     * </p>
-     * <p>
-     * This is a port to which other ROS nodes connect once they subscribe to any
-     * topic published through JRosClient.
-     * </p>
-     * <p>
-     * JRosClient by default tries to use any available port starting from
-     * {@link START_TCP_ROS_SERVER_PORT}
+     *
+     * <p>TCPROS is a transport layer responsible for publishing messages.
+     *
+     * <p>This is a port to which other ROS nodes connect once they subscribe to any topic published
+     * through JRosClient.
+     *
+     * <p>JRosClient by default tries to use any available port starting from {@link
+     * START_TCP_ROS_SERVER_PORT}
      */
     public int getTcpRosServerPort() {
         return tcpRosServerPort;
@@ -66,16 +62,13 @@ public class JRosClientConfiguration {
     }
 
     /**
-     * <p>
      * Port for running Node server (XMLRPC server).
-     * </p>
-     * <p>
-     * This server is used to negotiate connections with other ROS nodes and
-     * communicate with the Master.
-     * </p>
-     * <p>
-     * JRosClient by default tries to use any available port starting from
-     * {@link START_NODE_SERVER_PORT}
+     *
+     * <p>This server is used to negotiate connections with other ROS nodes and communicate with the
+     * Master.
+     *
+     * <p>JRosClient by default tries to use any available port starting from {@link
+     * START_NODE_SERVER_PORT}
      */
     public int getNodeServerPort() {
         return nodeServerPort;
@@ -86,12 +79,11 @@ public class JRosClientConfiguration {
     }
 
     /**
-     * Name of the host where TCPROS server and Node server will be running on. This
-     * host name should belong to the host where jrosclient is used and to which
-     * other ROS nodes can communicate.
-     * <p>
-     * Default value is {@link HOST_NAME}
-     * </p>
+     * Name of the host where TCPROS server and Node server will be running on. This host name
+     * should belong to the host where jrosclient is used and to which other ROS nodes can
+     * communicate.
+     *
+     * <p>Default value is {@link HOST_NAME}
      */
     public String getHostName() {
         return hostName;
@@ -102,33 +94,26 @@ public class JRosClientConfiguration {
     }
 
     /**
-     * Each instance of JRosClient acts as a separate ROS node and has a unique
-     * calledId which it reports to other ROS nodes.
+     * Each instance of JRosClient acts as a separate ROS node and has a unique calledId which it
+     * reports to other ROS nodes.
      */
     public String getCallerId() {
         return callerId;
     }
 
     /**
-     * <p>
      * Allows to limit length of logged variable length objects.
-     * </p>
-     * <p>
-     * Example of such objects are ROS messages which may contain a lot of data
-     * which quickly fill up the logs. Setting maximum length will truncate logging
-     * of such objects.
-     * </p>
-     * <p>
-     * Default value is -1 which means that truncation is off.
-     * </p>
+     *
+     * <p>Example of such objects are ROS messages which may contain a lot of data which quickly
+     * fill up the logs. Setting maximum length will truncate logging of such objects.
+     *
+     * <p>Default value is -1 which means that truncation is off.
      */
     public void setMaxMessageLoggingLength(int length) {
         this.maxMessageLoggingLength = length;
     }
 
-    /**
-     * @see setMaxMessageLoggingLength
-     */
+    /** @see setMaxMessageLoggingLength */
     public int getMaxMessageLoggingLength() {
         return maxMessageLoggingLength;
     }

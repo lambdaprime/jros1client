@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.app;
 
+import id.jrosclient.JRosClientConfiguration;
+import id.xfunction.cli.ArgumentParsingException;
+import id.xfunction.cli.SmartArgs;
+import id.xfunction.logging.XLogger;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
@@ -29,39 +29,43 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import id.jrosclient.JRosClientConfiguration;
-import id.xfunction.cli.ArgumentParsingException;
-import id.xfunction.cli.SmartArgs;
-import id.xfunction.logging.XLogger;
-
+/** @author lambdaprime intid@protonmail.com */
 public class JRosClientApp {
 
     private static Optional<String> masterUrl = Optional.empty();
     private static JRosClientConfiguration config = new JRosClientConfiguration();
-    private static Map<String, Consumer<String>> handlers = Map.of(
-            "--masterUrl", url -> {
-                masterUrl = Optional.of(url);
-            },
-            "--nodePort", port -> {
-                config.setNodeServerPort(Integer.parseInt(port));
-            },
-            "--truncate", maxLength -> {
-                config.setMaxMessageLoggingLength(Integer.parseInt(maxLength));
-            });
+    private static Map<String, Consumer<String>> handlers =
+            Map.of(
+                    "--masterUrl",
+                            url -> {
+                                masterUrl = Optional.of(url);
+                            },
+                    "--nodePort",
+                            port -> {
+                                config.setNodeServerPort(Integer.parseInt(port));
+                            },
+                    "--truncate",
+                            maxLength -> {
+                                config.setMaxMessageLoggingLength(Integer.parseInt(maxLength));
+                            });
     private static LinkedList<String> positionalArgs = new LinkedList<>();
 
     public static Stream<String> readResourceAsStream(String file) {
         try {
-            return new BufferedReader(new InputStreamReader(
-                    JRosClientApp.class.getClassLoader().getResource(file).openStream())).lines();
+            return new BufferedReader(
+                            new InputStreamReader(
+                                    JRosClientApp.class
+                                            .getClassLoader()
+                                            .getResource(file)
+                                            .openStream()))
+                    .lines();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     private static void usage() {
-        readResourceAsStream("jrosclient-README.md")
-                .forEach(System.out::println);
+        readResourceAsStream("jrosclient-README.md").forEach(System.out::println);
         System.exit(1);
     }
 
@@ -84,26 +88,24 @@ public class JRosClientApp {
     }
 
     private static void run() {
-        if (positionalArgs.isEmpty())
-            throw new ArgumentParsingException();
+        if (positionalArgs.isEmpty()) throw new ArgumentParsingException();
         var cmd = positionalArgs.removeFirst();
         switch (cmd) {
-        case "rostopic":
-            new RosTopic(masterUrl, config)
-                    .execute(positionalArgs);
-            break;
-        case "--debug": {
-            enableDebug();
-            run();
-            break;
-        }
-        default:
-            throw new ArgumentParsingException();
+            case "rostopic":
+                new RosTopic(masterUrl, config).execute(positionalArgs);
+                break;
+            case "--debug":
+                {
+                    enableDebug();
+                    run();
+                    break;
+                }
+            default:
+                throw new ArgumentParsingException();
         }
     }
 
     private static void enableDebug() {
         XLogger.load("jrosclient-debug.properties");
     }
-
 }

@@ -15,10 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.responses.transformers;
 
 import id.jrosclient.ros.api.impl.RawResponse;
@@ -27,12 +23,14 @@ import id.jrosclient.ros.entities.Subscriber;
 import id.jrosclient.ros.entities.transformers.Transformer;
 import id.jrosclient.ros.responses.SystemStateResponse;
 
+/** @author lambdaprime intid@protonmail.com */
 public class SystemStateTransformer implements ResponseTransformer {
 
     private Transformer<Publisher> publisherTransformer;
     private Transformer<Subscriber> subscriberTransformer;
 
-    public SystemStateTransformer(Transformer<Publisher> publisherTransformer,
+    public SystemStateTransformer(
+            Transformer<Publisher> publisherTransformer,
             Transformer<Subscriber> subscriberTransformer) {
         this.publisherTransformer = publisherTransformer;
         this.subscriberTransformer = subscriberTransformer;
@@ -50,5 +48,4 @@ public class SystemStateTransformer implements ResponseTransformer {
         }
         return ss;
     }
-
 }

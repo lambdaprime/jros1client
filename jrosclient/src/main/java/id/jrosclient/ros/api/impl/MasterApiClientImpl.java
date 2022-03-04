@@ -15,10 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.api.impl;
 
 import id.jrosclient.impl.RosRpcClient;
@@ -33,6 +29,7 @@ import id.jrosclient.ros.responses.transformers.ListTransformer;
 import id.jrosclient.ros.responses.transformers.StringTransformer;
 import id.jrosclient.ros.responses.transformers.SystemStateTransformer;
 
+/** @author lambdaprime intid@protonmail.com */
 public class MasterApiClientImpl implements MasterApi {
 
     private RosRpcClient client;
@@ -44,50 +41,48 @@ public class MasterApiClientImpl implements MasterApi {
     public MasterApiClientImpl(RosRpcClient client) {
         this.client = client;
         var transformers = new Transformers();
-        this.systemStateParser = new SystemStateTransformer(
-                transformers.publisherTransformer,
-                transformers.subscriberTransformer);
+        this.systemStateParser =
+                new SystemStateTransformer(
+                        transformers.publisherTransformer, transformers.subscriberTransformer);
     }
 
     @Override
     public SystemStateResponse getSystemState(String callerId) {
-        Object[] params = new Object[] { callerId };
+        Object[] params = new Object[] {callerId};
         return systemStateParser.parse(client.execute("getSystemState", params));
     }
 
     @Override
     public StringResponse getUri(String callerId) {
-        Object[] params = new Object[] { callerId };
+        Object[] params = new Object[] {callerId};
         return stringParser.parse("masterURI", client.execute("getUri", params));
     }
 
     // @Override
     public StringResponse lookupService(String callerId, String service) {
-        Object[] params = new Object[] { callerId, service };
+        Object[] params = new Object[] {callerId, service};
         return stringParser.parse("serviceUrl", client.execute("lookupService", params));
     }
 
     @Override
-    public ListResponse<String> registerPublisher(String callerId, String topic,
-            String topicType, String callerApi) {
-        Object[] params = new Object[] { callerId, topic, topicType, callerApi };
-        return stringListParser.parseString("subscriberApis",
-                client.execute("registerPublisher", params));
+    public ListResponse<String> registerPublisher(
+            String callerId, String topic, String topicType, String callerApi) {
+        Object[] params = new Object[] {callerId, topic, topicType, callerApi};
+        return stringListParser.parseString(
+                "subscriberApis", client.execute("registerPublisher", params));
     }
 
     @Override
-    public ListResponse<String> registerSubscriber(String callerId, String topic, String topicType,
-            String callerApi) {
-        Object[] params = new Object[] { callerId, topic, topicType, callerApi };
-        return stringListParser.parseString("publishers",
-                client.execute("registerSubscriber", params));
+    public ListResponse<String> registerSubscriber(
+            String callerId, String topic, String topicType, String callerApi) {
+        Object[] params = new Object[] {callerId, topic, topicType, callerApi};
+        return stringListParser.parseString(
+                "publishers", client.execute("registerSubscriber", params));
     }
 
     @Override
     public IntResponse unregisterPublisher(String callerId, String topic, String callerApi) {
-        Object[] params = new Object[] { callerId, topic, callerApi };
-        return intParser.parse("subscriberApis",
-                client.execute("unregisterPublisher", params));
+        Object[] params = new Object[] {callerId, topic, callerApi};
+        return intParser.parse("subscriberApis", client.execute("unregisterPublisher", params));
     }
-
 }

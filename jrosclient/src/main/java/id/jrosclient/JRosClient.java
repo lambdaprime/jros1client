@@ -15,10 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient;
 
 import id.jrosclient.impl.ObjectsFactory;
@@ -49,10 +45,10 @@ import java.util.logging.Logger;
 
 /**
  * Main class of the library which allows to interact with ROS.
- * 
- * <p>
- * Each instance of JRosClient acts as a separate ROS node and listens to its
- * own ports.
+ *
+ * <p>Each instance of JRosClient acts as a separate ROS node and listens to its own ports.
+ *
+ * @author lambdaprime intid@protonmail.com
  */
 public class JRosClient implements AutoCloseable {
 
@@ -74,23 +70,21 @@ public class JRosClient implements AutoCloseable {
     private TextUtils textUtils;
 
     /**
-     * Default constructor which creates a client to ROS master running locally
-     * using URL {@link #DEFAULT_ROS_MASTER_URL}
+     * Default constructor which creates a client to ROS master running locally using URL {@link
+     * #DEFAULT_ROS_MASTER_URL}
      */
     public JRosClient() {
         this(DEFAULT_ROS_MASTER_URL);
     }
 
-    /**
-     * @param masterUrl master node URL
-     */
+    /** @param masterUrl master node URL */
     public JRosClient(String masterUrl) {
         this(masterUrl, objectsFactory.createConfig());
     }
 
     /**
-     * Constructor which creates a client to ROS master running locally using URL
-     * {@link #DEFAULT_ROS_MASTER_URL} with given client configuration
+     * Constructor which creates a client to ROS master running locally using URL {@link
+     * #DEFAULT_ROS_MASTER_URL} with given client configuration
      */
     public JRosClient(JRosClientConfiguration config) {
         this(DEFAULT_ROS_MASTER_URL, config);
@@ -100,9 +94,7 @@ public class JRosClient implements AutoCloseable {
         this(masterUrl, config, objectsFactory);
     }
 
-    /**
-     * @hidden
-     */
+    /** @hidden */
     public JRosClient(String masterUrl, JRosClientConfiguration config, ObjectsFactory factory) {
         this.masterUrl = masterUrl;
         nodeServer = factory.createNodeServer(config);
@@ -111,18 +103,15 @@ public class JRosClient implements AutoCloseable {
         configuration = config;
     }
 
-    /**
-     * Access to ROS master API
-     */
+    /** Access to ROS master API */
     public MasterApi getMasterApi() {
         RosRpcClient client = new RosRpcClient(masterUrl);
         return new MasterApiClientImpl(client);
     }
 
     /**
-     * Return Node API of the foreign node. It allows to interact with other ROS
-     * nodes directly.
-     * 
+     * Return Node API of the foreign node. It allows to interact with other ROS nodes directly.
+     *
      * @param nodeUrl URL of the foreign node to connect
      */
     public NodeApi getNodeApi(String nodeUrl) {
@@ -132,20 +121,20 @@ public class JRosClient implements AutoCloseable {
 
     /**
      * Subscribe to ROS topic
-     * 
-     * @param <M>        type of messages in the topic
-     * @param subscriber provides information about the topic to subscribe for. Once
-     *                   subscribed it will be notified for any new message which
-     *                   gets published with given topic.
+     *
+     * @param <M> type of messages in the topic
+     * @param subscriber provides information about the topic to subscribe for. Once subscribed it
+     *     will be notified for any new message which gets published with given topic.
      */
-    public <M extends Message> void subscribe(TopicSubscriber<M> subscriber)
-            throws Exception {
+    public <M extends Message> void subscribe(TopicSubscriber<M> subscriber) throws Exception {
         String topic = subscriber.getTopic();
         var clazz = subscriber.getMessageClass();
         var topicType = metadataAccessor.getType(clazz);
         var callerId = configuration.getCallerId();
-        var publishers = getMasterApi().registerSubscriber(callerId, topic, topicType,
-                configuration.getNodeApiUrl());
+        var publishers =
+                getMasterApi()
+                        .registerSubscriber(
+                                callerId, topic, topicType, configuration.getNodeApiUrl());
         LOGGER.log(Level.FINE, "Publishers: {0}", publishers.toString());
         if (publishers.value.isEmpty()) {
             throw new XRE("No publishers for topic %s found", topic);
@@ -155,13 +144,15 @@ public class JRosClient implements AutoCloseable {
         @SuppressWarnings("resource")
         var processor = new MergeProcessor<M>();
         processor.subscribe(subscriber);
-        for (var publisher : publishers.value/* .stream().collect(Collectors.toSet()) */) {
+        for (var publisher : publishers.value /* .stream().collect(Collectors.toSet()) */) {
             try {
                 LOGGER.log(Level.FINE, "Registering with publisher: {0}", publisher);
                 var nodeApi = getNodeApi(publisher);
                 var protocol = nodeApi.requestTopic(callerId, topic, List.of(Protocol.TCPROS));
                 LOGGER.log(Level.FINE, "Protocol configuration: {0}", protocol);
-                var nodeClient = new TcpRosClient<M>(callerId, topic, protocol.host, protocol.port, clazz, textUtils);
+                var nodeClient =
+                        new TcpRosClient<M>(
+                                callerId, topic, protocol.host, protocol.port, clazz, textUtils);
                 nodeClient.subscribe(processor.newSubscriber());
                 nodeClient.connect();
                 clients.add(nodeClient);
@@ -173,61 +164,64 @@ public class JRosClient implements AutoCloseable {
 
     /**
      * Create a new topic and start publishing messages for it.
-     * 
-     * @param <M>       type of messages in the topic
-     * @param publisher provides information about new topic. Once topic created
-     *                  publisher is used to emit messages which will be sent to
-     *                  topic subscribers
+     *
+     * @param <M> type of messages in the topic
+     * @param publisher provides information about new topic. Once topic created publisher is used
+     *     to emit messages which will be sent to topic subscribers
      */
-    public <M extends Message> void publish(TopicPublisher<M> publisher)
-            throws Exception {
+    public <M extends Message> void publish(TopicPublisher<M> publisher) throws Exception {
         var topic = publisher.getTopic();
         var clazz = publisher.getMessageClass();
         var topicType = metadataAccessor.getType(clazz);
         publishersManager.add(publisher);
         tcpRosServer.start();
         nodeServer.start();
-        var subscribers = getMasterApi().registerPublisher(configuration.getCallerId(), topic, topicType,
-                configuration.getNodeApiUrl());
+        var subscribers =
+                getMasterApi()
+                        .registerPublisher(
+                                configuration.getCallerId(),
+                                topic,
+                                topicType,
+                                configuration.getNodeApiUrl());
         LOGGER.log(Level.FINE, "Current subscribers: {0}", subscribers.toString());
     }
 
     /**
-     * Unregister publisher in Master node and stop publisher from emitting new
-     * messages
-     * 
+     * Unregister publisher in Master node and stop publisher from emitting new messages
+     *
      * @param topic name of the topic used by the publisher
      */
-    public void unpublish(String topic)
-            throws IOException {
+    public void unpublish(String topic) throws IOException {
         var publisherOpt = publishersManager.getPublisher(utils.formatTopicName(topic));
         if (publisherOpt.isEmpty()) {
-            LOGGER.log(Level.FINE, "There is no publishers for topic {0}, nothing to unpublish",
+            LOGGER.log(
+                    Level.FINE,
+                    "There is no publishers for topic {0}, nothing to unpublish",
                     topic);
             return;
         }
         var publisher = publisherOpt.get();
         publisher.close();
         try {
-            var num = getMasterApi().unregisterPublisher(configuration.getCallerId(), topic,
-                    configuration.getNodeApiUrl());
+            var num =
+                    getMasterApi()
+                            .unregisterPublisher(
+                                    configuration.getCallerId(),
+                                    topic,
+                                    configuration.getNodeApiUrl());
             LOGGER.log(Level.FINE, "Unregistered publisher response: {0}", num.toString());
         } finally {
             publishersManager.remove(topic);
         }
     }
 
-    /**
-     * Check if there is any publisher available for the given topic
-     */
+    /** Check if there is any publisher available for the given topic */
     public boolean hasPublisher(String topic) {
         return getMasterApi().getSystemState(configuration.getCallerId()).publishers.stream()
                 .anyMatch(p -> topic.equals(p.topic));
     }
 
-    /**
-     * Release the resources, stop TCPROS server and node server
-     */
+    /** Release the resources, stop TCPROS server and node server */
     @Override
     public void close() throws IOException {
         try {
@@ -235,8 +229,7 @@ public class JRosClient implements AutoCloseable {
             publishersManager.getPublishers().stream()
                     .map(TopicPublisher::getTopic)
                     .forEach(Unchecked.wrapAccept(this::unpublish, exception));
-            if (exception.getSuppressed().length != 0)
-                throw exception;
+            if (exception.getSuppressed().length != 0) throw exception;
         } finally {
             nodeServer.close();
             clients.forEach(Unchecked.wrapAccept(TcpRosClient::close));

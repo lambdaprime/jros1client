@@ -15,16 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.responses.transformers;
 
 import id.jrosclient.ros.api.impl.RawResponse;
 import id.jrosclient.ros.responses.Response;
 import id.jrosclient.ros.responses.Response.StatusCode;
 
+/** @author lambdaprime intid@protonmail.com */
 public interface ResponseTransformer {
 
     static void populate(Response dst, RawResponse src) {
@@ -36,5 +33,4 @@ public interface ResponseTransformer {
         dst.list().set(0, src.statusCode.code());
         dst.list().set(1, src.statusMessage);
     }
-
 }

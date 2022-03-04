@@ -15,25 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.entities.transformers;
 
 import id.jrosclient.ros.entities.Subscriber;
 
+/** @author lambdaprime intid@protonmail.com */
 class SubscriberTransformer implements Transformer<Subscriber> {
 
     public Subscriber transform(Object obj) {
         Object[] a = (Object[]) obj;
-        return new Subscriber((String) a[0],
-                Transformer.list((Object[]) a[1]));
+        return new Subscriber((String) a[0], Transformer.list((Object[]) a[1]));
     }
 
     @Override
     public Object transform(Subscriber entity) {
         return null;
     }
-
 }

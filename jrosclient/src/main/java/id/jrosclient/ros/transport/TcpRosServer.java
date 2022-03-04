@@ -15,10 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.transport;
 
 import id.ICE.MessageRequest;
@@ -48,11 +44,13 @@ import java.util.logging.Level;
 
 /**
  * Allows to communicate with other ROS nodes.
- * 
- * Relies on {@link PublishersManager} for list of available publishers. - When
- * new connection comes in it searches for publisher in PublishersManager - Each
- * time existing client sends a request it checks if publisher is closed or not
- * (present in PublishersManager) and if not then it closes the connection.
+ *
+ * <p>Relies on {@link PublishersManager} for list of available publishers. - When new connection
+ * comes in it searches for publisher in PublishersManager - Each time existing client sends a
+ * request it checks if publisher is closed or not (present in PublishersManager) and if not then it
+ * closes the connection.
+ *
+ * @author lambdaprime intid@protonmail.com
  */
 public class TcpRosServer implements MessageService, AutoCloseable {
 
@@ -60,35 +58,31 @@ public class TcpRosServer implements MessageService, AutoCloseable {
 
     private MetadataAccessor metadataAccessor = new MetadataAccessor();
     private MessageServer server;
-    private ConnectionHeaderValidator headerValidator = new ConnectionHeaderValidator(
-            metadataAccessor);
+    private ConnectionHeaderValidator headerValidator =
+            new ConnectionHeaderValidator(metadataAccessor);
     private PublishersManager publishersManager;
 
-    /**
-     * Connection id to subscriber serving it
-     */
+    /** Connection id to subscriber serving it */
     private Map<Integer, TopicPublisherSubscriber> subscribers = new ConcurrentHashMap<>();
 
-    /**
-     * Connections which are no longer served by publishers and should be closed
-     */
+    /** Connections which are no longer served by publishers and should be closed */
     private Set<Integer> closedConnections = new HashSet<>();
 
     private TextUtils utils;
     private boolean isStarted;
 
     @SuppressWarnings("resource")
-    public TcpRosServer(PublishersManager publishersManager, JRosClientConfiguration config,
-            TextUtils utils) {
+    public TcpRosServer(
+            PublishersManager publishersManager, JRosClientConfiguration config, TextUtils utils) {
         this.publishersManager = publishersManager;
-        server = new MessageServer(this, new ConnectionHeaderScanner())
-                .withPort(config.getTcpRosServerPort());
+        server =
+                new MessageServer(this, new ConnectionHeaderScanner())
+                        .withPort(config.getTcpRosServerPort());
         this.utils = utils;
     }
 
     public void start() throws IOException {
-        if (isStarted)
-            return;
+        if (isStarted) return;
         LOGGER.fine("Starting...");
         isStarted = true;
         server.run();
@@ -101,16 +95,13 @@ public class TcpRosServer implements MessageService, AutoCloseable {
             throw new XRE("Attempt to close client with active publishers: %s", publishers);
         }
         LOGGER.fine("Stopping...");
-        subscribers.values()
-                .forEach(Subscriber::onComplete);
+        subscribers.values().forEach(Subscriber::onComplete);
         subscribers.clear();
         Unchecked.run(() -> server.close());
         isStarted = false;
     }
 
-    /**
-     * Implementation of MessageService which process the incoming requests.
-     */
+    /** Implementation of MessageService which process the incoming requests. */
     @SuppressWarnings("exports")
     @Override
     public CompletableFuture<MessageResponse> process(MessageRequest request) {
@@ -128,7 +119,8 @@ public class TcpRosServer implements MessageService, AutoCloseable {
         if (subscriber == null) {
             var message = request.getMessage().orElse(null);
             if (message == null) {
-                LOGGER.info("Received registration request with no message, closing the connection...");
+                LOGGER.info(
+                        "Received registration request with no message, closing the connection...");
                 return CompletableFuture.completedFuture(null);
             }
             var subscriberOpt = registerSubscriber(connId, message);
@@ -160,9 +152,8 @@ public class TcpRosServer implements MessageService, AutoCloseable {
     }
 
     /**
-     * Find publisher for the topic for which this request is for. If such publisher
-     * exist - create a subscriber for it and return this subscriber. If not -
-     * return empty value.
+     * Find publisher for the topic for which this request is for. If such publisher exist - create
+     * a subscriber for it and return this subscriber. If not - return empty value.
      */
     private Optional<TopicPublisherSubscriber> registerSubscriber(int connId, ByteBuffer message) {
         var dis = new DataInputStream(new ByteBufferInputStream(message));
@@ -194,18 +185,20 @@ public class TcpRosServer implements MessageService, AutoCloseable {
             return Optional.empty();
         }
 
-        var subscriber = new TopicPublisherSubscriber(callerId, topic, publisher.getMessageClass(), utils) {
-            @Override
-            public void onError(Throwable throwable) {
-                LOGGER.warning("Publisher of topic {0} for caller {1} throwed error {2}: {3}",
-                        topic, callerId, throwable.getClass(), throwable.getMessage());
+        var subscriber =
+                new TopicPublisherSubscriber(callerId, topic, publisher.getMessageClass(), utils) {
+                    @Override
+                    public void onError(Throwable throwable) {
+                        LOGGER.warning(
+                                "Publisher of topic {0} for caller {1} throwed error {2}: {3}",
+                                topic, callerId, throwable.getClass(), throwable.getMessage());
 
-                subscribers.remove(connId);
-                publisher.onPublishError(throwable);
-                closedConnections.add(connId);
-                super.onError(throwable);
-            }
-        };
+                        subscribers.remove(connId);
+                        publisher.onPublishError(throwable);
+                        closedConnections.add(connId);
+                        super.onError(throwable);
+                    }
+                };
         publisher.subscribe(subscriber);
 
         LOGGER.log(Level.FINE, "Received connection header {0}", header);

@@ -15,20 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.responses;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import id.jrosclient.ros.entities.Publisher;
 import id.jrosclient.ros.entities.Service;
 import id.jrosclient.ros.entities.Subscriber;
 import id.xfunction.XJson;
+import java.util.ArrayList;
+import java.util.List;
 
+/** @author lambdaprime intid@protonmail.com */
 public class SystemStateResponse extends Response {
 
     public List<Publisher> publishers = new ArrayList<>();
@@ -37,7 +33,8 @@ public class SystemStateResponse extends Response {
 
     @Override
     public String toString() {
-        return XJson.merge(super.toString(),
+        return XJson.merge(
+                super.toString(),
                 XJson.asString(
                         "publishers", publishers,
                         "subscribers", subscribers,

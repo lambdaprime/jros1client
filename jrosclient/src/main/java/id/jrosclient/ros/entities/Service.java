@@ -15,16 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.entities;
 
+import id.jrosclient.ros.api.impl.Utils;
 import java.util.List;
 
-import id.jrosclient.ros.api.impl.Utils;
-
+/** @author lambdaprime intid@protonmail.com */
 public class Service implements Entity {
 
     public String service;
@@ -32,7 +28,8 @@ public class Service implements Entity {
 
     @Override
     public String toString() {
-        return String.format("{ \"topic\": \"%s\", \"topicSubscriber\": %s }", service,
-                Utils.asArrayOfStrings(serviceProvider));
+        return String.format(
+                "{ \"topic\": \"%s\", \"topicSubscriber\": %s }",
+                service, Utils.asArrayOfStrings(serviceProvider));
     }
 }

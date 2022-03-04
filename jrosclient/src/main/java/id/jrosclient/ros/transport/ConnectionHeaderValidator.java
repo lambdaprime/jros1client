@@ -15,16 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.transport;
 
 import id.jrosmessages.Message;
 import id.jrosmessages.MetadataAccessor;
 import id.xfunction.lang.XRuntimeException;
 
+/** @author lambdaprime intid@protonmail.com */
 public class ConnectionHeaderValidator {
 
     private MetadataAccessor metadataAccessor;
@@ -41,21 +38,21 @@ public class ConnectionHeaderValidator {
 
         var messageType = metadataAccessor.getType(messageClass);
         if (!messageType.equals(type)) {
-            throw new XRuntimeException("Message type missmatch %s != %s",
-                    messageType, type);
+            throw new XRuntimeException("Message type missmatch %s != %s", messageType, type);
         }
 
         if (header.getMd5sum().isEmpty()) {
-            throw new XRuntimeException("Message %s MD5 sum is empty", messageClass.getSimpleName());
+            throw new XRuntimeException(
+                    "Message %s MD5 sum is empty", messageClass.getSimpleName());
         }
         var md5sum = header.getMd5sum().get();
 
         var messageMd5 = metadataAccessor.getMd5(messageClass);
         if (!messageMd5.equals(md5sum)) {
-            throw new XRuntimeException("Message %s md5 sum missmatch %s != %s",
+            throw new XRuntimeException(
+                    "Message %s md5 sum missmatch %s != %s",
                     messageClass.getSimpleName(), messageMd5, md5sum);
         }
         return true;
     }
-
 }

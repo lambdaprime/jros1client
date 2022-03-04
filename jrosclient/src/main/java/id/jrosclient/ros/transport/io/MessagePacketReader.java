@@ -15,18 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.transport.io;
-
-import java.io.DataInput;
-import java.io.IOException;
 
 import id.jrosclient.ros.transport.ConnectionHeader;
 import id.jrosclient.ros.transport.MessagePacket;
+import java.io.DataInput;
+import java.io.IOException;
 
+/** @author lambdaprime intid@protonmail.com */
 public class MessagePacketReader {
 
     private DataInput in;

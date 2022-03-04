@@ -15,16 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.entities;
 
+import id.xfunction.XJson;
 import java.util.List;
 
-import id.xfunction.XJson;
-
+/** @author lambdaprime intid@protonmail.com */
 public class Subscriber implements Entity {
 
     public String topic;
@@ -37,7 +33,6 @@ public class Subscriber implements Entity {
 
     @Override
     public String toString() {
-        return XJson.asString("topic", topic,
-                "topicSubscriber", topicSubscriber);
+        return XJson.asString("topic", topic, "topicSubscriber", topicSubscriber);
     }
 }

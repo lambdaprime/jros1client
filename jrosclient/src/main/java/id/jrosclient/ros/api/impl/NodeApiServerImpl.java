@@ -15,14 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.api.impl;
-
-import java.util.List;
-import java.util.function.Predicate;
 
 import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.ros.api.NodeApi;
@@ -32,11 +25,13 @@ import id.jrosclient.ros.responses.ProtocolParamsResponse;
 import id.jrosclient.ros.responses.Response.StatusCode;
 import id.xfunction.lang.XRE;
 import id.xfunction.logging.XLogger;
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
- * Server implementation of ROS Node API which allows to communicate with remote
- * ROS nodes.
+ * Server implementation of ROS Node API which allows to communicate with remote ROS nodes.
  *
+ * @author lambdaprime intid@protonmail.com
  */
 public class NodeApiServerImpl implements NodeApi {
 
@@ -49,15 +44,14 @@ public class NodeApiServerImpl implements NodeApi {
     }
 
     @Override
-    public ProtocolParamsResponse requestTopic(String callerId, String topic,
-            List<Protocol> protocols) {
+    public ProtocolParamsResponse requestTopic(
+            String callerId, String topic, List<Protocol> protocols) {
         LOGGER.entering("requestTopic", protocols);
-        boolean hasTcpRos = protocols.stream()
-                .map(Protocol::getProtocolName)
-                .anyMatch(Predicate.isEqual(Protocol.TCPROS.protocolName));
-        if (!hasTcpRos)
-            throw new XRE("Subscriber %s requested non TCPROS protocol",
-                    callerId);
+        boolean hasTcpRos =
+                protocols.stream()
+                        .map(Protocol::getProtocolName)
+                        .anyMatch(Predicate.isEqual(Protocol.TCPROS.protocolName));
+        if (!hasTcpRos) throw new XRE("Subscriber %s requested non TCPROS protocol", callerId);
         var response = new ProtocolParamsResponse();
         response.withStatusCode(StatusCode.SUCCESS);
         response.withStatusMessage("ready");
@@ -76,5 +70,4 @@ public class NodeApiServerImpl implements NodeApi {
         response.withStatusMessage("ready");
         return response;
     }
-
 }

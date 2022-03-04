@@ -15,10 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import id.xfunction.ResourceUtils;
 import id.xfunction.text.WildcardMatcher;
 
+/** @author lambdaprime intid@protonmail.com */
 public class TestUtils {
 
     private static final ResourceUtils resourceUtils = new ResourceUtils();
@@ -40,5 +37,4 @@ public class TestUtils {
         var template = resourceUtils.readResource(templateFile);
         assertTrue(new WildcardMatcher(template).matches(out));
     }
-
 }

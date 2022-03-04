@@ -15,14 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.impl;
 
 import java.util.Properties;
 
+/** @author lambdaprime intid@protonmail.com */
 public class Settings {
 
     private static final Settings instance = new Settings();
@@ -49,8 +46,7 @@ public class Settings {
     }
 
     public void update(Properties properties) {
-        awaitTcpRosClientInSecs = Integer.parseInt(properties.getProperty("awaitTcpRosClientInSecs",
-                "5"));
+        awaitTcpRosClientInSecs =
+                Integer.parseInt(properties.getProperty("awaitTcpRosClientInSecs", "5"));
     }
-
 }

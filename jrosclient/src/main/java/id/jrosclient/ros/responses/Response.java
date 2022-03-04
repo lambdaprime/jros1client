@@ -15,30 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.responses;
 
 import id.xfunction.XJson;
 
 /**
  * Base class for all ROS API returned values.
- * 
- * @see <a href="http://wiki.ros.org/ROS/Master_Slave_APIs">Return value
- *      format</a>
+ *
+ * @see <a href="http://wiki.ros.org/ROS/Master_Slave_APIs">Return value format</a>
+ * @author lambdaprime intid@protonmail.com
  */
 public class Response {
 
     public enum StatusCode {
-        ERROR(-1), FAILURE(0), SUCCESS(1);
+        ERROR(-1),
+        FAILURE(0),
+        SUCCESS(1);
 
         private int code;
 
         public int code() {
             return code;
-        };
+        }
+        ;
 
         StatusCode(int code) {
             this.code = code;
@@ -46,14 +45,14 @@ public class Response {
 
         public static StatusCode valueOf(int code) {
             switch (code) {
-            case -1:
-                return StatusCode.ERROR;
-            case 0:
-                return StatusCode.FAILURE;
-            case 1:
-                return StatusCode.SUCCESS;
-            default:
-                throw new RuntimeException();
+                case -1:
+                    return StatusCode.ERROR;
+                case 0:
+                    return StatusCode.FAILURE;
+                case 1:
+                    return StatusCode.SUCCESS;
+                default:
+                    throw new RuntimeException();
             }
         }
     }

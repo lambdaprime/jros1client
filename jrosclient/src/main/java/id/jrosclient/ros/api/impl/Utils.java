@@ -15,26 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.api.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/** @author lambdaprime intid@protonmail.com */
 public class Utils {
 
     public static <T> String asArray(List<T> l) {
-        return "[" + l.stream()
-                .map(T::toString)
-                .collect(Collectors.joining(", ")) + "]";
+        return "[" + l.stream().map(T::toString).collect(Collectors.joining(", ")) + "]";
     }
 
     public static <T> String asArrayOfStrings(List<T> l) {
-        return "[" + l.stream()
-                .map(s -> "\"" + s + "\"")
-                .collect(Collectors.joining(", ")) + "]";
+        return "[" + l.stream().map(s -> "\"" + s + "\"").collect(Collectors.joining(", ")) + "]";
     }
 }

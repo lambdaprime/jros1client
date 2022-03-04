@@ -15,42 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient;
-
-import java.util.concurrent.Flow;
-import java.util.concurrent.Flow.Subscription;
 
 import id.jrosclient.impl.JRosClientSubscription;
 import id.jrosclient.impl.Utils;
 import id.jrosmessages.Message;
 import id.xfunction.XAsserts;
+import java.util.concurrent.Flow;
+import java.util.concurrent.Flow.Subscription;
 
 /**
- * <p>
- * Subscriber receives messages for the topic it is subscribed for and passes
- * them to the onNext method.
- * </p>
- * 
- * <p>
- * This class simplifies implementation of new subscribers since it provides
- * default implementations for most methods except onNext. The onNext method
- * needs to be implemented for each subscriber separately.
- * </p>
- * 
- * <p>
- * Before subscriber can start to receive messages it needs to be subscribed for
- * the topic.
- * </p>
- * 
- * <p>
- * See <a href="{@docRoot}/../index.html">Module documentation</a> for examples.
- * </p>
- * 
+ * Subscriber receives messages for the topic it is subscribed for and passes them to the onNext
+ * method.
+ *
+ * <p>This class simplifies implementation of new subscribers since it provides default
+ * implementations for most methods except onNext. The onNext method needs to be implemented for
+ * each subscriber separately.
+ *
+ * <p>Before subscriber can start to receive messages it needs to be subscribed for the topic.
+ *
+ * <p>See <a href="{@docRoot}/../index.html">Module documentation</a> for examples.
+ *
  * @param <M> type of messages in the topic
+ * @author lambdaprime intid@protonmail.com
  */
 public abstract class TopicSubscriber<M extends Message> implements Flow.Subscriber<M> {
 
@@ -62,12 +49,11 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
     private int initNumOfMessages = 1;
 
     /**
-     * Creates subscriber for a topic which when first subscribed will request 1
-     * message.
-     * 
+     * Creates subscriber for a topic which when first subscribed will request 1 message.
+     *
      * @param messageClass class of the messages in this topic
-     * @param topic        Name of the topic which messages current subscriber wants
-     *                     to receive. Topic name which should start from '/'
+     * @param topic Name of the topic which messages current subscriber wants to receive. Topic name
+     *     which should start from '/'
      */
     public TopicSubscriber(Class<M> messageClass, String topic) {
         this.messageClass = messageClass;
@@ -75,8 +61,8 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
     }
 
     /**
-     * Allows to set how many messages to request once this subscriber will be first
-     * subscribed to some topic. Default number is one.
+     * Allows to set how many messages to request once this subscriber will be first subscribed to
+     * some topic. Default number is one.
      */
     public TopicSubscriber<M> withInitialRequest(int numOfMessages) {
         initNumOfMessages = numOfMessages;
@@ -91,12 +77,10 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
     }
 
     /**
-     * <p>
      * Common throwable types:
-     * </p>
-     * 
+     *
      * <ul>
-     * <li>EOFException - publisher unexpectedly closed the connection</li>
+     *   <li>EOFException - publisher unexpectedly closed the connection
      * </ul>
      */
     @Override
@@ -104,17 +88,11 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
         throwable.printStackTrace();
     }
 
-    /**
-     * Default implementation does nothing but it can be redefined.
-     */
+    /** Default implementation does nothing but it can be redefined. */
     @Override
-    public void onComplete() {
+    public void onComplete() {}
 
-    }
-
-    /**
-     * Class of the messages in the current topic
-     */
+    /** Class of the messages in the current topic */
     public Class<M> getMessageClass() {
         return messageClass;
     }
@@ -123,9 +101,7 @@ public abstract class TopicSubscriber<M extends Message> implements Flow.Subscri
         return subscription;
     }
 
-    /**
-     * Name of the topic of this subscriber
-     */
+    /** Name of the topic of this subscriber */
     public String getTopic() {
         return topic;
     }

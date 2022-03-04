@@ -15,14 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.responses;
 
 import id.jrosclient.ros.entities.Protocol;
 
+/** @author lambdaprime intid@protonmail.com */
 public class ProtocolResponse extends Response {
 
     public Protocol protocolParams;

@@ -15,10 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.transport;
 
 import id.jrosclient.impl.Settings;
@@ -47,20 +43,19 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 /**
- * This client establishes TCPROS connection with publishing ROS node and
- * listens for new messages.
- * 
- * <p>
- * Every new message it receives from such node it publishes to its own
- * JRosClient subscriber which is subscribed to the ROS topic.
- * 
- * <p>
- * This client can serve only one JRosClient subscriber.
- * 
- * <p>
- * This client is not used by JRosClient publishers.
+ * This client establishes TCPROS connection with publishing ROS node and listens for new messages.
+ *
+ * <p>Every new message it receives from such node it publishes to its own JRosClient subscriber
+ * which is subscribed to the ROS topic.
+ *
+ * <p>This client can serve only one JRosClient subscriber.
+ *
+ * <p>This client is not used by JRosClient publishers.
+ *
+ * @author lambdaprime intid@protonmail.com
  */
-public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> implements AutoCloseable {
+public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
+        implements AutoCloseable {
 
     private final XLogger LOGGER = XLogger.getLogger(this);
     private TextUtils utils;
@@ -77,16 +72,22 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
     private ExecutorService executorService;
     private SocketChannel channel;
 
-    public TcpRosClient(String callerId, String topic, String host, int port,
-            Class<M> messageClass, TextUtils utils) {
+    public TcpRosClient(
+            String callerId,
+            String topic,
+            String host,
+            int port,
+            Class<M> messageClass,
+            TextUtils utils) {
         super(new SameThreadExecutorService(), 1);
         this.callerId = callerId;
         this.topic = topic;
         this.host = host;
         this.port = port;
         this.messageClass = messageClass;
-        executorService = Executors.newSingleThreadExecutor(
-                new NamedThreadFactory("tcp-ros-client-" + topic.replace("/", "")));
+        executorService =
+                Executors.newSingleThreadExecutor(
+                        new NamedThreadFactory("tcp-ros-client-" + topic.replace("/", "")));
         this.utils = utils;
     }
 
@@ -100,22 +101,24 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
         reader = new MessagePacketReader(dis);
         MetadataAccessor metadataAccessor = new MetadataAccessor();
         String messageDefinition = "string data";
-        var ch = new ConnectionHeader()
-                .withTopic(topic.startsWith("/") ? topic : "/" + topic)
-                .withCallerId(callerId)
-                .withType(metadataAccessor.getType(messageClass))
-                .withMessageDefinition(messageDefinition)
-                .withMd5Sum(metadataAccessor.getMd5(messageClass));
-        executorService.execute(() -> {
-            try {
-                run(ch);
-            } catch (Exception e) {
-                LOGGER.log(Level.FINE, "Subscriber failed: {0}", e.getMessage());
-                sendOnError(e);
-            } finally {
-                executorService.shutdown();
-            }
-        });
+        var ch =
+                new ConnectionHeader()
+                        .withTopic(topic.startsWith("/") ? topic : "/" + topic)
+                        .withCallerId(callerId)
+                        .withType(metadataAccessor.getType(messageClass))
+                        .withMessageDefinition(messageDefinition)
+                        .withMd5Sum(metadataAccessor.getMd5(messageClass));
+        executorService.execute(
+                () -> {
+                    try {
+                        run(ch);
+                    } catch (Exception e) {
+                        LOGGER.log(Level.FINE, "Subscriber failed: {0}", e.getMessage());
+                        sendOnError(e);
+                    } finally {
+                        executorService.shutdown();
+                    }
+                });
     }
 
     private void sendOnError(Exception e) {
@@ -166,8 +169,8 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M> impl
         }
         executorService.shutdown();
         try {
-            if (!executorService.awaitTermination(Settings.getInstance().getAwaitTcpRosClientInSecs(),
-                    TimeUnit.SECONDS)) {
+            if (!executorService.awaitTermination(
+                    Settings.getInstance().getAwaitTcpRosClientInSecs(), TimeUnit.SECONDS)) {
                 LOGGER.log(Level.FINE, "Forcefully terminating executor");
                 executorService.shutdownNow();
             }

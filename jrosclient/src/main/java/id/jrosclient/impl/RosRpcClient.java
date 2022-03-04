@@ -15,36 +15,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.impl;
 
+import id.jrosclient.ros.api.impl.RawResponse;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.function.Supplier;
-
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 
-import id.jrosclient.ros.api.impl.RawResponse;
-
+/** @author lambdaprime intid@protonmail.com */
 public class RosRpcClient {
 
     private String url;
-    private Supplier<XmlRpcClient> client = () -> {
-        var config = new XmlRpcClientConfigImpl();
-        try {
-            config.setServerURL(new URL(url));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        var cl = new XmlRpcClient();
-        cl.setConfig(config);
-        client = () -> cl;
-        return cl;
-    };
+    private Supplier<XmlRpcClient> client =
+            () -> {
+                var config = new XmlRpcClientConfigImpl();
+                try {
+                    config.setServerURL(new URL(url));
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+                var cl = new XmlRpcClient();
+                cl.setConfig(config);
+                client = () -> cl;
+                return cl;
+            };
 
     public RosRpcClient(String url) {
         this.url = url;
@@ -57,5 +53,4 @@ public class RosRpcClient {
             throw new RuntimeException(e);
         }
     }
-
 }

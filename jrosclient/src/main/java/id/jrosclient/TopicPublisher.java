@@ -15,51 +15,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient;
 
+import id.jrosmessages.Message;
 import java.io.IOException;
 import java.util.concurrent.Flow;
 
-import id.jrosmessages.Message;
-
 /**
- * <p>
- * Publisher responsible for publishing messages for particular topic. Other ROS
- * nodes can see the topic and subscribe for it so they will start receiving
- * messages published to it.
- * </p>
- * 
- * <p>
- * <b>JRosClient</b> provides {@link TopicSubmissionPublisher} as a default
- * implementation for publisher which can be used in most of the cases.
- * </p>
- * 
+ * Publisher responsible for publishing messages for particular topic. Other ROS nodes can see the
+ * topic and subscribe for it so they will start receiving messages published to it.
+ *
+ * <p><b>JRosClient</b> provides {@link TopicSubmissionPublisher} as a default implementation for
+ * publisher which can be used in most of the cases.
+ *
  * @param <M> type of messages in the topic
+ * @author lambdaprime intid@protonmail.com
  */
 public interface TopicPublisher<M extends Message> extends Flow.Publisher<M>, AutoCloseable {
 
-    /**
-     * @return class of messages which is published in this topic
-     */
+    /** @return class of messages which is published in this topic */
     Class<M> getMessageClass();
 
-    /**
-     * @return Topic name
-     */
+    /** @return Topic name */
     String getTopic();
 
     /**
-     * Notifies publisher about an error which happened when trying to deliver
-     * message to one of the subscribers
+     * Notifies publisher about an error which happened when trying to deliver message to one of the
+     * subscribers
      */
     void onPublishError(Throwable throwable);
 
-    /**
-     * Stop to emit any new messages
-     */
+    /** Stop to emit any new messages */
+    @Override
     void close() throws IOException;
 }

@@ -15,15 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.responses.transformers;
 
 import id.jrosclient.ros.api.impl.RawResponse;
 import id.jrosclient.ros.responses.ProtocolParamsResponse;
 
+/** @author lambdaprime intid@protonmail.com */
 public class ProtocolParamsTransformer implements ResponseTransformer {
 
     public ProtocolParamsResponse parse(RawResponse response) {
@@ -39,7 +36,7 @@ public class ProtocolParamsTransformer implements ResponseTransformer {
     public RawResponse transform(ProtocolParamsResponse response) {
         var raw = new RawResponse(new Object[3]);
         ResponseTransformer.populate(raw, response);
-        raw.list().set(2, new Object[] { response.name, response.host, response.port });
+        raw.list().set(2, new Object[] {response.name, response.host, response.port});
         return raw;
     }
 }

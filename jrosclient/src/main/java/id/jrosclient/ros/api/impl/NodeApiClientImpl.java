@@ -15,14 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.api.impl;
-
-import java.util.List;
-import java.util.logging.Logger;
 
 import id.jrosclient.impl.RosRpcClient;
 import id.jrosclient.ros.api.NodeApi;
@@ -32,11 +25,13 @@ import id.jrosclient.ros.responses.IntResponse;
 import id.jrosclient.ros.responses.ProtocolParamsResponse;
 import id.jrosclient.ros.responses.transformers.ProtocolParamsTransformer;
 import id.xfunction.logging.XLogger;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
- * Client implementation of ROS Node API which allows to communicate with remote
- * ROS nodes.
+ * Client implementation of ROS Node API which allows to communicate with remote ROS nodes.
  *
+ * @author lambdaprime intid@protonmail.com
  */
 public class NodeApiClientImpl implements NodeApi {
 
@@ -50,13 +45,11 @@ public class NodeApiClientImpl implements NodeApi {
     }
 
     @Override
-    public ProtocolParamsResponse requestTopic(String callerId, String topic, List<Protocol> protocols) {
-        var array = protocols.stream()
-                .map(transformers.protocolTransformer::transform)
-                .toArray();
-        Object[] params = new Object[] { callerId, topic, array };
-        return protocolParamsParser.parse(
-                client.execute("requestTopic", params));
+    public ProtocolParamsResponse requestTopic(
+            String callerId, String topic, List<Protocol> protocols) {
+        var array = protocols.stream().map(transformers.protocolTransformer::transform).toArray();
+        Object[] params = new Object[] {callerId, topic, array};
+        return protocolParamsParser.parse(client.execute("requestTopic", params));
     }
 
     @Override
@@ -64,5 +57,4 @@ public class NodeApiClientImpl implements NodeApi {
         LOGGER.severe("Operation publisherUpdate is not supported, ignoring...");
         return new IntResponse("ignore");
     }
-
 }

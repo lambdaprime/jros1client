@@ -15,16 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.responses.transformers;
 
 import id.jrosclient.ros.api.impl.RawResponse;
 import id.jrosclient.ros.responses.ListResponse;
 import id.jrosclient.ros.responses.Response.StatusCode;
 
+/** @author lambdaprime intid@protonmail.com */
 public class ListTransformer implements ResponseTransformer {
 
     public ListResponse<String> parseString(String key, RawResponse response) {
@@ -38,5 +35,4 @@ public class ListTransformer implements ResponseTransformer {
         }
         return ss;
     }
-
 }

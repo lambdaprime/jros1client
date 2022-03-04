@@ -15,16 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.entities;
 
+import id.xfunction.XJson;
 import java.util.List;
 
-import id.xfunction.XJson;
-
+/** @author lambdaprime intid@protonmail.com */
 public class Protocol implements Entity {
 
     public static Protocol TCPROS = new Protocol("TCPROS");

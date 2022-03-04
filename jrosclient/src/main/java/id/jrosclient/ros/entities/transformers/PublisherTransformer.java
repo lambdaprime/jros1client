@@ -15,20 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.entities.transformers;
 
+/** @author lambdaprime intid@protonmail.com */
 import id.jrosclient.ros.entities.Publisher;
 
 class PublisherTransformer implements Transformer<Publisher> {
 
     public Publisher transform(Object obj) {
         Object[] a = (Object[]) obj;
-        return new Publisher((String) a[0],
-                Transformer.list((Object[]) a[1]));
+        return new Publisher((String) a[0], Transformer.list((Object[]) a[1]));
     }
 
     @Override
@@ -36,5 +32,4 @@ class PublisherTransformer implements Transformer<Publisher> {
         // TODO Auto-generated method stub
         return null;
     }
-
 }

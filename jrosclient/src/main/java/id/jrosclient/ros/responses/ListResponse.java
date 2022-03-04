@@ -15,17 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.responses;
 
+import id.xfunction.XJson;
 import java.util.ArrayList;
 import java.util.List;
 
-import id.xfunction.XJson;
-
+/** @author lambdaprime intid@protonmail.com */
 public class ListResponse<T> extends Response {
 
     public final String key;
@@ -37,8 +33,6 @@ public class ListResponse<T> extends Response {
 
     @Override
     public String toString() {
-        return XJson.merge(super.toString(), XJson.asString(
-                key, value));
+        return XJson.merge(super.toString(), XJson.asString(key, value));
     }
-
 }

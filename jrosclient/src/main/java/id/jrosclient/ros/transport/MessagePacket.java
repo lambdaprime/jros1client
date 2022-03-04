@@ -15,17 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.transport;
-
-import java.io.ByteArrayInputStream;
 
 import id.xfunction.function.Unchecked;
 import id.xfunction.io.XOutputStream;
+import java.io.ByteArrayInputStream;
 
+/** @author lambdaprime intid@protonmail.com */
 public class MessagePacket {
 
     private ConnectionHeader header;

@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.diffplug.spotless'
 }
 
 apply plugin : 'eclipse'
@@ -59,3 +60,6 @@ task testSamples(type: Exec) {
 myTest.dependsOn project(':jrosclient').createRelease
 compileTestJava.dependsOn myTest
 jar.dependsOn myTest
+
+// run spotless and format code before the build
+testClasses.dependsOn spotlessApply

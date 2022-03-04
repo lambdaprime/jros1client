@@ -15,10 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros;
 
 import id.xfunction.lang.XRE;
@@ -32,29 +28,33 @@ import org.apache.xmlrpc.server.XmlRpcHandlerMapping;
 import org.apache.xmlrpc.server.XmlRpcNoSuchHandlerException;
 
 /**
- * Receives an XmlRpcRequest, extracts method name and arguments from it and
- * then calls this method on a HANDLER object using {@link MethodCaller}
+ * Receives an XmlRpcRequest, extracts method name and arguments from it and then calls this method
+ * on a HANDLER object using {@link MethodCaller}
+ *
+ * @author lambdaprime intid@protonmail.com
  */
 final class MethodHandlerMapping implements XmlRpcHandlerMapping {
 
     private MethodCaller caller;
-    private XmlRpcHandler handler = new XmlRpcHandler() {
-        @Override
-        public Object execute(XmlRpcRequest request) {
-            var methodName = request.getMethodName();
-            var args = IntStream.range(0, request.getParameterCount())
-                    .mapToObj(i -> request.getParameter(i))
-                    .collect(Collectors.toList());
-            try {
-                return caller.call(methodName, args);
-            } catch (NoSuchMethodException e) {
-                throw new XRE("Operation " + methodName + " is not supported, ignoring...");
-            } catch (Throwable e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-    };
+    private XmlRpcHandler handler =
+            new XmlRpcHandler() {
+                @Override
+                public Object execute(XmlRpcRequest request) {
+                    var methodName = request.getMethodName();
+                    var args =
+                            IntStream.range(0, request.getParameterCount())
+                                    .mapToObj(i -> request.getParameter(i))
+                                    .collect(Collectors.toList());
+                    try {
+                        return caller.call(methodName, args);
+                    } catch (NoSuchMethodException e) {
+                        throw new XRE("Operation " + methodName + " is not supported, ignoring...");
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+            };
 
     public MethodHandlerMapping(Object handler) throws Exception {
         caller = new MethodCaller(handler);
@@ -65,5 +65,4 @@ final class MethodHandlerMapping implements XmlRpcHandlerMapping {
             throws XmlRpcNoSuchHandlerException, XmlRpcException {
         return handler;
     }
-
 }

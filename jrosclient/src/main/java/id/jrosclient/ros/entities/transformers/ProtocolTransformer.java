@@ -15,14 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.entities.transformers;
 
 import id.jrosclient.ros.entities.Protocol;
 
+/** @author lambdaprime intid@protonmail.com */
 public class ProtocolTransformer implements Transformer<Protocol> {
 
     @Override
@@ -38,5 +35,4 @@ public class ProtocolTransformer implements Transformer<Protocol> {
         Object[] a = (Object[]) protocol;
         return new Protocol((String) a[0]);
     }
-
 }

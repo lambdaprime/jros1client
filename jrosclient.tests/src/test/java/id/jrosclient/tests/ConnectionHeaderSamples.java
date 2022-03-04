@@ -15,16 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.tests;
 
 import id.jrosclient.ros.transport.ConnectionHeader;
-import id.xfunction.function.Unchecked;
 import id.xfunction.XUtils;
+import id.xfunction.function.Unchecked;
 
+/** @author lambdaprime intid@protonmail.com */
 public class ConnectionHeaderSamples {
 
     public static class ConnectionHeaderSample {
@@ -47,11 +44,13 @@ public class ConnectionHeaderSamples {
 
     private static final String MESSAGE_DATA = "string data";
 
-    static final ConnectionHeaderSample HEADER = new ConnectionHeaderSample("connection_header", new ConnectionHeader()
-            .withTopic("/topic")
-            .withCallerId("jrosclient")
-            .withType("std_msgs/String")
-            .withMessageDefinition(MESSAGE_DATA)
-            .withMd5Sum(Unchecked.get(() -> XUtils.md5Sum(MESSAGE_DATA))));
-
+    static final ConnectionHeaderSample HEADER =
+            new ConnectionHeaderSample(
+                    "connection_header",
+                    new ConnectionHeader()
+                            .withTopic("/topic")
+                            .withCallerId("jrosclient")
+                            .withType("std_msgs/String")
+                            .withMessageDefinition(MESSAGE_DATA)
+                            .withMd5Sum(Unchecked.get(() -> XUtils.md5Sum(MESSAGE_DATA))));
 }

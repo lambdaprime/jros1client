@@ -15,12 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.tests.integration;
 
+/** @author lambdaprime intid@protonmail.com */
 public interface TestConstants {
 
     String CALLER_ID = "jrosclient";

@@ -15,10 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.transport;
 
 import id.ICE.MessageResponse;
@@ -42,13 +38,13 @@ import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 
 /**
- * This class subscribes to {@link TopicPublisher} (hence name is
- * TopicPublisherSubscriber) which are created by users to publish messages to
- * certain ROS topics.
- * 
- * <p>
- * Each instance serves a single remote ROS client which is subscribed to some
- * particular topic published by current instance of jrosclient.
+ * This class subscribes to {@link TopicPublisher} (hence name is TopicPublisherSubscriber) which
+ * are created by users to publish messages to certain ROS topics.
+ *
+ * <p>Each instance serves a single remote ROS client which is subscribed to some particular topic
+ * published by current instance of jrosclient.
+ *
+ * @author lambdaprime intid@protonmail.com
  */
 public class TopicPublisherSubscriber implements Subscriber<Message> {
 
@@ -59,20 +55,21 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     private CompletableFuture<MessageResponse> future = CompletableFuture.completedFuture(null);
 
     /**
-     * Since onSubscribe is called async (by SubmissionPublisher) it may happen that
-     * it will be called after next message will be requested by request(). To make
-     * sure that we will not lose the request() call we will block it until we will
-     * not subscribe.
+     * Since onSubscribe is called async (by SubmissionPublisher) it may happen that it will be
+     * called after next message will be requested by request(). To make sure that we will not lose
+     * the request() call we will block it until we will not subscribe.
      */
-    private CompletableFuture<Subscription> subscriptionFuture = new CompletableFuture<Subscription>();
+    private CompletableFuture<Subscription> subscriptionFuture =
+            new CompletableFuture<Subscription>();
+
     private boolean isConnectionEstablished;
     private boolean isCompleted;
     private String topic;
     private String callerId;
     private Class<? extends Message> messageClass;
 
-    public TopicPublisherSubscriber(String callerId, String topic, Class<? extends Message> messageClass,
-            TextUtils utils) {
+    public TopicPublisherSubscriber(
+            String callerId, String topic, Class<? extends Message> messageClass, TextUtils utils) {
         this.callerId = callerId;
         this.topic = topic;
         this.messageClass = messageClass;
@@ -95,19 +92,17 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     }
 
     /**
-     * Requests a new message from the publisher to be delivered to subscribed ROS
-     * clients.
-     * 
-     * This method is called when we receive a new request from ROS subscriber which
-     * means that it is ready for next message available in the topic.
-     * 
+     * Requests a new message from the publisher to be delivered to subscribed ROS clients.
+     *
+     * <p>This method is called when we receive a new request from ROS subscriber which means that
+     * it is ready for next message available in the topic.
+     *
      * @return future which completes when new message is published
      */
     public CompletableFuture<MessageResponse> request() {
-        XAsserts.assertTrue(!isCompleted,
-                "Fail to request new message since subscriber has completed");
-        if (!future.isDone())
-            return future;
+        XAsserts.assertTrue(
+                !isCompleted, "Fail to request new message since subscriber has completed");
+        if (!future.isDone()) return future;
         future = new CompletableFuture<MessageResponse>();
         Subscription subscription;
         try {
@@ -174,9 +169,10 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         LOGGER.fine("Sending packet to subscriber");
         LOGGER.fine(utils.toString(os.asHexString()));
         // tell ICE that it can send the response back
-        future.complete(new MessageResponse(ByteBuffer.wrap(os.toByteArray()))
-                .withIgnoreNextRequest()
-                .withErrorHandler(this::onError));
+        future.complete(
+                new MessageResponse(ByteBuffer.wrap(os.toByteArray()))
+                        .withIgnoreNextRequest()
+                        .withErrorHandler(this::onError));
         LOGGER.exiting("sendPacket");
     }
 

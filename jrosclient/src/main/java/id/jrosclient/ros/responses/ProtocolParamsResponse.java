@@ -15,15 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.responses;
 
 import id.jrosclient.ros.entities.Protocol;
 import id.xfunction.XJson;
 
+/** @author lambdaprime intid@protonmail.com */
 public class ProtocolParamsResponse extends Response {
 
     public String name;
@@ -47,8 +44,7 @@ public class ProtocolParamsResponse extends Response {
 
     @Override
     public String toString() {
-        return XJson.merge(super.toString(), XJson.asString("name", name,
-                "host", host,
-                "port", port));
+        return XJson.merge(
+                super.toString(), XJson.asString("name", name, "host", host, "port", port));
     }
 }

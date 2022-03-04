@@ -15,16 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.impl;
 
+import id.xfunction.logging.XLogger;
 import java.util.concurrent.Flow.Subscription;
 
-import id.xfunction.logging.XLogger;
-
+/** @author lambdaprime intid@protonmail.com */
 public class JRosClientSubscription implements Subscription {
 
     private static final XLogger LOGGER = XLogger.getLogger(JRosClientSubscription.class);
@@ -48,5 +44,4 @@ public class JRosClientSubscription implements Subscription {
         subscription.cancel();
         LOGGER.exiting("cancel");
     }
-
 }

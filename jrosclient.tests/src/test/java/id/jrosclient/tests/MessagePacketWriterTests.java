@@ -15,22 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.io.DataOutputStream;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import id.jrosclient.ros.transport.MessagePacket;
 import id.jrosclient.ros.transport.io.MessagePacketWriter;
@@ -38,7 +25,15 @@ import id.jrosclient.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
 import id.xfunction.ResourceUtils;
 import id.xfunction.XByte;
 import id.xfunction.io.XOutputStream;
+import java.io.DataOutputStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+/** @author lambdaprime intid@protonmail.com */
 public class MessagePacketWriterTests {
     private static final ResourceUtils resourceUtils = new ResourceUtils();
 
@@ -58,13 +53,14 @@ public class MessagePacketWriterTests {
     }
 
     private static List buildTestSample(ConnectionHeaderSample headerSample) {
-        var hexString = resourceUtils.readResourceAsStream(headerSample.getResource())
-                .map(l -> Arrays.asList(l.split(" ")))
-                .flatMap(List::stream)
-                .collect(Collectors.joining(", "));
+        var hexString =
+                resourceUtils
+                        .readResourceAsStream(headerSample.getResource())
+                        .map(l -> Arrays.asList(l.split(" ")))
+                        .flatMap(List::stream)
+                        .collect(Collectors.joining(", "));
         var body = "hello ros".getBytes();
-        hexString += ", " + XByte.toHexPairs(Integer.reverseBytes(body.length))
-                .replace(" ", ", ");
+        hexString += ", " + XByte.toHexPairs(Integer.reverseBytes(body.length)).replace(" ", ", ");
         hexString += ", " + XByte.toHexPairs(body).replace(" ", ", ");
         var packet = new MessagePacket(headerSample.getHeader(), body);
         return List.of(packet, hexString);

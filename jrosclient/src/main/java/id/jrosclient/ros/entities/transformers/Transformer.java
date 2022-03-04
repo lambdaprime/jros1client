@@ -15,17 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.entities.transformers;
 
+import id.jrosclient.ros.entities.Entity;
 import java.util.Arrays;
 import java.util.List;
 
-import id.jrosclient.ros.entities.Entity;
-
+/** @author lambdaprime intid@protonmail.com */
 public interface Transformer<E extends Entity> {
 
     Object transform(E entity);
@@ -33,11 +29,10 @@ public interface Transformer<E extends Entity> {
     E transform(Object obj);
 
     /**
-     * You cannot convert Object[] to String[]. But you can convert Object[] to T[]
-     * where T is String.
+     * You cannot convert Object[] to String[]. But you can convert Object[] to T[] where T is
+     * String.
      */
     static <T> List<T> list(Object[] a) {
         return Arrays.asList((T[]) a);
     }
-
 }

@@ -15,21 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
 package id.jrosclient.ros.transport;
-
-import java.util.Optional;
 
 import id.xfunction.XJson;
 import id.xfunction.logging.XLogger;
+import java.util.Optional;
 
 /**
  * <a href=
  * "http://wiki.ros.org/ROS/Connection%20Header">http://wiki.ros.org/ROS/Connection%20Header</a>
  */
+/** @author lambdaprime intid@protonmail.com */
 public class ConnectionHeader {
 
     private static final XLogger LOGGER = XLogger.getLogger(ConnectionHeader.class);
@@ -43,45 +39,43 @@ public class ConnectionHeader {
 
     /**
      * Name of node sending data.
-     * 
-     * Required to be set by the subscriber. It is recommended to set it by
-     * publisher as well for debugging purposes.
+     *
+     * <p>Required to be set by the subscriber. It is recommended to set it by publisher as well for
+     * debugging purposes.
      */
     public Optional<String> callerId = Optional.empty();
 
     /**
      * Name of the topic the subscriber is connecting to
-     * 
-     * Required to be set by the subscriber.
+     *
+     * <p>Required to be set by the subscriber.
      */
     public Optional<String> topic = Optional.empty();
 
     /**
      * Message type.
-     * 
-     * Required to be set by the subscriber. Required to be set by the publisher.
+     *
+     * <p>Required to be set by the subscriber. Required to be set by the publisher.
      */
     public Optional<String> type = Optional.empty();
 
     /**
      * Md5sum of the message type
-     * 
-     * Required to be set by the subscriber. Required to be set by the publisher.
+     *
+     * <p>Required to be set by the subscriber. Required to be set by the publisher.
      */
     public Optional<String> md5sum = Optional.empty();
 
     /**
-     * Enables "latching" on a connection. When a connection is latched, the last
-     * message published is saved and automatically sent to any future subscribers
-     * that connect. This is useful for slow-changing to static data like a map.
-     * 
-     * Optional by the publisher/subscriber.
+     * Enables "latching" on a connection. When a connection is latched, the last message published
+     * is saved and automatically sent to any future subscribers that connect. This is useful for
+     * slow-changing to static data like a map.
+     *
+     * <p>Optional by the publisher/subscriber.
      */
     public Optional<String> latching = Optional.empty();
 
-    /**
-     * Required to be set by the subscriber.
-     */
+    /** Required to be set by the subscriber. */
     public Optional<String> messageDefinition = Optional.empty();
 
     public ConnectionHeader withCallerId(String callerId) {
@@ -116,26 +110,26 @@ public class ConnectionHeader {
 
     public void add(String key, String value) {
         switch (key) {
-        case CALLER_ID:
-            withCallerId(value);
-            break;
-        case TOPIC:
-            withTopic(value);
-            break;
-        case TYPE:
-            withType(value);
-            break;
-        case MESSAGE_DEFINITION:
-            withMessageDefinition(value);
-            break;
-        case MD5_SUM:
-            withMd5Sum(value);
-            break;
-        case LATCHING:
-            withLatching(Integer.parseInt(value) == 1);
-            break;
-        default:
-            LOGGER.warning("Received unknown Connection Header field: {0} = {1} ", key, value);
+            case CALLER_ID:
+                withCallerId(value);
+                break;
+            case TOPIC:
+                withTopic(value);
+                break;
+            case TYPE:
+                withType(value);
+                break;
+            case MESSAGE_DEFINITION:
+                withMessageDefinition(value);
+                break;
+            case MD5_SUM:
+                withMd5Sum(value);
+                break;
+            case LATCHING:
+                withLatching(Integer.parseInt(value) == 1);
+                break;
+            default:
+                LOGGER.warning("Received unknown Connection Header field: {0} = {1} ", key, value);
         }
     }
 
@@ -172,12 +166,9 @@ public class ConnectionHeader {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null)
-            return false;
-        if (this == obj)
-            return true;
-        if (this.getClass() != obj.getClass())
-            return false;
+        if (obj == null) return false;
+        if (this == obj) return true;
+        if (this.getClass() != obj.getClass()) return false;
         ConnectionHeader ch = (ConnectionHeader) obj;
         return callerId.equals(ch.callerId)
                 && topic.equals(ch.topic)
