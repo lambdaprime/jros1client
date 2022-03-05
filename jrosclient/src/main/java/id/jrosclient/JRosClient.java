@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Flow.Subscriber;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -124,12 +125,24 @@ public class JRosClient implements AutoCloseable {
      *
      * @param <M> type of messages in the topic
      * @param subscriber provides information about the topic to subscribe for. Once subscribed it
-     *     will be notified for any new message which gets published with given topic.
+     *     will be notified for any new message which gets published to given topic.
      */
     public <M extends Message> void subscribe(TopicSubscriber<M> subscriber) throws Exception {
-        String topic = subscriber.getTopic();
-        var clazz = subscriber.getMessageClass();
-        var topicType = metadataAccessor.getType(clazz);
+        subscribe(subscriber.getTopic(), subscriber.getMessageClass(), subscriber);
+    }
+
+    /**
+     * Subscribe to ROS topic
+     *
+     * @param <M> type of messages in the topic
+     * @param messageClass class of the messages in this topic
+     * @param topic Name of the topic which messages current subscriber wants to receive. Topic name
+     *     which should start from '/'
+     * @param subscriber is notified for any new message which gets published to given topic.
+     */
+    public <M extends Message> void subscribe(
+            String topic, Class<M> messageClass, Subscriber<M> subscriber) throws Exception {
+        var topicType = metadataAccessor.getType(messageClass);
         var callerId = configuration.getCallerId();
         var publishers =
                 getMasterApi()
@@ -152,7 +165,12 @@ public class JRosClient implements AutoCloseable {
                 LOGGER.log(Level.FINE, "Protocol configuration: {0}", protocol);
                 var nodeClient =
                         new TcpRosClient<M>(
-                                callerId, topic, protocol.host, protocol.port, clazz, textUtils);
+                                callerId,
+                                topic,
+                                protocol.host,
+                                protocol.port,
+                                messageClass,
+                                textUtils);
                 nodeClient.subscribe(processor.newSubscriber());
                 nodeClient.connect();
                 clients.add(nodeClient);
