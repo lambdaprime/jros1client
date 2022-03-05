@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Flow.Publisher;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -135,9 +136,9 @@ public class JRosClient implements AutoCloseable {
      * Subscribe to ROS topic
      *
      * @param <M> type of messages in the topic
-     * @param messageClass class of the messages in this topic
      * @param topic Name of the topic which messages current subscriber wants to receive. Topic name
      *     which should start from '/'
+     * @param messageClass class of the messages in this topic
      * @param subscriber is notified for any new message which gets published to given topic.
      */
     public <M extends Message> void subscribe(
@@ -202,6 +203,45 @@ public class JRosClient implements AutoCloseable {
                                 topicType,
                                 configuration.getNodeApiUrl());
         LOGGER.log(Level.FINE, "Current subscribers: {0}", subscribers.toString());
+    }
+
+    /**
+     * Create a new topic and start publishing messages for it.
+     *
+     * @param <M> type of messages in the topic
+     * @param topic Topic name
+     * @param messageClass class of the messages in this topic
+     * @param publisher is used to emit messages which will be sent to topic subscribers
+     */
+    public <M extends Message> void publish(
+            String topic, Class<M> messageClass, Publisher<M> publisher) throws Exception {
+        publish(
+                new TopicPublisher<M>() {
+                    @Override
+                    public void subscribe(Subscriber<? super M> subscriber) {
+                        publisher.subscribe(subscriber);
+                    }
+
+                    @Override
+                    public Class<M> getMessageClass() {
+                        return messageClass;
+                    }
+
+                    @Override
+                    public String getTopic() {
+                        return topic;
+                    }
+
+                    @Override
+                    public void onPublishError(Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+
+                    @Override
+                    public void close() throws IOException {
+                        // ignore as it is not Flow.Publisher method
+                    }
+                });
     }
 
     /**
