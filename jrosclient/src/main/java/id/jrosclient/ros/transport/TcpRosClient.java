@@ -17,8 +17,8 @@
  */
 package id.jrosclient.ros.transport;
 
+import id.jrosclient.core.utils.TextUtils;
 import id.jrosclient.impl.Settings;
-import id.jrosclient.impl.TextUtils;
 import id.jrosclient.ros.transport.io.ConnectionHeaderWriter;
 import id.jrosclient.ros.transport.io.MessagePacketReader;
 import id.jrosmessages.Message;

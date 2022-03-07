@@ -18,8 +18,8 @@
 package id.jrosclient.tests.integration;
 
 import id.jrosclient.JRosClientConfiguration;
+import id.jrosclient.core.utils.TextUtils;
 import id.jrosclient.impl.ObjectsFactory;
-import id.jrosclient.impl.TextUtils;
 import id.jrosclient.ros.NodeServer;
 import id.jrosclient.ros.transport.PublishersManager;
 import id.jrosclient.ros.transport.TcpRosServer;

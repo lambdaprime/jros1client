@@ -15,12 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
-import id.jrosclient.JRosClient;
-import id.jrosclient.TopicSubscriber;
+import id.jrosclient.JRos1Client;
+import id.jrosclient.core.TopicSubscriber;
 import id.jrosmessages.std_msgs.StringMessage;
 
 /**
@@ -30,7 +26,7 @@ public class SubscriberApp {
 
     public static void main(String[] args) throws Exception {
         // specify URL of the master node
-        var client = new JRosClient("http://localhost:11311/");
+        var client = new JRos1Client("http://localhost:11311/");
         var topicName = "/helloRos";
         // register a new subscriber
         client.subscribe(new TopicSubscriber<>(StringMessage.class, topicName) {

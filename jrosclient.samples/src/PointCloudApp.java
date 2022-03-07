@@ -26,9 +26,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import id.jrosclient.JRosClient;
+import id.jrosclient.JRos1Client;
 import id.jrosclient.JRosClientConfiguration;
-import id.jrosclient.TopicSubmissionPublisher;
+import id.jrosclient.core.TopicSubmissionPublisher;
 import id.jrosmessages.primitives.Time;
 import id.jrosmessages.sensor_msgs.PointCloud2Message;
 import id.jrosmessages.sensor_msgs.PointFieldMessage;
@@ -99,7 +99,7 @@ public class PointCloudApp {
         // defining topic name
         String topic = "/PointCloud";
         
-        try (var client = new JRosClient("http://localhost:11311/", config)) {
+        try (var client = new JRos1Client("http://localhost:11311/", config)) {
             var publisher = new TopicSubmissionPublisher<>(PointCloud2Message.class, topic);
             client.publish(publisher);
             PointCloud2Message pointCloud = new PointCloud2Message()

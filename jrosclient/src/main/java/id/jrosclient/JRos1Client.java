@@ -17,10 +17,13 @@
  */
 package id.jrosclient;
 
+import id.jrosclient.core.JRosClient;
+import id.jrosclient.core.TopicPublisher;
+import id.jrosclient.core.TopicSubscriber;
+import id.jrosclient.core.utils.TextUtils;
+import id.jrosclient.core.utils.Utils;
 import id.jrosclient.impl.ObjectsFactory;
 import id.jrosclient.impl.RosRpcClient;
-import id.jrosclient.impl.TextUtils;
-import id.jrosclient.impl.Utils;
 import id.jrosclient.ros.NodeServer;
 import id.jrosclient.ros.api.MasterApi;
 import id.jrosclient.ros.api.NodeApi;
@@ -52,7 +55,7 @@ import java.util.logging.Logger;
  *
  * @author lambdaprime intid@protonmail.com
  */
-public class JRosClient implements AutoCloseable {
+public class JRos1Client implements JRosClient {
 
     private static final ObjectsFactory objectsFactory = new ObjectsFactory();
     private static final Utils utils = new Utils();
@@ -75,12 +78,12 @@ public class JRosClient implements AutoCloseable {
      * Default constructor which creates a client to ROS master running locally using URL {@link
      * #DEFAULT_ROS_MASTER_URL}
      */
-    public JRosClient() {
+    public JRos1Client() {
         this(DEFAULT_ROS_MASTER_URL);
     }
 
     /** @param masterUrl master node URL */
-    public JRosClient(String masterUrl) {
+    public JRos1Client(String masterUrl) {
         this(masterUrl, objectsFactory.createConfig());
     }
 
@@ -88,16 +91,16 @@ public class JRosClient implements AutoCloseable {
      * Constructor which creates a client to ROS master running locally using URL {@link
      * #DEFAULT_ROS_MASTER_URL} with given client configuration
      */
-    public JRosClient(JRosClientConfiguration config) {
+    public JRos1Client(JRosClientConfiguration config) {
         this(DEFAULT_ROS_MASTER_URL, config);
     }
 
-    public JRosClient(String masterUrl, JRosClientConfiguration config) {
+    public JRos1Client(String masterUrl, JRosClientConfiguration config) {
         this(masterUrl, config, objectsFactory);
     }
 
-    /** @hidden */
-    public JRosClient(String masterUrl, JRosClientConfiguration config, ObjectsFactory factory) {
+    /** @hidden visible for testing */
+    public JRos1Client(String masterUrl, JRosClientConfiguration config, ObjectsFactory factory) {
         this.masterUrl = masterUrl;
         nodeServer = factory.createNodeServer(config);
         textUtils = factory.createTextUtils(config);
@@ -128,6 +131,7 @@ public class JRosClient implements AutoCloseable {
      * @param subscriber provides information about the topic to subscribe for. Once subscribed it
      *     will be notified for any new message which gets published to given topic.
      */
+    @Override
     public <M extends Message> void subscribe(TopicSubscriber<M> subscriber) throws Exception {
         subscribe(subscriber.getTopic(), subscriber.getMessageClass(), subscriber);
     }
@@ -141,6 +145,7 @@ public class JRosClient implements AutoCloseable {
      * @param messageClass class of the messages in this topic
      * @param subscriber is notified for any new message which gets published to given topic.
      */
+    @Override
     public <M extends Message> void subscribe(
             String topic, Class<M> messageClass, Subscriber<M> subscriber) throws Exception {
         var topicType = metadataAccessor.getType(messageClass);
@@ -188,6 +193,7 @@ public class JRosClient implements AutoCloseable {
      * @param publisher provides information about new topic. Once topic created publisher is used
      *     to emit messages which will be sent to topic subscribers
      */
+    @Override
     public <M extends Message> void publish(TopicPublisher<M> publisher) throws Exception {
         var topic = publisher.getTopic();
         var clazz = publisher.getMessageClass();
@@ -213,6 +219,7 @@ public class JRosClient implements AutoCloseable {
      * @param messageClass class of the messages in this topic
      * @param publisher is used to emit messages which will be sent to topic subscribers
      */
+    @Override
     public <M extends Message> void publish(
             String topic, Class<M> messageClass, Publisher<M> publisher) throws Exception {
         publish(
@@ -249,6 +256,7 @@ public class JRosClient implements AutoCloseable {
      *
      * @param topic name of the topic used by the publisher
      */
+    @Override
     public void unpublish(String topic) throws IOException {
         var publisherOpt = publishersManager.getPublisher(utils.formatTopicName(topic));
         if (publisherOpt.isEmpty()) {

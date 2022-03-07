@@ -19,8 +19,8 @@
  * Authors:
  * - lambdaprime <intid@protonmail.com>
  */
-import id.jrosclient.JRosClient;
-import id.jrosclient.TopicSubmissionPublisher;
+import id.jrosclient.JRos1Client;
+import id.jrosclient.core.TopicSubmissionPublisher;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.Point32Message;
@@ -38,7 +38,7 @@ public class PolygonApp {
     public static void main(String[] args) throws Exception {
         var cli = new CommandLineInterface();
         String topic = "/PolygonExample";
-        try (var client = new JRosClient("http://localhost:11311/")) {
+        try (var client = new JRos1Client("http://localhost:11311/")) {
             var publisher = new TopicSubmissionPublisher<>(PolygonStampedMessage.class, topic);
             client.publish(publisher);
             cli.print("Press any key to stop publishing...");

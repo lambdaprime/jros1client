@@ -22,8 +22,8 @@
 import java.util.EnumSet;
 import java.util.LinkedList;
 
-import id.jrosclient.JRosClient;
-import id.jrosclient.TopicSubmissionPublisher;
+import id.jrosclient.JRos1Client;
+import id.jrosclient.core.TopicSubmissionPublisher;
 import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
 import id.jrosmessages.geometry_msgs.QuaternionMessage;
@@ -54,7 +54,7 @@ public class BasicShapesApp {
         String topic = "BasicShapesExampleXXX";
 
         // creating client and making it to connect to given master node URL
-        try (var client = new JRosClient("http://localhost:11311/")) {
+        try (var client = new JRos1Client("http://localhost:11311/")) {
 
             // creating publisher for a topic
             var publisher = new TopicSubmissionPublisher<>(MarkerMessage.class, topic);

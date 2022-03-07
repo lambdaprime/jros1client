@@ -17,11 +17,11 @@
  */
 package id.jrosclient.app;
 
-import id.jrosclient.JRosClient;
+import id.jrosclient.JRos1Client;
 import id.jrosclient.JRosClientConfiguration;
-import id.jrosclient.TopicSubscriber;
+import id.jrosclient.core.TopicSubscriber;
+import id.jrosclient.core.utils.TextUtils;
 import id.jrosclient.impl.ObjectsFactory;
-import id.jrosclient.impl.TextUtils;
 import id.jrosclient.ros.responses.Response.StatusCode;
 import id.jrosmessages.Message;
 import id.xfunction.cli.ArgumentParsingException;
@@ -65,7 +65,7 @@ public class RosTopic {
     }
 
     private void list() throws Exception {
-        try (JRosClient client = masterUrl.map(JRosClient::new).orElse(new JRosClient())) {
+        try (JRos1Client client = masterUrl.map(JRos1Client::new).orElse(new JRos1Client())) {
             var systemState = client.getMasterApi().getSystemState(CALLER_ID);
             if (systemState.statusCode != StatusCode.SUCCESS) {
                 throw new XRE("Failed to get system status: %s", systemState.statusMessage);
@@ -85,8 +85,8 @@ public class RosTopic {
                         });
         new SmartArgs(handlers, positionalArgs::add).parse(rest.toArray(new String[0]));
         if (positionalArgs.size() < 2) throw new ArgumentParsingException();
-        JRosClient client =
-                masterUrl.map(url -> new JRosClient(url, config)).orElse(new JRosClient(config));
+        JRos1Client client =
+                masterUrl.map(url -> new JRos1Client(url, config)).orElse(new JRos1Client(config));
         var topic = positionalArgs.removeFirst();
         var topicType = positionalArgs.removeFirst();
         @SuppressWarnings("unchecked")
@@ -103,7 +103,6 @@ public class RosTopic {
                             if (count[0] == 0) {
                                 getSubscription().cancel();
                                 Unchecked.run(() -> client.close());
-                                return;
                             }
                         }
                     };

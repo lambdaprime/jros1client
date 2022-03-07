@@ -31,7 +31,7 @@ module jrosclient {
     requires id.kineticstreamer;
     requires id.ICE;
     requires java.logging;
-    requires transitive jrosmessages;
+    requires transitive jrosclient.core;
 
     exports id.jrosclient;
     exports id.jrosclient.ros.api;

@@ -19,8 +19,8 @@
  * Authors:
  * - lambdaprime <intid@protonmail.com>
  */
-import id.jrosclient.JRosClient;
-import id.jrosclient.TopicSubmissionPublisher;
+import id.jrosclient.JRos1Client;
+import id.jrosclient.core.TopicSubmissionPublisher;
 import id.jrosmessages.std_msgs.StringMessage;
 
 /**
@@ -30,7 +30,7 @@ public class PublisherApp {
 
     public static void main(String[] args) throws Exception {
         // specify URL of the master node
-        var client = new JRosClient("http://localhost:11311/");
+        var client = new JRos1Client("http://localhost:11311/");
         String topicName = "/helloRos";
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topicName);
         // register a new publisher for a new topic with ROS

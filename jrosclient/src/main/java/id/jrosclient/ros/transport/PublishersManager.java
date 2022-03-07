@@ -17,8 +17,7 @@
  */
 package id.jrosclient.ros.transport;
 
-/** @author lambdaprime intid@protonmail.com */
-import id.jrosclient.TopicPublisher;
+import id.jrosclient.core.TopicPublisher;
 import id.jrosmessages.Message;
 import id.xfunction.function.Unchecked;
 import id.xfunction.lang.XRE;
@@ -27,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/** @author lambdaprime intid@protonmail.com */
 public class PublishersManager implements AutoCloseable {
 
     // topic name to its publisher

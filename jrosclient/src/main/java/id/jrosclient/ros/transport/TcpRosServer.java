@@ -22,7 +22,7 @@ import id.ICE.MessageResponse;
 import id.ICE.MessageServer;
 import id.ICE.MessageService;
 import id.jrosclient.JRosClientConfiguration;
-import id.jrosclient.impl.TextUtils;
+import id.jrosclient.core.utils.TextUtils;
 import id.jrosclient.ros.transport.io.ConnectionHeaderReader;
 import id.jrosmessages.MetadataAccessor;
 import id.xfunction.XAsserts;

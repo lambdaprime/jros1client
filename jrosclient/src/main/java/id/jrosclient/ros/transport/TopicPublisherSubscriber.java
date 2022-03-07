@@ -18,8 +18,7 @@
 package id.jrosclient.ros.transport;
 
 import id.ICE.MessageResponse;
-import id.jrosclient.TopicPublisher;
-import id.jrosclient.impl.TextUtils;
+import id.jrosclient.core.utils.TextUtils;
 import id.jrosclient.ros.transport.io.MessagePacketWriter;
 import id.jrosmessages.Message;
 import id.jrosmessages.MetadataAccessor;
@@ -38,8 +37,8 @@ import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.Flow.Subscription;
 
 /**
- * This class subscribes to {@link TopicPublisher} (hence name is TopicPublisherSubscriber) which
- * are created by users to publish messages to certain ROS topics.
+ * This class subscribes to {@link id.jrosclient.core.TopicPublisher} (hence name is
+ * TopicPublisherSubscriber) which are created by users to publish messages to certain ROS topics.
  *
  * <p>Each instance serves a single remote ROS client which is subscribed to some particular topic
  * published by current instance of jrosclient.

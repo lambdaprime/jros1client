@@ -22,7 +22,7 @@ import static id.jrosclient.tests.integration.TestConstants.CALLER_ID;
 import static id.jrosclient.tests.integration.TestConstants.TOPIC;
 import static id.jrosclient.tests.integration.TestConstants.URL;
 
-import id.jrosclient.JRosClient;
+import id.jrosclient.JRos1Client;
 import id.jrosclient.JRosClientConfiguration;
 import java.net.MalformedURLException;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,11 +31,11 @@ import org.junit.jupiter.api.Test;
 /** @author lambdaprime intid@protonmail.com */
 public class MasterApiTests {
 
-    private static JRosClient client;
+    private static JRos1Client client;
 
     @BeforeAll
     public static void setup() throws MalformedURLException {
-        client = new JRosClient(URL);
+        client = new JRos1Client(URL);
     }
 
     @Test

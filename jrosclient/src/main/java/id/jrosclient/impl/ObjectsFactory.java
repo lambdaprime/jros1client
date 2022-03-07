@@ -18,6 +18,7 @@
 package id.jrosclient.impl;
 
 import id.jrosclient.JRosClientConfiguration;
+import id.jrosclient.core.utils.TextUtils;
 import id.jrosclient.ros.NodeServer;
 import id.jrosclient.ros.transport.PublishersManager;
 import id.jrosclient.ros.transport.TcpRosServer;
