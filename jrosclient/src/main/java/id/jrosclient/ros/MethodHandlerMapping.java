@@ -19,6 +19,7 @@ package id.jrosclient.ros;
 
 import id.xfunction.lang.XRE;
 import id.xfunction.lang.invoke.MethodCaller;
+import java.lang.invoke.MethodHandles;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.apache.xmlrpc.XmlRpcException;
@@ -57,7 +58,7 @@ final class MethodHandlerMapping implements XmlRpcHandlerMapping {
             };
 
     public MethodHandlerMapping(Object handler) throws Exception {
-        caller = new MethodCaller(handler);
+        caller = new MethodCaller(MethodHandles.lookup(), handler);
     }
 
     @Override

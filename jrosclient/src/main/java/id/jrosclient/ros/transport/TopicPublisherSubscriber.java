@@ -21,9 +21,9 @@ import id.ICE.MessageResponse;
 import id.jrosclient.core.utils.TextUtils;
 import id.jrosclient.ros.transport.io.MessagePacketWriter;
 import id.jrosmessages.Message;
+import id.jrosmessages.MessageSerializationUtils;
 import id.jrosmessages.MetadataAccessor;
-import id.jrosmessages.SerializationUtils;
-import id.xfunction.XAsserts;
+import id.xfunction.Preconditions;
 import id.xfunction.io.XOutputStream;
 import id.xfunction.lang.XRE;
 import id.xfunction.logging.XLogger;
@@ -50,7 +50,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     private final XLogger LOGGER = XLogger.getLogger(this);
     private TextUtils utils;
     private MetadataAccessor metadataAccessor = new MetadataAccessor();
-    private SerializationUtils serializationUtils = new SerializationUtils();
+    private MessageSerializationUtils serializationUtils = new MessageSerializationUtils();
     private CompletableFuture<MessageResponse> future = CompletableFuture.completedFuture(null);
 
     /**
@@ -84,7 +84,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     public void onNext(Message message) {
         LOGGER.entering("onNext");
         LOGGER.fine("Published new message: {0}", utils.toString(message));
-        XAsserts.assertTrue(message.getClass() == messageClass, "Incompatible message type");
+        Preconditions.isTrue(message.getClass() == messageClass, "Incompatible message type");
         var packet = createMessagePacket(message);
         sendPacket(packet);
         LOGGER.exiting("onNext");
@@ -99,7 +99,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
      * @return future which completes when new message is published
      */
     public CompletableFuture<MessageResponse> request() {
-        XAsserts.assertTrue(
+        Preconditions.isTrue(
                 !isCompleted, "Fail to request new message since subscriber has completed");
         if (!future.isDone()) return future;
         future = new CompletableFuture<MessageResponse>();

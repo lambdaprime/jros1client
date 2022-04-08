@@ -25,7 +25,7 @@ import id.jrosclient.JRosClientConfiguration;
 import id.jrosclient.core.utils.TextUtils;
 import id.jrosclient.ros.transport.io.ConnectionHeaderReader;
 import id.jrosmessages.MetadataAccessor;
-import id.xfunction.XAsserts;
+import id.xfunction.Preconditions;
 import id.xfunction.function.Unchecked;
 import id.xfunction.io.ByteBufferInputStream;
 import id.xfunction.lang.XRE;
@@ -140,7 +140,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
             }
         }
 
-        XAsserts.assertTrue(!subscriber.isCompleted());
+        Preconditions.isTrue(!subscriber.isCompleted());
 
         var callerId = subscriber.getCallerId();
         LOGGER.log(Level.FINE, "Requesting next message for {0}", callerId);

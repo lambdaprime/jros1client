@@ -22,9 +22,9 @@ import id.jrosclient.impl.Settings;
 import id.jrosclient.ros.transport.io.ConnectionHeaderWriter;
 import id.jrosclient.ros.transport.io.MessagePacketReader;
 import id.jrosmessages.Message;
+import id.jrosmessages.MessageSerializationUtils;
 import id.jrosmessages.MetadataAccessor;
-import id.jrosmessages.SerializationUtils;
-import id.xfunction.XAsserts;
+import id.xfunction.Preconditions;
 import id.xfunction.concurrent.NamedThreadFactory;
 import id.xfunction.concurrent.SameThreadExecutorService;
 import id.xfunction.logging.XLogger;
@@ -92,7 +92,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
     }
 
     public void connect() throws IOException {
-        XAsserts.assertTrue(channel == null, "Already connected");
+        Preconditions.isTrue(channel == null, "Already connected");
         channel = SocketChannel.open(new InetSocketAddress(host, port));
         OutputStream os = Channels.newOutputStream(channel);
         dis = new DataInputStream(Channels.newInputStream(channel));
@@ -125,7 +125,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
         LOGGER.entering("sendOnError");
         var subscribers = getSubscribers();
         if (!subscribers.isEmpty()) {
-            XAsserts.assertEquals(1, subscribers.size(), "Unexpected number of subscribers");
+            Preconditions.equals(1, subscribers.size(), "Unexpected number of subscribers");
             subscribers.get(0).onError(e);
         }
         LOGGER.exiting("sendOnError");
@@ -139,7 +139,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
         LOGGER.log(Level.FINE, "Message packet: {0}", utils.toString(response));
         byte[] body = response.getBody();
         while (!executorService.isShutdown() && hasSubscribers()) {
-            var msg = new SerializationUtils().read(body, messageClass);
+            var msg = new MessageSerializationUtils().read(body, messageClass);
             LOGGER.log(Level.FINE, "Submitting received message to subscriber");
             submit(msg);
             LOGGER.log(Level.FINE, "Requesting next message");

@@ -18,10 +18,11 @@
 package id.jrosclient;
 
 import id.jrosclient.core.JRosClient;
+import id.jrosclient.core.RosVersion;
 import id.jrosclient.core.TopicPublisher;
 import id.jrosclient.core.TopicSubscriber;
+import id.jrosclient.core.utils.RosNameUtils;
 import id.jrosclient.core.utils.TextUtils;
-import id.jrosclient.core.utils.Utils;
 import id.jrosclient.impl.ObjectsFactory;
 import id.jrosclient.impl.RosRpcClient;
 import id.jrosclient.ros.NodeServer;
@@ -58,7 +59,7 @@ import java.util.logging.Logger;
 public class JRos1Client implements JRosClient {
 
     private static final ObjectsFactory objectsFactory = new ObjectsFactory();
-    private static final Utils utils = new Utils();
+    private static final RosNameUtils utils = new RosNameUtils();
 
     // visible for javadoc
     public static final String DEFAULT_ROS_MASTER_URL = "http://localhost:11311";
@@ -258,7 +259,7 @@ public class JRos1Client implements JRosClient {
      */
     @Override
     public void unpublish(String topic) throws IOException {
-        var publisherOpt = publishersManager.getPublisher(utils.formatTopicName(topic));
+        var publisherOpt = publishersManager.getPublisher(utils.toAbsoluteName(topic));
         if (publisherOpt.isEmpty()) {
             LOGGER.log(
                     Level.FINE,
@@ -302,5 +303,10 @@ public class JRos1Client implements JRosClient {
             tcpRosServer.close();
             clients.clear();
         }
+    }
+
+    @Override
+    public RosVersion getSupportedRosVersion() {
+        return RosVersion.ROS1;
     }
 }

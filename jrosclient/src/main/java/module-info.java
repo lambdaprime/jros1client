@@ -28,7 +28,6 @@ module jrosclient {
     requires xmlrpc.server;
     requires xmlrpc.common;
     requires id.xfunction;
-    requires id.kineticstreamer;
     requires id.ICE;
     requires java.logging;
     requires transitive jrosclient.core;
@@ -40,7 +39,8 @@ module jrosclient {
     exports id.jrosclient.impl to
             jrosclient.tests;
     exports id.jrosclient.ros to
-            jrosclient.tests;
+            jrosclient.tests,
+            id.xfunction;
     exports id.jrosclient.ros.transport to
             jrosclient.tests;
     exports id.jrosclient.ros.transport.io to

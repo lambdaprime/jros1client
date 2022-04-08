@@ -26,7 +26,7 @@ sourceCompatibility = '17'
 targetCompatibility = '17'
 
 // Gradle has no UnZip task so we reuse Copy for that
-task myTest(type: Copy) {
+task extractRelease(type: Copy) {
     from zipTree("${project.rootDir}/jrosclient/release/${releaseFileName}")
     into "$buildDir"
 }
@@ -57,9 +57,9 @@ task testSamples(type: Exec) {
     commandLine "java", "-classpath"
 }
 
-myTest.dependsOn project(':jrosclient').createRelease
-compileTestJava.dependsOn myTest
-jar.dependsOn myTest
+extractRelease.dependsOn project(':jrosclient').createRelease
+compileTestJava.dependsOn extractRelease
+jar.dependsOn extractRelease
 
 // run spotless and format code before the build
 testClasses.dependsOn spotlessApply
