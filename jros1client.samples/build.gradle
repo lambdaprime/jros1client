@@ -1,0 +1,29 @@
+// Requires gradle 5.4
+// gradle clean test
+
+plugins {
+    id 'java'
+}
+
+apply plugin : 'eclipse'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'io.github.lambdaprime:jros1messages:1.0-SNAPSHOT'
+    implementation project(':jros1client')
+}
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+sourceSets {
+    main {
+        java {
+            srcDirs += ["src"]
+        }
+    }
+}

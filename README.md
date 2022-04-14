@@ -1,4 +1,4 @@
-**jrosclient** - Java module which allows to interact with ROS (Robot Operating System).
+**jros1client** - Java module which allows to interact with ROS1 (Robot Operating System).
 
 # Requirements
 
@@ -14,7 +14,7 @@ Gradle:
 
 ```
 dependencies {
-    implementation 'io.github.lambdaprime:jrosclient:4.0'
+    implementation 'io.github.lambdaprime:jros1client:4.0'
 }
 ```
 

@@ -1,0 +1,12 @@
+* [FINE   ] id.jros1client.JRos1Client@* - Current subscribers: { "statusCode": "SUCCESS", "statusMessage": "Registered [jrosclient-*] as publisher of [/testTopic1]", "subscriberApis": [*] }
+* [FINE   ] id.ICE.MessageServer - incoming connection
+* [FINE   ] id.jros1client.ros.transport.TcpRosServer - Requesting next message for jrosclient-*
+* [FINE   ] id.jros1client.ros.transport.TopicPublisherSubscriber@* - This is a new connection - creating handshake packet first
+* [FINE   ] id.jros1client.ros.transport.TopicPublisherSubscriber@* - Published new message: { ...}
+* [FINE   ] id.jros1client.ros.transport.TopicPublisherSubscriber@* - 09...f
+* [FINE   ] id.ICE.handlers.MessageSender - Sending message response
+* [FINE   ] id.jros1client.ros.transport.TcpRosClient@* - Message packet: { ...}
+* [FINE   ] id.jros1client.ros.transport.TcpRosClient@* - Submitting received message to subscriber
+* [FINE   ] id.jrosclient.TopicSubmissionPublisher@* - Some messages are still waiting to be delivered, sleeping...
+* [FINE   ] id.jros1client.JRos1Client@* - Unregistered publisher response: { "statusCode": "SUCCESS", "statusMessage": "Unregistered [jrosclient-*] as provider of [/testTopic1]", "subscriberApis": "1" }
+*

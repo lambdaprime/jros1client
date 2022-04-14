@@ -1,4 +1,4 @@
-Building **jrosclient** module locally and making changes to it (this is optional and not intended for **jrosclient** users).
+Building module locally and making changes to it (this is optional and not intended for the users).
 
 ## With Eclipse
 

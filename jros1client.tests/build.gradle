@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'com.diffplug.spotless'
+}
+
+apply plugin : 'eclipse'
+
+eclipse.classpath.file {
+    // because we disable inferModulePath later we intruct eclipse plugin
+    // to put everything to module path
+    whenMerged {
+        entries.findAll { it.kind == 'lib' }.each { it.entryAttributes['module'] = 'true' }
+    }
+}
+
+dependencies {
+    testImplementation project(':jros1client')
+    testImplementation project(':jros1client.samples')
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
+    testImplementation('org.junit.jupiter:junit-jupiter-params:5.4.2')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+    testRuntimeOnly('org.junit.platform:junit-platform-commons:1.7.0')
+}
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+// Gradle has no UnZip task so we reuse Copy for that
+task extractRelease(type: Copy) {
+    from zipTree("${project.rootDir}/jros1client/release/${releaseFileName}")
+    into "$buildDir"
+}
+
+java {
+    // disable Gradle modularity support since it is not working properly
+    // for non modules like xmlrpc and setup module path manually later:
+    // https://github.com/gradle/gradle/issues/17609
+    // https://github.com/gradle/gradle/issues/12630
+    modularity.inferModulePath = false
+}
+
+compileTestJava {
+    doFirst {
+        options.compilerArgs = [
+            '--module-path', classpath.asPath
+        ]
+        classpath = files()
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task testSamples(type: Exec) {
+    standardInput = System.in
+    commandLine "java", "-classpath"
+}
+
+extractRelease.dependsOn project(':jros1client').createRelease
+compileTestJava.dependsOn extractRelease
+jar.dependsOn extractRelease
+
+// run spotless and format code before the build
+testClasses.dependsOn spotlessApply

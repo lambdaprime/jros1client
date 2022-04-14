@@ -18,7 +18,7 @@ Once it is done we can promote it to release repo:
 cd publish
 gradle closeAndReleaseRepository -PnexusUsername=XXX -PnexusPassword=XXX
 
-WARNING!!! Don't forget to update documentation with samples from jrosclient.samples
+WARNING!!! Don't forget to update documentation with samples from jros1client.samples
 
 **************************************************/
 
