@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import id.jros1client.JRos1Client;
 import id.jros1client.JRos1ClientConfiguration;
+import id.jros1client.JRos1ClientFactory;
+import id.jros1messages.sensor_msgs.PointCloud2Message;
+import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosmessages.primitives.Time;
-import id.jrosmessages.ros1.sensor_msgs.PointCloud2Message;
-import id.jrosmessages.ros1.std_msgs.HeaderMessage;
 import id.jrosmessages.sensor_msgs.PointFieldMessage;
 import id.jrosmessages.sensor_msgs.PointFieldMessage.DataType;
 import id.xfunction.cli.CommandLineInterface;
@@ -94,7 +94,7 @@ public class PointCloudApp {
         // defining topic name
         String topic = "/PointCloud";
         
-        try (var client = new JRos1Client("http://localhost:11311/", config)) {
+        try (var client = new JRos1ClientFactory().createJRosClient("http://localhost:11311/", config)) {
             var publisher = new TopicSubmissionPublisher<>(PointCloud2Message.class, topic);
             client.publish(publisher);
             PointCloud2Message pointCloud = new PointCloud2Message()

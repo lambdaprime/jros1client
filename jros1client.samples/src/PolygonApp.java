@@ -16,12 +16,13 @@
  * limitations under the License.
  */
 import id.jros1client.JRos1Client;
+import id.jros1client.JRos1ClientFactory;
+import id.jros1messages.std_msgs.HeaderMessage;
 import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadata;
 import id.jrosmessages.geometry_msgs.Point32Message;
 import id.jrosmessages.primitives.Time;
-import id.jrosmessages.ros1.std_msgs.HeaderMessage;
 import id.kineticstreamer.annotations.Streamed;
 import id.xfunction.cli.CommandLineInterface;
 
@@ -34,7 +35,7 @@ public class PolygonApp {
     public static void main(String[] args) throws Exception {
         var cli = new CommandLineInterface();
         String topic = "/PolygonExample";
-        try (var client = new JRos1Client("http://localhost:11311/")) {
+        try (var client = new JRos1ClientFactory().createJRosClient("http://localhost:11311/")) {
             var publisher = new TopicSubmissionPublisher<>(PolygonStampedMessage.class, topic);
             client.publish(publisher);
             cli.print("Press any key to stop publishing...");

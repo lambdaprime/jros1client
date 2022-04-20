@@ -20,8 +20,9 @@ package id.jros1client.tests.integration;
 import static id.jros1client.tests.integration.TestConstants.URL;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import id.jros1client.JRos1Client;
 import id.jros1client.JRos1ClientConfiguration;
+import id.jros1client.JRos1ClientFactory;
+import id.jrosclient.JRosClient;
 import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosclient.TopicSubscriber;
 import id.jrosmessages.std_msgs.Int32Message;
@@ -47,7 +48,8 @@ import org.junit.jupiter.api.Test;
 public class JRos1ClientTests {
 
     private static final ResourceUtils resourceUtils = new ResourceUtils();
-    private static JRos1Client client;
+    private static final JRos1ClientFactory factory = new JRos1ClientFactory();
+    private static JRosClient client;
 
     @BeforeAll
     public static void setupAll() {
@@ -56,7 +58,7 @@ public class JRos1ClientTests {
 
     @BeforeEach
     public void setup() throws MalformedURLException {
-        client = new JRos1Client(URL);
+        client = factory.createJRosClient(URL);
     }
 
     @AfterEach
@@ -119,7 +121,7 @@ public class JRos1ClientTests {
         String data = "hello";
         int[] c = new int[1];
         int totalNumOfMessages = 10;
-        try (var publisherClient = new JRos1Client(URL);
+        try (var publisherClient = factory.createJRosClient(URL);
                 var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic)) {
             publisherClient.publish(publisher);
 
@@ -234,7 +236,7 @@ public class JRos1ClientTests {
     public void test_log_truncation() throws Exception {
         var config = new JRos1ClientConfiguration();
         config.setMaxMessageLoggingLength(6);
-        client = new JRos1Client(URL, config);
+        client = factory.createJRosClient(URL, config);
         test_publish();
         var actual = Files.readString(Paths.get(TestConstants.LOG_FILE));
         System.out.println(actual);
@@ -249,7 +251,7 @@ public class JRos1ClientTests {
         var objectsFactory = new TestObjectsFactory();
         Exception exception = null;
         try (var myclient =
-                        new JRos1Client(
+                        factory.createJRosClient(
                                 "http://localhost:12/",
                                 objectsFactory.createConfig(),
                                 objectsFactory);
@@ -276,7 +278,7 @@ public class JRos1ClientTests {
         client.publish(publisher);
 
         var config = new JRos1ClientConfiguration();
-        try (var myClient = new JRos1Client(config);
+        try (var myClient = factory.createJRosClient(config);
                 var myPublisher = new TopicSubmissionPublisher<>(Int32Message.class, topic)) {
             myClient.publish(myPublisher);
             client.subscribe(

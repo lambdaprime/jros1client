@@ -58,11 +58,7 @@ import java.util.logging.Logger;
  */
 public class JRos1Client implements JRosClient {
 
-    private static final ObjectsFactory objectsFactory = new ObjectsFactory();
     private static final RosNameUtils utils = new RosNameUtils();
-
-    // visible for javadoc
-    public static final String DEFAULT_ROS_MASTER_URL = "http://localhost:11311";
 
     private final Logger LOGGER = XLogger.getLogger(this);
 
@@ -75,33 +71,7 @@ public class JRos1Client implements JRosClient {
     private JRos1ClientConfiguration configuration;
     private TextUtils textUtils;
 
-    /**
-     * Default constructor which creates a client to ROS master running locally using URL {@link
-     * #DEFAULT_ROS_MASTER_URL}
-     */
-    public JRos1Client() {
-        this(DEFAULT_ROS_MASTER_URL);
-    }
-
-    /** @param masterUrl master node URL */
-    public JRos1Client(String masterUrl) {
-        this(masterUrl, objectsFactory.createConfig());
-    }
-
-    /**
-     * Constructor which creates a client to ROS master running locally using URL {@link
-     * #DEFAULT_ROS_MASTER_URL} with given client configuration
-     */
-    public JRos1Client(JRos1ClientConfiguration config) {
-        this(DEFAULT_ROS_MASTER_URL, config);
-    }
-
-    public JRos1Client(String masterUrl, JRos1ClientConfiguration config) {
-        this(masterUrl, config, objectsFactory);
-    }
-
-    /** @hidden visible for testing */
-    public JRos1Client(String masterUrl, JRos1ClientConfiguration config, ObjectsFactory factory) {
+    JRos1Client(String masterUrl, JRos1ClientConfiguration config, ObjectsFactory factory) {
         this.masterUrl = masterUrl;
         nodeServer = factory.createNodeServer(config);
         textUtils = factory.createTextUtils(config);
@@ -282,7 +252,7 @@ public class JRos1Client implements JRosClient {
         }
     }
 
-    /** Check if there is any publisher available for the given topic */
+    @Override
     public boolean hasPublisher(String topic) {
         return getMasterApi().getSystemState(configuration.getCallerId()).publishers.stream()
                 .anyMatch(p -> topic.equals(p.topic));

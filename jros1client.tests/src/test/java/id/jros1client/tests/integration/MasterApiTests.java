@@ -24,6 +24,7 @@ import static id.jros1client.tests.integration.TestConstants.URL;
 
 import id.jros1client.JRos1Client;
 import id.jros1client.JRos1ClientConfiguration;
+import id.jros1client.JRos1ClientFactory;
 import java.net.MalformedURLException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -31,11 +32,12 @@ import org.junit.jupiter.api.Test;
 /** @author lambdaprime intid@protonmail.com */
 public class MasterApiTests {
 
+    private static final JRos1ClientFactory factory = new JRos1ClientFactory();
     private static JRos1Client client;
 
     @BeforeAll
     public static void setup() throws MalformedURLException {
-        client = new JRos1Client(URL);
+        client = factory.createSpecializedJRos1Client(URL);
     }
 
     @Test

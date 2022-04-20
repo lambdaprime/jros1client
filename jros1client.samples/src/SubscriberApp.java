@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import id.jros1client.JRos1Client;
+import id.jros1client.JRos1ClientFactory;
 import id.jrosclient.TopicSubscriber;
 import id.jrosmessages.std_msgs.StringMessage;
 
@@ -26,7 +26,7 @@ public class SubscriberApp {
 
     public static void main(String[] args) throws Exception {
         // specify URL of the master node
-        var client = new JRos1Client("http://localhost:11311/");
+        var client = new JRos1ClientFactory().createJRosClient("http://localhost:11311/");
         var topicName = "/helloRos";
         // register a new subscriber
         client.subscribe(new TopicSubscriber<>(StringMessage.class, topicName) {

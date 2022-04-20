@@ -29,8 +29,9 @@ module jros1client {
     requires xmlrpc.common;
     requires id.xfunction;
     requires id.ICE;
-    requires java.logging;
     requires transitive jrosclient;
+    requires jros1messages;
+    requires java.logging;
 
     exports id.jros1client;
     exports id.jros1client.ros.api;

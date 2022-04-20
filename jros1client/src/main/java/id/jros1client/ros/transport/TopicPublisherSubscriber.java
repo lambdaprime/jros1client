@@ -19,9 +19,9 @@ package id.jros1client.ros.transport;
 
 import id.ICE.MessageResponse;
 import id.jros1client.ros.transport.io.MessagePacketWriter;
+import id.jros1messages.MessageSerializationUtils;
 import id.jrosclient.utils.TextUtils;
 import id.jrosmessages.Message;
-import id.jrosmessages.MessageSerializationUtils;
 import id.jrosmessages.MetadataAccessor;
 import id.xfunction.Preconditions;
 import id.xfunction.io.XOutputStream;

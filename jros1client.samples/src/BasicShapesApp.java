@@ -15,11 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * Authors:
- * - lambdaprime <intid@protonmail.com>
- */
-import id.jros1client.JRos1Client;
+import id.jros1client.JRos1ClientFactory;
+import id.jros1messages.std_msgs.HeaderMessage;
+import id.jros1messages.visualization_msgs.MarkerMessage;
+import id.jros1messages.visualization_msgs.MarkerMessage.Action;
+import id.jros1messages.visualization_msgs.MarkerMessage.Type;
 import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosmessages.geometry_msgs.PointMessage;
 import id.jrosmessages.geometry_msgs.PoseMessage;
@@ -27,10 +27,6 @@ import id.jrosmessages.geometry_msgs.QuaternionMessage;
 import id.jrosmessages.geometry_msgs.Vector3Message;
 import id.jrosmessages.primitives.Duration;
 import id.jrosmessages.primitives.Time;
-import id.jrosmessages.ros1.std_msgs.HeaderMessage;
-import id.jrosmessages.ros1.visualization_msgs.MarkerMessage;
-import id.jrosmessages.ros1.visualization_msgs.MarkerMessage.Action;
-import id.jrosmessages.ros1.visualization_msgs.MarkerMessage.Type;
 import id.jrosmessages.std_msgs.ColorRGBAMessage;
 import id.jrosmessages.std_msgs.StringMessage;
 import id.xfunction.cli.CommandLineInterface;
@@ -53,7 +49,7 @@ public class BasicShapesApp {
         String topic = "BasicShapesExampleXXX";
 
         // creating client and making it to connect to given master node URL
-        try (var client = new JRos1Client("http://localhost:11311/")) {
+        try (var client = new JRos1ClientFactory().createJRosClient("http://localhost:11311/")) {
 
             // creating publisher for a topic
             var publisher = new TopicSubmissionPublisher<>(MarkerMessage.class, topic);

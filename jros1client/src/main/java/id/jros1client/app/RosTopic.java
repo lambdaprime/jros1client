@@ -19,6 +19,7 @@ package id.jros1client.app;
 
 import id.jros1client.JRos1Client;
 import id.jros1client.JRos1ClientConfiguration;
+import id.jros1client.JRos1ClientFactory;
 import id.jros1client.impl.ObjectsFactory;
 import id.jros1client.ros.responses.Response.StatusCode;
 import id.jrosclient.TopicSubscriber;
@@ -41,6 +42,7 @@ public class RosTopic {
     private Optional<String> masterUrl;
     private JRos1ClientConfiguration config;
     private TextUtils utils;
+    private JRos1ClientFactory factory = new JRos1ClientFactory();
 
     public RosTopic(Optional<String> masterUrl, JRos1ClientConfiguration config) {
         this.masterUrl = masterUrl;
@@ -65,7 +67,10 @@ public class RosTopic {
     }
 
     private void list() throws Exception {
-        try (JRos1Client client = masterUrl.map(JRos1Client::new).orElse(new JRos1Client())) {
+        try (JRos1Client client =
+                masterUrl
+                        .map(factory::createSpecializedJRos1Client)
+                        .orElse(factory.createSpecializedJRos1Client())) {
             var systemState = client.getMasterApi().getSystemState(CALLER_ID);
             if (systemState.statusCode != StatusCode.SUCCESS) {
                 throw new XRE("Failed to get system status: %s", systemState.statusMessage);
@@ -86,7 +91,9 @@ public class RosTopic {
         new SmartArgs(handlers, positionalArgs::add).parse(rest.toArray(new String[0]));
         if (positionalArgs.size() < 2) throw new ArgumentParsingException();
         JRos1Client client =
-                masterUrl.map(url -> new JRos1Client(url, config)).orElse(new JRos1Client(config));
+                masterUrl
+                        .map(url -> factory.createSpecializedJRos1Client(url, config))
+                        .orElse(factory.createSpecializedJRos1Client(config));
         var topic = positionalArgs.removeFirst();
         var topicType = positionalArgs.removeFirst();
         @SuppressWarnings("unchecked")

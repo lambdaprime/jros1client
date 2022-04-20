@@ -20,7 +20,7 @@ package id.jros1client.tests.integration;
 import static id.jros1client.tests.integration.TestConstants.URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import id.jros1client.JRos1Client;
+import id.jros1client.JRos1ClientFactory;
 import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosmessages.std_msgs.StringMessage;
 import id.xfunction.AssertRunCommand;
@@ -44,6 +44,7 @@ public class JRos1ClientAppTests {
     private static final String JROSCLIENT_PATH =
             Paths.get("").toAbsolutePath().resolve("build/jros1client/jros1client").toString();
     private static final ResourceUtils resourceUtils = new ResourceUtils();
+    private static final JRos1ClientFactory factory = new JRos1ClientFactory();
 
     @BeforeEach
     void setup() throws IOException {}
@@ -56,7 +57,7 @@ public class JRos1ClientAppTests {
     public void test_client_reconnect() throws Exception {
         String topicName = "/testTopic2";
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topicName);
-        var client = new JRos1Client(URL);
+        var client = factory.createJRosClient(URL);
         client.publish(publisher);
         ExecutorService executor = Executors.newSingleThreadExecutor();
         // publish message to the topic every second

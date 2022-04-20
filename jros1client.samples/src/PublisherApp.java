@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import id.jros1client.JRos1Client;
+import id.jros1client.JRos1ClientFactory;
 import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosmessages.std_msgs.StringMessage;
 
@@ -26,7 +26,7 @@ public class PublisherApp {
 
     public static void main(String[] args) throws Exception {
         // specify URL of the master node
-        var client = new JRos1Client("http://localhost:11311/");
+        var client = new JRos1ClientFactory().createJRosClient("http://localhost:11311/");
         String topicName = "/helloRos";
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topicName);
         // register a new publisher for a new topic with ROS
