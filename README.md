@@ -6,7 +6,7 @@ Java 17+
 
 # Download
 
-[Release versions](https://github.com/lambdaprime/jrosclient/releases)
+[Release versions](https://github.com/lambdaprime/jros1client/releases)
 
 Or you can add dependency to it as follows:
 

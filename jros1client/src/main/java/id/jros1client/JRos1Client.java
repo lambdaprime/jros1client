@@ -35,12 +35,13 @@ import id.jrosclient.TopicSubscriber;
 import id.jrosclient.utils.RosNameUtils;
 import id.jrosclient.utils.TextUtils;
 import id.jrosmessages.Message;
-import id.jrosmessages.MetadataAccessor;
+import id.jrosmessages.MessageMetadataAccessor;
 import id.xfunction.concurrent.flow.MergeProcessor;
 import id.xfunction.function.Unchecked;
 import id.xfunction.lang.XRE;
 import id.xfunction.logging.XLogger;
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -65,7 +66,7 @@ public class JRos1Client implements JRosClient {
     private String masterUrl;
     private NodeServer nodeServer;
     private TcpRosServer tcpRosServer;
-    private MetadataAccessor metadataAccessor = new MetadataAccessor();
+    private MessageMetadataAccessor metadataAccessor = new MessageMetadataAccessor();
     private Set<TcpRosClient<?>> clients = new HashSet<>();
     private PublishersManager publishersManager = new PublishersManager();
     private JRos1ClientConfiguration configuration;
@@ -119,7 +120,7 @@ public class JRos1Client implements JRosClient {
     @Override
     public <M extends Message> void subscribe(
             String topic, Class<M> messageClass, Subscriber<M> subscriber) throws Exception {
-        var topicType = metadataAccessor.getType(messageClass);
+        var topicType = metadataAccessor.getName(messageClass);
         var callerId = configuration.getCallerId();
         var publishers =
                 getMasterApi()
@@ -168,7 +169,7 @@ public class JRos1Client implements JRosClient {
     public <M extends Message> void publish(TopicPublisher<M> publisher) throws Exception {
         var topic = publisher.getTopic();
         var clazz = publisher.getMessageClass();
-        var topicType = metadataAccessor.getType(clazz);
+        var topicType = metadataAccessor.getName(clazz);
         publishersManager.add(publisher);
         tcpRosServer.start();
         nodeServer.start();
@@ -260,7 +261,7 @@ public class JRos1Client implements JRosClient {
 
     /** Release the resources, stop TCPROS server and node server */
     @Override
-    public void close() throws IOException {
+    public void close() {
         try {
             var exception = new RuntimeException();
             publishersManager.getPublishers().stream()
@@ -276,7 +277,7 @@ public class JRos1Client implements JRosClient {
     }
 
     @Override
-    public RosVersion getSupportedRosVersion() {
-        return RosVersion.ROS1;
+    public EnumSet<RosVersion> getSupportedRosVersion() {
+        return EnumSet.of(RosVersion.ROS1);
     }
 }

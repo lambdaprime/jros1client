@@ -32,6 +32,7 @@ module jros1client {
     requires transitive jrosclient;
     requires jros1messages;
     requires java.logging;
+    requires jrosmessages;
 
     exports id.jros1client;
     exports id.jros1client.ros.api;

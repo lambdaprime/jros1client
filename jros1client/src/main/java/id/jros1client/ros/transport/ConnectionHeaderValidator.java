@@ -18,15 +18,15 @@
 package id.jros1client.ros.transport;
 
 import id.jrosmessages.Message;
-import id.jrosmessages.MetadataAccessor;
+import id.jrosmessages.MessageMetadataAccessor;
 import id.xfunction.lang.XRuntimeException;
 
 /** @author lambdaprime intid@protonmail.com */
 public class ConnectionHeaderValidator {
 
-    private MetadataAccessor metadataAccessor;
+    private MessageMetadataAccessor metadataAccessor;
 
-    public ConnectionHeaderValidator(MetadataAccessor metadataAccessor) {
+    public ConnectionHeaderValidator(MessageMetadataAccessor metadataAccessor) {
         this.metadataAccessor = metadataAccessor;
     }
 
@@ -36,7 +36,7 @@ public class ConnectionHeaderValidator {
         }
         var type = header.getType().get();
 
-        var messageType = metadataAccessor.getType(messageClass);
+        var messageType = metadataAccessor.getName(messageClass);
         if (!messageType.equals(type)) {
             throw new XRuntimeException("Message type missmatch %s != %s", messageType, type);
         }

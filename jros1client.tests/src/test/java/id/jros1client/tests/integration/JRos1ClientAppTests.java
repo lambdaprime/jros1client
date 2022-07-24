@@ -138,9 +138,9 @@ public class JRos1ClientAppTests {
                                 "id.jrosmessages.std_msgs.StringMessage")
                         .run();
         var future = new CompletableFuture<Void>();
-        proc.forwardStderr();
+        proc.forwardStderrAsync();
         var out = new ArrayList<String>();
-        proc.forwardStdout(
+        proc.stdoutAsync(
                 line -> {
                     out.add(line);
                     if (out.size() == 5) future.complete(null);

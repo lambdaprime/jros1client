@@ -24,7 +24,7 @@ import id.ICE.MessageService;
 import id.jros1client.JRos1ClientConfiguration;
 import id.jros1client.ros.transport.io.ConnectionHeaderReader;
 import id.jrosclient.utils.TextUtils;
-import id.jrosmessages.MetadataAccessor;
+import id.jrosmessages.MessageMetadataAccessor;
 import id.xfunction.Preconditions;
 import id.xfunction.function.Unchecked;
 import id.xfunction.io.ByteBufferInputStream;
@@ -56,7 +56,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
 
     private static final XLogger LOGGER = XLogger.getLogger(TcpRosServer.class);
 
-    private MetadataAccessor metadataAccessor = new MetadataAccessor();
+    private MessageMetadataAccessor metadataAccessor = new MessageMetadataAccessor();
     private MessageServer server;
     private ConnectionHeaderValidator headerValidator =
             new ConnectionHeaderValidator(metadataAccessor);

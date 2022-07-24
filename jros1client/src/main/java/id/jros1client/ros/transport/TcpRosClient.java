@@ -23,7 +23,7 @@ import id.jros1client.ros.transport.io.MessagePacketReader;
 import id.jros1messages.MessageSerializationUtils;
 import id.jrosclient.utils.TextUtils;
 import id.jrosmessages.Message;
-import id.jrosmessages.MetadataAccessor;
+import id.jrosmessages.MessageMetadataAccessor;
 import id.xfunction.Preconditions;
 import id.xfunction.concurrent.NamedThreadFactory;
 import id.xfunction.concurrent.SameThreadExecutorService;
@@ -99,13 +99,13 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
         dos = new DataOutputStream(new BufferedOutputStream(os));
         writer = new ConnectionHeaderWriter(dos);
         reader = new MessagePacketReader(dis);
-        MetadataAccessor metadataAccessor = new MetadataAccessor();
+        MessageMetadataAccessor metadataAccessor = new MessageMetadataAccessor();
         String messageDefinition = "string data";
         var ch =
                 new ConnectionHeader()
                         .withTopic(topic.startsWith("/") ? topic : "/" + topic)
                         .withCallerId(callerId)
-                        .withType(metadataAccessor.getType(messageClass))
+                        .withType(metadataAccessor.getName(messageClass))
                         .withMessageDefinition(messageDefinition)
                         .withMd5Sum(metadataAccessor.getMd5(messageClass));
         executorService.execute(

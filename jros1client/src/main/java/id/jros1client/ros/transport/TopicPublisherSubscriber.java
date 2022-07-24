@@ -22,7 +22,7 @@ import id.jros1client.ros.transport.io.MessagePacketWriter;
 import id.jros1messages.MessageSerializationUtils;
 import id.jrosclient.utils.TextUtils;
 import id.jrosmessages.Message;
-import id.jrosmessages.MetadataAccessor;
+import id.jrosmessages.MessageMetadataAccessor;
 import id.xfunction.Preconditions;
 import id.xfunction.io.XOutputStream;
 import id.xfunction.lang.XRE;
@@ -49,7 +49,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
 
     private final XLogger LOGGER = XLogger.getLogger(this);
     private TextUtils utils;
-    private MetadataAccessor metadataAccessor = new MetadataAccessor();
+    private MessageMetadataAccessor metadataAccessor = new MessageMetadataAccessor();
     private MessageSerializationUtils serializationUtils = new MessageSerializationUtils();
     private CompletableFuture<MessageResponse> future = CompletableFuture.completedFuture(null);
 
@@ -177,7 +177,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
 
     private MessagePacket createHandshakeMessagePacket() {
         var ch = new ConnectionHeader();
-        ch.withType(metadataAccessor.getType(messageClass))
+        ch.withType(metadataAccessor.getName(messageClass))
                 .withMd5Sum(metadataAccessor.getMd5(messageClass));
         return new MessagePacket(ch, null);
     }
