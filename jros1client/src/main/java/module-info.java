@@ -39,12 +39,12 @@ module jros1client {
     exports id.jros1client.ros.entities;
     exports id.jros1client.ros.responses;
     exports id.jros1client.impl to
-            jrosclient.tests;
+            jros1client.tests;
     exports id.jros1client.ros to
-            jrosclient.tests,
+            jros1client.tests,
             id.xfunction;
     exports id.jros1client.ros.transport to
-            jrosclient.tests;
+            jros1client.tests;
     exports id.jros1client.ros.transport.io to
-            jrosclient.tests;
+            jros1client.tests;
 }

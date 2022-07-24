@@ -27,6 +27,7 @@ import id.jrosmessages.MessageMetadataAccessor;
 import id.xfunction.Preconditions;
 import id.xfunction.concurrent.NamedThreadFactory;
 import id.xfunction.concurrent.SameThreadExecutorService;
+import id.xfunction.logging.TracingToken;
 import id.xfunction.logging.XLogger;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -57,7 +58,7 @@ import java.util.logging.Level;
 public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
         implements AutoCloseable {
 
-    private final XLogger LOGGER = XLogger.getLogger(this);
+    private XLogger logger;
     private TextUtils utils;
 
     private String callerId;
@@ -73,6 +74,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
     private SocketChannel channel;
 
     public TcpRosClient(
+            @SuppressWarnings("exports") TracingToken tracingToken,
             String callerId,
             String topic,
             String host,
@@ -80,6 +82,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
             Class<M> messageClass,
             TextUtils utils) {
         super(new SameThreadExecutorService(), 1);
+        logger = XLogger.getLogger(getClass(), new TracingToken(tracingToken, "" + hashCode()));
         this.callerId = callerId;
         this.topic = topic;
         this.host = host;
@@ -113,7 +116,7 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
                     try {
                         run(ch);
                     } catch (Exception e) {
-                        LOGGER.log(Level.FINE, "Subscriber failed: {0}", e.getMessage());
+                        logger.log(Level.FINE, "Subscriber failed: {0}", e.getMessage());
                         sendOnError(e);
                     } finally {
                         executorService.shutdown();
@@ -122,37 +125,37 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
     }
 
     private void sendOnError(Exception e) {
-        LOGGER.entering("sendOnError");
+        logger.entering("sendOnError");
         var subscribers = getSubscribers();
         if (!subscribers.isEmpty()) {
             Preconditions.equals(1, subscribers.size(), "Unexpected number of subscribers");
             subscribers.get(0).onError(e);
         }
-        LOGGER.exiting("sendOnError");
+        logger.exiting("sendOnError");
     }
 
     private void run(ConnectionHeader header) throws Exception {
-        LOGGER.log(Level.FINE, "Connection header: {0}", utils.toString(header));
+        logger.log(Level.FINE, "Connection header: {0}", utils.toString(header));
         writer.write(header);
         dos.flush();
         MessagePacket response = reader.read();
-        LOGGER.log(Level.FINE, "Message packet: {0}", utils.toString(response));
+        logger.log(Level.FINE, "Message packet: {0}", utils.toString(response));
         byte[] body = response.getBody();
         while (!executorService.isShutdown() && hasSubscribers()) {
             var msg = new MessageSerializationUtils().read(body, messageClass);
-            LOGGER.log(Level.FINE, "Submitting received message to subscriber");
+            logger.log(Level.FINE, "Submitting received message to subscriber");
             submit(msg);
-            LOGGER.log(Level.FINE, "Requesting next message");
+            logger.log(Level.FINE, "Requesting next message");
             writer.write(header);
             dos.flush();
             body = reader.readBody();
-            LOGGER.log(Level.FINE, "Next packet body: {0}", utils.toString(body));
+            logger.log(Level.FINE, "Next packet body: {0}", utils.toString(body));
         }
     }
 
     @Override
     public void close() {
-        LOGGER.entering("close");
+        logger.entering("close");
 
         // trying gracefully to close the client
         // first we need to issue onComplete to all subscribers
@@ -165,18 +168,18 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
         try {
             channel.close();
         } catch (IOException e) {
-            LOGGER.severe(e.getMessage());
+            logger.severe(e.getMessage());
         }
         executorService.shutdown();
         try {
             if (!executorService.awaitTermination(
                     Settings.getInstance().getAwaitTcpRosClientInSecs(), TimeUnit.SECONDS)) {
-                LOGGER.log(Level.FINE, "Forcefully terminating executor");
+                logger.log(Level.FINE, "Forcefully terminating executor");
                 executorService.shutdownNow();
             }
         } catch (InterruptedException e) {
-            LOGGER.severe(e.getMessage());
+            logger.severe(e.getMessage());
         }
-        LOGGER.exiting("close");
+        logger.exiting("close");
     }
 }

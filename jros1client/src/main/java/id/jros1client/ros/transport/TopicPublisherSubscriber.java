@@ -26,6 +26,7 @@ import id.jrosmessages.MessageMetadataAccessor;
 import id.xfunction.Preconditions;
 import id.xfunction.io.XOutputStream;
 import id.xfunction.lang.XRE;
+import id.xfunction.logging.TracingToken;
 import id.xfunction.logging.XLogger;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
@@ -47,7 +48,7 @@ import java.util.concurrent.Flow.Subscription;
  */
 public class TopicPublisherSubscriber implements Subscriber<Message> {
 
-    private final XLogger LOGGER = XLogger.getLogger(this);
+    private XLogger logger = XLogger.getLogger(this);
     private TextUtils utils;
     private MessageMetadataAccessor metadataAccessor = new MessageMetadataAccessor();
     private MessageSerializationUtils serializationUtils = new MessageSerializationUtils();
@@ -68,11 +69,19 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     private Class<? extends Message> messageClass;
 
     public TopicPublisherSubscriber(
-            String callerId, String topic, Class<? extends Message> messageClass, TextUtils utils) {
+            @SuppressWarnings("exports") TracingToken tracingToken,
+            String callerId,
+            String topic,
+            Class<? extends Message> messageClass,
+            TextUtils utils) {
         this.callerId = callerId;
         this.topic = topic;
         this.messageClass = messageClass;
         this.utils = utils;
+        logger =
+                XLogger.getLogger(
+                        TopicPublisherSubscriber.class,
+                        new TracingToken(tracingToken, "" + hashCode()));
     }
 
     @Override
@@ -82,12 +91,12 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
 
     @Override
     public void onNext(Message message) {
-        LOGGER.entering("onNext");
-        LOGGER.fine("Published new message: {0}", utils.toString(message));
+        logger.entering("onNext");
+        logger.fine("Published new message: {0}", utils.toString(message));
         Preconditions.isTrue(message.getClass() == messageClass, "Incompatible message type");
         var packet = createMessagePacket(message);
         sendPacket(packet);
-        LOGGER.exiting("onNext");
+        logger.exiting("onNext");
     }
 
     /**
@@ -112,7 +121,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         if (isConnectionEstablished) {
             subscription.request(1);
         } else {
-            LOGGER.fine("This is a new connection - creating handshake packet first");
+            logger.fine("This is a new connection - creating handshake packet first");
             var packet = createHandshakeMessagePacket();
             sendPacket(packet);
             isConnectionEstablished = true;
@@ -122,8 +131,8 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
 
     @Override
     public void onError(Throwable throwable) {
-        LOGGER.entering("onError");
-        LOGGER.severe("Error: {0}", throwable.getMessage());
+        logger.entering("onError");
+        logger.severe("Error: {0}", throwable.getMessage());
         try {
             subscriptionFuture.get().cancel();
         } catch (InterruptedException | ExecutionException e) {
@@ -132,14 +141,14 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         isCompleted = true;
         // tell ICE to close connection
         future.complete(null);
-        LOGGER.exiting("onError");
+        logger.exiting("onError");
     }
 
     @Override
     public void onComplete() {
-        LOGGER.entering("onComplete");
+        logger.entering("onComplete");
         isCompleted = true;
-        LOGGER.exiting("onComplete");
+        logger.exiting("onComplete");
     }
 
     public boolean isCompleted() {
@@ -155,7 +164,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     }
 
     private void sendPacket(MessagePacket packet) {
-        LOGGER.entering("sendPacket");
+        logger.entering("sendPacket");
         var os = new XOutputStream();
         var dos = new DataOutputStream(new BufferedOutputStream(os));
         var writer = new MessagePacketWriter(dos);
@@ -165,14 +174,14 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        LOGGER.fine("Sending packet to subscriber");
-        LOGGER.fine(utils.toString(os.asHexString()));
+        logger.fine("Sending packet to subscriber");
+        logger.fine(utils.toString(os.asHexString()));
         // tell ICE that it can send the response back
         future.complete(
                 new MessageResponse(ByteBuffer.wrap(os.toByteArray()))
                         .withIgnoreNextRequest()
                         .withErrorHandler(this::onError));
-        LOGGER.exiting("sendPacket");
+        logger.exiting("sendPacket");
     }
 
     private MessagePacket createHandshakeMessagePacket() {

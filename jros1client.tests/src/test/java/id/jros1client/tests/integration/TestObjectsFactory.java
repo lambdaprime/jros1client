@@ -23,6 +23,7 @@ import id.jros1client.ros.NodeServer;
 import id.jros1client.ros.transport.PublishersManager;
 import id.jros1client.ros.transport.TcpRosServer;
 import id.jrosclient.utils.TextUtils;
+import id.xfunction.logging.TracingToken;
 
 public class TestObjectsFactory extends ObjectsFactory {
 
@@ -30,18 +31,20 @@ public class TestObjectsFactory extends ObjectsFactory {
     TcpRosServer tcpRosServer;
 
     @Override
-    public NodeServer createNodeServer(JRos1ClientConfiguration config) {
-        if (nodeServer == null) nodeServer = super.createNodeServer(config);
+    public NodeServer createNodeServer(TracingToken tracingToken, JRos1ClientConfiguration config) {
+        if (nodeServer == null) nodeServer = super.createNodeServer(tracingToken, config);
         return nodeServer;
     }
 
     @Override
     public TcpRosServer createTcpRosServer(
+            TracingToken tracingToken,
             PublishersManager publishersManager,
             JRos1ClientConfiguration config,
             TextUtils textUtils) {
         if (tcpRosServer == null)
-            tcpRosServer = super.createTcpRosServer(publishersManager, config, textUtils);
+            tcpRosServer =
+                    super.createTcpRosServer(tracingToken, publishersManager, config, textUtils);
         return tcpRosServer;
     }
 }

@@ -39,6 +39,7 @@ import id.jrosmessages.MessageMetadataAccessor;
 import id.xfunction.concurrent.flow.MergeProcessor;
 import id.xfunction.function.Unchecked;
 import id.xfunction.lang.XRE;
+import id.xfunction.logging.TracingToken;
 import id.xfunction.logging.XLogger;
 import java.io.IOException;
 import java.util.EnumSet;
@@ -61,7 +62,7 @@ public class JRos1Client implements JRosClient {
 
     private static final RosNameUtils utils = new RosNameUtils();
 
-    private final Logger LOGGER = XLogger.getLogger(this);
+    private Logger logger;
 
     private String masterUrl;
     private NodeServer nodeServer;
@@ -71,12 +72,16 @@ public class JRos1Client implements JRosClient {
     private PublishersManager publishersManager = new PublishersManager();
     private JRos1ClientConfiguration configuration;
     private TextUtils textUtils;
+    private TracingToken tracingToken;
 
     JRos1Client(String masterUrl, JRos1ClientConfiguration config, ObjectsFactory factory) {
         this.masterUrl = masterUrl;
-        nodeServer = factory.createNodeServer(config);
+        tracingToken = new TracingToken("" + hashCode());
+        logger = XLogger.getLogger(getClass(), tracingToken);
+        nodeServer = factory.createNodeServer(tracingToken, config);
         textUtils = factory.createTextUtils(config);
-        tcpRosServer = factory.createTcpRosServer(publishersManager, config, textUtils);
+        tcpRosServer =
+                factory.createTcpRosServer(tracingToken, publishersManager, config, textUtils);
         configuration = config;
     }
 
@@ -126,7 +131,7 @@ public class JRos1Client implements JRosClient {
                 getMasterApi()
                         .registerSubscriber(
                                 callerId, topic, topicType, configuration.getNodeApiUrl());
-        LOGGER.log(Level.FINE, "Publishers: {0}", publishers.toString());
+        logger.log(Level.FINE, "Publishers: {0}", publishers.toString());
         if (publishers.value.isEmpty()) {
             throw new XRE("No publishers for topic %s found", topic);
         }
@@ -137,12 +142,13 @@ public class JRos1Client implements JRosClient {
         processor.subscribe(subscriber);
         for (var publisher : publishers.value /* .stream().collect(Collectors.toSet()) */) {
             try {
-                LOGGER.log(Level.FINE, "Registering with publisher: {0}", publisher);
+                logger.log(Level.FINE, "Registering with publisher: {0}", publisher);
                 var nodeApi = getNodeApi(publisher);
                 var protocol = nodeApi.requestTopic(callerId, topic, List.of(Protocol.TCPROS));
-                LOGGER.log(Level.FINE, "Protocol configuration: {0}", protocol);
+                logger.log(Level.FINE, "Protocol configuration: {0}", protocol);
                 var nodeClient =
                         new TcpRosClient<M>(
+                                tracingToken,
                                 callerId,
                                 topic,
                                 protocol.host,
@@ -153,7 +159,7 @@ public class JRos1Client implements JRosClient {
                 nodeClient.connect();
                 clients.add(nodeClient);
             } catch (Exception e) {
-                LOGGER.log(Level.FINE, "Failed to register with publisher: {0}", e.getMessage());
+                logger.log(Level.FINE, "Failed to register with publisher: {0}", e.getMessage());
             }
         }
     }
@@ -180,7 +186,7 @@ public class JRos1Client implements JRosClient {
                                 topic,
                                 topicType,
                                 configuration.getNodeApiUrl());
-        LOGGER.log(Level.FINE, "Current subscribers: {0}", subscribers.toString());
+        logger.log(Level.FINE, "Current subscribers: {0}", subscribers.toString());
     }
 
     /**
@@ -232,7 +238,7 @@ public class JRos1Client implements JRosClient {
     public void unpublish(String topic) throws IOException {
         var publisherOpt = publishersManager.getPublisher(utils.toAbsoluteName(topic));
         if (publisherOpt.isEmpty()) {
-            LOGGER.log(
+            logger.log(
                     Level.FINE,
                     "There is no publishers for topic {0}, nothing to unpublish",
                     topic);
@@ -247,7 +253,7 @@ public class JRos1Client implements JRosClient {
                                     configuration.getCallerId(),
                                     topic,
                                     configuration.getNodeApiUrl());
-            LOGGER.log(Level.FINE, "Unregistered publisher response: {0}", num.toString());
+            logger.log(Level.FINE, "Unregistered publisher response: {0}", num.toString());
         } finally {
             publishersManager.remove(topic);
         }

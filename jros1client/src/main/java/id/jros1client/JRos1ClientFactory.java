@@ -38,10 +38,11 @@ public class JRos1ClientFactory {
     }
 
     /**
+     * Specialized ROS clients ideally should be avoided since they make your code to rely on
+     * specific version of ROS which means that it will not be compatible with all other ROS
+     * versions.
+     *
      * @param masterUrl master node URL
-     *     <p>Specialized ROS clients ideally should be avoided since they make your code to rely on
-     *     specific version of ROS which means that it will not be compatible with all other ROS
-     *     versions.
      */
     public JRosClient createJRosClient(String masterUrl) {
         return createSpecializedJRos1Client(masterUrl, objectsFactory.createConfig());
@@ -80,10 +81,11 @@ public class JRos1ClientFactory {
     }
 
     /**
+     * Specialized ROS clients ideally should be avoided since they make your code to rely on
+     * specific version of ROS which means that it will not be compatible with all other ROS
+     * versions.
+     *
      * @param masterUrl master node URL
-     *     <p>Specialized ROS clients ideally should be avoided since they make your code to rely on
-     *     specific version of ROS which means that it will not be compatible with all other ROS
-     *     versions.
      */
     public JRos1Client createSpecializedJRos1Client(String masterUrl) {
         return createSpecializedJRos1Client(masterUrl, objectsFactory.createConfig());
@@ -102,9 +104,7 @@ public class JRos1ClientFactory {
     }
 
     /**
-     * *
-     *
-     * <p>Specialized ROS clients ideally should be avoided since they make your code to rely on
+     * Specialized ROS clients ideally should be avoided since they make your code to rely on
      * specific version of ROS which means that it will not be compatible with all other ROS
      * versions.
      */

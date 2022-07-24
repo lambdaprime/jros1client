@@ -18,7 +18,7 @@
 /**
  * @author lambdaprime intid@protonmail.com
  */
-open module jrosclient.tests {
+open module jros1client.tests {
     requires org.junit.jupiter.api;
     requires jros1client;
     requires id.xfunction;

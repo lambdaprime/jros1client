@@ -22,6 +22,7 @@ import id.jros1client.ros.NodeServer;
 import id.jros1client.ros.transport.PublishersManager;
 import id.jros1client.ros.transport.TcpRosServer;
 import id.jrosclient.utils.TextUtils;
+import id.xfunction.logging.TracingToken;
 
 /** This factory is a single point for managing all dependencies. */
 public class ObjectsFactory {
@@ -32,8 +33,10 @@ public class ObjectsFactory {
         return new JRos1ClientConfiguration();
     }
 
-    public NodeServer createNodeServer(JRos1ClientConfiguration config) {
-        return new NodeServer(config);
+    public NodeServer createNodeServer(
+            @SuppressWarnings("exports") TracingToken tracingToken,
+            JRos1ClientConfiguration config) {
+        return new NodeServer(tracingToken, config);
     }
 
     public static ObjectsFactory getInstance() {
@@ -45,10 +48,11 @@ public class ObjectsFactory {
     }
 
     public TcpRosServer createTcpRosServer(
+            @SuppressWarnings("exports") TracingToken tracingToken,
             PublishersManager publishersManager,
             JRos1ClientConfiguration config,
             TextUtils textUtils) {
-        return new TcpRosServer(publishersManager, config, textUtils);
+        return new TcpRosServer(tracingToken, publishersManager, config, textUtils);
     }
 
     public TextUtils createTextUtils(JRos1ClientConfiguration config) {

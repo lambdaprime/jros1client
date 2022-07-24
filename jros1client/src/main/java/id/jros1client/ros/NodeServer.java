@@ -19,6 +19,7 @@ package id.jros1client.ros;
 
 import id.jros1client.JRos1ClientConfiguration;
 import id.xfunction.function.Unchecked;
+import id.xfunction.logging.TracingToken;
 import id.xfunction.logging.XLogger;
 import java.util.Optional;
 import org.apache.xmlrpc.server.XmlRpcServer;
@@ -34,15 +35,18 @@ import org.apache.xmlrpc.webserver.WebServer;
  */
 public class NodeServer implements AutoCloseable {
 
-    static final XLogger LOGGER = XLogger.getLogger(NodeServer.class);
+    static XLogger logger = XLogger.getLogger(NodeServer.class);
     private static final String CLASS_NAME = NodeServer.class.getName();
 
     private Optional<WebServer> server = Optional.empty();
     private JRos1ClientConfiguration config;
     private boolean isClosed;
 
-    public NodeServer(JRos1ClientConfiguration config) {
+    public NodeServer(
+            @SuppressWarnings("exports") TracingToken tracingToken,
+            JRos1ClientConfiguration config) {
         this.config = config;
+        logger = XLogger.getLogger(NodeServer.class, tracingToken);
     }
 
     public void start() {
@@ -61,7 +65,7 @@ public class NodeServer implements AutoCloseable {
     }
 
     private void startInternal(WebServer s) throws Exception {
-        LOGGER.fine("Starting...");
+        logger.fine("Starting...");
         XmlRpcServer xmlRpcServer = s.getXmlRpcServer();
         xmlRpcServer.setHandlerMapping(
                 new MethodHandlerMapping(new NodeApiServerDispatcher(config)));
@@ -73,11 +77,11 @@ public class NodeServer implements AutoCloseable {
 
     @Override
     public void close() {
-        LOGGER.entering(CLASS_NAME, "close");
-        LOGGER.fine("Stopping...");
+        logger.entering(CLASS_NAME, "close");
+        logger.fine("Stopping...");
         server.ifPresent(WebServer::shutdown);
         isClosed = true;
-        LOGGER.exiting(CLASS_NAME, "close");
+        logger.exiting(CLASS_NAME, "close");
     }
 
     public boolean isClosed() {

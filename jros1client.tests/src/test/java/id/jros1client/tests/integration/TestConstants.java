@@ -26,5 +26,5 @@ public interface TestConstants {
     String TOPIC = "testTopic";
     String URL = "http://localhost:11311/";
     int PORT = 1234;
-    String LOG_FILE = "/tmp/jrosclient-test.log";
+    String LOG_FILE = "/tmp/jros1client-test.log";
 }
