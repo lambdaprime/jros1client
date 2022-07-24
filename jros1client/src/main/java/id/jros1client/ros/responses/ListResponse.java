@@ -21,7 +21,9 @@ import id.xfunction.XJson;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class ListResponse<T> extends Response {
 
     public final String key;

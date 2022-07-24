@@ -29,7 +29,9 @@ import id.jros1client.ros.responses.transformers.ListTransformer;
 import id.jros1client.ros.responses.transformers.StringTransformer;
 import id.jros1client.ros.responses.transformers.SystemStateTransformer;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class MasterApiClientImpl implements MasterApi {
 
     private RosRpcClient client;

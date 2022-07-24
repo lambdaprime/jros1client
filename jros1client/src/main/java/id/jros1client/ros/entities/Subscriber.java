@@ -20,7 +20,9 @@ package id.jros1client.ros.entities;
 import id.xfunction.XJson;
 import java.util.List;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class Subscriber implements Entity {
 
     public String topic;

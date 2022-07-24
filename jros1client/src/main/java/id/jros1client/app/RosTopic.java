@@ -35,7 +35,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class RosTopic {
 
     private static final String CALLER_ID = "jrosclient-rostopic";

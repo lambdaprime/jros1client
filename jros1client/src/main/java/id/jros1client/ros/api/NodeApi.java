@@ -27,7 +27,9 @@ import java.util.List;
  *
  * @see <a href="http://wiki.ros.org/ROS/Slave_API">ROS Node API</a>
  */
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public interface NodeApi {
 
     /**

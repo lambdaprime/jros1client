@@ -19,7 +19,9 @@ package id.jros1client.ros.responses;
 
 import id.xfunction.XJson;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class StringResponse extends Response {
 
     public final String key;

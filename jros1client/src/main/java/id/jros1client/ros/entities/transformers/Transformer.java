@@ -21,7 +21,9 @@ import id.jros1client.ros.entities.Entity;
 import java.util.Arrays;
 import java.util.List;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public interface Transformer<E extends Entity> {
 
     Object transform(E entity);

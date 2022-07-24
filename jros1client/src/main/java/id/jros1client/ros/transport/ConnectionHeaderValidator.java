@@ -21,7 +21,9 @@ import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadataAccessor;
 import id.xfunction.lang.XRuntimeException;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class ConnectionHeaderValidator {
 
     private MessageMetadataAccessor metadataAccessor;

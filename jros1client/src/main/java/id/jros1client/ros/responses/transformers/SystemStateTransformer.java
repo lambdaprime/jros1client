@@ -23,7 +23,9 @@ import id.jros1client.ros.entities.Subscriber;
 import id.jros1client.ros.entities.transformers.Transformer;
 import id.jros1client.ros.responses.SystemStateResponse;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class SystemStateTransformer implements ResponseTransformer {
 
     private Transformer<Publisher> publisherTransformer;

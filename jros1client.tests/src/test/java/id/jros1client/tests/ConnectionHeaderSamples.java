@@ -21,7 +21,9 @@ import id.jros1client.ros.transport.ConnectionHeader;
 import id.xfunction.XUtils;
 import id.xfunction.function.Unchecked;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class ConnectionHeaderSamples {
 
     public static class ConnectionHeaderSample {

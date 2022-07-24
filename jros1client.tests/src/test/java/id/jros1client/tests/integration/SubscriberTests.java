@@ -31,7 +31,9 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class SubscriberTests {
 
     private static final JRos1ClientFactory factory = new JRos1ClientFactory();

@@ -21,7 +21,9 @@ import id.jros1client.ros.api.impl.RawResponse;
 import id.jros1client.ros.responses.Response;
 import id.jros1client.ros.responses.Response.StatusCode;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public interface ResponseTransformer {
 
     static void populate(Response dst, RawResponse src) {

@@ -29,7 +29,9 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class JRos1ClientApp {
 
     private static Optional<String> masterUrl = Optional.empty();

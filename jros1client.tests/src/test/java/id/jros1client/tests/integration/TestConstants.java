@@ -17,7 +17,9 @@
  */
 package id.jros1client.tests.integration;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public interface TestConstants {
 
     String CALLER_ID = "jrosclient";

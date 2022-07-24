@@ -24,7 +24,9 @@ import id.xfunction.XJson;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class SystemStateResponse extends Response {
 
     public List<Publisher> publishers = new ArrayList<>();

@@ -21,7 +21,9 @@ import id.jros1client.ros.api.impl.RawResponse;
 import id.jros1client.ros.responses.ListResponse;
 import id.jros1client.ros.responses.Response.StatusCode;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class ListTransformer implements ResponseTransformer {
 
     public ListResponse<String> parseString(String key, RawResponse response) {

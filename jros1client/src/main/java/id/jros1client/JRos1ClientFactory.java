@@ -52,12 +52,16 @@ public class JRos1ClientFactory {
         return createSpecializedJRos1Client(config);
     }
 
-    /** @hidden visible for testing */
+    /**
+     * @hidden visible for testing
+     */
     public JRos1Client createJRosClient(String masterUrl, JRos1ClientConfiguration config) {
         return createSpecializedJRos1Client(masterUrl, config);
     }
 
-    /** @hidden visible for testing */
+    /**
+     * @hidden visible for testing
+     */
     public JRos1Client createJRosClient(
             String masterUrl, JRos1ClientConfiguration config, ObjectsFactory objectsFactory) {
         return createSpecializedJRos1Client(masterUrl, config, objectsFactory);

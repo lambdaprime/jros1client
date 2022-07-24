@@ -19,7 +19,9 @@ package id.jros1client.ros.responses;
 
 import id.jros1client.ros.entities.Protocol;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class ProtocolResponse extends Response {
 
     public Protocol protocolParams;

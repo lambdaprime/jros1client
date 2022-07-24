@@ -21,7 +21,9 @@ import id.jros1client.ros.transport.MessagePacket;
 import java.io.DataOutput;
 import java.io.IOException;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class MessagePacketWriter {
 
     private DataOutput out;

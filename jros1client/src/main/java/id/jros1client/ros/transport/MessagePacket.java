@@ -21,7 +21,9 @@ import id.xfunction.function.Unchecked;
 import id.xfunction.io.XOutputStream;
 import java.io.ByteArrayInputStream;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class MessagePacket {
 
     private ConnectionHeader header;

@@ -20,7 +20,9 @@ package id.jros1client.ros.responses;
 import id.jros1client.ros.entities.Protocol;
 import id.xfunction.XJson;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class ProtocolParamsResponse extends Response {
 
     public String name;

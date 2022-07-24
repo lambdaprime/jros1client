@@ -29,7 +29,9 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Optional;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class ConnectionHeaderWriter {
 
     private DataOutput out;

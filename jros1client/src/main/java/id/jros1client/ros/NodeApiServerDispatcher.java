@@ -30,7 +30,9 @@ import java.util.stream.Collectors;
  * Dispatches the calls from Apache XML RPC client to NodeApi performing required object
  * transformations.
  */
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class NodeApiServerDispatcher {
 
     private ProtocolParamsTransformer protocolParamsParser = new ProtocolParamsTransformer();

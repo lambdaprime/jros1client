@@ -20,7 +20,9 @@ package id.jros1client.ros.api.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class Utils {
 
     public static <T> String asArray(List<T> l) {

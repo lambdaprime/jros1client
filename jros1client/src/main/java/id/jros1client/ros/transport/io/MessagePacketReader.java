@@ -22,7 +22,9 @@ import id.jros1client.ros.transport.MessagePacket;
 import java.io.DataInput;
 import java.io.IOException;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class MessagePacketReader {
 
     private DataInput in;

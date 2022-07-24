@@ -25,7 +25,9 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class ConnectionHeaderScanner implements MessageScanner {
 
     private static final XLogger LOGGER = XLogger.getLogger(ConnectionHeaderScanner.class);

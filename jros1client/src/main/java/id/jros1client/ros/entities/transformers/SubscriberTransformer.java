@@ -19,7 +19,9 @@ package id.jros1client.ros.entities.transformers;
 
 import id.jros1client.ros.entities.Subscriber;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 class SubscriberTransformer implements Transformer<Subscriber> {
 
     public Subscriber transform(Object obj) {

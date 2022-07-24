@@ -21,7 +21,9 @@ import id.jros1client.ros.entities.Protocol;
 import id.jros1client.ros.entities.Publisher;
 import id.jros1client.ros.entities.Subscriber;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class Transformers {
 
     public Transformer<Publisher> publisherTransformer = new PublisherTransformer();

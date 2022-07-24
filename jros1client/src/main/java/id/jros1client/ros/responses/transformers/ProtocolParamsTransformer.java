@@ -20,7 +20,9 @@ package id.jros1client.ros.responses.transformers;
 import id.jros1client.ros.api.impl.RawResponse;
 import id.jros1client.ros.responses.ProtocolParamsResponse;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class ProtocolParamsTransformer implements ResponseTransformer {
 
     public ProtocolParamsResponse parse(RawResponse response) {

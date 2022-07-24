@@ -20,7 +20,9 @@ package id.jros1client.ros.entities;
 import id.jros1client.ros.api.impl.Utils;
 import java.util.List;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class Service implements Entity {
 
     public String service;

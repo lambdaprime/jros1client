@@ -19,7 +19,9 @@ package id.jros1client.impl;
 
 import java.util.Properties;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class Settings {
 
     private static final Settings instance = new Settings();

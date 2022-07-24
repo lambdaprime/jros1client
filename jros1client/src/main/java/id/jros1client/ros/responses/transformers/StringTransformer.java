@@ -20,7 +20,9 @@ package id.jros1client.ros.responses.transformers;
 import id.jros1client.ros.api.impl.RawResponse;
 import id.jros1client.ros.responses.StringResponse;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class StringTransformer implements ResponseTransformer {
 
     public StringResponse parse(String key, RawResponse response) {

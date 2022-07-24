@@ -23,7 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import id.xfunction.ResourceUtils;
 import id.xfunction.text.WildcardMatcher;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class TestUtils {
 
     private static final ResourceUtils resourceUtils = new ResourceUtils();

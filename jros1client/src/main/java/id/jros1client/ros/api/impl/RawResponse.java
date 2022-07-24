@@ -21,7 +21,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-/** @author lambdaprime intid@protonmail.com */
+/**
+ * @author lambdaprime intid@protonmail.com
+ */
 public class RawResponse implements Iterable<RawResponse> {
 
     private Object obj;

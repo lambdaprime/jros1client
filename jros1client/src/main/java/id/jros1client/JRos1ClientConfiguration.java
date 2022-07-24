@@ -113,7 +113,9 @@ public class JRos1ClientConfiguration {
         this.maxMessageLoggingLength = length;
     }
 
-    /** @see setMaxMessageLoggingLength */
+    /**
+     * @see setMaxMessageLoggingLength
+     */
     public int getMaxMessageLoggingLength() {
         return maxMessageLoggingLength;
     }
