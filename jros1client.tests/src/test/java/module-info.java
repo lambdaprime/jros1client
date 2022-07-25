@@ -21,6 +21,7 @@
 open module jros1client.tests {
     requires org.junit.jupiter.api;
     requires jros1client;
+    requires jrosclient.tests;
     requires id.xfunction;
     requires id.kineticstreamer;
     requires org.junit.jupiter.params;

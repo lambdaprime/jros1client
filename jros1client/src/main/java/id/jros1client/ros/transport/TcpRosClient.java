@@ -116,7 +116,9 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
                     try {
                         run(ch);
                     } catch (Exception e) {
-                        logger.log(Level.FINE, "Subscriber failed: {0}", e.getMessage());
+                        logger.warning(
+                                "Subscriber failed: {0}: {1}",
+                                e.getClass().getSimpleName(), e.getMessage());
                         sendOnError(e);
                     } finally {
                         executorService.shutdown();

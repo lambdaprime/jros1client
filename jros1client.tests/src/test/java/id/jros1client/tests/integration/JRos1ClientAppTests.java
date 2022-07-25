@@ -109,6 +109,7 @@ public class JRos1ClientAppTests {
                         "testTopic",
                         "id.jrosmessages.std_msgs.StringMessage")
                 .withOutputFromResource("echo")
+                .withOutputConsumer(System.out::println)
                 .withWildcardMatching()
                 .withReturnCode(0)
                 .run();

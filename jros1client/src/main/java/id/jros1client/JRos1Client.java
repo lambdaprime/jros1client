@@ -52,9 +52,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Main class of the library which allows to interact with ROS.
+ * Main class of the library which allows to interact with ROS1.
  *
- * <p>Each instance of JRosClient acts as a separate ROS node and listens to its own ports.
+ * <p>Each instance of {@link JRos1Client} acts as a separate ROS node and listens to its own ports.
  *
  * @author lambdaprime intid@protonmail.com
  */
@@ -101,27 +101,11 @@ public class JRos1Client implements JRosClient {
         return new NodeApiClientImpl(client);
     }
 
-    /**
-     * Subscribe to ROS topic
-     *
-     * @param <M> type of messages in the topic
-     * @param subscriber provides information about the topic to subscribe for. Once subscribed it
-     *     will be notified for any new message which gets published to given topic.
-     */
     @Override
     public <M extends Message> void subscribe(TopicSubscriber<M> subscriber) throws Exception {
         subscribe(subscriber.getTopic(), subscriber.getMessageClass(), subscriber);
     }
 
-    /**
-     * Subscribe to ROS topic
-     *
-     * @param <M> type of messages in the topic
-     * @param topic Name of the topic which messages current subscriber wants to receive. Topic name
-     *     which should start from '/'
-     * @param messageClass class of the messages in this topic
-     * @param subscriber is notified for any new message which gets published to given topic.
-     */
     @Override
     public <M extends Message> void subscribe(
             String topic, Class<M> messageClass, Subscriber<M> subscriber) throws Exception {
@@ -164,13 +148,6 @@ public class JRos1Client implements JRosClient {
         }
     }
 
-    /**
-     * Create a new topic and start publishing messages for it.
-     *
-     * @param <M> type of messages in the topic
-     * @param publisher provides information about new topic. Once topic created publisher is used
-     *     to emit messages which will be sent to topic subscribers
-     */
     @Override
     public <M extends Message> void publish(TopicPublisher<M> publisher) throws Exception {
         var topic = publisher.getTopic();
@@ -189,14 +166,6 @@ public class JRos1Client implements JRosClient {
         logger.log(Level.FINE, "Current subscribers: {0}", subscribers.toString());
     }
 
-    /**
-     * Create a new topic and start publishing messages for it.
-     *
-     * @param <M> type of messages in the topic
-     * @param topic Topic name
-     * @param messageClass class of the messages in this topic
-     * @param publisher is used to emit messages which will be sent to topic subscribers
-     */
     @Override
     public <M extends Message> void publish(
             String topic, Class<M> messageClass, Publisher<M> publisher) throws Exception {
@@ -214,7 +183,7 @@ public class JRos1Client implements JRosClient {
 
                     @Override
                     public String getTopic() {
-                        return topic;
+                        return utils.toAbsoluteName(topic);
                     }
 
                     @Override
@@ -265,7 +234,11 @@ public class JRos1Client implements JRosClient {
                 .anyMatch(p -> topic.equals(p.topic));
     }
 
-    /** Release the resources, stop TCPROS server and node server */
+    /**
+     * {@inheritDoc}
+     *
+     * <p>Release the resources, stop TCPROS server and node server
+     */
     @Override
     public void close() {
         try {

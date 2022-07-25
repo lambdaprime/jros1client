@@ -14,6 +14,7 @@ eclipse.classpath.file {
 dependencies {
     testImplementation project(':jros1client')
     testImplementation project(':jros1client.samples')
+    testImplementation 'io.github.lambdaprime:jrosclient.tests:5.0-SNAPSHOT'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.4.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
