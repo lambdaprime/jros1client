@@ -34,7 +34,7 @@ public class JRos1PubSubClientTests extends JRosPubSubClientTests {
     static {
         init(
                 () -> {
-                    return factory.createJRosClient();
+                    return factory.createClient();
                 });
     }
 

@@ -70,9 +70,7 @@ public class RosTopic {
 
     private void list() throws Exception {
         try (JRos1Client client =
-                masterUrl
-                        .map(factory::createSpecializedJRos1Client)
-                        .orElse(factory.createSpecializedJRos1Client())) {
+                masterUrl.map(factory::createClient).orElse(factory.createClient())) {
             var systemState = client.getMasterApi().getSystemState(CALLER_ID);
             if (systemState.statusCode != StatusCode.SUCCESS) {
                 throw new XRE("Failed to get system status: %s", systemState.statusMessage);
@@ -94,8 +92,8 @@ public class RosTopic {
         if (positionalArgs.size() < 2) throw new ArgumentParsingException();
         JRos1Client client =
                 masterUrl
-                        .map(url -> factory.createSpecializedJRos1Client(url, config))
-                        .orElse(factory.createSpecializedJRos1Client(config));
+                        .map(url -> factory.createClient(url, config))
+                        .orElse(factory.createClient(config));
         var topic = positionalArgs.removeFirst();
         var topicType = positionalArgs.removeFirst();
         @SuppressWarnings("unchecked")
@@ -110,7 +108,7 @@ public class RosTopic {
                             System.out.println(utils.toString(message));
                             count[0]--;
                             if (count[0] == 0) {
-                                getSubscription().cancel();
+                                getSubscription().get().cancel();
                                 Unchecked.run(() -> client.close());
                             }
                         }
@@ -122,7 +120,7 @@ public class RosTopic {
                         @Override
                         public void onNext(Message message) {
                             System.out.println(utils.toString(message));
-                            getSubscription().request(1);
+                            getSubscription().get().request(1);
                         }
                     };
         }

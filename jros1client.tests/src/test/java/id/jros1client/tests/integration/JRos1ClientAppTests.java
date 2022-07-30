@@ -57,7 +57,7 @@ public class JRos1ClientAppTests {
     public void test_client_reconnect() throws Exception {
         String topicName = "/testTopic2";
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topicName);
-        var client = factory.createJRosClient(URL);
+        var client = factory.createClient(URL);
         client.publish(publisher);
         ExecutorService executor = Executors.newSingleThreadExecutor();
         // publish message to the topic every second
@@ -89,7 +89,7 @@ public class JRos1ClientAppTests {
                     .run();
         }
 
-        client.unpublish(topicName);
+        client.unpublish(topicName, StringMessage.class);
         executor.shutdown();
         client.close();
     }

@@ -55,7 +55,7 @@ public class JRos1ClientTests {
 
     @BeforeEach
     public void setup() throws MalformedURLException {
-        client = factory.createJRosClient(URL);
+        client = factory.createClient(URL);
     }
 
     @AfterEach
@@ -70,7 +70,7 @@ public class JRos1ClientTests {
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);
         client.publish(publisher);
         Assertions.assertTrue(client.hasPublisher(topic));
-        client.unpublish(topic);
+        client.unpublish(topic, StringMessage.class);
         Assertions.assertFalse(client.hasPublisher(topic));
     }
 
@@ -101,7 +101,7 @@ public class JRos1ClientTests {
         publisher.closeExceptionally(new Exception());
         future.get();
         System.out.println("Awake");
-        client.unpublish(topic);
+        client.unpublish(topic, Int32Message.class);
     }
 
     /** Test that message truncation is working */
@@ -109,7 +109,7 @@ public class JRos1ClientTests {
     public void test_log_truncation() throws Exception {
         var config = new JRos1ClientConfiguration();
         config.setMaxMessageLoggingLength(6);
-        client = factory.createJRosClient(URL, config);
+        client = factory.createClient(URL, config);
         String topic = "testTopic1";
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);
         String data = "hello";
@@ -119,7 +119,7 @@ public class JRos1ClientTests {
         while (!collector.getFuture().isDone()) {
             publisher.submit(new StringMessage().withData(data));
         }
-        client.unpublish(topic);
+        client.unpublish(topic, StringMessage.class);
         Assertions.assertEquals(data, collector.getFuture().get().get(0).data);
         var actual = Files.readString(Paths.get(TestConstants.LOG_FILE));
         System.out.println(actual);
@@ -134,7 +134,7 @@ public class JRos1ClientTests {
         var objectsFactory = new TestObjectsFactory();
         Exception exception = null;
         try (var myclient =
-                        factory.createJRosClient(
+                        factory.createClient(
                                 "http://localhost:12/",
                                 objectsFactory.createConfig(),
                                 objectsFactory);

@@ -18,7 +18,6 @@
 package id.jros1client;
 
 import id.jros1client.impl.ObjectsFactory;
-import id.jrosclient.JRosClient;
 
 /**
  * Factory methods for {@link JRos1Client}
@@ -32,88 +31,44 @@ public class JRos1ClientFactory {
     // visible for javadoc
     public static final String DEFAULT_ROS_MASTER_URL = "http://localhost:11311";
 
-    /** Create client with default configuration */
-    public JRosClient createJRosClient() {
-        return createSpecializedJRos1Client();
+    /**
+     * Create ROS1 client with default configuration connected to ROS master running locally using
+     * URL {@link #DEFAULT_ROS_MASTER_URL}
+     */
+    public JRos1Client createClient() {
+        return createClient(DEFAULT_ROS_MASTER_URL);
     }
 
     /**
-     * Specialized ROS clients ideally should be avoided since they make your code to rely on
-     * specific version of ROS which means that it will not be compatible with all other ROS
-     * versions.
+     * Create ROS1 client with default configuration.
      *
-     * @param masterUrl master node URL
+     * @param masterUrl ROS1 master node URL
      */
-    public JRosClient createJRosClient(String masterUrl) {
-        return createSpecializedJRos1Client(masterUrl, objectsFactory.createConfig());
-    }
-
-    /** Creates client with given configuration */
-    public JRosClient createJRosClient(JRos1ClientConfiguration config) {
-        return createSpecializedJRos1Client(config);
+    public JRos1Client createClient(String masterUrl) {
+        return createClient(masterUrl, objectsFactory.createConfig());
     }
 
     /**
-     * @hidden visible for testing
-     */
-    public JRos1Client createJRosClient(String masterUrl, JRos1ClientConfiguration config) {
-        return createSpecializedJRos1Client(masterUrl, config);
-    }
-
-    /**
-     * @hidden visible for testing
-     */
-    public JRos1Client createJRosClient(
-            String masterUrl, JRos1ClientConfiguration config, ObjectsFactory objectsFactory) {
-        return createSpecializedJRos1Client(masterUrl, config, objectsFactory);
-    }
-
-    /**
-     * Creates specialized ROS1 client to ROS master running locally using URL {@link
+     * Creates ROS1 client connected to ROS master running locally using URL {@link
      * #DEFAULT_ROS_MASTER_URL}
-     *
-     * <p>Specialized ROS clients ideally should be avoided since they make your code to rely on
-     * specific version of ROS which means that it will not be compatible with all other ROS
-     * versions.
      */
-    public JRos1Client createSpecializedJRos1Client() {
-        return createSpecializedJRos1Client(DEFAULT_ROS_MASTER_URL);
+    public JRos1Client createClient(JRos1ClientConfiguration config) {
+        return createClient(DEFAULT_ROS_MASTER_URL, config);
     }
 
     /**
-     * Specialized ROS clients ideally should be avoided since they make your code to rely on
-     * specific version of ROS which means that it will not be compatible with all other ROS
-     * versions.
+     * Creates ROS1 client.
      *
-     * @param masterUrl master node URL
+     * @param masterUrl ROS1 master node URL
      */
-    public JRos1Client createSpecializedJRos1Client(String masterUrl) {
-        return createSpecializedJRos1Client(masterUrl, objectsFactory.createConfig());
+    public JRos1Client createClient(String masterUrl, JRos1ClientConfiguration config) {
+        return createClient(masterUrl, config, objectsFactory);
     }
 
     /**
-     * Creates specialized ROS1 client to ROS master running locally using URL {@link
-     * #DEFAULT_ROS_MASTER_URL} with given client configuration
-     *
-     * <p>Specialized ROS clients ideally should be avoided since they make your code to rely on
-     * specific version of ROS which means that it will not be compatible with all other ROS
-     * versions.
+     * @hidden visible for testing
      */
-    public JRos1Client createSpecializedJRos1Client(JRos1ClientConfiguration config) {
-        return createSpecializedJRos1Client(DEFAULT_ROS_MASTER_URL, config);
-    }
-
-    /**
-     * Specialized ROS clients ideally should be avoided since they make your code to rely on
-     * specific version of ROS which means that it will not be compatible with all other ROS
-     * versions.
-     */
-    public JRos1Client createSpecializedJRos1Client(
-            String masterUrl, JRos1ClientConfiguration config) {
-        return createSpecializedJRos1Client(masterUrl, config, objectsFactory);
-    }
-
-    private JRos1Client createSpecializedJRos1Client(
+    public JRos1Client createClient(
             String masterUrl, JRos1ClientConfiguration config, ObjectsFactory objectsFactory) {
         return new JRos1Client(masterUrl, config, objectsFactory);
     }

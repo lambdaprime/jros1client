@@ -94,7 +94,7 @@ public class PointCloudApp {
         // defining topic name
         String topic = "/PointCloud";
         
-        try (var client = new JRos1ClientFactory().createJRosClient("http://localhost:11311/", config)) {
+        try (var client = new JRos1ClientFactory().createClient("http://localhost:11311/", config)) {
             var publisher = new TopicSubmissionPublisher<>(PointCloud2Message.class, topic);
             client.publish(publisher);
             PointCloud2Message pointCloud = new PointCloud2Message()

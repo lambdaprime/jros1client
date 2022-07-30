@@ -41,7 +41,7 @@ public class SubscriberTests {
 
     @BeforeAll
     public static void setup() throws MalformedURLException {
-        client = factory.createSpecializedJRos1Client(URL);
+        client = factory.createClient(URL);
     }
 
     @Test

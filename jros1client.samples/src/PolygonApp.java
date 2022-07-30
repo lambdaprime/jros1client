@@ -33,7 +33,7 @@ public class PolygonApp {
     public static void main(String[] args) throws Exception {
         var cli = new CommandLineInterface();
         String topic = "/PolygonExample";
-        try (var client = new JRos1ClientFactory().createJRosClient("http://localhost:11311/")) {
+        try (var client = new JRos1ClientFactory().createClient("http://localhost:11311/")) {
             var publisher = new TopicSubmissionPublisher<>(PolygonStampedMessage.class, topic);
             client.publish(publisher);
             cli.print("Press any key to stop publishing...");

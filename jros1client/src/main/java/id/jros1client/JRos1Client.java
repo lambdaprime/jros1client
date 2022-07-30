@@ -18,6 +18,7 @@
 package id.jros1client;
 
 import id.jros1client.impl.ObjectsFactory;
+import id.jros1client.impl.Ros1NameMapper;
 import id.jros1client.impl.RosRpcClient;
 import id.jros1client.ros.NodeServer;
 import id.jros1client.ros.api.MasterApi;
@@ -31,7 +32,6 @@ import id.jros1client.ros.transport.TcpRosServer;
 import id.jrosclient.JRosClient;
 import id.jrosclient.RosVersion;
 import id.jrosclient.TopicPublisher;
-import id.jrosclient.TopicSubscriber;
 import id.jrosclient.utils.RosNameUtils;
 import id.jrosclient.utils.TextUtils;
 import id.jrosmessages.Message;
@@ -46,7 +46,6 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Flow.Publisher;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,7 +59,7 @@ import java.util.logging.Logger;
  */
 public class JRos1Client implements JRosClient {
 
-    private static final RosNameUtils utils = new RosNameUtils();
+    private static final Ros1NameMapper nameMapper = new Ros1NameMapper(new RosNameUtils());
 
     private Logger logger;
 
@@ -102,13 +101,9 @@ public class JRos1Client implements JRosClient {
     }
 
     @Override
-    public <M extends Message> void subscribe(TopicSubscriber<M> subscriber) throws Exception {
-        subscribe(subscriber.getTopic(), subscriber.getMessageClass(), subscriber);
-    }
-
-    @Override
     public <M extends Message> void subscribe(
             String topic, Class<M> messageClass, Subscriber<M> subscriber) throws Exception {
+        topic = nameMapper.asFullyQualifiedTopicName(topic, messageClass);
         var topicType = metadataAccessor.getName(messageClass);
         var callerId = configuration.getCallerId();
         var publishers =
@@ -150,10 +145,12 @@ public class JRos1Client implements JRosClient {
 
     @Override
     public <M extends Message> void publish(TopicPublisher<M> publisher) throws Exception {
-        var topic = publisher.getTopic();
+        var topic =
+                nameMapper.asFullyQualifiedTopicName(
+                        publisher.getTopic(), publisher.getMessageClass());
         var clazz = publisher.getMessageClass();
         var topicType = metadataAccessor.getName(clazz);
-        publishersManager.add(publisher);
+        publishersManager.add(topic, publisher);
         tcpRosServer.start();
         nodeServer.start();
         var subscribers =
@@ -166,46 +163,16 @@ public class JRos1Client implements JRosClient {
         logger.log(Level.FINE, "Current subscribers: {0}", subscribers.toString());
     }
 
-    @Override
-    public <M extends Message> void publish(
-            String topic, Class<M> messageClass, Publisher<M> publisher) throws Exception {
-        publish(
-                new TopicPublisher<M>() {
-                    @Override
-                    public void subscribe(Subscriber<? super M> subscriber) {
-                        publisher.subscribe(subscriber);
-                    }
-
-                    @Override
-                    public Class<M> getMessageClass() {
-                        return messageClass;
-                    }
-
-                    @Override
-                    public String getTopic() {
-                        return utils.toAbsoluteName(topic);
-                    }
-
-                    @Override
-                    public void onPublishError(Throwable throwable) {
-                        throwable.printStackTrace();
-                    }
-
-                    @Override
-                    public void close() throws IOException {
-                        // ignore as it is not Flow.Publisher method
-                    }
-                });
-    }
-
     /**
      * Unregister publisher in Master node and stop publisher from emitting new messages
      *
      * @param topic name of the topic used by the publisher
      */
     @Override
-    public void unpublish(String topic) throws IOException {
-        var publisherOpt = publishersManager.getPublisher(utils.toAbsoluteName(topic));
+    public <M extends Message> void unpublish(String topic, Class<M> messageClass)
+            throws IOException {
+        topic = nameMapper.asFullyQualifiedTopicName(topic, messageClass);
+        var publisherOpt = publishersManager.getPublisher(topic);
         if (publisherOpt.isEmpty()) {
             logger.log(
                     Level.FINE,
@@ -244,8 +211,10 @@ public class JRos1Client implements JRosClient {
         try {
             var exception = new RuntimeException();
             publishersManager.getPublishers().stream()
-                    .map(TopicPublisher::getTopic)
-                    .forEach(Unchecked.wrapAccept(this::unpublish, exception));
+                    .forEach(
+                            Unchecked.wrapAccept(
+                                    pub -> unpublish(pub.getTopic(), pub.getMessageClass()),
+                                    exception));
             if (exception.getSuppressed().length != 0) throw exception;
         } finally {
             nodeServer.close();

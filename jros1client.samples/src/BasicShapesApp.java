@@ -49,7 +49,7 @@ public class BasicShapesApp {
         String topic = "BasicShapesExampleXXX";
 
         // creating client and making it to connect to given master node URL
-        try (var client = new JRos1ClientFactory().createJRosClient("http://localhost:11311/")) {
+        try (var client = new JRos1ClientFactory().createClient("http://localhost:11311/")) {
 
             // creating publisher for a topic
             var publisher = new TopicSubmissionPublisher<>(MarkerMessage.class, topic);
