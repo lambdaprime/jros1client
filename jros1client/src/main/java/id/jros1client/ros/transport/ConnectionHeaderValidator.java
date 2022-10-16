@@ -40,7 +40,8 @@ public class ConnectionHeaderValidator {
 
         var messageType = metadataAccessor.getName(messageClass);
         if (!messageType.equals(type)) {
-            throw new XRuntimeException("Message type missmatch %s != %s", messageType, type);
+            throw new XRuntimeException(
+                    "Message type missmatch. Received %s, expected %s", type, messageType);
         }
 
         if (header.getMd5sum().isEmpty()) {
