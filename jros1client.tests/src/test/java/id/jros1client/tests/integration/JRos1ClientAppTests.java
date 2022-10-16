@@ -84,8 +84,8 @@ public class JRos1ClientAppTests {
                             "1",
                             "testTopic2",
                             "id.jrosmessages.std_msgs.StringMessage")
-                    .withOutput(expected + "\n\n")
-                    .withReturnCode(0)
+                    .assertOutput(expected)
+                    .assertReturnCode(0)
                     .run();
         }
 
@@ -108,10 +108,10 @@ public class JRos1ClientAppTests {
                         "5",
                         "testTopic",
                         "id.jrosmessages.std_msgs.StringMessage")
-                .withOutputFromResource("echo")
+                .assertOutputFromResource("echo")
                 .withOutputConsumer(System.out::println)
                 .withWildcardMatching()
-                .withReturnCode(0)
+                .assertReturnCode(0)
                 .run();
 
         new AssertRunCommand(
@@ -122,9 +122,9 @@ public class JRos1ClientAppTests {
                         "5",
                         "testTopic",
                         "id.jrosmessages.std_msgs.StringMessage")
-                .withOutputFromResource("echo")
+                .assertOutputFromResource("echo")
                 .withWildcardMatching()
-                .withReturnCode(0)
+                .assertReturnCode(0)
                 .run();
     }
 
@@ -164,20 +164,20 @@ public class JRos1ClientAppTests {
                         "rostopic",
                         "echo",
                         "testTopic")
-                .withOutput(resourceUtils.readResource("jrosclient-README.md") + "\n\n")
-                .withReturnCode(1)
+                .assertOutput(resourceUtils.readResource("jrosclient-README.md"))
+                .assertReturnCode(1)
                 .run();
     }
 
     @Test
     public void test_wrong_args() throws Exception {
         new AssertRunCommand(JROSCLIENT_PATH)
-                .withOutput(resourceUtils.readResource("jrosclient-README.md") + "\n\n")
-                .withReturnCode(1)
+                .assertOutput(resourceUtils.readResource("jrosclient-README.md"))
+                .assertReturnCode(1)
                 .run();
         new AssertRunCommand(JROSCLIENT_PATH, "rostopic")
-                .withOutput(resourceUtils.readResource("jrosclient-README.md") + "\n\n")
-                .withReturnCode(1)
+                .assertOutput(resourceUtils.readResource("jrosclient-README.md"))
+                .assertReturnCode(1)
                 .run();
     }
 
@@ -196,9 +196,9 @@ public class JRos1ClientAppTests {
                         "1",
                         "testTopic",
                         "id.jrosmessages.std_msgs.StringMessage")
-                .withOutputFromResource("debug")
+                .assertOutputFromResource("debug")
                 .withWildcardMatching()
-                .withReturnCode(0)
+                .assertReturnCode(0)
                 .run();
     }
 
@@ -212,9 +212,9 @@ public class JRos1ClientAppTests {
                         "1234",
                         "rostopic",
                         "list")
-                .withOutputFromResource("list")
+                .assertOutputFromResource("list")
                 .withWildcardMatching()
-                .withReturnCode(0)
+                .assertReturnCode(0)
                 .run();
     }
 
@@ -233,9 +233,9 @@ public class JRos1ClientAppTests {
                         "1",
                         "testTopic",
                         "id.jrosmessages.std_msgs.StringMessage")
-                .withOutputFromResource("truncate")
+                .assertOutputFromResource("truncate")
                 .withWildcardMatching()
-                .withReturnCode(0)
+                .assertReturnCode(0)
                 .run();
     }
 
@@ -249,9 +249,9 @@ public class JRos1ClientAppTests {
                         "1234",
                         "rostopic",
                         "list")
-                .withOutputFromResource("list")
+                .assertOutputFromResource("list")
                 .withWildcardMatching()
-                .withReturnCode(0)
+                .assertReturnCode(0)
                 .withEnvironmentVariables(Map.of("CLASSPATH", "tmp/l.jar"))
                 .run();
     }
