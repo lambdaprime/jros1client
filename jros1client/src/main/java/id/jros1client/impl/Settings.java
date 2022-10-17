@@ -20,6 +20,7 @@ package id.jros1client.impl;
 import java.util.Properties;
 
 /**
+ * @hidden
  * @author lambdaprime intid@protonmail.com
  */
 public class Settings {

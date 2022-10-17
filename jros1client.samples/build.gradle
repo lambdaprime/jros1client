@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.github.lambdaprime:jros1messages:1.0-SNAPSHOT'
+    implementation 'io.github.lambdaprime:jros1messages:1.0'
     implementation project(':jros1client')
 }
 

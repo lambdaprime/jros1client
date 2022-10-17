@@ -24,6 +24,7 @@ import id.jrosmessages.MessageMetadataAccessor;
 /**
  * Mapper for ROS1 topic names.
  *
+ * @hidden
  * @author lambdaprime intid@protonmail.com
  */
 public class Ros1NameMapper {

@@ -17,7 +17,7 @@
  */
 
 /**
- * Java module which allows to interact with ROS (Robot Operating System).
+ * Java module which allows to interact with ROS1 (Robot Operating System).
  *
  * @see <a href= "https://github.com/lambdaprime/jrosclient/releases">Download</a>
  * @see <a href="https://github.com/lambdaprime/jrosclient">GitHub repository</a>

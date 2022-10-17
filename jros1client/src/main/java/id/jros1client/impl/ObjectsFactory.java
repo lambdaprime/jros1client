@@ -24,7 +24,11 @@ import id.jros1client.ros.transport.TcpRosServer;
 import id.jrosclient.utils.TextUtils;
 import id.xfunction.logging.TracingToken;
 
-/** This factory is a single point for managing all dependencies. */
+/**
+ * This factory is a single point for managing all dependencies.
+ *
+ * @hidden
+ */
 public class ObjectsFactory {
 
     private static ObjectsFactory instance = new ObjectsFactory();

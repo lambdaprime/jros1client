@@ -25,6 +25,7 @@ import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 
 /**
+ * @hidden
  * @author lambdaprime intid@protonmail.com
  */
 public class RosRpcClient {
