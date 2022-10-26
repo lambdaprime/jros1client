@@ -53,50 +53,48 @@ public class PolygonApp {
             }
         }
     }
-}
 
+    /**
+     * Example of custom message definition
+     */
+    @MessageMetadata(
+        name = PolygonMessage.NAME,
+        md5sum = "cd60a26494a087f577976f0329fa120e")
+    public static class PolygonMessage implements Message {
 
-/**
- * Example of custom message definition
- */
-@MessageMetadata(
-    name = PolygonMessage.NAME,
-    md5sum = "cd60a26494a087f577976f0329fa120e")
-class PolygonMessage implements Message {
+        static final String NAME = "geometry_msgs/Polygon";
 
-    static final String NAME = "geometry_msgs/Polygon";
+        public Point32Message[] points = new Point32Message[0];
 
-    public Point32Message[] points = new Point32Message[0];
+        public PolygonMessage withPoints(Point32Message[] points) {
+            this.points = points;
+            return this;
+        }
 
-    public PolygonMessage withPoints(Point32Message[] points) {
-        this.points = points;
-        return this;
     }
 
-}
+    /**
+     * Example of custom message definition
+     */
+    @MessageMetadata(
+        name = PolygonStampedMessage.NAME,
+        md5sum = "c6be8f7dc3bee7fe9e8d296070f53340")
+    public static class PolygonStampedMessage implements Message {
 
-/**
- * Example of custom message definition
- */
-@MessageMetadata(
-    name = PolygonStampedMessage.NAME,
-    md5sum = "c6be8f7dc3bee7fe9e8d296070f53340")
-class PolygonStampedMessage implements Message {
+        static final String NAME = "geometry_msgs/PolygonStamped";
 
-    static final String NAME = "geometry_msgs/PolygonStamped";
-
-    public HeaderMessage header = new HeaderMessage();
+        public HeaderMessage header = new HeaderMessage();
     
-    public PolygonMessage polygon = new PolygonMessage();
+        public PolygonMessage polygon = new PolygonMessage();
 
-    public PolygonStampedMessage withPolygon(PolygonMessage polygon) {
-        this.polygon = polygon;
-        return this;
+        public PolygonStampedMessage withPolygon(PolygonMessage polygon) {
+            this.polygon = polygon;
+            return this;
+        }
+
+        public PolygonStampedMessage withHeader(HeaderMessage header) {
+            this.header = header;
+            return this;
+        }
     }
-
-    public PolygonStampedMessage withHeader(HeaderMessage header) {
-        this.header = header;
-        return this;
-    }
-
 }
