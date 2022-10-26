@@ -9,7 +9,6 @@ buildscript {
 }
 
 plugins {
-    id 'java'
     id 'com.diffplug.spotless'
 }
 
@@ -82,7 +81,6 @@ compileJava {
 javadoc {
     options.modulePath = classpath.getFiles().stream()
         .collect(java.util.stream.Collectors.toList())
-    exclude 'id/jros1client/app/**'
     options.noTimestamp = true
     options.noQualifiers = ["all"]
     options.noTree = true
@@ -90,6 +88,7 @@ javadoc {
     options.noNavBar = true
     // ignore missing @return, @param etc
     options.addBooleanOption('Xdoclint:all,-missing', true)
+    exclude 'id/jros1client/app/**'
 }
 
 def packageDir = "$buildDir/package/${projectName}"
