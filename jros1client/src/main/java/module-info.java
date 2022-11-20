@@ -32,7 +32,7 @@ module jros1client {
     requires id.xfunction;
     requires id.ICE;
     requires transitive jrosclient;
-    requires jros1messages;
+    requires transitive jros1messages;
     requires java.logging;
     requires jrosmessages;
 
