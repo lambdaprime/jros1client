@@ -26,8 +26,6 @@ import java.util.List;
  * An API to interact with ROS nodes.
  *
  * @see <a href="http://wiki.ros.org/ROS/Slave_API">ROS Node API</a>
- */
-/**
  * @author lambdaprime intid@protonmail.com
  */
 public interface NodeApi {

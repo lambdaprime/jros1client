@@ -1,129 +1,130 @@
 // include xfunction for updateVersion
 buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "io.github.lambdaprime:id.xfunction:14.0"
-    }
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "io.github.lambdaprime:id.xfunction:14.0"
+  }
 }
 
 plugins {
-    id 'com.diffplug.spotless'
+  id 'com.diffplug.spotless'
 }
 
 apply plugin : 'eclipse'
 
 eclipse.classpath.file {
-    // instruct eclipse plugin to put everything to module path
-    whenMerged {
-        entries.findAll { it.kind == 'lib' }.each { it.entryAttributes['module'] = 'true' }
-    }
+  // instruct eclipse plugin to put everything to module path
+  whenMerged {
+    entries.findAll { it.kind == 'lib' }.each { it.entryAttributes['module'] = 'true' }
+  }
 }
 
 // Excluding transient dependencies which are not used
 configurations {
-    implementation {
-        exclude(group: 'xml-apis', module: 'xml-apis')
-        exclude(group: 'junit', module: 'junit')
-        exclude(group: 'log4j', module: 'log4j')
-        exclude(group: 'javax.servlet', module: 'servlet-api')
-    }
-    apiElements {
-        exclude(group: 'xml-apis', module: 'xml-apis')
-        exclude(group: 'junit', module: 'junit')
-        exclude(group: 'log4j', module: 'log4j')
-        exclude(group: 'javax.servlet', module: 'servlet-api')
-    }
+  implementation {
+    exclude(group: 'xml-apis', module: 'xml-apis')
+    exclude(group: 'junit', module: 'junit')
+    exclude(group: 'log4j', module: 'log4j')
+    exclude(group: 'javax.servlet', module: 'servlet-api')
+  }
+  apiElements {
+    exclude(group: 'xml-apis', module: 'xml-apis')
+    exclude(group: 'junit', module: 'junit')
+    exclude(group: 'log4j', module: 'log4j')
+    exclude(group: 'javax.servlet', module: 'servlet-api')
+  }
 }
 
 dependencies {
-    def jrosclient = 'io.github.lambdaprime:jrosclient:6.0-SNAPSHOT'
-
-    implementation 'org.apache.xmlrpc:xmlrpc-client:3.1.3'
-    implementation 'org.apache.xmlrpc:xmlrpc-server:3.1.3'
-    implementation "${jrosclient}"
-    implementation 'io.github.lambdaprime:jros1messages:2.0-SNAPSHOT'
-    implementation 'io.github.lambdaprime:id.xfunction:20.0-SNAPSHOT'
-    implementation 'io.github.lambdaprime:ICE:2.0'
-    implementation 'io.github.lambdaprime:kineticstreamer:4.0'
-
-    // transitively export following dependency to tests project
-    apiElements 'org.apache.xmlrpc:xmlrpc-client:3.1.3'
-    apiElements 'org.apache.xmlrpc:xmlrpc-server:3.1.3'
-    apiElements "${jrosclient}"
-    apiElements 'io.github.lambdaprime:jros1messages:2.0-SNAPSHOT'
-    apiElements 'io.github.lambdaprime:id.xfunction:20.0-SNAPSHOT'
-    apiElements 'io.github.lambdaprime:ICE:2.0'
-    apiElements 'io.github.lambdaprime:kineticstreamer:4.0'
+  addDependencies(this, ["implementation", "apiElements"], "6.0-SNAPSHOT", [
+    "io.github.lambdaprime:jrosclient"
+  ]);
+  addDependencies(this, ["implementation", "apiElements"], "3.1.3", [
+    "org.apache.xmlrpc:xmlrpc-client",
+    "org.apache.xmlrpc:xmlrpc-server"
+  ]);
+  addDependencies(this, ["implementation", "apiElements"], "2.0-SNAPSHOT", [
+    "io.github.lambdaprime:jros1messages"
+  ]);
+  addDependencies(this, ["implementation", "apiElements"], "20.0", [
+    "io.github.lambdaprime:id.xfunction"
+  ]);
+  addDependencies(this, ["implementation", "apiElements"], "2.0", [
+    "io.github.lambdaprime:ICE"
+  ]);
+  addDependencies(this, ["implementation", "apiElements"], "5.0-SNAPSHOT", [
+    "io.github.lambdaprime:kineticstreamer"
+  ]);
 }
 
 jar {
-    manifest { 
-        attributes 'Implementation-Version': "${rootProject.version}"
-    }
+  manifest { 
+    attributes 'Implementation-Version': "${rootProject.version}"
+  }
 }
 
 java {
-    // disable Gradle modularity support since it is not working properly
-    // for non modules like xmlrpc and setup module path manually later:
-    // https://github.com/gradle/gradle/issues/17609
-    // https://github.com/gradle/gradle/issues/12630
-    modularity.inferModulePath = false
+  // disable Gradle modularity support since it is not working properly
+  // for non modules like xmlrpc and setup module path manually later:
+  // https://github.com/gradle/gradle/issues/17609
+  // https://github.com/gradle/gradle/issues/12630
+  modularity.inferModulePath = false
 }
 
 compileJava {
-    doFirst {
-        options.compilerArgs = [
-            '--module-path', classpath.asPath
-        ]
-        classpath = files()
-    }
+  doFirst {
+    options.compilerArgs = [
+      '--module-path', classpath.asPath
+    ]
+    classpath = files()
+  }
 }
 
 javadoc {
-    options.modulePath = classpath.getFiles().stream()
-        .collect(java.util.stream.Collectors.toList())
-    options.noTimestamp = true
-    options.noQualifiers = ["all"]
-    options.noTree = true
-    options.noIndex = true
-    options.noNavBar = true
-    // ignore missing @return, @param etc
-    options.addBooleanOption('Xdoclint:all,-missing', true)
-    exclude 'id/jros1client/app/**'
+  options.modulePath = classpath.getFiles().stream()
+    .collect(java.util.stream.Collectors.toList())
+  options.noTimestamp = true
+  options.noQualifiers = ["all"]
+  options.noTree = true
+  options.noIndex = true
+  options.noNavBar = true
+  // ignore missing @return, @param etc
+  options.addBooleanOption('Xdoclint:all,-missing', true)
+  exclude 'id/jros1client/app/**'
 }
 
 def packageDir = "$buildDir/package/${projectName}"
 
 task createRelease(type: Zip) {
-    archiveFileName = "$releaseFileName"
-    destinationDirectory = file("$projectDir/release")
-    from file("$packageDir/..")
+  archiveFileName = "$releaseFileName"
+  destinationDirectory = file("$projectDir/release")
+  from file("$packageDir/..")
 }
 
 task copyLibs(type: Copy) {
-    from configurations.runtimeClasspath
-    from jar.archiveFile
-    into "${packageDir}/libs"
+  from configurations.runtimeClasspath
+  from jar.archiveFile
+  into "${packageDir}/libs"
 }
 
 task copySamples(type: Copy) {
-    from("${project.rootDir}/jros1client.samples/src") {
-        include "**"
-    }
-    into "${packageDir}/samples"
+  from("${project.rootDir}/jros1client.samples/src") {
+    include "**"
+  }
+  into "${packageDir}/samples"
 }
 
 task createPackage(type: Copy, dependsOn: [copyLibs, copySamples]) {
-    from "${project.rootDir}/README.md"
-    from "${project.rootDir}/LICENSE-2.0.txt"
-    from file("$projectDir/src/jros1client")
-    into packageDir
+  from "${project.rootDir}/README.md"
+  from "${project.rootDir}/LICENSE-2.0.txt"
+  from file("$projectDir/src/jros1client")
+  into packageDir
 }
 
 task cleanRelease(type: Delete) {
-    delete "$projectDir/release"
+  delete "$projectDir/release"
 }
 
 createRelease.dependsOn createPackage, javadoc
@@ -137,13 +138,13 @@ if (project.hasProperty('publish')) {
 
   // update version only during publishing
   task updateVersion() {
-      if (version.contains("SNAPSHOT")) return;
-      println "Updating version to " + version
-      new id.xfunction.text.Substitutor()
-          .withRegexpSupport()
-          .substitute(java.nio.file.Paths.get("${project.rootDir}/README.md"), Map.of(
-              "io.github.lambdaprime:jros1client:[0-9.]+", "io.github.lambdaprime:jros1client:" + version
-          ));
+    if (version.contains("SNAPSHOT")) return;
+    println "Updating version to " + version
+    new id.xfunction.text.Substitutor()
+      .withRegexpSupport()
+      .substitute(java.nio.file.Paths.get("${project.rootDir}/README.md"), Map.of(
+         "io.github.lambdaprime:jros1client:[0-9.]+", "io.github.lambdaprime:jros1client:" + version
+      ));
   }
   createPackage.dependsOn updateVersion
 

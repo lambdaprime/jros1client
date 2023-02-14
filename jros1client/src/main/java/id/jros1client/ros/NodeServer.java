@@ -29,8 +29,7 @@ import org.apache.xmlrpc.webserver.WebServer;
 /**
  * XMLRPC server which is used to negotiate connections with other ROS nodes and communicate with
  * the Master.
- */
-/**
+ *
  * @author lambdaprime intid@protonmail.com
  */
 public class NodeServer implements AutoCloseable {

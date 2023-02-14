@@ -23,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import id.jros1client.JRos1ClientFactory;
 import id.jrosclient.TopicSubmissionPublisher;
 import id.jrosmessages.std_msgs.StringMessage;
-import id.xfunction.AssertRunCommand;
 import id.xfunction.ResourceUtils;
 import id.xfunction.lang.XExec;
 import id.xfunction.lang.XThread;
+import id.xfunctiontests.AssertRunCommand;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -137,7 +137,7 @@ public class JRos1ClientAppTests {
                                 "echo",
                                 "testTopic",
                                 "id.jrosmessages.std_msgs.StringMessage")
-                        .run();
+                        .start();
         var future = new CompletableFuture<Void>();
         proc.forwardStderrAsync();
         var out = new ArrayList<String>();

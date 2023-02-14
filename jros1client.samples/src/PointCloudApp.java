@@ -104,7 +104,7 @@ public class PointCloudApp {
             var path = Paths.get(PointCloudApp.class.getResource("sample.obj").getFile());
             populateFromObj(path, pointCloud);
             cli.print("Press any key to stop publishing...");
-            while (!cli.wasKeyPressed()) {
+            while (!cli.wasEnterKeyPressed()) {
                 publisher.submit(pointCloud);
                 cli.print("Published");
                 Thread.sleep(1000);

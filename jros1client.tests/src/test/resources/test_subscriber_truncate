@@ -8,5 +8,5 @@
 * [FINE   ] id.jros1client.ros.transport.TcpRosClient#* - Message packet: { ...}
 * [FINE   ] id.jros1client.ros.transport.TcpRosClient#* - Submitting received message to subscriber
 * [FINE   ] id.jrosclient.TopicSubmissionPublisher@* - Some messages are still waiting to be delivered, sleeping...
-* [FINE   ] id.jros1client.JRos1Client#* - Unregistered publisher response: { "statusCode": "SUCCESS", "statusMessage": "Unregistered [jrosclient-*] as provider of [/testTopic1]", "subscriberApis": "1" }
+* [FINE   ] id.jros1client.JRos1Client#* - Unregistered publisher response: { "statusCode": "SUCCESS", "statusMessage": "Unregistered [jrosclient-*] as provider of [/testTopic1]", "subscriberApis": 1 }
 *

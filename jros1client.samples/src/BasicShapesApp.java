@@ -65,7 +65,7 @@ public class BasicShapesApp {
             
             cli.print("Press any key to stop publishing...");
             
-            while (!cli.wasKeyPressed()) {
+            while (!cli.wasEnterKeyPressed()) {
                 Type shape = deque.removeFirst();
 
                 // creating a new message and populating it

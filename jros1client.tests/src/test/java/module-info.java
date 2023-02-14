@@ -26,6 +26,7 @@ open module jros1client.tests {
     requires id.kineticstreamer;
     requires org.junit.jupiter.params;
     requires org.junit.platform.commons;
+    requires id.xfunctiontests;
 
     exports id.jros1client.tests;
 }

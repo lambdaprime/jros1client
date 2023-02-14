@@ -24,8 +24,7 @@ import java.util.Optional;
 /**
  * <a href=
  * "http://wiki.ros.org/ROS/Connection%20Header">http://wiki.ros.org/ROS/Connection%20Header</a>
- */
-/**
+ *
  * @author lambdaprime intid@protonmail.com
  */
 public class ConnectionHeader {

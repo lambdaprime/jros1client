@@ -90,7 +90,7 @@ public class JRos1ClientApp {
     }
 
     private static void run() {
-        if (positionalArgs.isEmpty()) throw new ArgumentParsingException();
+        if (positionalArgs.isEmpty()) throw new ArgumentParsingException("Arguments are empty");
         var cmd = positionalArgs.removeFirst();
         switch (cmd) {
             case "rostopic":
@@ -103,7 +103,7 @@ public class JRos1ClientApp {
                     break;
                 }
             default:
-                throw new ArgumentParsingException();
+                throw new ArgumentParsingException("Unknown command " + cmd);
         }
     }
 

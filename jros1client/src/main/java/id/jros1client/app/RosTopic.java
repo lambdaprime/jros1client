@@ -54,7 +54,7 @@ public class RosTopic {
 
     public void execute(List<String> positionalArgs) {
         var rest = new LinkedList<>(positionalArgs);
-        if (rest.isEmpty()) throw new ArgumentParsingException();
+        if (rest.isEmpty()) throw new ArgumentParsingException("topic ommand arguments are empty");
         var cmd = rest.removeFirst();
         switch (cmd) {
             case "echo":
@@ -64,7 +64,7 @@ public class RosTopic {
                 Unchecked.run(() -> list());
                 break;
             default:
-                throw new ArgumentParsingException();
+                throw new ArgumentParsingException("Unknown topic command " + cmd);
         }
     }
 
@@ -89,7 +89,8 @@ public class RosTopic {
                             count[0] = Integer.parseInt(n);
                         });
         new SmartArgs(handlers, positionalArgs::add).parse(rest.toArray(new String[0]));
-        if (positionalArgs.size() < 2) throw new ArgumentParsingException();
+        if (positionalArgs.size() < 2)
+            throw new ArgumentParsingException("echo command arguments are missing");
         JRos1Client client =
                 masterUrl
                         .map(url -> factory.createClient(url, config))
