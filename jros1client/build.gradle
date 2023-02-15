@@ -93,6 +93,18 @@ javadoc {
   // ignore missing @return, @param etc
   options.addBooleanOption('Xdoclint:all,-missing', true)
   exclude 'id/jros1client/app/**'
+
+  // Gradle javadoc considers all from java sourceSet only
+  // This means that doc-files/* are excluded which is not
+  // very compliant to javadoc https://docs.oracle.com/en/java/javase/13/javadoc/source-files.html
+  // to fix that we copy doc-files/* manually
+  doLast {
+    copy {
+      from "$projectDir/src/main/java"
+      into "$project.docsDir/javadoc/${projectName}"
+      include "**/doc-files/*"
+    }
+  }
 }
 
 def packageDir = "$buildDir/package/${projectName}"
