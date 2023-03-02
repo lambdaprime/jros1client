@@ -20,7 +20,7 @@ package id.jros1client.tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import id.jros1client.ros.transport.ConnectionHeader;
-import id.jros1client.ros.transport.io.ConnectionHeaderReader;
+import id.jros1client.ros.transport.io.DefaultConnectionHeaderReader;
 import id.jros1client.tests.ConnectionHeaderSamples.ConnectionHeaderSample;
 import id.xfunction.ResourceUtils;
 import id.xfunction.function.Curry;
@@ -51,7 +51,7 @@ public class ConnectionHeaderReaderTests {
     public void test_happy(ConnectionHeaderSample header) throws Exception {
         byte[] b = readByteCodes(header.getResource());
         var in = new DataInputStream(new ByteArrayInputStream(b));
-        var chr = new ConnectionHeaderReader(in);
+        var chr = new DefaultConnectionHeaderReader(in);
         ConnectionHeader ch = chr.read();
         assertEquals(header.getHeader(), ch);
     }

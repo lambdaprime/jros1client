@@ -17,13 +17,12 @@
  */
 package id.jros1client.ros.transport;
 
-import id.xfunction.XJson;
+import id.xfunction.XJsonStringBuilder;
 import id.xfunction.logging.XLogger;
 import java.util.Optional;
 
 /**
- * <a href=
- * "http://wiki.ros.org/ROS/Connection%20Header">http://wiki.ros.org/ROS/Connection%20Header</a>
+ * <a href= "http://wiki.ros.org/ROS/Connection%20Header">Connection Header</a>
  *
  * @author lambdaprime intid@protonmail.com
  */
@@ -31,12 +30,15 @@ public class ConnectionHeader {
 
     private static final XLogger LOGGER = XLogger.getLogger(ConnectionHeader.class);
 
+    public static final ConnectionHeader EMPTY = new ConnectionHeader();
+
     public static final String CALLER_ID = "callerid";
     public static final String TOPIC = "topic";
     public static final String TYPE = "type";
     public static final String MESSAGE_DEFINITION = "message_definition";
     public static final String MD5_SUM = "md5sum";
     public static final String LATCHING = "latching";
+    public static final String ERROR = "error";
 
     /**
      * Name of node sending data.
@@ -79,6 +81,9 @@ public class ConnectionHeader {
     /** Required to be set by the subscriber. */
     public Optional<String> messageDefinition = Optional.empty();
 
+    /** Human-readable error message if the connection is not successful */
+    public Optional<String> error = Optional.empty();
+
     public ConnectionHeader withCallerId(String callerId) {
         this.callerId = Optional.of(callerId);
         return this;
@@ -109,6 +114,11 @@ public class ConnectionHeader {
         return this;
     }
 
+    public ConnectionHeader withError(String error) {
+        this.error = Optional.of(error);
+        return this;
+    }
+
     public void add(String key, String value) {
         switch (key) {
             case CALLER_ID:
@@ -128,6 +138,9 @@ public class ConnectionHeader {
                 break;
             case LATCHING:
                 withLatching(Integer.parseInt(value) == 1);
+                break;
+            case ERROR:
+                withError(value);
                 break;
             default:
                 LOGGER.warning("Received unknown Connection Header field: {0} = {1} ", key, value);
@@ -154,15 +167,23 @@ public class ConnectionHeader {
         return latching;
     }
 
+    protected Object[] getAdditionalFields() {
+        return new Object[0];
+    }
+
     @Override
     public String toString() {
-        return XJson.asString(
-                CALLER_ID, callerId.orElse("empty"),
-                TOPIC, topic.orElse("empty"),
-                TYPE, type.orElse("empty"),
-                MESSAGE_DEFINITION, messageDefinition.orElse("empty"),
-                MD5_SUM, md5sum.orElse("empty"),
-                LATCHING, latching.orElse("empty"));
+        if (this == EMPTY) return "<empty connection header>";
+        XJsonStringBuilder builder = new XJsonStringBuilder(this);
+        builder.append(CALLER_ID, callerId.orElse("empty"));
+        builder.append(TOPIC, topic.orElse("empty"));
+        builder.append(TYPE, type.orElse("empty"));
+        builder.append(MESSAGE_DEFINITION, messageDefinition.orElse("empty"));
+        builder.append(MD5_SUM, md5sum.orElse("empty"));
+        builder.append(LATCHING, latching.orElse("empty"));
+        builder.append(ERROR, error.orElse("empty"));
+        builder.append(getAdditionalFields());
+        return builder.build();
     }
 
     @Override
@@ -176,6 +197,7 @@ public class ConnectionHeader {
                 && type.equals(ch.type)
                 && messageDefinition.equals(ch.messageDefinition)
                 && md5sum.equals(ch.md5sum)
-                && latching.equals(ch.latching);
+                && latching.equals(ch.latching)
+                && error.equals(ch.error);
     }
 }

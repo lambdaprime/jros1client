@@ -18,13 +18,20 @@
 package id.jros1client.ros.transport.io;
 
 import id.jros1client.ros.transport.ConnectionHeader;
-import java.io.IOException;
+import java.io.DataInput;
 
 /**
  * @author lambdaprime intid@protonmail.com
  */
-@FunctionalInterface
-public interface ConnectionHeaderReader<C extends ConnectionHeader> {
+public class DefaultConnectionHeaderReader
+        extends AbstractConnectionHeaderReader<ConnectionHeader> {
 
-    C read() throws IOException;
+    public DefaultConnectionHeaderReader(DataInput in) {
+        super(in);
+    }
+
+    @Override
+    protected ConnectionHeader newConnectionHeader() {
+        return new ConnectionHeader();
+    }
 }

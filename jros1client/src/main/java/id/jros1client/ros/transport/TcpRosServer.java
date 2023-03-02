@@ -22,7 +22,7 @@ import id.ICE.MessageResponse;
 import id.ICE.MessageServer;
 import id.ICE.MessageService;
 import id.jros1client.JRos1ClientConfiguration;
-import id.jros1client.ros.transport.io.ConnectionHeaderReader;
+import id.jros1client.ros.transport.io.DefaultConnectionHeaderReader;
 import id.jrosclient.utils.TextUtils;
 import id.jrosmessages.MessageMetadataAccessor;
 import id.xfunction.Preconditions;
@@ -111,7 +111,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
         isStarted = false;
     }
 
-    /** Implementation of MessageService which process the incoming requests. */
+    /** Implementation of {@link MessageService} which process the incoming requests. */
     @SuppressWarnings("exports")
     @Override
     public CompletableFuture<MessageResponse> process(MessageRequest request) {
@@ -167,7 +167,7 @@ public class TcpRosServer implements MessageService, AutoCloseable {
      */
     private Optional<TopicPublisherSubscriber> registerSubscriber(int connId, ByteBuffer message) {
         var dis = new DataInputStream(new ByteBufferInputStream(message));
-        var headerReader = new ConnectionHeaderReader(dis);
+        var headerReader = new DefaultConnectionHeaderReader(dis);
         var header = Unchecked.get(headerReader::read);
 
         logger.log(Level.FINE, "Incoming connection from {0}", header.getCallerId());

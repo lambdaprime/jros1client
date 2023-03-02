@@ -24,6 +24,8 @@ import id.xfunction.XJson;
  */
 public class StringResponse extends Response {
 
+    public static final StringResponse EMPTY = new StringResponse(null);
+
     public final String key;
     public String value = "";
 

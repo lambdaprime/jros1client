@@ -20,6 +20,7 @@ package id.jros1client.tests.integration;
 import static id.jros1client.tests.integration.TestConstants.URL;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import id.jros1client.JRos1Client;
 import id.jros1client.JRos1ClientConfiguration;
 import id.jros1client.JRos1ClientFactory;
 import id.jrosclient.JRosClient;
@@ -29,6 +30,7 @@ import id.jrosmessages.std_msgs.Int32Message;
 import id.jrosmessages.std_msgs.StringMessage;
 import id.xfunction.ResourceUtils;
 import id.xfunction.concurrent.flow.FixedCollectorSubscriber;
+import id.xfunction.lang.XThread;
 import id.xfunction.logging.XLogger;
 import id.xfunction.text.WildcardMatcher;
 import java.net.MalformedURLException;
@@ -36,6 +38,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -61,6 +64,21 @@ public class JRos1ClientTests {
     @AfterEach
     public void clean() throws Exception {
         client.close();
+    }
+
+    /**
+     * Test that subscriber works with foreign ROS publisher (not with publisher of {@link
+     * JRos1Client})
+     */
+    @Test
+    public void test_subscriber() throws Exception {
+        String topic = "/testTopic";
+        var collector = new FixedCollectorSubscriber<>(new ArrayList<StringMessage>(), 1);
+        client.subscribe(topic, StringMessage.class, collector);
+        var actual = collector.getFuture().get();
+        var expected = new StringMessage("hello there");
+        Assertions.assertEquals(actual.get(0), expected);
+        Assertions.assertEquals(true, actual.stream().allMatch(Predicate.isEqual(expected)));
     }
 
     @Test
@@ -117,6 +135,7 @@ public class JRos1ClientTests {
         var collector = new FixedCollectorSubscriber<>(new ArrayList<StringMessage>(), 1);
         client.subscribe(topic, StringMessage.class, collector);
         while (!collector.getFuture().isDone()) {
+            XThread.sleep(300);
             publisher.submit(new StringMessage().withData(data));
         }
         client.unpublish(topic, StringMessage.class);

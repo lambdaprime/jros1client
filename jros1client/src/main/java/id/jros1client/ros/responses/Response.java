@@ -28,8 +28,19 @@ import id.xfunction.XJson;
 public class Response {
 
     public enum StatusCode {
+        /**
+         * Error on the part of the caller, e.g. an invalid parameter. In general, this means that
+         * the master/slave did not attempt to execute the action
+         */
         ERROR(-1),
+
+        /**
+         * Method failed to complete correctly. In general, this means that the master/slave
+         * attempted the action and failed, and there may have been side-effects as a result.
+         */
         FAILURE(0),
+
+        /** Method completed successfully. */
         SUCCESS(1);
 
         private int code;

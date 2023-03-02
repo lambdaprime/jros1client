@@ -19,30 +19,32 @@ package id.jros1client.ros.transport.io;
 
 import id.jros1client.ros.transport.ConnectionHeader;
 import id.jros1client.ros.transport.MessagePacket;
-import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.IOException;
 
 /**
  * @author lambdaprime intid@protonmail.com
  */
-public class MessagePacketReader {
+public class MessagePacketReader<C extends ConnectionHeader> {
 
-    private DataInput in;
-    private ConnectionHeaderReader headerReader;
+    private DataInputStream in;
+    private ConnectionHeaderReader<C> headerReader;
     private Utils utils = new Utils();
 
-    public MessagePacketReader(DataInput input) {
+    public MessagePacketReader(DataInputStream input, ConnectionHeaderReader<C> headerReader) {
         this.in = input;
-        headerReader = new ConnectionHeaderReader(in);
+        this.headerReader = headerReader;
     }
 
     public MessagePacket read() throws IOException {
         var ch = readHeader();
+        if (ch.error.isPresent()) return new MessagePacket(ch);
+        if (in.available() == 0) return new MessagePacket(ch);
         byte[] b = readBody();
         return new MessagePacket(ch, b);
     }
 
-    public ConnectionHeader readHeader() throws IOException {
+    public C readHeader() throws IOException {
         return headerReader.read();
     }
 

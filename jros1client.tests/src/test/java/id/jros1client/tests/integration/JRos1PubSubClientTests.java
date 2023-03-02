@@ -17,13 +17,14 @@
  */
 package id.jros1client.tests.integration;
 
+import id.jros1client.JRos1Client;
 import id.jros1client.JRos1ClientFactory;
 import id.jrosclient.tests.integration.JRosPubSubClientTests;
 import id.xfunction.logging.XLogger;
 import org.junit.jupiter.api.BeforeAll;
 
 /**
- * Test that Publisher and Subscriber of JRos2Client can interact with each other.
+ * Test that Publisher and Subscriber of {@link JRos1Client} can interact with each other.
  *
  * @author lambdaprime intid@protonmail.com
  */

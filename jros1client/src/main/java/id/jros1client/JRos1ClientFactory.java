@@ -18,6 +18,9 @@
 package id.jros1client;
 
 import id.jros1client.impl.ObjectsFactory;
+import id.jros1client.ros.transport.PublishersManager;
+import id.xfunction.logging.TracingToken;
+import java.util.Random;
 
 /**
  * Factory methods for {@link JRos1Client}
@@ -30,6 +33,8 @@ public class JRos1ClientFactory {
 
     // visible for javadoc
     public static final String DEFAULT_ROS_MASTER_URL = "http://localhost:11311";
+
+    private Random tokenGenerator = new Random();
 
     /**
      * Create ROS1 client with default configuration connected to ROS master running locally using
@@ -70,6 +75,19 @@ public class JRos1ClientFactory {
      */
     public JRos1Client createClient(
             String masterUrl, JRos1ClientConfiguration config, ObjectsFactory objectsFactory) {
-        return new JRos1Client(masterUrl, config, objectsFactory);
+        var tracingToken = new TracingToken("" + tokenGenerator.nextInt());
+        var textUtils = objectsFactory.createTextUtils(config);
+        var publishersManager = new PublishersManager();
+        var tcpRosServer =
+                objectsFactory.createTcpRosServer(
+                        tracingToken, publishersManager, config, textUtils);
+        return new JRos1Client(
+                tracingToken,
+                masterUrl,
+                config,
+                objectsFactory.createNodeServer(tracingToken, config),
+                textUtils,
+                tcpRosServer,
+                publishersManager);
     }
 }

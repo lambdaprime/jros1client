@@ -18,6 +18,7 @@
 package id.jros1client.impl;
 
 import id.jros1client.ros.api.impl.RawResponse;
+import id.xfunction.logging.XLogger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.function.Supplier;
@@ -30,6 +31,7 @@ import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
  */
 public class RosRpcClient {
 
+    private static final XLogger LOGGER = XLogger.getLogger(RosRpcClient.class);
     private String url;
     private Supplier<XmlRpcClient> client =
             () -> {
@@ -50,6 +52,7 @@ public class RosRpcClient {
     }
 
     public RawResponse execute(String method, Object[] params) {
+        LOGGER.fine("Executing ROS RPC request: {0}", method);
         try {
             return new RawResponse(client.get().execute(method, params));
         } catch (Exception e) {

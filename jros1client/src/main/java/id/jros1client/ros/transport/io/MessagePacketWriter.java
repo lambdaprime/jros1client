@@ -17,29 +17,31 @@
  */
 package id.jros1client.ros.transport.io;
 
+import id.jros1client.ros.transport.ConnectionHeader;
 import id.jros1client.ros.transport.MessagePacket;
-import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 /**
  * @author lambdaprime intid@protonmail.com
  */
-public class MessagePacketWriter {
+public class MessagePacketWriter<C extends ConnectionHeader> {
 
-    private DataOutput out;
-    private ConnectionHeaderWriter headerWriter;
+    private DataOutputStream out;
+    private ConnectionHeaderWriter<C> headerWriter;
     private Utils utils = new Utils();
 
-    public MessagePacketWriter(DataOutput output) {
+    public MessagePacketWriter(DataOutputStream output) {
         this.out = output;
-        headerWriter = new ConnectionHeaderWriter(output);
+        headerWriter = new ConnectionHeaderWriter<>(output);
     }
 
     public void write(MessagePacket packet) throws IOException {
-        headerWriter.write(packet.getHeader());
+        headerWriter.write((C) packet.getHeader());
         var body = packet.getBody();
         if (body == null) return;
         utils.writeLen(out, body.length);
         out.write(body);
+        out.flush();
     }
 }

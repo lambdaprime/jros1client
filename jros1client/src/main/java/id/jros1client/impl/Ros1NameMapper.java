@@ -24,7 +24,7 @@ import id.jrosmessages.MessageMetadataAccessor;
 /**
  * Mapper for ROS1 topic names.
  *
- * @hidden
+ * @hidden - exclude from javadoc
  * @author lambdaprime intid@protonmail.com
  */
 public class Ros1NameMapper {
@@ -43,18 +43,16 @@ public class Ros1NameMapper {
         var rosAbsoluteTopicName = rosNameUtils.toAbsoluteName(topicName);
         var interfaceType = metadataAccessor.getInterfaceType(messageClass);
         var name = metadataAccessor.getName(messageClass);
-        switch (interfaceType) {
-            case MESSAGE:
-                return rosAbsoluteTopicName;
-            case ACTION:
-                {
-                    if (name.endsWith(ACTION_GOAL)) return rosAbsoluteTopicName + "/goal";
-                    if (name.endsWith(ACTION_RESULT)) return rosAbsoluteTopicName + "/result";
-                    throw new IllegalArgumentException(
-                            "Not a valid message name " + name + " for an Action");
-                }
-            default:
-                throw new UnsupportedOperationException("ROS interface type " + interfaceType);
-        }
+        return switch (interfaceType) {
+            case MESSAGE, SERVICE -> rosAbsoluteTopicName;
+            case ACTION -> {
+                if (name.endsWith(ACTION_GOAL)) yield rosAbsoluteTopicName + "/goal";
+                if (name.endsWith(ACTION_RESULT)) yield rosAbsoluteTopicName + "/result";
+                throw new IllegalArgumentException(
+                        "Not a valid message name " + name + " for an Action");
+            }
+            default -> throw new UnsupportedOperationException(
+                    "ROS interface type " + interfaceType);
+        };
     }
 }

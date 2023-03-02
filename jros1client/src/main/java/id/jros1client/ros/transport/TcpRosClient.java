@@ -17,37 +17,32 @@
  */
 package id.jros1client.ros.transport;
 
-import id.jros1client.impl.Settings;
 import id.jros1client.ros.transport.io.ConnectionHeaderWriter;
+import id.jros1client.ros.transport.io.DefaultConnectionHeaderReader;
 import id.jros1client.ros.transport.io.MessagePacketReader;
 import id.jros1messages.MessageSerializationUtils;
 import id.jrosclient.utils.TextUtils;
 import id.jrosmessages.Message;
-import id.jrosmessages.MessageMetadataAccessor;
+import id.jrosmessages.RosInterfaceType;
 import id.xfunction.Preconditions;
-import id.xfunction.concurrent.NamedThreadFactory;
 import id.xfunction.concurrent.SameThreadExecutorService;
 import id.xfunction.logging.TracingToken;
 import id.xfunction.logging.XLogger;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.nio.channels.Channels;
-import java.nio.channels.SocketChannel;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.SubmissionPublisher;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 /**
- * This client establishes TCPROS connection with publishing ROS node and listens for new messages.
+ * TCPROS client which communicates with publishing ROS1 node using {@link RosInterfaceType#MESSAGE}
+ * interface.
+ *
+ * <p>This client establishes TCPROS connection with publishing ROS node and listens for new
+ * messages.
  *
  * <p>Every new message it receives from such node it publishes to its own JRosClient subscriber
- * which is subscribed to the ROS topic.
+ * which is subscribed to the publishing ROS node.
  *
  * <p>This client can serve only one JRosClient subscriber.
  *
@@ -56,22 +51,17 @@ import java.util.logging.Level;
  * @author lambdaprime intid@protonmail.com
  */
 public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
-        implements AutoCloseable {
+        implements TcpRosClientConnector.Processor<ConnectionHeader>, AutoCloseable {
 
+    private static final MessageSerializationUtils SERIALIZATION_UTILS =
+            new MessageSerializationUtils();
+    private Class<M> messageClass;
+    private ConnectionHeaderWriter<ConnectionHeader> writer;
+    private MessagePacketReader<ConnectionHeader> reader;
+    private ConnectionHeader connectionHeader;
+    private TcpRosClientConnector<M, ConnectionHeader> connector;
     private XLogger logger;
     private TextUtils utils;
-
-    private String callerId;
-    private String topic;
-    private String host;
-    private int port;
-    private Class<M> messageClass;
-    private DataOutputStream dos;
-    private DataInputStream dis;
-    private ConnectionHeaderWriter writer;
-    private MessagePacketReader reader;
-    private ExecutorService executorService;
-    private SocketChannel channel;
 
     public TcpRosClient(
             @SuppressWarnings("exports") TracingToken tracingToken,
@@ -82,52 +72,32 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
             Class<M> messageClass,
             TextUtils utils) {
         super(new SameThreadExecutorService(), 1);
-        logger = XLogger.getLogger(getClass(), new TracingToken(tracingToken, "" + hashCode()));
-        this.callerId = callerId;
-        this.topic = topic;
-        this.host = host;
-        this.port = port;
         this.messageClass = messageClass;
-        executorService =
-                Executors.newSingleThreadExecutor(
-                        new NamedThreadFactory("tcp-ros-client-" + topic.replace("/", "")));
         this.utils = utils;
+        tracingToken = new TracingToken(tracingToken, "" + hashCode());
+        logger = XLogger.getLogger(getClass(), tracingToken);
+        connector =
+                new TcpRosClientConnector<>(
+                        tracingToken, callerId, topic, host, port, messageClass, utils, this);
     }
 
-    public void connect() throws IOException {
-        Preconditions.isTrue(channel == null, "Already connected");
-        channel = SocketChannel.open(new InetSocketAddress(host, port));
-        OutputStream os = Channels.newOutputStream(channel);
-        dis = new DataInputStream(Channels.newInputStream(channel));
-        dos = new DataOutputStream(new BufferedOutputStream(os));
-        writer = new ConnectionHeaderWriter(dos);
-        reader = new MessagePacketReader(dis);
-        MessageMetadataAccessor metadataAccessor = new MessageMetadataAccessor();
-        String messageDefinition = "string data";
-        var ch =
-                new ConnectionHeader()
-                        .withTopic(topic.startsWith("/") ? topic : "/" + topic)
-                        .withCallerId(callerId)
-                        .withType(metadataAccessor.getName(messageClass))
-                        .withMessageDefinition(messageDefinition)
-                        .withMd5Sum(metadataAccessor.getMd5(messageClass));
-        executorService.execute(
-                () -> {
-                    try {
-                        run(ch);
-                    } catch (Exception e) {
-                        logger.warning(
-                                "Subscriber failed: {0}: {1}",
-                                e.getClass().getSimpleName(), e.getMessage());
-                        sendOnError(e);
-                    } finally {
-                        executorService.shutdown();
-                    }
-                });
+    @Override
+    public ConnectionHeaderWriter<ConnectionHeader> newConnectionHeaderWriter(
+            DataOutputStream dos) {
+        writer = new ConnectionHeaderWriter<ConnectionHeader>(dos);
+        return writer;
     }
 
-    private void sendOnError(Exception e) {
+    @Override
+    public MessagePacketReader<ConnectionHeader> newMessagePacketReader(DataInputStream dis) {
+        reader = new MessagePacketReader<>(dis, new DefaultConnectionHeaderReader(dis));
+        return reader;
+    }
+
+    @Override
+    public void onError(Exception e) {
         logger.entering("sendOnError");
+        logger.severe("Connection with ROS publisher is closed due to error", e);
         var subscribers = getSubscribers();
         if (!subscribers.isEmpty()) {
             Preconditions.equals(1, subscribers.size(), "Unexpected number of subscribers");
@@ -136,23 +106,19 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
         logger.exiting("sendOnError");
     }
 
-    private void run(ConnectionHeader header) throws Exception {
-        logger.log(Level.FINE, "Connection header: {0}", utils.toString(header));
-        writer.write(header);
-        dos.flush();
-        MessagePacket response = reader.read();
-        logger.log(Level.FINE, "Message packet: {0}", utils.toString(response));
-        byte[] body = response.getBody();
-        while (!executorService.isShutdown() && hasSubscribers()) {
-            var msg = new MessageSerializationUtils().read(body, messageClass);
+    @Override
+    public void processNextMessage() throws Exception {
+        byte[] body = reader.readBody();
+        logger.log(Level.FINE, "Next packet body: {0}", utils.toString(body));
+        if (body.length > 0) {
+            var msg = SERIALIZATION_UTILS.read(body, messageClass);
             logger.log(Level.FINE, "Submitting received message to subscriber");
-            submit(msg);
-            logger.log(Level.FINE, "Requesting next message");
-            writer.write(header);
-            dos.flush();
-            body = reader.readBody();
-            logger.log(Level.FINE, "Next packet body: {0}", utils.toString(body));
+            if (!isClosed()) submit(msg);
+        } else {
+            logger.log(Level.WARNING, "Received empty message data");
         }
+        logger.log(Level.FINE, "Requesting next message");
+        writer.write(connectionHeader);
     }
 
     @Override
@@ -167,21 +133,16 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
         // we always need to do it after completing subscribers
         // otherwise some of them may still be reading from the socket
         // and report onError later
-        try {
-            channel.close();
-        } catch (IOException e) {
-            logger.severe(e.getMessage());
-        }
-        executorService.shutdown();
-        try {
-            if (!executorService.awaitTermination(
-                    Settings.getInstance().getAwaitTcpRosClientInSecs(), TimeUnit.SECONDS)) {
-                logger.log(Level.FINE, "Forcefully terminating executor");
-                executorService.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            logger.severe(e.getMessage());
-        }
-        logger.exiting("close");
+        connector.close();
+    }
+
+    @Override
+    public boolean isStopped() {
+        return !hasSubscribers() || isClosed();
+    }
+
+    public void connect(ConnectionHeader connectionHeader) throws IOException {
+        this.connectionHeader = connectionHeader;
+        connector.connect(connectionHeader);
     }
 }

@@ -17,9 +17,11 @@
  */
 package id.jros1client.ros.transport;
 
-import id.xfunction.function.Unchecked;
+import id.jrosclient.exceptions.JRosClientException;
+import id.xfunction.XJson;
 import id.xfunction.io.XOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 /**
  * @author lambdaprime intid@protonmail.com
@@ -49,7 +51,11 @@ public class MessagePacket {
     @Override
     public String toString() {
         var out = new XOutputStream();
-        Unchecked.run(() -> new ByteArrayInputStream(body).transferTo(out));
-        return String.format("{ header: %s, body: [%s]}", header, out.asHexString());
+        try {
+            new ByteArrayInputStream(body).transferTo(out);
+        } catch (IOException e) {
+            throw new JRosClientException(e);
+        }
+        return XJson.asString("header", header, "body", "[" + out.asHexString() + "]");
     }
 }

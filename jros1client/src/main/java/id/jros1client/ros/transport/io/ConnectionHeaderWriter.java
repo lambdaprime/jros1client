@@ -25,23 +25,49 @@ import static id.jros1client.ros.transport.ConnectionHeader.TOPIC;
 import static id.jros1client.ros.transport.ConnectionHeader.TYPE;
 
 import id.jros1client.ros.transport.ConnectionHeader;
-import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Optional;
 
 /**
  * @author lambdaprime intid@protonmail.com
  */
-public class ConnectionHeaderWriter {
+public class ConnectionHeaderWriter<C extends ConnectionHeader> {
 
-    private DataOutput out;
+    private DataOutputStream out;
     private Utils utils = new Utils();
 
-    public ConnectionHeaderWriter(DataOutput out) {
+    public ConnectionHeaderWriter(DataOutputStream out) {
         this.out = out;
     }
 
-    public void write(ConnectionHeader header) throws IOException {
+    public void write(C header) throws IOException {
+        if (header == ConnectionHeader.EMPTY) return;
+        int totalLen = calcTotalLen(header);
+        if (totalLen == 0) return;
+        utils.writeLen(out, totalLen);
+        writeAllFields(header);
+        out.flush();
+    }
+
+    protected void writeAllFields(C header) throws IOException {
+        writeField(CALLER_ID, header.callerId);
+        writeField(TOPIC, header.topic);
+        writeField(TYPE, header.type);
+        writeField(MESSAGE_DEFINITION, header.messageDefinition);
+        writeField(MD5_SUM, header.md5sum);
+        writeField(LATCHING, header.latching);
+    }
+
+    protected void writeField(String field, Optional<String> value) throws IOException {
+        if (value.isEmpty()) return;
+        utils.writeLen(out, len(field, value));
+        out.write(field.getBytes());
+        out.write('=');
+        out.write(value.get().getBytes());
+    }
+
+    protected int calcTotalLen(C header) {
         int totalLen = 0;
         int len = 0;
 
@@ -63,26 +89,10 @@ public class ConnectionHeaderWriter {
         len = len(LATCHING, header.latching);
         if (len > 0) totalLen += len + 4;
 
-        if (totalLen == 0) return;
-        utils.writeLen(out, totalLen);
-
-        writeField(CALLER_ID, header.callerId);
-        writeField(TOPIC, header.topic);
-        writeField(TYPE, header.type);
-        writeField(MESSAGE_DEFINITION, header.messageDefinition);
-        writeField(MD5_SUM, header.md5sum);
-        writeField(LATCHING, header.latching);
+        return totalLen;
     }
 
-    private void writeField(String field, Optional<String> value) throws IOException {
-        if (value.isEmpty()) return;
-        utils.writeLen(out, len(field, value));
-        out.write(field.getBytes());
-        out.write('=');
-        out.write(value.get().getBytes());
-    }
-
-    private int len(String field, Optional<String> value) {
+    public static int len(String field, Optional<String> value) {
         if (value.isEmpty()) return 0;
         int len = lenField(value, field.length());
         if (len == 0) return 0;
@@ -90,7 +100,7 @@ public class ConnectionHeaderWriter {
         return len;
     }
 
-    private int lenField(Optional<String> field, int len) {
+    private static int lenField(Optional<String> field, int len) {
         return field.map(String::length).orElse(0) + (field.isPresent() ? len : 0);
     }
 }

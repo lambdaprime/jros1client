@@ -85,6 +85,11 @@ public interface MasterApi {
     ListResponse<String> registerSubscriber(
             String callerId, String topic, String topicType, String callerApi);
 
-    // StringResponse lookupService(String callerId, String service);
-
+    /**
+     * Lookup all provider of a particular service.
+     *
+     * @param callerId ROS caller ID
+     * @param service Fully-qualified name of service
+     */
+    StringResponse lookupService(String callerId, String service);
 }
