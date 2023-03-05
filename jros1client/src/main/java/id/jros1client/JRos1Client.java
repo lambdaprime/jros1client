@@ -105,6 +105,7 @@ public class JRos1Client implements JRosClient {
         return new NodeApiClientImpl(client);
     }
 
+    /** {@inheritDoc} */
     @Override
     public <M extends Message> void subscribe(
             String topic, Class<M> messageClass, Subscriber<M> subscriber)
@@ -155,6 +156,7 @@ public class JRos1Client implements JRosClient {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public <M extends Message> void publish(TopicPublisher<M> publisher)
             throws JRosClientException {
@@ -213,6 +215,7 @@ public class JRos1Client implements JRosClient {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean hasPublisher(String topic) {
         return getMasterApi().getSystemState(configuration.getCallerId()).publishers.stream()
@@ -242,6 +245,7 @@ public class JRos1Client implements JRosClient {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public EnumSet<RosVersion> getSupportedRosVersion() {
         return EnumSet.of(RosVersion.ROS1);
