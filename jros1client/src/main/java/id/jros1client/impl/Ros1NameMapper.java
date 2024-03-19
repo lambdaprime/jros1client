@@ -51,8 +51,8 @@ public class Ros1NameMapper {
                 throw new IllegalArgumentException(
                         "Not a valid message name " + name + " for an Action");
             }
-            default -> throw new UnsupportedOperationException(
-                    "ROS interface type " + interfaceType);
+            default ->
+                    throw new UnsupportedOperationException("ROS interface type " + interfaceType);
         };
     }
 }

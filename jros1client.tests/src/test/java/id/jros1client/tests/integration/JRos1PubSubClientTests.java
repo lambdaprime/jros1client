@@ -19,9 +19,13 @@ package id.jros1client.tests.integration;
 
 import id.jros1client.JRos1Client;
 import id.jros1client.JRos1ClientFactory;
+import id.jrosclient.JRosClient;
 import id.jrosclient.tests.integration.JRosPubSubClientTests;
+import id.pubsubtests.PubSubClientTestCase;
 import id.xfunction.logging.XLogger;
+import java.time.Duration;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 
 /**
  * Test that Publisher and Subscriber of {@link JRos1Client} can interact with each other.
@@ -33,14 +37,27 @@ public class JRos1PubSubClientTests extends JRosPubSubClientTests {
     private static final JRos1ClientFactory factory = new JRos1ClientFactory();
 
     static {
-        init(
-                () -> {
-                    return factory.createClient();
-                });
+        init(new TestCase("test_jros2client", factory::createClient, Duration.ofSeconds(2), 100));
     }
 
     @BeforeAll
     public static void setupAll() {
         XLogger.load("logging-test.properties");
     }
+
+    @Override
+    public void test_multiple_subscribers_same_topic(PubSubClientTestCase testCase)
+            throws Exception {}
+
+    /**
+     * Disabled for ROS1.
+     *
+     * <p>In ROS1, when we call {@link JRosClient#publish(id.jrosclient.TopicPublisher) we do not
+     * subscribe to the {@link TopicPublisher} immediately but wait until discovering new subscriber.
+     * It means that publishing to {@link TopicPublisher} will never block as there are no subscriber queues
+     * to fill up.
+     */
+    @Disabled
+    @Override
+    public void test_publish_when_no_subscribers(PubSubClientTestCase testCase) {}
 }

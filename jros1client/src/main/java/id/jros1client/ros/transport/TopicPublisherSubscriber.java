@@ -167,7 +167,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         logger.entering("sendPacket");
         var os = new XOutputStream();
         var dos = new DataOutputStream(new BufferedOutputStream(os));
-        var writer = new MessagePacketWriter(dos);
+        var writer = new MessagePacketWriter<>(dos);
         try {
             writer.write(packet);
             dos.flush();

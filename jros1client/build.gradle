@@ -4,12 +4,13 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath "io.github.lambdaprime:id.xfunction:14.0"
+    classpath "io.github.lambdaprime:id.xfunction:23.0"
   }
 }
 
 plugins {
   id 'com.diffplug.spotless'
+  // only if you build Java library
   id 'java-library'
 }
 
@@ -39,9 +40,9 @@ configurations {
 }
 
 dependencies {
-  api "io.github.lambdaprime:jrosclient:6.0"
-  api "io.github.lambdaprime:jros1messages:2.0"
-  api "io.github.lambdaprime:ICE:2.0"
+  api "io.github.lambdaprime:jrosclient:8.0"
+  api "io.github.lambdaprime:jros1messages:3.0-SNAPSHOT"
+  api "io.github.lambdaprime:ICE:3.0-SNAPSHOT"
 
   def xmlrpcVersion = "3.1.3"
   api "org.apache.xmlrpc:xmlrpc-client:${xmlrpcVersion}"
@@ -118,14 +119,14 @@ task copyLibs(type: Copy) {
   into "${packageDir}/libs"
 }
 
-task copySamples(type: Copy) {
-  from("${project.rootDir}/jros1client.samples/src") {
+task copyExamples(type: Copy) {
+  from("${project.rootDir}/jros2client.examples/src") {
     include "**"
   }
-  into "${packageDir}/samples"
+  into "${packageDir}/examples"
 }
 
-task createPackage(type: Copy, dependsOn: [copyLibs, copySamples]) {
+task createPackage(type: Copy, dependsOn: [copyLibs, copyExamples]) {
   from "${project.rootDir}/README.md"
   from "${project.rootDir}/LICENSE-2.0.txt"
   from file("$projectDir/src/jros1client")
@@ -146,7 +147,8 @@ classes.dependsOn spotlessApply
 
 task updateVersion() {
   // update version only when it is specified and non SNAPSHOT version is built
-  if (version || version.contains("SNAPSHOT")) return;
+  // 'unspecified' is the default value for the version in Gradle if it is not set
+  if (!version || version == "unspecified" || version.contains("SNAPSHOT")) return;
   println "Updating version to " + version
   new id.xfunction.text.Substitutor()
     .withRegexpSupport()

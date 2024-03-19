@@ -139,7 +139,7 @@ public class JRos1ClientAppTests {
                                 "id.jrosmessages.std_msgs.StringMessage")
                         .start();
         var future = new CompletableFuture<Void>();
-        proc.forwardStderrAsync();
+        proc.forwardStderrAsync(true);
         var out = new ArrayList<String>();
         proc.stdoutAsync(
                 line -> {

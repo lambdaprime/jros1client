@@ -18,7 +18,7 @@
 package id.jros1client.tests;
 
 import id.jros1client.ros.transport.ConnectionHeader;
-import id.xfunction.XUtils;
+import id.xfunction.Checksum;
 import id.xfunction.function.Unchecked;
 
 /**
@@ -54,5 +54,5 @@ public class ConnectionHeaderSamples {
                             .withCallerId("jrosclient")
                             .withType("std_msgs/String")
                             .withMessageDefinition(MESSAGE_DATA)
-                            .withMd5Sum(Unchecked.get(() -> XUtils.md5Sum(MESSAGE_DATA))));
+                            .withMd5Sum(Unchecked.get(() -> Checksum.md5(MESSAGE_DATA))));
 }
