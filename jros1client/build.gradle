@@ -25,13 +25,7 @@ eclipse.classpath.file {
 
 // Excluding transient dependencies which are not used
 configurations {
-  implementation {
-    exclude(group: 'xml-apis', module: 'xml-apis')
-    exclude(group: 'junit', module: 'junit')
-    exclude(group: 'log4j', module: 'log4j')
-    exclude(group: 'javax.servlet', module: 'servlet-api')
-  }
-  apiElements {
+  api {
     exclude(group: 'xml-apis', module: 'xml-apis')
     exclude(group: 'junit', module: 'junit')
     exclude(group: 'log4j', module: 'log4j')
