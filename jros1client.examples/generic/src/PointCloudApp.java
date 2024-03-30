@@ -1,7 +1,7 @@
 /*
  * Copyright 2020 jrosclient project
  * 
- * Website: https://github.com/lambdaprime/jrosclient
+ * Website: https://github.com/lambdaprime/jros1client
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,43 +32,45 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Reads point cloud from obj file and creates a message which
- * later publishes to the topic.
- * To see published point cloud use RViz.
+ * Reads point cloud from obj file and creates a message which later publishes to the topic. To see
+ * published point cloud use RViz.
  */
 public class PointCloudApp {
 
     /**
      * Populates PointCloud2Message from obj file
+     *
      * @param srcObjFile path to obj file
      * @param dst message to populate
      */
     private static void populateFromObj(Path srcObjFile, PointCloud2Message dst) {
         var pointStep = 12;
         dst.withHeight(1)
-            .withIsDense(true)
-            .withPointStep(pointStep)
-            .withFields(
-                new PointFieldMessage().withName("x")
-                    .withOffset(0)
-                    .withCount(1)
-                    .withDataType(DataType.FLOAT64),
-                new PointFieldMessage().withName("y")
-                    .withOffset(4)
-                    .withCount(1)
-                    .withDataType(DataType.FLOAT64),
-                new PointFieldMessage().withName("z")
-                    .withOffset(8)
-                    .withCount(1)
-                    .withDataType(DataType.FLOAT64));
+                .withIsDense(true)
+                .withPointStep(pointStep)
+                .withFields(
+                        new PointFieldMessage()
+                                .withName("x")
+                                .withOffset(0)
+                                .withCount(1)
+                                .withDataType(DataType.FLOAT64),
+                        new PointFieldMessage()
+                                .withName("y")
+                                .withOffset(4)
+                                .withCount(1)
+                                .withDataType(DataType.FLOAT64),
+                        new PointFieldMessage()
+                                .withName("z")
+                                .withOffset(8)
+                                .withCount(1)
+                                .withDataType(DataType.FLOAT64));
         var buf = new ByteArrayOutputStream();
         try (var reader = Files.newBufferedReader(srcObjFile)) {
             var line = "";
             while ((line = reader.readLine()) != null) {
                 if (!line.startsWith("v ")) continue;
                 var a = line.split(" ");
-                var b = ByteBuffer.allocate(pointStep)
-                        .order(ByteOrder.nativeOrder());
+                var b = ByteBuffer.allocate(pointStep).order(ByteOrder.nativeOrder());
                 b.putFloat(Float.parseFloat(a[1]));
                 b.putFloat(Float.parseFloat(a[2]));
                 b.putFloat(Float.parseFloat(a[3]));
@@ -82,25 +84,26 @@ public class PointCloudApp {
         dst.withRowStep(data.length);
         dst.withWidth(data.length / pointStep);
     }
-    
+
     public static void main(String[] args) throws Exception {
         var cli = new CommandLineInterface();
         var config = new JRos1ClientConfiguration();
-        
+
         // printing pointcloud messages to standard output may cause
         // too much noise so we truncate any long lines in the output (optional)
         config.setMaxMessageLoggingLength(1200);
-        
+
         // defining topic name
         String topic = "/PointCloud";
-        
-        try (var client = new JRos1ClientFactory().createClient("http://localhost:11311/", config)) {
+
+        try (var client =
+                new JRos1ClientFactory().createClient("http://localhost:11311/", config)) {
             var publisher = new TopicSubmissionPublisher<>(PointCloud2Message.class, topic);
             client.publish(publisher);
-            PointCloud2Message pointCloud = new PointCloud2Message()
-                    .withHeader(new HeaderMessage()
-                            .withFrameId("map")
-                            .withStamp(Time.now()));
+            PointCloud2Message pointCloud =
+                    new PointCloud2Message()
+                            .withHeader(
+                                    new HeaderMessage().withFrameId("map").withStamp(Time.now()));
             var path = Paths.get(PointCloudApp.class.getResource("sample.obj").getFile());
             populateFromObj(path, pointCloud);
             cli.print("Press any key to stop publishing...");
@@ -111,5 +114,4 @@ public class PointCloudApp {
             }
         }
     }
-    
 }

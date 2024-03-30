@@ -1,11 +1,16 @@
 plugins {
+  id 'com.diffplug.spotless'
   id 'java'
 }
 
 apply plugin : 'eclipse'
 
+repositories {
+  mavenCentral()
+  mavenLocal()
+}
+
 dependencies {
-  implementation 'io.github.lambdaprime:jros1messages:1.0'
   implementation project(':jros1client')
 }
 
@@ -19,3 +24,6 @@ sourceSets {
     }
   }
 }
+
+// run spotless and format code before the build
+classes.dependsOn spotlessApply

@@ -1,7 +1,7 @@
 /*
  * Copyright 2020 jrosclient project
  * 
- * Website: https://github.com/lambdaprime/jrosclient
+ * Website: https://github.com/lambdaprime/jros1client
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,10 +35,10 @@ import java.util.EnumSet;
 import java.util.LinkedList;
 
 /**
- * Example which demonstrates how to send basic shapes from Java
- * to RViz using jrosclient module. Shapes are sent every second.
+ * Example which demonstrates how to send basic shapes from Java to RViz using jrosclient module.
+ * Shapes are sent every second.
  *
- * Based on http://wiki.ros.org/rviz/Tutorials/Markers%3A%20Basic%20Shapes
+ * <p>Based on http://wiki.ros.org/rviz/Tutorials/Markers%3A%20Basic%20Shapes
  */
 public class BasicShapesApp {
 
@@ -58,36 +58,35 @@ public class BasicShapesApp {
             client.publish(publisher);
 
             // set of shapes to iterate on
-            var deque = new LinkedList<Type>(EnumSet.of(
-                    Type.CUBE,
-                    Type.SPHERE,
-                    Type.CYLINDER));
-            
+            var deque = new LinkedList<Type>(EnumSet.of(Type.CUBE, Type.SPHERE, Type.CYLINDER));
+
             cli.print("Press any key to stop publishing...");
-            
+
             while (!cli.wasEnterKeyPressed()) {
                 Type shape = deque.removeFirst();
 
                 // creating a new message and populating it
-                MarkerMessage marker = new MarkerMessage()
-                        .withHeader(new HeaderMessage()
-                                .withFrameId("map")
-                                .withStamp(Time.now()))
-                        .withNs(new StringMessage().withData("basic_shapes"))
-                        .withId(0)
-                        .withType(shape)
-                        .withAction(Action.ADD)
-                        .withPose(new PoseMessage()
-                                .withPosition(new PointMessage())
-                                .withQuaternion(new QuaternionMessage()
-                                        .withW(1.0)))
-                        .withScale(new Vector3Message(1., 1., 1.))
-                        .withColor(ColorRGBAMessage.RED)
-                        .withLifetime(new Duration());
+                MarkerMessage marker =
+                        new MarkerMessage()
+                                .withHeader(
+                                        new HeaderMessage()
+                                                .withFrameId("map")
+                                                .withStamp(Time.now()))
+                                .withNs(new StringMessage().withData("basic_shapes"))
+                                .withId(0)
+                                .withType(shape)
+                                .withAction(Action.ADD)
+                                .withPose(
+                                        new PoseMessage()
+                                                .withPosition(new PointMessage())
+                                                .withQuaternion(new QuaternionMessage().withW(1.0)))
+                                .withScale(new Vector3Message(1., 1., 1.))
+                                .withColor(ColorRGBAMessage.RED)
+                                .withLifetime(new Duration());
 
                 // publishing message
                 publisher.submit(marker);
-                
+
                 deque.add(shape);
                 cli.print("Published");
                 XThread.sleep(1000);
