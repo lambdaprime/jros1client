@@ -114,7 +114,7 @@ task copyLibs(type: Copy) {
 }
 
 task copyExamples(type: Copy) {
-  from("${project.rootDir}/jros2client.examples/src") {
+  from("${project.rootDir}/jros1client.examples/generic/src") {
     include "**"
   }
   into "${packageDir}/examples"

@@ -57,7 +57,7 @@ public class NodeApiServerImpl implements NodeApi {
         response.withStatusMessage("ready");
         response.withProtocol(Protocol.TCPROS);
         response.withPort(config.getTcpRosServerPort());
-        response.withHost(config.getHostName());
+        response.withHost(config.getHostAddress());
         LOGGER.exiting("requestTopic", response);
         return response;
     }

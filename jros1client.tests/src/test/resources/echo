@@ -3,3 +3,7 @@
 { "data": "hello there" }
 { "data": "hello there" }
 { "data": "hello there" }
+
+* [INFO   ] id.jros1client.JRos1Client#* - Publishers: { "statusCode": "SUCCESS", "statusMessage": "Subscribed to [/testTopic]", "publishers": ["http://*:*/"] }
+* [INFO   ] id.jros1client.JRos1Client#* - Registering with publisher: *
+* [INFO   ] id.jros1client.JRos1Client#* - Protocol configuration: { "statusCode": "SUCCESS", "statusMessage": "ready on *", "name": "TCPROS", "host": "*", "port": * }

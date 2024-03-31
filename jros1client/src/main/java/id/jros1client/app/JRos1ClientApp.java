@@ -108,6 +108,6 @@ public class JRos1ClientApp {
     }
 
     private static void enableDebug() {
-        XLogger.load("jrosclient-debug.properties");
+        XLogger.load("jros1client-debug.properties");
     }
 }

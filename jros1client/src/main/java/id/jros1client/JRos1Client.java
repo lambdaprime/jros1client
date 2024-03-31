@@ -110,6 +110,7 @@ public class JRos1Client implements JRosClient {
     public <M extends Message> void subscribe(
             String topic, Class<M> messageClass, Subscriber<M> subscriber)
             throws JRosClientException {
+        logger.fine("Subscribing to {0} type {1}", topic, messageClass.getName());
         topic = nameMapper.asFullyQualifiedTopicName(topic, messageClass);
         var topicType = metadataAccessor.getName(messageClass);
         var callerId = configuration.getCallerId();
@@ -117,7 +118,7 @@ public class JRos1Client implements JRosClient {
                 getMasterApi()
                         .registerSubscriber(
                                 callerId, topic, topicType, configuration.getNodeApiUrl());
-        logger.fine("Publishers: {0}", publishers);
+        logger.info("Publishers: {0}", publishers);
         if (publishers.value.isEmpty()) {
             throw new JRosClientException("No publishers for topic %s found", topic);
         }
@@ -128,10 +129,10 @@ public class JRos1Client implements JRosClient {
         processor.subscribe(subscriber);
         for (var publisher : publishers.value) {
             try {
-                logger.fine("Registering with publisher: {0}", publisher);
+                logger.info("Registering with publisher: {0}", publisher);
                 var nodeApi = getNodeApi(publisher);
                 var protocol = nodeApi.requestTopic(callerId, topic, List.of(Protocol.TCPROS));
-                logger.fine("Protocol configuration: {0}", protocol);
+                logger.info("Protocol configuration: {0}", protocol);
                 var nodeClient =
                         new TcpRosClient<M>(
                                 tracingToken,
@@ -160,6 +161,9 @@ public class JRos1Client implements JRosClient {
     @Override
     public <M extends Message> void publish(TopicPublisher<M> publisher)
             throws JRosClientException {
+        logger.fine(
+                "Publishing to {0} type {1}",
+                publisher.getTopic(), publisher.getMessageClass().getName());
         var topic =
                 nameMapper.asFullyQualifiedTopicName(
                         publisher.getTopic(), publisher.getMessageClass());
@@ -179,7 +183,7 @@ public class JRos1Client implements JRosClient {
                                 topic,
                                 topicType,
                                 configuration.getNodeApiUrl());
-        logger.fine("Current subscribers: {0}", subscribers.toString());
+        logger.info("Current subscribers: {0}", subscribers.toString());
     }
 
     /**

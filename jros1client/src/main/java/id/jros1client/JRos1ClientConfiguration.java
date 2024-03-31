@@ -29,7 +29,7 @@ public class JRos1ClientConfiguration {
 
     public static final int START_TCP_ROS_SERVER_PORT = 1235;
     public static final int START_NODE_SERVER_PORT = 1234;
-    public static final String HOST_NAME = "localhost";
+    public static final String HOST_ADDRESS = "localhost";
 
     private static final AtomicInteger nextTcpRosServerPort =
             new AtomicInteger(START_TCP_ROS_SERVER_PORT);
@@ -38,7 +38,7 @@ public class JRos1ClientConfiguration {
 
     private int tcpRosServerPort = nextTcpRosServerPort.addAndGet(2);
     private int nodeServerPort = nextNodeServerPort.addAndGet(2);
-    private String hostName = HOST_NAME;
+    private String hostAddress = HOST_ADDRESS;
     private String callerId = "jrosclient-" + UUID.randomUUID();
     private int maxMessageLoggingLength = -1;
 
@@ -79,18 +79,19 @@ public class JRos1ClientConfiguration {
     }
 
     /**
-     * Name of the host where TCPROS server and Node server will be running on. This host name
-     * should belong to the host where jrosclient is used and to which other ROS nodes can
-     * communicate.
+     * Host address where TCPROS server and Node server will be running on. This is the host where
+     * jrosclient is used and to which other ROS nodes can communicate.
      *
-     * <p>Default value is {@link HOST_NAME}
+     * <p>Can be host name or IP address.
+     *
+     * <p>Default value is {@link HOST_ADDRESS}
      */
-    public String getHostName() {
-        return hostName;
+    public String getHostAddress() {
+        return hostAddress;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
+    public void setHostAddress(String address) {
+        this.hostAddress = address;
     }
 
     /**
@@ -121,7 +122,7 @@ public class JRos1ClientConfiguration {
     }
 
     public String getNodeApiUrl() {
-        return String.format("http://%s:%d", getHostName(), getNodeServerPort());
+        return String.format("http://%s:%d", getHostAddress(), getNodeServerPort());
     }
 
     public void setCallerId(String callerId) {

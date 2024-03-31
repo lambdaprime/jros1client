@@ -71,7 +71,15 @@ public class JRos1ClientAppTests {
                 });
 
         for (int i = 0; i < 3; i++) {
-            var expected = new StringMessage().withData("Hello ROS").toString();
+            var expected =
+                    """
+                    %s
+
+                    * [INFO   ] id.jros1client.JRos1Client#* - Publishers: { "statusCode": "SUCCESS", "statusMessage": "Subscribed to [/testTopic2]", "publishers": [*] }
+                    * [INFO   ] id.jros1client.JRos1Client#* - Registering with publisher: *
+                    * [INFO   ] id.jros1client.JRos1Client#* - Protocol configuration: { "statusCode": "SUCCESS", "statusMessage": "ready", "name": "TCPROS", "host": "*", "port": * }
+                    *"""
+                            .formatted(new StringMessage().withData("Hello ROS").toString());
             new AssertRunCommand(
                             JROSCLIENT_PATH,
                             "--masterUrl",
@@ -85,6 +93,7 @@ public class JRos1ClientAppTests {
                             "testTopic2",
                             "id.jrosmessages.std_msgs.StringMessage")
                     .assertOutput(expected)
+                    .withWildcardMatching()
                     .assertReturnCode(0)
                     .run();
         }
@@ -149,7 +158,7 @@ public class JRos1ClientAppTests {
         future.get();
         proc.process().destroyForcibly();
         assertEquals(
-                resourceUtils.readResource("echo").trim(),
+                resourceUtils.readResource("echo_infinity").trim(),
                 out.stream().collect(Collectors.joining("\n")));
     }
 

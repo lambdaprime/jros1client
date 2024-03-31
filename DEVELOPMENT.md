@@ -27,5 +27,5 @@ gradle eclipse
 - Open next SNAPSHOT version
 - Commit changes
 - Push
-- Create new release in GitHub
 - Upload documentation to website
+- Update "bootstrap" project
