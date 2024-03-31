@@ -27,5 +27,6 @@ gradle eclipse
 - Open next SNAPSHOT version
 - Commit changes
 - Push
+- Make sure that new release did not make any changes to existing examples and "jros1droid". If it did then update corresponding examples in the documentation.
 - Upload documentation to website
 - Update "bootstrap" project

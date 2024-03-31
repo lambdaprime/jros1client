@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+ 	<TextView android:id="@+id/description"
+    	android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/description" />
+
+	<TextView android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/masterUrl" />
+
+	<EditText android:id="@+id/masterUrl"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="http://192.168.0.3:11311"
+		android:singleLine="true" />
+
+	<TextView android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/hostAddress" />
+
+	<EditText android:id="@+id/hostAddress"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="192.168.0.4"
+		android:singleLine="true" />
+
+	<TextView android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/topicName" />
+
+	<EditText android:id="@+id/topicName"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="helloRos"
+		android:singleLine="true" />
+
+	<Button android:id="@+id/publish"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/publish" />
+
+	<Button android:id="@+id/subscribe"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/subscribe" />
+
+	<Button android:id="@+id/stop"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/stop" />
+		
+	<ListView android:id="@+id/logView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" />
+</LinearLayout>

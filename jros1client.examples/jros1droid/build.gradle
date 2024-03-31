@@ -1,0 +1,170 @@
+plugins {
+  id 'com.android.application' version '8.2.0' apply false
+  id 'com.diffplug.spotless' version '6.21.0'
+}
+
+apply plugin: 'com.android.application'
+apply plugin : 'eclipse'
+
+def androidSdkVersion = 34
+def javaVersion = 17
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(javaVersion)
+  }
+}
+
+dependencies {
+  implementation 'io.github.lambdaprime:jros1client:7.0-SNAPSHOT'
+}
+
+android {
+  namespace 'id.jros1droid'
+  compileSdkVersion androidSdkVersion
+
+  defaultConfig {
+    targetSdkVersion androidSdkVersion
+    minSdkVersion androidSdkVersion
+
+    // read jros1client version
+    def propsFile = java.nio.file.Paths.get("../../gradle.properties")
+    def libVersion = java.nio.file.Files
+      .readAllLines(propsFile)
+      .stream()
+      .filter(l -> l.startsWith("version"))
+      .map(l -> l.replaceAll("version = (.*)", '$1'))
+      .peek(System.out::println)
+      .findFirst()
+      .orElseThrow(() -> new RuntimeException("jros1client version is missing inside " + propsFile))
+    println libVersion
+    versionCode 1
+    versionName "${libVersion}"
+    archivesBaseName = "${namespace}-v${versionName}"
+  }
+
+  lintOptions {
+    abortOnError false
+  }
+
+  packagingOptions {
+    exclude("META-INF/DEPENDENCIES")
+  }
+  
+  sourceSets {
+    main {
+      manifest.srcFile 'AndroidManifest.xml'
+      res.srcDirs = ['res']
+      assets.srcDirs = ['assets']
+    }
+  }
+
+  buildTypes {
+    debug {
+      //minifyEnabled true
+      proguardFiles 'proguard.cfg'
+    }
+    release {
+      minifyEnabled true
+      proguardFiles 'proguard.cfg'
+      zipAlignEnabled true
+    }
+  }
+}
+
+
+spotless {
+  java {
+    importOrder()
+    removeUnusedImports()
+
+    // Use Android style which has 4 whitespaces instead 2 by default
+    googleJavaFormat().aosp().reflowLongStrings()
+
+    licenseHeader '''/*
+ * Copyright $YEAR jrosclient project
+ * 
+ * Website: https://github.com/lambdaprime/jros1client
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+'''
+  }
+}
+
+// run spotless and format code before the build
+preBuild.dependsOn spotlessApply
+
+/*
+ * Eclipse configuration.
+ *
+ * Copies all classpath dependencies into elibs folder.
+ * For aar files it extracts /classes.jar file and copy it instead.
+ */
+def elibDir = new java.io.File(project.projectDir, '/elibs')
+
+// 'eclipse' plugin relies on 'java' plugin for source code location
+// Because for Android 'java' plugin is not being used, 'eclipse' plugin
+// does not know where to look for the sources.
+// For that reason we tell 'eclipse' plugin the source location explicitly
+sourceSets {
+  main {
+    java {
+      srcDirs = ["src/main/java"]
+    }
+  }
+}
+
+configurations {
+  customConfig.extendsFrom implementation
+}
+
+task copyDependenciesForEclipse(type: Copy) {
+  mkdir elibDir
+  configurations.customConfig.filter {it.name.endsWith 'aar'}.each {
+    File file -> copy {
+      from zipTree(file)
+      include 'classes.jar'
+      into elibDir
+      rename { String fileName ->
+        fileName.replace('classes.jar', file.getName() + '.jar')
+      }
+    }
+  }
+}
+
+eclipse.classpath.file {
+  whenMerged { classpath ->
+    var extClasspath = new HashSet<File>();
+    android.applicationVariants.each { variant ->
+      variant.javaCompile.classpath.getFiles().stream().forEach(extClasspath::add)
+    }
+    android.getBootClasspath().each { path ->
+      extClasspath.add(path)
+    }
+    extClasspath.stream().forEach(f -> {
+      def lib = new org.gradle.plugins.ide.eclipse.model.Library(fileReference(f))
+      lib.exported = true
+      classpath.entries << lib
+    });
+  }
+}
+
+/*
+ * gradlew requires execution of gradle-wrapper.jar which trustworthy needs to
+ * be checked everytime when it is updated (otherwise it do not seems secure)
+ * To avoid using it we rely on manual version check
+ */
+def requiredGradleVersion = "8.3"
+if ("$gradle.gradleVersion" != "$requiredGradleVersion")
+  throw new RuntimeException("Running gradle version $gradle.gradleVersion, required $requiredGradleVersion");

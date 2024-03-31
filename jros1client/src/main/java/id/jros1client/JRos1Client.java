@@ -110,7 +110,7 @@ public class JRos1Client implements JRosClient {
     public <M extends Message> void subscribe(
             String topic, Class<M> messageClass, Subscriber<M> subscriber)
             throws JRosClientException {
-        logger.fine("Subscribing to {0} type {1}", topic, messageClass.getName());
+        logger.info("Subscribing to {0} type {1}", topic, messageClass.getName());
         topic = nameMapper.asFullyQualifiedTopicName(topic, messageClass);
         var topicType = metadataAccessor.getName(messageClass);
         var callerId = configuration.getCallerId();
@@ -161,7 +161,7 @@ public class JRos1Client implements JRosClient {
     @Override
     public <M extends Message> void publish(TopicPublisher<M> publisher)
             throws JRosClientException {
-        logger.fine(
+        logger.info(
                 "Publishing to {0} type {1}",
                 publisher.getTopic(), publisher.getMessageClass().getName());
         var topic =
