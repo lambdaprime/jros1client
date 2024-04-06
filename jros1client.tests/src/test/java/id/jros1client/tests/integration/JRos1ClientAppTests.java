@@ -77,8 +77,7 @@ public class JRos1ClientAppTests {
 
                     * [INFO   ] id.jros1client.JRos1Client#* - Publishers: { "statusCode": "SUCCESS", "statusMessage": "Subscribed to [/testTopic2]", "publishers": [*] }
                     * [INFO   ] id.jros1client.JRos1Client#* - Registering with publisher: *
-                    * [INFO   ] id.jros1client.JRos1Client#* - Protocol configuration: { "statusCode": "SUCCESS", "statusMessage": "ready", "name": "TCPROS", "host": "*", "port": * }
-                    *"""
+                    * [INFO   ] id.jros1client.JRos1Client#* - Protocol configuration: { "statusCode": "SUCCESS", "statusMessage": "ready", "name": "TCPROS", "host": "*", "port": * }"""
                             .formatted(new StringMessage().withData("Hello ROS").toString());
             new AssertRunCommand(
                             JROSCLIENT_PATH,

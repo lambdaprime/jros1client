@@ -16,8 +16,8 @@ java {
 dependencies {
   api "io.github.lambdaprime:id.xfunction:25.0:android@aar"
   api "io.github.lambdaprime:jrosclient:8.0"
-  api "io.github.lambdaprime:jros1messages:3.0-SNAPSHOT"
-  api "io.github.lambdaprime:ICE:3.0-SNAPSHOT"
+  api "io.github.lambdaprime:jros1messages:3.0"
+  api "io.github.lambdaprime:ICE:3.0"
 
   def xmlrpcVersion = "3.1.3"
   api "org.apache.xmlrpc:xmlrpc-client:${xmlrpcVersion}"

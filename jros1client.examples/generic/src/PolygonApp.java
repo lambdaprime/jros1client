@@ -57,7 +57,10 @@ public class PolygonApp {
     }
 
     /** Example of custom message definition */
-    @MessageMetadata(name = PolygonMessage.NAME, md5sum = "cd60a26494a087f577976f0329fa120e")
+    @MessageMetadata(
+            name = PolygonMessage.NAME,
+            /*fields = {"points"} /* This parameter is optional because message has only one field */
+            md5sum = "cd60a26494a087f577976f0329fa120e")
     public static class PolygonMessage implements Message {
 
         static final String NAME = "geometry_msgs/Polygon";
@@ -71,7 +74,10 @@ public class PolygonApp {
     }
 
     /** Example of custom message definition */
-    @MessageMetadata(name = PolygonStampedMessage.NAME, md5sum = "c6be8f7dc3bee7fe9e8d296070f53340")
+    @MessageMetadata(
+            name = PolygonStampedMessage.NAME,
+            fields = {"header", "polygon"},
+            md5sum = "c6be8f7dc3bee7fe9e8d296070f53340")
     public static class PolygonStampedMessage implements Message {
 
         static final String NAME = "geometry_msgs/PolygonStamped";

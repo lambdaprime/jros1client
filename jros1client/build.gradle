@@ -14,6 +14,10 @@ plugins {
   id 'java-library'
 }
 
+boolean isReleaseBuild() {
+  return version != null && version.matches("\\d+[.\\d+]*");
+}
+
 apply plugin : 'eclipse'
 
 eclipse.classpath.file {
@@ -35,8 +39,8 @@ configurations {
 
 dependencies {
   api "io.github.lambdaprime:jrosclient:8.0"
-  api "io.github.lambdaprime:jros1messages:3.0-SNAPSHOT"
-  api "io.github.lambdaprime:ICE:3.0-SNAPSHOT"
+  api "io.github.lambdaprime:jros1messages:3.0"
+  api "io.github.lambdaprime:ICE:3.0"
 
   def xmlrpcVersion = "3.1.3"
   api "org.apache.xmlrpc:xmlrpc-client:${xmlrpcVersion}"
@@ -76,6 +80,10 @@ javadoc {
   options.noNavBar = true
   // ignore missing @return, @param etc
   options.addBooleanOption('Xdoclint:all,-missing', true)
+  // should point to location of element-list files
+  options.addStringOption('link', 'http://portal2.atwebpages.com/jrosclient/javadoc/jros1messages/')
+  options.addStringOption('link', 'http://portal2.atwebpages.com/jrosclient/javadoc/jrosmessages/')
+  options.addStringOption('link', 'http://portal2.atwebpages.com/jrosclient/javadoc/jrosclient/')
   // to support @inheritDoc we need to provide sources for inherited
   // classes as part of '--module-source-path' option
   // we use "Module-pattern form" for that. It replaces * with
@@ -121,9 +129,20 @@ task copyExamples(type: Copy) {
 }
 
 task createPackage(type: Copy, dependsOn: [copyLibs, copyExamples]) {
-  from "${project.rootDir}/README.md"
-  from "${project.rootDir}/LICENSE-2.0.txt"
-  from file("$projectDir/src/jros1client")
+  // Gradle standard Copy task does not check if file exists or not
+  // It marks build SUCCESSFUL even when specified file is absent
+  // Here we check if file exists and fail the build
+  def fromx = { path ->
+    assert file(path).exists()
+    from path
+  }
+  fromx "${project.rootDir}/README.md"
+  fromx "${project.rootDir}/LICENSE-2.0.txt"
+  fromx file("$projectDir/src/jros1client")
+
+  if (isReleaseBuild() && project.hasProperty('addJRosDroid')) {
+    fromx "${project.rootDir}/jros1client.examples/jros1droid/build/outputs/apk/debug/id.jros1droid-v${rootProject.version}-debug.apk"
+  }
   into packageDir
 }
 
@@ -140,9 +159,8 @@ clean.dependsOn cleanRelease
 classes.dependsOn spotlessApply
 
 task updateVersion() {
-  // update version only when it is specified and non SNAPSHOT version is built
-  // 'unspecified' is the default value for the version in Gradle if it is not set
-  if (!version || version == "unspecified" || version.contains("SNAPSHOT")) return;
+  // update version only during release build
+  if (!isReleaseBuild()) return;
   println "Updating version to " + version
   new id.xfunction.text.Substitutor()
     .withRegexpSupport()

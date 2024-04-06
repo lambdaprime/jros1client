@@ -1,4 +1,3 @@
 // list of subprojects to publish to Sonatype repo
 
 include 'jros1client'
-project(':jros1client').projectDir = new File(rootDir, '../jros1client')

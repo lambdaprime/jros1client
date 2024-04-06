@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name">jros1droid</string>
-    <string name="description">Publish or subscribe to ROS1 topics of type std_msgs/String\n\nWebsite: <a href="https://github.com/lambdaprime/jrosclient">jrosclient</a>\n\n</string>
+    <string name="description">Publish or subscribe to ROS1 topics of type std_msgs/String\n\All interactions with ROS happen through <a href="https://github.com/lambdaprime/jrosclient">jrosclient</a>\n\n</string>
     <string name="masterUrl">Master node URL:</string>
     <string name="hostAddress">Current node host address (see Android device IP address in device Settings):</string>
     <string name="topicName">Topic name:</string>

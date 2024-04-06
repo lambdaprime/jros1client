@@ -20,11 +20,15 @@ gradle eclipse
 
 # Release steps
 
-- Run `gradle clean build -b android/build.gradle`
+- Update [Android dependencies](android/build.gradle) and run `gradle clean build -b android/build.gradle`
 - Close version in gradle.properties
 - Run `gradle clean build javadoc`
 - Publish
+- Update jrosdroid to new jrosclient version and build it
+- Install in Android
+- Run `gradle :jros1client:createRelease -PaddJRosDroid`
 - Open next SNAPSHOT version
+- Update CHANGELOG.md with new release (for changelog generation use `git log --format=%s`)
 - Commit changes
 - Push
 - Make sure that new release did not make any changes to existing examples and "jros1droid". If it did then update corresponding examples in the documentation.
