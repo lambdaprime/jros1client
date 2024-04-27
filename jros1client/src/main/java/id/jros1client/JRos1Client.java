@@ -71,6 +71,8 @@ public class JRos1Client implements JRosClient {
     private TextUtils textUtils;
     private TracingToken tracingToken;
 
+    private boolean isClosed;
+
     JRos1Client(
             TracingToken tracingToken,
             String masterUrl,
@@ -233,6 +235,7 @@ public class JRos1Client implements JRosClient {
      */
     @Override
     public void close() {
+        isClosed = true;
         try {
             var exception = new RuntimeException();
             publishersManager.getPublishers().stream()
@@ -258,5 +261,11 @@ public class JRos1Client implements JRosClient {
     /** {@link JRos1Client} implementation specific configuration */
     public JRos1ClientConfiguration getClientConfiguration() {
         return configuration;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean isClosed() {
+        return isClosed;
     }
 }

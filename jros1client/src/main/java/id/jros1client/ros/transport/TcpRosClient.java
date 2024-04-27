@@ -20,7 +20,7 @@ package id.jros1client.ros.transport;
 import id.jros1client.ros.transport.io.ConnectionHeaderWriter;
 import id.jros1client.ros.transport.io.DefaultConnectionHeaderReader;
 import id.jros1client.ros.transport.io.MessagePacketReader;
-import id.jros1messages.MessageSerializationUtils;
+import id.jros1messages.Ros1MessageSerializationUtils;
 import id.jrosclient.utils.TextUtils;
 import id.jrosmessages.Message;
 import id.jrosmessages.RosInterfaceType;
@@ -53,8 +53,8 @@ import java.util.logging.Level;
 public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
         implements TcpRosClientConnector.Processor<ConnectionHeader>, AutoCloseable {
 
-    private static final MessageSerializationUtils SERIALIZATION_UTILS =
-            new MessageSerializationUtils();
+    private static final Ros1MessageSerializationUtils SERIALIZATION_UTILS =
+            new Ros1MessageSerializationUtils();
     private Class<M> messageClass;
     private ConnectionHeaderWriter<ConnectionHeader> writer;
     private MessagePacketReader<ConnectionHeader> reader;
@@ -109,7 +109,6 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
     @Override
     public void processNextMessage() throws Exception {
         byte[] body = reader.readBody();
-        logger.log(Level.FINE, "Next packet body: {0}", utils.toString(body));
         if (body.length > 0) {
             var msg = SERIALIZATION_UTILS.read(body, messageClass);
             logger.log(Level.FINE, "Submitting received message to subscriber");

@@ -19,7 +19,7 @@ package id.jros1client.ros.transport;
 
 import id.ICE.MessageResponse;
 import id.jros1client.ros.transport.io.MessagePacketWriter;
-import id.jros1messages.MessageSerializationUtils;
+import id.jros1messages.Ros1MessageSerializationUtils;
 import id.jrosclient.utils.TextUtils;
 import id.jrosmessages.Message;
 import id.jrosmessages.MessageMetadataAccessor;
@@ -51,7 +51,7 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     private XLogger logger = XLogger.getLogger(this);
     private TextUtils utils;
     private MessageMetadataAccessor metadataAccessor = new MessageMetadataAccessor();
-    private MessageSerializationUtils serializationUtils = new MessageSerializationUtils();
+    private Ros1MessageSerializationUtils serializationUtils = new Ros1MessageSerializationUtils();
     private CompletableFuture<MessageResponse> future = CompletableFuture.completedFuture(null);
 
     /**
