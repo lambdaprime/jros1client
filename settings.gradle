@@ -1,4 +1,4 @@
-include 'jros1client'
-include 'jros1client.examples-generic'
-project(':jros1client.examples-generic').projectDir = new File('jros1client.examples/generic')
-include 'jros1client.tests'
+include "${zzName}"
+include "${zzName}.examples-generic"
+project(":${zzName}.examples-generic").projectDir = new File("${zzName}.examples/generic")
+include "${zzName}.tests"

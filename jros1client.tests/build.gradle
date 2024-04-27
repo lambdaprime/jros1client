@@ -10,9 +10,8 @@ eclipse.classpath.file {
 }
 
 dependencies {
-  testImplementation project(':jros1client')
-  testImplementation 'io.github.lambdaprime:jrosclient.tests:8.0-SNAPSHOT'
-  testImplementation 'io.github.lambdaprime:id.xfunctiontests:1.0'
+  testImplementation project(":${zzName}")
+  zzTestDependencies.split(',').findAll{ !it.isBlank() }.each { testImplementation it }
 
   def junitVersion = "5.8.1"
   testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
@@ -41,6 +40,14 @@ compileTestJava {
       '--module-path', classpath.asPath
     ]
     classpath = files()
+  }
+}
+
+sourceSets {
+  test {
+    java {
+      srcDirs += ["src/gen/java"]
+    }
   }
 }
 
