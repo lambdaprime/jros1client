@@ -126,7 +126,7 @@ public class JRos1ClientTests {
     @Test
     public void test_log_truncation() throws Exception {
         var config = new JRos1ClientConfiguration();
-        config.setMaxMessageLoggingLength(6);
+        config.setMaxMessageLoggingLength(8);
         client = factory.createClient(URL, config);
         String topic = "testTopic1";
         var publisher = new TopicSubmissionPublisher<>(StringMessage.class, topic);

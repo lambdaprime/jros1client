@@ -51,7 +51,13 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
     private XLogger logger = XLogger.getLogger(this);
     private TextUtils utils;
     private MessageMetadataAccessor metadataAccessor = new MessageMetadataAccessor();
-    private Ros1MessageSerializationUtils serializationUtils = new Ros1MessageSerializationUtils();
+    private Ros1MessageSerializationUtils serializationUtils =
+            new Ros1MessageSerializationUtils() {
+                @Override
+                protected String toString(byte[] array) {
+                    return utils.toString(super.toString(array));
+                }
+            };
     private CompletableFuture<MessageResponse> future = CompletableFuture.completedFuture(null);
 
     /**
@@ -174,8 +180,6 @@ public class TopicPublisherSubscriber implements Subscriber<Message> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        logger.fine("Sending packet to subscriber");
-        logger.fine(utils.toString(os.asHexString()));
         // tell ICE that it can send the response back
         future.complete(
                 new MessageResponse(ByteBuffer.wrap(os.toByteArray()))
