@@ -1,7 +1,7 @@
 /*
  * Copyright 2024 jrosclient project
  * 
- * Website: https://github.com/lambdaprime/jros1client
+ * Website: https://github.com/lambdaprime/jrosclient
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,17 +67,15 @@ public class MainActivity extends Activity {
         var masterUrl = (EditText) findViewById(R.id.masterUrl);
         var topicNameView = (EditText) findViewById(R.id.topicName);
         setupLogging();
-        var config = new JRos1ClientConfiguration();
-        // host address where jrosclient is running and to which other ROS nodes
-        // will communicate
-        config.setHostAddress(hostAddress.getText().toString());
         ((Button) findViewById(R.id.subscribe))
                 .setOnClickListener(
                         view -> {
                             stop();
                             client =
                                     new JRos1ClientFactory()
-                                            .createClient(masterUrl.getText().toString(), config);
+                                            .createClient(
+                                                    masterUrl.getText().toString(),
+                                                    createConfig(hostAddress.getText().toString()));
                             executor = Executors.newSingleThreadExecutor();
                             executor.submit(
                                     () -> {
@@ -101,7 +99,9 @@ public class MainActivity extends Activity {
                             stop();
                             client =
                                     new JRos1ClientFactory()
-                                            .createClient(masterUrl.getText().toString(), config);
+                                            .createClient(
+                                                    masterUrl.getText().toString(),
+                                                    createConfig(hostAddress.getText().toString()));
                             var publisher =
                                     new TopicSubmissionPublisher<>(
                                             StringMessage.class,
@@ -122,6 +122,14 @@ public class MainActivity extends Activity {
                                     });
                         });
         ((Button) findViewById(R.id.stop)).setOnClickListener(view -> stop());
+    }
+
+    private JRos1ClientConfiguration createConfig(String hostAddr) {
+        var config = new JRos1ClientConfiguration();
+        // host address where jrosclient is running and to which other ROS nodes
+        // will communicate
+        config.setHostAddress(hostAddr);
+        return config;
     }
 
     private void stop() {

@@ -73,6 +73,8 @@ compileJava {
 }
 
 javadoc {
+  options.modulePath = classpath.getFiles().stream()
+    .collect(java.util.stream.Collectors.toList())
   options.noTimestamp = true
   options.noQualifiers = ["all"]
   options.noTree = true
