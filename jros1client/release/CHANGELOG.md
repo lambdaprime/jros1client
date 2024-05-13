@@ -1,3 +1,12 @@
+# Version 8
+
+- Fixing issue in jros1droid when user provided device host address was ignored causing subscribers not able to receive messages
+- Updating to snapshot changes
+- Issue lambdaprime/jros2client#11 Updating dependencies
+- Updating gradle files
+
+[jros1client-v8.0.zip](https://github.com/lambdaprime/jros1client/raw/main/jros1client/release/jros1client-v8.0.zip)
+
 # Version 7
 
 - Adding jros1droid

@@ -152,7 +152,9 @@ task createPackage(type: Copy, dependsOn: [copyLibs, copyExamples]) {
     from filePath
   }
   if (isReleaseBuild() && project.hasProperty('addJRosDroid')) {
-    fromx "${project.rootDir}/jros1client.examples/jros1droid/build/outputs/apk/debug/id.jros1droid-v${rootProject.version}-debug.apk"
+    def filePath = "${project.rootDir}/jros1client.examples/jros1droid/build/outputs/apk/debug/id.jros1droid-v${rootProject.version}-debug.apk"
+    assert file(filePath).exists()
+    from filePath
   }
   into packageDir
 }
