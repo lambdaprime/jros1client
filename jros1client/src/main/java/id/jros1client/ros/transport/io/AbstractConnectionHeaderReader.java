@@ -58,6 +58,6 @@ public abstract class AbstractConnectionHeaderReader<C extends ConnectionHeader>
         byte[] buf = new byte[fieldLen];
         in.readFully(buf);
         var a = new String(buf).split("=");
-        return Map.entry(a[0], a[1]);
+        return Map.entry(a[0], a.length == 1 ? "" : a[1]);
     }
 }

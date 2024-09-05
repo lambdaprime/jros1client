@@ -178,7 +178,7 @@ public class TcpRosClientConnector<M extends Message, C extends ConnectionHeader
         var errorOpt = responseHeader.error;
         if (errorOpt.isPresent()) {
             throw new JRosClientException(
-                    "Handshake failed, ROS publisher node returned error response: {0}",
+                    "Handshake failed, ROS publisher node returned error response: %s",
                     errorOpt.get());
         }
         return responseHeader;

@@ -24,6 +24,7 @@ import id.jrosclient.tests.integration.JRosPubSubClientTests;
 import id.pubsubtests.PubSubClientTestCase;
 import id.xfunction.logging.XLogger;
 import java.time.Duration;
+import java.util.function.Supplier;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 
@@ -37,7 +38,11 @@ public class JRos1PubSubClientTests extends JRosPubSubClientTests {
     private static final JRos1ClientFactory factory = new JRos1ClientFactory();
 
     static {
-        init(new TestCase("test_jros2client", factory::createClient, Duration.ofSeconds(2), 100));
+        Supplier<JRosClient> supplier = factory::createClient;
+        init(
+                supplier,
+                new TestCase(
+                        "test_jros1client", factory::createClient, Duration.ofSeconds(2), 100));
     }
 
     @BeforeAll

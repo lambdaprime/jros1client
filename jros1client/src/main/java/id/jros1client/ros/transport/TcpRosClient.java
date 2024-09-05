@@ -109,13 +109,9 @@ public class TcpRosClient<M extends Message> extends SubmissionPublisher<M>
     @Override
     public void processNextMessage() throws Exception {
         byte[] body = reader.readBody();
-        if (body.length > 0) {
-            var msg = SERIALIZATION_UTILS.read(body, messageClass);
-            logger.log(Level.FINE, "Submitting received message to subscriber");
-            if (!isClosed()) submit(msg);
-        } else {
-            logger.log(Level.WARNING, "Received empty message data");
-        }
+        var msg = SERIALIZATION_UTILS.read(body, messageClass);
+        logger.log(Level.FINE, "Submitting received message to subscriber");
+        if (!isClosed()) submit(msg);
         logger.log(Level.FINE, "Requesting next message");
         writer.write(connectionHeader);
     }
